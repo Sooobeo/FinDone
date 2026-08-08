@@ -17,7 +17,25 @@ data class ContentElement(
     val sourceLabel: String,
     val sourceLocator: String,
     val specSectionLocator: String,
+    val definitionMarkdown: String,
+    val intuitionMarkdown: String,
+    val learningNotesMarkdown: String,
+    val formulaMarkdown: String,
+    val assumptionsMarkdown: String,
+    val checklistMarkdown: String,
+    val sources: List<ContentSource>,
 )
+
+data class ContentSource(
+    val id: String,
+    val label: String,
+    val locator: String,
+    val type: String,
+    val notes: String,
+) {
+    val isWebLink: Boolean
+        get() = locator.startsWith("https://") || locator.startsWith("http://")
+}
 
 data class ContentManifest(
     val manifestVersion: Int,

@@ -8,6 +8,8 @@ local.properties
 captures/
 .tooling/
 .kotlin/
+__pycache__/
+*.py[cod]
 dist/
 release.properties
 secrets.properties

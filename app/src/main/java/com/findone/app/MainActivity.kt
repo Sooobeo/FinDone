@@ -33,6 +33,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.AutoStories
 import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material.icons.outlined.BookmarkBorder
@@ -44,6 +45,8 @@ import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.ErrorOutline
+import androidx.compose.material.icons.outlined.ExpandLess
+import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.HistoryEdu
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
@@ -89,10 +92,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -115,6 +120,7 @@ import com.findone.app.quiz.QuizPresentation
 import com.findone.app.quiz.QuizQuestion
 import com.findone.app.ui.BrandHeader
 import com.findone.app.ui.DomainBadge
+import com.findone.app.ui.MarkdownText
 import com.findone.app.ui.OfflineBanner
 import com.findone.app.ui.PageHeader
 import com.findone.app.ui.SectionTitle
@@ -319,9 +325,9 @@ private fun HomeScreen(vm: AppViewModel) {
     ) {
         item {
             BrandHeader(
-                eyebrow = "FINANCE INTERVIEW",
-                title = "오늘도 한 문제씩\n면접 언어로 바꿔보세요",
-                description = "개념을 익히고, 계산기 없이 풀고, 틀린 문제를 다시 만나는 개인 학습 도구입니다.",
+                eyebrow = "FINANCE CAREER",
+                title = "금융권 진출을 위한\n오늘의 한 문제",
+                description = "핵심 개념부터 실전 문제까지 차근차근 익히는 개인 금융 학습 도구입니다.",
             )
         }
         item { OfflineBanner() }
@@ -352,7 +358,7 @@ private fun HomeScreen(vm: AppViewModel) {
                     ) {
                         Icon(Icons.Outlined.Speed, contentDescription = null)
                         Spacer(Modifier.width(8.dp))
-                        Text(if (vm.stats.wrongUnresolved > 0) "남은 오답 이어 풀기" else "면접 스프린트 시작")
+                        Text(if (vm.stats.wrongUnresolved > 0) "남은 오답 이어 풀기" else "금융권 스프린트 시작")
                     }
                 }
             }
@@ -491,6 +497,16 @@ private fun ElementRow(element: ContentElement, vm: AppViewModel, onClick: () ->
 @Composable
 private fun ElementDetailScreen(vm: AppViewModel) {
     val element = vm.selectedElement ?: return
+    val uriHandler = LocalUriHandler.current
+    val webSources = element.sources.filter { it.isWebLink }.distinctBy { it.locator }
+    var sourceOpenError by rememberSaveable(element.id) { mutableStateOf<String?>(null) }
+    val openSource: (String) -> Unit = { locator ->
+        runCatching { uriHandler.openUri(locator) }
+            .onSuccess { sourceOpenError = null }
+            .onFailure {
+                sourceOpenError = "링크를 열 수 없습니다. 주소와 브라우저 설치 상태를 확인해 주세요."
+            }
+    }
     LazyColumn(
         modifier = pageWidth(),
         contentPadding = pagePadding(),
@@ -515,27 +531,75 @@ private fun ElementDetailScreen(vm: AppViewModel) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Outlined.AutoStories, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimaryContainer)
                         Spacer(Modifier.width(8.dp))
-                        Text("핵심 개념·수식", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                        Text("핵심 개념", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
                     }
-                    Text(element.coreRelation, color = MaterialTheme.colorScheme.onPrimaryContainer, style = MaterialTheme.typography.bodyLarge)
+                    MarkdownText(
+                        markdown = element.definitionMarkdown,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
                 }
             }
         }
         item {
-            OutlinedCard {
-                Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("면접 출제 범위", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                    Text(element.scope.ifBlank { "핵심 공식의 의미, 가정, 방향성과 흔한 함정을 설명할 수 있어야 합니다." })
-                }
-            }
+            LearningMarkdownCard("직관과 실무 연결", element.intuitionMarkdown)
+        }
+        item {
+            LearningMarkdownCard(
+                "공식·가정",
+                "${element.formulaMarkdown}\n\n${element.assumptionsMarkdown}",
+            )
+        }
+        item {
+            LearningMarkdownCard("적용 문제와 상세 범위", element.learningNotesMarkdown)
+        }
+        item {
+            LearningMarkdownCard("학습 체크리스트", element.checklistMarkdown)
         }
         item {
             OutlinedCard {
-                Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text("근거", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                    Text(element.sourceLabel)
-                    Text(element.sourceLocator, color = MaterialTheme.colorScheme.secondary, style = MaterialTheme.typography.bodySmall)
-                    Text(element.specSectionLocator, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
+                Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("근거·더 자세히 읽기", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text(
+                        "개념 설명과 공식의 출처를 외부 브라우저에서 확인할 수 있습니다.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    if (webSources.isEmpty()) {
+                        OutlinedButton(
+                            onClick = { openSource(element.sourceLocator) },
+                            enabled = element.sourceLocator.startsWith("https://") || element.sourceLocator.startsWith("http://"),
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Icon(Icons.AutoMirrored.Outlined.OpenInNew, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Spacer(Modifier.width(7.dp))
+                            Text(element.sourceLabel)
+                        }
+                    } else {
+                        webSources.forEach { source ->
+                            OutlinedButton(
+                                onClick = { openSource(source.locator) },
+                                modifier = Modifier.fillMaxWidth(),
+                            ) {
+                                Icon(Icons.AutoMirrored.Outlined.OpenInNew, contentDescription = null, modifier = Modifier.size(18.dp))
+                                Spacer(Modifier.width(7.dp))
+                                Text(source.label, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                            }
+                        }
+                    }
+                    sourceOpenError?.let { message ->
+                        Text(
+                            message,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+                        )
+                    }
+                    Text(
+                        "내부 콘텐츠 위치 · ${element.specSectionLocator}",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.labelSmall,
+                    )
                 }
             }
         }
@@ -605,7 +669,7 @@ private fun QuizSetupScreen(vm: AppViewModel) {
             Button(onClick = vm::startConfiguredQuiz, modifier = Modifier.fillMaxWidth()) {
                 Icon(Icons.Outlined.School, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
-                Text("${vm.selectedTrack.title} 시작")
+                Text("${vm.selectedTrack.displayTitle()} 시작")
             }
         }
         item {
@@ -642,7 +706,7 @@ private fun TrackCard(track: QuizTrack, selected: Boolean, onClick: () -> Unit) 
             Icon(icon, contentDescription = null, tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                Text(track.title, fontWeight = FontWeight.Bold)
+                Text(track.displayTitle(), fontWeight = FontWeight.Bold)
                 Text(track.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             if (selected) Icon(Icons.Outlined.CheckCircle, contentDescription = "선택됨", tint = MaterialTheme.colorScheme.primary)
@@ -659,6 +723,18 @@ private fun QuizSessionScreen(vm: AppViewModel, requestLeave: () -> Unit) {
     }
     val question = session.currentQuestion ?: return
     val oral = session.currentPresentation == QuizPresentation.ORAL
+    var showAnswer by rememberSaveable(question.instanceId) { mutableStateOf(session.submitted) }
+    var showSolution by rememberSaveable(question.instanceId) { mutableStateOf(false) }
+    var submissionRevealHandled by rememberSaveable(question.instanceId) {
+        mutableStateOf(session.submitted)
+    }
+
+    LaunchedEffect(question.instanceId, session.submitted) {
+        if (session.submitted && !submissionRevealHandled) {
+            showAnswer = true
+            submissionRevealHandled = true
+        }
+    }
 
     LazyColumn(
         modifier = pageWidth(),
@@ -669,7 +745,7 @@ private fun QuizSessionScreen(vm: AppViewModel, requestLeave: () -> Unit) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = requestLeave) { Icon(Icons.Outlined.Close, contentDescription = "퀴즈 종료") }
                 Column(Modifier.weight(1f)) {
-                    Text(session.track.title, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+                    Text(session.track.displayTitle(), style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
                     Text("${session.currentIndex + 1} / ${session.questions.size}", style = MaterialTheme.typography.labelSmall)
                 }
                 IconButton(onClick = vm::toggleCurrentBookmark) {
@@ -686,80 +762,56 @@ private fun QuizSessionScreen(vm: AppViewModel, requestLeave: () -> Unit) {
             )
         }
         item {
+            val hideDomainCalculationTags = session.track == QuizTrack.DOMAIN && question.mode == QuizMode.CALCULATION
             LazyRow(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
                 item { QuizBadge(question.elementId) }
-                item { QuizBadge(if (question.mode == QuizMode.CALCULATION) "암산" else if (oral) "구술" else "개념") }
-                if (question.mode == QuizMode.CALCULATION) {
+                if (!hideDomainCalculationTags) {
+                    item { QuizBadge(if (question.mode == QuizMode.CALCULATION) "암산" else if (oral) "구술" else "개념") }
+                }
+                if (question.mode == QuizMode.CALCULATION && !hideDomainCalculationTags) {
                     item { QuizBadge("계산기 사용 안 함") }
+                }
+                if (question.mode == QuizMode.CALCULATION) {
                     item { QuizBadge("권장 ${question.snapshot.difficulty * 30}초") }
                 }
             }
         }
         item {
-            Text(
-                if (oral) {
-                    val title = vm.allElements.firstOrNull { it.id == question.elementId }?.title ?: question.elementId
-                    "‘$title’를 정의·핵심 관계·가정·면접 해석 순서로 30~60초 동안 설명하세요."
-                } else question.prompt,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
+            QuizQuestionCard(
+                vm = vm,
+                question = question,
+                oral = oral,
+                showAnswer = showAnswer,
             )
         }
 
-        if (!oral && question.answer.kind == QuizAnswerKind.MULTIPLE_CHOICE) {
-            items(question.choices.orEmpty(), key = { it.id }) { choice ->
-                ChoiceButton(
-                    question = question,
-                    choiceId = choice.id,
-                    text = choice.text,
-                    selected = session.userAnswer == choice.id,
-                    submitted = session.submitted,
-                    onClick = { vm.setQuizAnswer(choice.id) },
-                )
-            }
-        } else if (!oral) {
+        if (session.submitted) {
             item {
-                OutlinedTextField(
-                    value = session.userAnswer,
-                    onValueChange = { raw ->
-                        val cleaned = raw.filterIndexed { index, char ->
-                            char.isDigit() || char == ',' || char == ' ' ||
-                                (char == '-' || char == '−' || char == '+') && index == 0
-                        }
-                        vm.setQuizAnswer(cleaned)
+                QuizFaceToggle(
+                    showAnswer = showAnswer,
+                    showQuestion = {
+                        showAnswer = false
+                        showSolution = false
                     },
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text("정수 답") },
-                    suffix = { if (question.answerUnit.isNotBlank()) Text(question.answerUnit) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    singleLine = true,
-                    enabled = !session.submitted,
-                    supportingText = { Text("쉼표와 음수 부호를 사용할 수 있습니다.") },
+                    onShowAnswer = { showAnswer = true },
                 )
             }
-        }
-
-        if (!session.submitted) {
-            if (oral) {
+            if (showAnswer) {
                 item {
-                    Text("말하기를 마친 뒤 스스로 평가하세요. 제출 후 핵심 답안을 보여드립니다.", color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    Spacer(Modifier.height(10.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        OutlinedButton(onClick = { vm.submitQuizAnswer(false) }, modifier = Modifier.weight(1f)) { Text("복습 필요") }
-                        Button(onClick = { vm.submitQuizAnswer(true) }, modifier = Modifier.weight(1f)) { Text("핵심 포함") }
+                    OutlinedButton(
+                        onClick = { showSolution = !showSolution },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Icon(
+                            if (showSolution) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
+                            contentDescription = null,
+                        )
+                        Spacer(Modifier.width(7.dp))
+                        Text(if (showSolution) "풀이 접기" else "풀이")
                     }
                 }
-            } else {
-                item {
-                    Button(
-                        onClick = { vm.submitQuizAnswer() },
-                        enabled = session.userAnswer.isNotBlank(),
-                        modifier = Modifier.fillMaxWidth(),
-                    ) { Text("답 제출") }
-                }
+                if (showSolution) item { SolutionContent(question) }
             }
-        } else {
-            item { AnswerExplanation(question, session.wasCorrect == true) }
             item {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     OutlinedButton(onClick = vm::toggleCurrentBookmark, modifier = Modifier.weight(1f)) {
@@ -782,27 +834,178 @@ private fun QuizSessionScreen(vm: AppViewModel, requestLeave: () -> Unit) {
 }
 
 @Composable
-private fun ChoiceButton(
+private fun LearningMarkdownCard(title: String, markdown: String) {
+    if (markdown.isBlank()) return
+    OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            MarkdownText(markdown = markdown, style = MaterialTheme.typography.bodyMedium)
+        }
+    }
+}
+
+@Composable
+private fun QuizQuestionCard(
+    vm: AppViewModel,
     question: QuizQuestion,
+    oral: Boolean,
+    showAnswer: Boolean,
+) {
+    val session = vm.quizSession ?: return
+    val correct = session.wasCorrect == true
+    val containerColor = when {
+        showAnswer && correct -> MaterialTheme.colorScheme.primaryContainer
+        showAnswer -> MaterialTheme.colorScheme.errorContainer
+        else -> MaterialTheme.colorScheme.surfaceVariant
+    }
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = containerColor),
+    ) {
+        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+            if (showAnswer && session.submitted) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+                ) {
+                    Icon(
+                        if (correct) Icons.Outlined.CheckCircle else Icons.Outlined.ErrorOutline,
+                        contentDescription = null,
+                        tint = if (correct) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        if (correct) "정답입니다" else "정답을 확인해 보세요",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+                Text("정답", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+                MarkdownText(
+                    markdown = question.explanationSteps.answer,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                if (!oral && session.userAnswer.isNotBlank()) {
+                    Text("내 답", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+                    MarkdownText(
+                        markdown = userAnswerSummary(question, session.userAnswer),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            } else {
+                Text("문제", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+                val prompt = if (oral) {
+                    val title = vm.allElements.firstOrNull { it.id == question.elementId }?.title ?: question.elementId
+                    "‘$title’를 정의·핵심 관계·가정·금융권 실무 해석 순서로 30~60초 동안 설명하세요."
+                } else {
+                    question.prompt.financeCareerCopy()
+                }
+                MarkdownText(
+                    markdown = prompt,
+                    style = if (session.track == QuizTrack.DOMAIN) {
+                        MaterialTheme.typography.titleMedium
+                    } else {
+                        MaterialTheme.typography.headlineSmall
+                    },
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+
+                if (!oral && question.answer.kind == QuizAnswerKind.MULTIPLE_CHOICE) {
+                    question.choices.orEmpty().forEach { choice ->
+                        ChoiceButton(
+                            choiceId = choice.id,
+                            text = choice.text,
+                            selected = session.userAnswer == choice.id,
+                            enabled = !session.submitted,
+                            onClick = { vm.setQuizAnswer(choice.id) },
+                        )
+                    }
+                } else if (!oral) {
+                    OutlinedTextField(
+                        value = session.userAnswer,
+                        onValueChange = { raw ->
+                            val cleaned = raw.filterIndexed { index, char ->
+                                char.isDigit() || char == ',' || char == ' ' ||
+                                    (char == '-' || char == '−' || char == '+') && index == 0
+                            }
+                            vm.setQuizAnswer(cleaned)
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text("정수 답") },
+                        suffix = { if (question.answerUnit.isNotBlank()) Text(question.answerUnit) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        singleLine = true,
+                        enabled = !session.submitted,
+                        supportingText = { Text("쉼표와 음수 부호를 사용할 수 있습니다.") },
+                    )
+                }
+
+                if (!session.submitted) {
+                    if (oral) {
+                        Text(
+                            "말하기를 마친 뒤 스스로 평가하세요. 제출 후 핵심 답안을 보여드립니다.",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            OutlinedButton(onClick = { vm.submitQuizAnswer(false) }, modifier = Modifier.weight(1f)) {
+                                Text("복습 필요")
+                            }
+                            Button(onClick = { vm.submitQuizAnswer(true) }, modifier = Modifier.weight(1f)) {
+                                Text("핵심 포함")
+                            }
+                        }
+                    } else {
+                        Button(
+                            onClick = { vm.submitQuizAnswer() },
+                            enabled = session.userAnswer.isNotBlank(),
+                            modifier = Modifier.fillMaxWidth(),
+                        ) { Text("답 제출") }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun QuizFaceToggle(
+    showAnswer: Boolean,
+    showQuestion: () -> Unit,
+    onShowAnswer: () -> Unit,
+) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        FilterChip(
+            selected = !showAnswer,
+            onClick = showQuestion,
+            label = { Text("문제 보기") },
+            modifier = Modifier.weight(1f),
+        )
+        FilterChip(
+            selected = showAnswer,
+            onClick = onShowAnswer,
+            label = { Text("정답 보기") },
+            modifier = Modifier.weight(1f),
+        )
+    }
+}
+
+@Composable
+private fun ChoiceButton(
     choiceId: String,
     text: String,
     selected: Boolean,
-    submitted: Boolean,
+    enabled: Boolean,
     onClick: () -> Unit,
 ) {
-    val isCorrect = choiceId == question.answer.correctChoiceId
-    val container = when {
-        submitted && isCorrect -> MaterialTheme.colorScheme.primaryContainer
-        submitted && selected -> MaterialTheme.colorScheme.errorContainer
-        selected -> MaterialTheme.colorScheme.secondaryContainer
-        else -> MaterialTheme.colorScheme.surface
-    }
+    val container = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface
     OutlinedCard(
         modifier = Modifier
             .fillMaxWidth()
             .selectable(
                 selected = selected,
-                enabled = !submitted,
+                enabled = enabled,
                 role = Role.RadioButton,
                 onClick = onClick,
             ),
@@ -818,36 +1021,22 @@ private fun ChoiceButton(
             }
             Spacer(Modifier.width(10.dp))
             Text(text, modifier = Modifier.weight(1f))
-            if (submitted && isCorrect) Icon(Icons.Outlined.CheckCircle, contentDescription = "정답", tint = MaterialTheme.colorScheme.primary)
         }
     }
 }
 
 @Composable
-private fun AnswerExplanation(question: QuizQuestion, correct: Boolean) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = if (correct) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.errorContainer,
-        ),
-        modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
-    ) {
+private fun SolutionContent(question: QuizQuestion) {
+    OutlinedCard(modifier = Modifier.fillMaxWidth()) {
         Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(11.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    if (correct) Icons.Outlined.CheckCircle else Icons.Outlined.ErrorOutline,
-                    contentDescription = null,
-                    tint = if (correct) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
-                )
-                Spacer(Modifier.width(8.dp))
-                Text(if (correct) "정답입니다" else "이 문제는 다시 만나게 됩니다", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-            }
+            Text("풀이", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             ExplanationLine("관련 개념", question.explanationSteps.concept)
             ExplanationLine("수식", question.explanationSteps.formula)
             ExplanationLine("숫자 대입", question.explanationSteps.substitution)
             if (question.mode == QuizMode.CALCULATION && question.audit.operations.isNotEmpty()) {
                 ExplanationLine(
                     "암산 경로",
-                    question.audit.operations.joinToString(" → ") { "${it.expression}=${it.result}" },
+                    question.audit.operations.joinToString("\n") { "- `${it.expression} = ${it.result}`" },
                 )
             }
             ExplanationLine("정답", question.explanationSteps.answer)
@@ -866,7 +1055,11 @@ private fun ExplanationLine(label: String, value: String) {
     if (value.isBlank()) return
     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
         Text(label, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
-        Text(value, style = MaterialTheme.typography.bodyMedium)
+        MarkdownText(
+            markdown = explanationMarkdown(label, value),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
     }
 }
 
@@ -902,7 +1095,7 @@ private fun RecordsScreen(
     importBackup: () -> Unit,
     requestReset: () -> Unit,
 ) {
-    var section by remember { mutableStateOf(RecordSection.WRONG) }
+    var section by rememberSaveable { mutableStateOf(RecordSection.WRONG) }
     LazyColumn(
         modifier = pageWidth(),
         contentPadding = pagePadding(),
@@ -912,7 +1105,7 @@ private fun RecordsScreen(
             PageHeader(
                 eyebrow = "LOCAL RECORDS",
                 title = "학습 기록",
-                description = "오답·북마크·설정은 app-private user DB에만 저장됩니다.",
+                description = "누적 성적은 유지하고, 상세 기록은 가볍게 관리합니다. 분야와 단원별로 최근 오답·북마크를 확인하세요.",
             )
         }
         item {
@@ -929,21 +1122,26 @@ private fun RecordsScreen(
                 }
             }
         }
+        if (section != RecordSection.DATA) {
+            item { RecordScopeFilters(vm) }
+        }
         when (section) {
             RecordSection.WRONG -> {
                 item {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        SectionTitle("최근 오답", "${vm.recentWrong.size}건", Modifier.weight(1f))
-                        if (vm.stats.wrongUnresolved > 0) TextButton(onClick = vm::startWeakQuiz) { Text("약점 풀기") }
+                        SectionTitle("단원별 최근 오답", "${vm.recentWrong.size}건", Modifier.weight(1f))
+                        if (vm.recordUnresolvedWrongCount > 0) {
+                            TextButton(onClick = vm::startRecordWeakQuiz) { Text("이 범위 풀기") }
+                        }
                     }
                 }
                 if (vm.recentWrong.isEmpty()) item { EmptyState(Icons.Outlined.CheckCircle, "아직 오답이 없습니다", "첫 퀴즈를 풀면 이곳에 복습 기록이 쌓입니다.") }
                 else items(vm.recentWrong, key = { it.id }) { WrongCard(it, vm) }
             }
             RecordSection.BOOKMARKS -> {
-                item { SectionTitle("북마크", "${vm.bookmarks.size}개") }
-                if (vm.bookmarks.isEmpty()) item { EmptyState(Icons.Outlined.BookmarkBorder, "저장한 문제가 없습니다", "문제를 푼 뒤 북마크 버튼을 누르면 동일 snapshot을 다시 볼 수 있습니다.") }
-                else items(vm.bookmarks, key = { it.instanceId }) { bookmark -> BookmarkCard(bookmark, vm) }
+                item { SectionTitle("최근 북마크", "${vm.recordBookmarks.size}개") }
+                if (vm.recordBookmarks.isEmpty()) item { EmptyState(Icons.Outlined.BookmarkBorder, "저장한 문제가 없습니다", "문제를 푼 뒤 북마크 버튼을 누르면 동일 snapshot을 다시 볼 수 있습니다.") }
+                else items(vm.recordBookmarks, key = { it.instanceId }) { bookmark -> BookmarkCard(bookmark, vm) }
             }
             RecordSection.DATA -> {
                 item { DataSettingsCard(vm, exportBackup, importBackup, requestReset) }
@@ -955,6 +1153,59 @@ private fun RecordsScreen(
 private enum class RecordSection(val label: String) { WRONG("오답"), BOOKMARKS("북마크"), DATA("백업·정보") }
 
 @Composable
+private fun RecordScopeFilters(vm: AppViewModel) {
+    val scopedElements = vm.recordDomainId?.let { domainId ->
+        vm.allElements.filter { it.domainId == domainId }
+    }.orEmpty()
+    OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
+            Text("조회 범위", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                item {
+                    FilterChip(
+                        selected = vm.recordDomainId == null,
+                        onClick = { vm.setRecordDomain(null) },
+                        label = { Text("전체") },
+                    )
+                }
+                items(vm.domains, key = { it.id }) { domain ->
+                    FilterChip(
+                        selected = vm.recordDomainId == domain.id,
+                        onClick = { vm.setRecordDomain(domain.id) },
+                        label = { Text(domain.id) },
+                    )
+                }
+            }
+            if (vm.recordDomainId != null) {
+                Text("단원", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                    item {
+                        FilterChip(
+                            selected = vm.recordElementId == null,
+                            onClick = { vm.setRecordElement(null) },
+                            label = { Text("전체 단원") },
+                        )
+                    }
+                    items(scopedElements, key = { it.id }) { element ->
+                        FilterChip(
+                            selected = vm.recordElementId == element.id,
+                            onClick = { vm.setRecordElement(element.id) },
+                            label = {
+                                Text(
+                                    "${element.id} · ${element.title}",
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            },
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
 private fun WrongCard(attempt: AttemptRecord, vm: AppViewModel) {
     OutlinedCard {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -964,7 +1215,7 @@ private fun WrongCard(attempt: AttemptRecord, vm: AppViewModel) {
                 Text(attempt.elementId, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                 Text(formatDate(attempt.createdAt), style = MaterialTheme.typography.labelSmall)
             }
-            Text(attempt.prompt, maxLines = 3, overflow = TextOverflow.Ellipsis)
+            Text(attempt.prompt.financeCareerCopy(), maxLines = 3, overflow = TextOverflow.Ellipsis)
             Text("내 답: ${attempt.userAnswer} · 정답: ${attempt.canonicalAnswer}", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
             if (vm.resolutionSuggested(attempt.elementId, attempt.templateId)) {
                 Text("이 유형을 두 번 연속 맞혔습니다.", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
@@ -1035,10 +1286,20 @@ private fun DataSettingsCard(
             }
         }
         OutlinedCard {
+            Column(Modifier.padding(17.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text("기록 저장 최적화", fontWeight = FontWeight.Bold)
+                Text(
+                    "누적 풀이·정답 통계는 단원별 집계로 계속 보존합니다. 용량이 큰 상세 풀이만 단원당 최근 20개·전체 2,000개로 관리하며, 미해결 최신 오답과 수동 북마크는 자동 삭제하지 않습니다.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+        OutlinedCard {
             Column(Modifier.padding(17.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("앱 정보", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Text("FinDone ${BuildConfig.VERSION_NAME} · 개인 Android 사이드로드")
-                Text("콘텐츠 DB v${vm.contentManifest?.contentDbVersion ?: "-"} · 사용자 DB schema 2")
+                Text("콘텐츠 DB v${vm.contentManifest?.contentDbVersion ?: "-"} · 사용자 DB schema 3")
                 Text("특정 학회 공식 기출이 아닌 자체 제작 문제입니다. 실시간 투자정보나 투자 조언을 제공하지 않습니다.", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 HorizontalDivider()
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1078,6 +1339,29 @@ private fun QuizBadge(text: String) {
     ) {
         Text(text, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
+}
+
+private fun QuizTrack.displayTitle(): String = when (this) {
+    QuizTrack.SPRINT -> "금융권 스프린트"
+    else -> title
+}
+
+private fun String.financeCareerCopy(): String =
+    replace("면접 답변의 핵심 문장이", "금융권 실무 설명의 핵심 문장이")
+        .replace("면접 해석", "금융권 실무 해석")
+
+private fun userAnswerSummary(question: QuizQuestion, userAnswer: String): String {
+    if (question.answer.kind == QuizAnswerKind.MULTIPLE_CHOICE) {
+        val choice = question.choices.orEmpty().firstOrNull { it.id == userAnswer }
+        if (choice != null) return "${choice.id}. ${choice.text}"
+    }
+    return listOf(userAnswer, question.answerUnit).filter { it.isNotBlank() }.joinToString(" ")
+}
+
+private fun explanationMarkdown(label: String, value: String): String = when (label) {
+    "수식", "숫자 대입" -> if ('$' in value || '`' in value) value else "`${value.replace("`", "\\`")}`"
+    "정답" -> if ('*' in value) value else "**$value**"
+    else -> value
 }
 
 private fun pageWidth(): Modifier = Modifier.widthIn(max = 860.dp).fillMaxSize()

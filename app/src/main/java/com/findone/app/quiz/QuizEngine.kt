@@ -128,7 +128,7 @@ private typealias CalculationFactory = (StableRandom, Int) -> CalculationDraft
  */
 object QuizEngine {
     const val SNAPSHOT_VERSION: Int = 1
-    const val RENDERER_VERSION: String = "quiz-engine-1.0.0"
+    const val RENDERER_VERSION: String = "quiz-engine-1.1.0"
 
     private val calculationFactories: Map<String, CalculationFactory> = linkedMapOf(
         "ACC-01" to ::acc01,
@@ -195,7 +195,7 @@ object QuizEngine {
             "다음 핵심 관계에 해당하는 학습요소는 무엇인가?\n${target.coreRelation}",
             "${target.domainName} 분야에서 다음 관계와 직접 연결되는 항목을 고르세요.\n${target.coreRelation}",
             "다음 설명을 가장 정확하게 대표하는 개념은 무엇인가?\n${target.coreRelation}",
-            "면접 답변의 핵심 문장이 다음과 같을 때, 먼저 설명해야 할 학습요소는?\n${target.coreRelation}",
+            "금융권 실무에서 다음 관계를 설명할 때, 먼저 짚어야 할 학습요소는?\n${target.coreRelation}",
         )
         val prompt = random.pick(promptFrames)
 

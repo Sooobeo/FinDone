@@ -65,7 +65,10 @@ data class BookmarkInput(
     val mode: String,
     val seed: Long,
     val snapshotJson: String,
+    val origin: BookmarkOrigin = BookmarkOrigin.MANUAL,
 )
+
+enum class BookmarkOrigin { MANUAL, AUTO_WRONG }
 
 data class BookmarkRecord(
     val instanceId: String,
@@ -75,6 +78,7 @@ data class BookmarkRecord(
     val seed: Long,
     val snapshotJson: String,
     val createdAt: Long,
+    val origin: BookmarkOrigin = BookmarkOrigin.MANUAL,
 )
 
 data class StudyStats(
@@ -104,7 +108,8 @@ class UserRepository(context: Context) {
         preservePreMigrationDatabase(databaseContext)
         helper = UserDatabase(databaseContext)
         // Open now so migration failures surface while the verified N-1 copy still exists.
-        helper.writableDatabase
+        val db = helper.writableDatabase
+        db.inTransaction { maintainBoundedUserHistory(db) }
     }
 
     fun recordAttempt(input: AttemptInput): Long {
@@ -113,6 +118,14 @@ class UserRepository(context: Context) {
         var rowId = -1L
         db.beginTransaction()
         try {
+            requireCanInsertKeyedRow(
+                db = db,
+                table = "element_progress",
+                keyColumn = "element_id",
+                key = input.elementId,
+                maxRows = MAX_PROGRESS_ROWS,
+                errorMessage = "진도 행이 허용량을 넘습니다.",
+            )
             rowId = db.insertOrThrow("attempts", null, ContentValues().apply {
                 put("instance_id", input.instanceId)
                 put("element_id", input.elementId)
@@ -154,12 +167,22 @@ class UserRepository(context: Context) {
                     put("mode", input.mode)
                     put("presentation", input.presentation)
                     put("last_instance_id", input.instanceId)
+                    put("last_attempt_id", rowId)
                     put("last_seed", input.seed)
                     put("correct_streak", 0)
                     put("resolved", 0)
                     put("updated_at", now)
                 }, SQLiteDatabase.CONFLICT_REPLACE)
             }
+            cleanupWrongQueue(db)
+            requireTableRowsAtMost(db, "wrong_queue", MAX_WRONG_QUEUE, "오답 큐가 허용량을 넘습니다.")
+            pruneAttempts(db, input.elementId)
+            requireTableRowsAtMost(
+                db,
+                "attempts",
+                MAX_RECENT_ATTEMPTS_TOTAL,
+                "상세 시도 기록 정리에 실패했습니다.",
+            )
             db.setTransactionSuccessful()
         } finally {
             db.endTransaction()
@@ -169,20 +192,37 @@ class UserRepository(context: Context) {
 
     fun toggleBookmark(input: BookmarkInput): Boolean {
         val db = helper.writableDatabase
-        if (isBookmarked(input.instanceId)) {
-            db.delete("bookmarks", "instance_id = ?", arrayOf(input.instanceId))
-            return false
+        var bookmarked = false
+        db.beginTransaction()
+        try {
+            val exists = db.rawQuery(
+                "SELECT 1 FROM bookmarks WHERE instance_id = ? LIMIT 1",
+                arrayOf(input.instanceId),
+            ).use { it.moveToFirst() }
+            if (exists) {
+                db.delete("bookmarks", "instance_id = ?", arrayOf(input.instanceId))
+            } else {
+                db.insertOrThrow("bookmarks", null, ContentValues().apply {
+                    put("instance_id", input.instanceId)
+                    put("element_id", input.elementId)
+                    put("template_id", input.templateId)
+                    put("mode", input.mode)
+                    put("seed", input.seed)
+                    put("snapshot_json", input.snapshotJson)
+                    put("created_at", System.currentTimeMillis())
+                    put("origin", input.origin.name)
+                })
+                if (input.origin == BookmarkOrigin.AUTO_WRONG) {
+                    pruneAutomaticBookmarks(db, input.elementId)
+                }
+                requireTableRowsAtMost(db, "bookmarks", MAX_BOOKMARKS, "북마크가 허용량을 넘습니다.")
+                bookmarked = true
+            }
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
         }
-        db.insertOrThrow("bookmarks", null, ContentValues().apply {
-            put("instance_id", input.instanceId)
-            put("element_id", input.elementId)
-            put("template_id", input.templateId)
-            put("mode", input.mode)
-            put("seed", input.seed)
-            put("snapshot_json", input.snapshotJson)
-            put("created_at", System.currentTimeMillis())
-        })
-        return true
+        return bookmarked
     }
 
     fun isBookmarked(instanceId: String): Boolean = helper.readableDatabase.rawQuery(
@@ -220,8 +260,8 @@ class UserRepository(context: Context) {
         val db = helper.readableDatabase
         fun scalar(sql: String): Int = db.rawQuery(sql, null).use { if (it.moveToFirst()) it.getInt(0) else 0 }
         return StudyStats(
-            attempted = scalar("SELECT COUNT(*) FROM attempts"),
-            correct = scalar("SELECT COUNT(*) FROM attempts WHERE is_correct = 1"),
+            attempted = scalar("SELECT COALESCE(SUM(attempts), 0) FROM element_progress"),
+            correct = scalar("SELECT COALESCE(SUM(correct), 0) FROM element_progress"),
             wrongUnresolved = scalar("SELECT COUNT(*) FROM wrong_queue WHERE resolved = 0"),
             bookmarked = scalar("SELECT COUNT(*) FROM bookmarks"),
             studiedElements = scalar("SELECT COUNT(*) FROM element_progress WHERE attempts > 0"),
@@ -259,28 +299,95 @@ class UserRepository(context: Context) {
     }
 
     fun confirmWrongResolved(elementId: String, templateId: String) {
-        helper.writableDatabase.update(
-            "wrong_queue",
-            ContentValues().apply { put("resolved", 1) },
-            "element_id = ? AND template_id = ? AND correct_streak >= 2",
-            arrayOf(elementId, templateId),
+        val db = helper.writableDatabase
+        db.beginTransaction()
+        try {
+            db.update(
+                "wrong_queue",
+                ContentValues().apply {
+                    put("resolved", 1)
+                    put("updated_at", System.currentTimeMillis())
+                },
+                "element_id = ? AND template_id = ? AND correct_streak >= 2",
+                arrayOf(elementId, templateId),
+            )
+            cleanupWrongQueue(db)
+            pruneAttempts(db, elementId)
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
+    }
+
+    /** Latest retained wrong attempt per learning element, newest first. */
+    fun recentWrong(limit: Int = MAX_RECENT_WRONG_ROWS): List<AttemptRecord> =
+        recentWrongForScope(null, limit)
+
+    fun recentWrongForElements(
+        elementIds: Collection<String>,
+        limit: Int = MAX_RECENT_WRONG_ROWS,
+    ): List<AttemptRecord> = recentWrongForScope(elementIds, limit)
+
+    private fun recentWrongForScope(
+        elementIds: Collection<String>?,
+        limit: Int,
+    ): List<AttemptRecord> {
+        val scope = elementIds?.distinct().orEmpty()
+        if (elementIds != null && scope.isEmpty()) return emptyList()
+        require(scope.size <= MAX_PROGRESS_ROWS) { "조회할 학습요소가 너무 많습니다." }
+        val scopeSql = if (elementIds == null) "" else
+            " AND a.element_id IN (${List(scope.size) { "?" }.joinToString(",")})"
+        val args = buildList {
+            addAll(scope)
+            add(limit.coerceIn(1, MAX_RECENT_WRONG_ROWS).toString())
+        }.toTypedArray()
+        return attempts(
+            """SELECT a.id,a.instance_id,a.element_id,a.template_id,a.mode,a.seed,a.prompt,
+                      a.canonical_answer,a.user_answer,a.is_correct,a.explanation_json,a.elapsed_ms,a.created_at
+               FROM attempts a
+               WHERE a.is_correct = 0
+                 AND NOT EXISTS (
+                     SELECT 1 FROM attempts newer
+                     WHERE newer.element_id = a.element_id
+                       AND newer.is_correct = 0
+                       AND (newer.created_at > a.created_at OR
+                            (newer.created_at = a.created_at AND newer.id > a.id))
+                 )$scopeSql
+               ORDER BY a.created_at DESC, a.id DESC
+               LIMIT ?""".trimIndent(),
+            args,
         )
     }
 
-    fun recentWrong(limit: Int = 100): List<AttemptRecord> = attempts(
-        "SELECT id,instance_id,element_id,template_id,mode,seed,prompt,canonical_answer,user_answer,is_correct,explanation_json,elapsed_ms,created_at " +
-            "FROM attempts WHERE is_correct=0 ORDER BY created_at DESC LIMIT ?", arrayOf(limit.toString())
-    )
+    /** Full bookmark set used by quiz replay. Record screens should use [recentBookmarks]. */
+    fun bookmarks(): List<BookmarkRecord> = queryBookmarks(null, null)
 
-    fun bookmarks(): List<BookmarkRecord> = buildList {
+    fun recentBookmarks(
+        elementIds: Collection<String>? = null,
+        limit: Int = MAX_RECENT_BOOKMARK_ROWS,
+    ): List<BookmarkRecord> = queryBookmarks(elementIds, limit.coerceIn(1, MAX_RECENT_BOOKMARK_ROWS))
+
+    private fun queryBookmarks(elementIds: Collection<String>?, limit: Int?): List<BookmarkRecord> = buildList {
+        val scope = elementIds?.distinct().orEmpty()
+        if (elementIds != null && scope.isEmpty()) return@buildList
+        require(scope.size <= MAX_PROGRESS_ROWS) { "조회할 학습요소가 너무 많습니다." }
+        val where = if (elementIds == null) "" else
+            " WHERE element_id IN (${List(scope.size) { "?" }.joinToString(",")})"
+        val limitSql = if (limit == null) "" else " LIMIT ?"
+        val args = buildList {
+            addAll(scope)
+            if (limit != null) add(limit.toString())
+        }.toTypedArray()
         helper.readableDatabase.rawQuery(
-            "SELECT instance_id,element_id,template_id,mode,seed,snapshot_json,created_at FROM bookmarks ORDER BY created_at DESC",
-            null,
+            "SELECT instance_id,element_id,template_id,mode,seed,snapshot_json,created_at,origin " +
+                "FROM bookmarks$where ORDER BY created_at DESC, instance_id DESC$limitSql",
+            args,
         ).use { cursor ->
             while (cursor.moveToNext()) add(
                 BookmarkRecord(
                     cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3),
                     cursor.getLong(4), cursor.getString(5), cursor.getLong(6),
+                    runCatching { BookmarkOrigin.valueOf(cursor.getString(7)) }.getOrDefault(BookmarkOrigin.MANUAL),
                 )
             )
         }
@@ -288,7 +395,7 @@ class UserRepository(context: Context) {
 
     fun recentAttempts(limit: Int = 100): List<AttemptRecord> = attempts(
         "SELECT id,instance_id,element_id,template_id,mode,seed,prompt,canonical_answer,user_answer,is_correct,explanation_json,elapsed_ms,created_at " +
-            "FROM attempts ORDER BY created_at DESC LIMIT ?", arrayOf(limit.toString())
+            "FROM attempts ORDER BY created_at DESC, id DESC LIMIT ?", arrayOf(limit.toString())
     )
 
     fun setting(key: String, default: String): String = helper.readableDatabase.rawQuery(
@@ -296,9 +403,20 @@ class UserRepository(context: Context) {
     ).use { if (it.moveToFirst()) it.getString(0) else default }
 
     fun setSetting(key: String, value: String) {
-        helper.writableDatabase.insertWithOnConflict("settings", null, ContentValues().apply {
-            put("key", key); put("value", value)
-        }, SQLiteDatabase.CONFLICT_REPLACE)
+        val db = helper.writableDatabase
+        db.inTransaction {
+            requireCanInsertKeyedRow(
+                db = db,
+                table = "settings",
+                keyColumn = "key",
+                key = key,
+                maxRows = MAX_SETTINGS,
+                errorMessage = "설정 행이 허용량을 넘습니다.",
+            )
+            db.insertWithOnConflict("settings", null, ContentValues().apply {
+                put("key", key); put("value", value)
+            }, SQLiteDatabase.CONFLICT_REPLACE)
+        }
     }
 
     fun clearLearningData() {
@@ -315,8 +433,10 @@ class UserRepository(context: Context) {
 
     /** Portable, explicitly user-triggered backup. No automatic cloud backup is used. */
     fun exportBackup(output: OutputStream) {
-        val db = helper.readableDatabase
+        val db = helper.writableDatabase
         val payload = db.inTransaction {
+            maintainBoundedUserHistory(db)
+            requireBackupRowCounts(backupRowCounts(db))
             JSONObject().apply {
                 put("schemaVersion", USER_DB_VERSION)
                 put("exportedAt", System.currentTimeMillis())
@@ -345,23 +465,36 @@ class UserRepository(context: Context) {
         val envelopeBytes = input.readWithLimit(MAX_BACKUP_BYTES)
         val envelope = JSONObject(envelopeBytes.toString(Charsets.UTF_8))
         val format = envelope.getString("format")
-        require(format == BACKUP_FORMAT || format == LEGACY_BACKUP_FORMAT) { "지원하지 않는 백업 형식입니다." }
+        require(
+            format == BACKUP_FORMAT || format == SCHEMA_2_BACKUP_FORMAT || format == LEGACY_BACKUP_FORMAT
+        ) { "지원하지 않는 백업 형식입니다." }
         val payloadText = envelope.getString("payload")
         val actualHash = sha256(payloadText.toByteArray(Charsets.UTF_8))
         require(actualHash == envelope.getString("sha256")) { "백업 파일의 무결성 검증에 실패했습니다." }
         val rawPayload = JSONObject(payloadText)
         val payload = when {
             format == BACKUP_FORMAT && rawPayload.getInt("schemaVersion") == USER_DB_VERSION -> rawPayload
+            format == SCHEMA_2_BACKUP_FORMAT && rawPayload.getInt("schemaVersion") == 2 ->
+                migrateSchema2Backup(rawPayload)
             format == LEGACY_BACKUP_FORMAT && rawPayload.getInt("schemaVersion") == 1 ->
-                migrateLegacyBackup(rawPayload)
+                migrateSchema2Backup(migrateLegacyBackup(rawPayload))
             else -> throw IllegalArgumentException("지원하지 않는 사용자 DB 버전입니다.")
         }
 
-        val attempts = payload.getJSONArray("attempts").also { require(it.length() <= MAX_ATTEMPTS) { "시도 기록이 허용량을 넘습니다." } }
-        val bookmarks = payload.getJSONArray("bookmarks").also { require(it.length() <= MAX_BOOKMARKS) { "북마크가 허용량을 넘습니다." } }
-        val wrongQueue = payload.getJSONArray("wrongQueue").also { require(it.length() <= MAX_WRONG_QUEUE) { "오답 큐가 허용량을 넘습니다." } }
-        val elementProgress = payload.getJSONArray("elementProgress").also { require(it.length() <= MAX_PROGRESS_ROWS) { "진도 행이 허용량을 넘습니다." } }
-        val settings = payload.getJSONArray("settings").also { require(it.length() <= MAX_SETTINGS) { "설정 행이 허용량을 넘습니다." } }
+        val attempts = payload.getJSONArray("attempts")
+        val bookmarks = payload.getJSONArray("bookmarks")
+        val wrongQueue = payload.getJSONArray("wrongQueue")
+        val elementProgress = payload.getJSONArray("elementProgress")
+        val settings = payload.getJSONArray("settings")
+        requireBackupRowCounts(
+            BackupRowCounts(
+                attempts = attempts.length(),
+                bookmarks = bookmarks.length(),
+                wrongQueue = wrongQueue.length(),
+                elementProgress = elementProgress.length(),
+                settings = settings.length(),
+            )
+        )
 
         val db = helper.writableDatabase
         db.beginTransaction()
@@ -383,17 +516,25 @@ class UserRepository(context: Context) {
                     validateBackupRow(table, row)
                     val values = ContentValues()
                     row.keys().forEach { key ->
-                        when (val value = row.get(key)) {
-                            is Int -> values.put(key, value)
-                            is Long -> values.put(key, value)
-                            is Number -> values.put(key, value.toLong())
-                            JSONObject.NULL -> values.putNull(key)
-                            else -> values.put(key, value.toString())
+                        // Never trust a serialized FK merely because the target ID exists. Rebuild
+                        // it from the complete semantic identity after all rows have been loaded.
+                        if (table == "wrong_queue" && key == "last_attempt_id") {
+                            values.putNull(key)
+                        } else {
+                            when (val value = row.get(key)) {
+                                is Int -> values.put(key, value)
+                                is Long -> values.put(key, value)
+                                is Number -> values.put(key, value.toLong())
+                                JSONObject.NULL -> values.putNull(key)
+                                else -> values.put(key, value.toString())
+                            }
                         }
                     }
                     db.insertOrThrow(table, null, values)
                 }
             }
+            maintainBoundedUserHistory(db)
+            requireBackupRowCounts(backupRowCounts(db))
             db.setTransactionSuccessful()
         } finally {
             db.endTransaction()
@@ -419,7 +560,7 @@ class UserRepository(context: Context) {
         val bookmarks = payload.getJSONArray("bookmarks")
         for (index in 0 until bookmarks.length()) {
             val row = bookmarks.getJSONObject(index)
-            require(row.keys().asSequence().toSet() == BOOKMARK_COLUMNS) {
+            require(row.keys().asSequence().toSet() == SCHEMA_2_BOOKMARK_COLUMNS) {
                 "구버전 bookmarks 백업의 열 구성이 올바르지 않습니다."
             }
             val elementId = row.getString("element_id")
@@ -470,6 +611,55 @@ class UserRepository(context: Context) {
                 })
             }
         })
+        payload.put("schemaVersion", 2)
+        return payload
+    }
+
+    /** Adds schema-3 retention metadata after any schema-1 identity normalization has completed. */
+    private fun migrateSchema2Backup(payload: JSONObject): JSONObject {
+        val attemptsJson = payload.getJSONArray("attempts")
+        val migratingAttempts = buildList {
+            for (index in 0 until attemptsJson.length()) {
+                val row = attemptsJson.getJSONObject(index)
+                require(row.keys().asSequence().toSet() == ATTEMPT_COLUMNS) {
+                    "schema 2 attempts 백업의 열 구성이 올바르지 않습니다."
+                }
+                add(
+                    MigratingAttemptRow(
+                        id = row.getLong("id"),
+                        instanceId = row.getString("instance_id"),
+                        elementId = row.getString("element_id"),
+                        templateId = row.getString("template_id"),
+                        correct = row.getInt("is_correct") == 1,
+                        createdAt = row.getLong("created_at"),
+                    )
+                )
+            }
+        }
+        val latestWrongAttemptIds = latestMigratingWrongAttemptIds(migratingAttempts)
+
+        val bookmarks = payload.getJSONArray("bookmarks")
+        for (index in 0 until bookmarks.length()) {
+            val row = bookmarks.getJSONObject(index)
+            require(row.keys().asSequence().toSet() == SCHEMA_2_BOOKMARK_COLUMNS) {
+                "schema 2 bookmarks 백업의 열 구성이 올바르지 않습니다."
+            }
+            row.put("origin", BookmarkOrigin.MANUAL.name)
+        }
+
+        val wrongQueue = payload.getJSONArray("wrongQueue")
+        for (index in 0 until wrongQueue.length()) {
+            val row = wrongQueue.getJSONObject(index)
+            require(row.keys().asSequence().toSet() == SCHEMA_2_WRONG_QUEUE_COLUMNS) {
+                "schema 2 wrong_queue 백업의 열 구성이 올바르지 않습니다."
+            }
+            val attemptId = latestWrongAttemptIds[Triple(
+                row.getString("element_id"),
+                row.getString("template_id"),
+                row.getString("last_instance_id"),
+            )]
+            row.put("last_attempt_id", attemptId ?: JSONObject.NULL)
+        }
         payload.put("schemaVersion", USER_DB_VERSION)
         return payload
     }
@@ -508,6 +698,7 @@ class UserRepository(context: Context) {
                 require(snapshot.getString("mode") == mode.name) { "북마크 mode가 snapshot과 다릅니다." }
                 QuizPresentation.valueOf(snapshot.getString("presentation"))
                 row.requiredLong("created_at", 0)
+                BookmarkOrigin.valueOf(row.requiredText("origin", 32))
             }
             "wrong_queue" -> {
                 row.requireElementId()
@@ -515,6 +706,7 @@ class UserRepository(context: Context) {
                 QuizMode.valueOf(row.requiredText("mode", 32))
                 QuizPresentation.valueOf(row.requiredText("presentation", 32))
                 row.requiredText("last_instance_id", 160)
+                if (!row.isNull("last_attempt_id")) row.requiredLong("last_attempt_id", 1)
                 row.requiredLong("last_seed")
                 row.requiredInt("correct_streak", 0)
                 require(row.requiredInt("resolved", 0) in 0..1) { "resolved 값이 올바르지 않습니다." }
@@ -622,6 +814,92 @@ internal data class MigratingWrongRow(
     val updatedAt: Long,
 )
 
+internal data class MigratingAttemptRow(
+    val id: Long,
+    val instanceId: String,
+    val elementId: String,
+    val templateId: String,
+    val correct: Boolean,
+    val createdAt: Long,
+)
+
+/** Resolves a schema-2 queue pointer without assuming instance IDs are globally unique. */
+internal fun latestMigratingWrongAttemptId(
+    attempts: List<MigratingAttemptRow>,
+    elementId: String,
+    templateId: String,
+    instanceId: String,
+): Long? = latestMigratingWrongAttemptIds(attempts)[Triple(elementId, templateId, instanceId)]
+
+internal fun latestMigratingWrongAttemptIds(
+    attempts: List<MigratingAttemptRow>,
+): Map<Triple<String, String, String>, Long> {
+    val latest = mutableMapOf<Triple<String, String, String>, MigratingAttemptRow>()
+    attempts.forEach { candidate ->
+        if (candidate.correct) return@forEach
+        val key = Triple(candidate.elementId, candidate.templateId, candidate.instanceId)
+        val previous = latest[key]
+        if (previous == null || candidate.createdAt > previous.createdAt ||
+            candidate.createdAt == previous.createdAt && candidate.id > previous.id
+        ) {
+            latest[key] = candidate
+        }
+    }
+    return latest.mapValues { it.value.id }
+}
+
+internal data class WrongQueueRetentionRow(
+    val elementId: String,
+    val templateId: String,
+    val mode: String,
+    val presentation: String,
+    val resolved: Boolean,
+    val updatedAt: Long,
+)
+
+/**
+ * Keeps one unresolved target per element/mode/presentation, so renderer-version churn cannot
+ * grow the protected attempt set forever. Resolved rows are history only: keep the newest row per
+ * element and then the newest bounded global sample.
+ */
+internal fun retainedWrongQueueKeys(
+    rows: List<WrongQueueRetentionRow>,
+    maxResolvedRows: Int = MAX_RESOLVED_WRONG_QUEUE_ROWS,
+): Set<Pair<String, String>> {
+    require(maxResolvedRows >= 0)
+    val newest = compareBy<WrongQueueRetentionRow> { it.updatedAt }.thenBy { it.templateId }
+    val unresolved = rows.asSequence()
+        .filterNot { it.resolved }
+        .groupBy { Triple(it.elementId, it.mode, it.presentation) }
+        .values
+        .map { candidates -> candidates.maxWith(newest) }
+    val resolved = rows.asSequence()
+        .filter { it.resolved }
+        .groupBy { it.elementId }
+        .values
+        .map { candidates -> candidates.maxWith(newest) }
+        .sortedWith(newest.reversed())
+        .take(maxResolvedRows)
+    return (unresolved + resolved).mapTo(mutableSetOf()) { it.elementId to it.templateId }
+}
+
+internal data class BackupRowCounts(
+    val attempts: Int,
+    val bookmarks: Int,
+    val wrongQueue: Int,
+    val elementProgress: Int,
+    val settings: Int,
+)
+
+/** The exact same bounded row policy is applied before export and before import. */
+internal fun requireBackupRowCounts(counts: BackupRowCounts) {
+    require(counts.attempts <= MAX_ATTEMPTS) { "시도 기록이 허용량을 넘습니다." }
+    require(counts.bookmarks <= MAX_BOOKMARKS) { "북마크가 허용량을 넘습니다." }
+    require(counts.wrongQueue <= MAX_WRONG_QUEUE) { "오답 큐가 허용량을 넘습니다." }
+    require(counts.elementProgress <= MAX_PROGRESS_ROWS) { "진도 행이 허용량을 넘습니다." }
+    require(counts.settings <= MAX_SETTINGS) { "설정 행이 허용량을 넘습니다." }
+}
+
 /** Conservatively merges schema-1 rows whose session-specific IDs now share one template ID. */
 internal fun mergeMigratingWrongRows(rows: List<MigratingWrongRow>): List<MigratingWrongRow> =
     rows.groupBy { it.elementId to it.templateId }.values.map { candidates ->
@@ -725,6 +1003,241 @@ private fun deletePreMigrationDatabases(context: Context) {
     }
 }
 
+private fun rowCount(db: SQLiteDatabase, table: String): Int {
+    require(table in USER_DATA_TABLES) { "지원하지 않는 사용자 데이터 테이블입니다." }
+    return db.rawQuery("SELECT COUNT(*) FROM $table", null).use { cursor ->
+        check(cursor.moveToFirst()) { "사용자 데이터 행 수를 읽지 못했습니다." }
+        val count = cursor.getLong(0)
+        require(count <= Int.MAX_VALUE) { "$table 행 수가 처리 가능한 범위를 넘습니다." }
+        count.toInt()
+    }
+}
+
+private fun requireTableRowsAtMost(
+    db: SQLiteDatabase,
+    table: String,
+    maxRows: Int,
+    errorMessage: String,
+) {
+    require(rowCount(db, table) <= maxRows) { errorMessage }
+}
+
+private fun requireCanInsertKeyedRow(
+    db: SQLiteDatabase,
+    table: String,
+    keyColumn: String,
+    key: String,
+    maxRows: Int,
+    errorMessage: String,
+) {
+    require(table to keyColumn in USER_KEYED_TABLES) { "지원하지 않는 사용자 데이터 키입니다." }
+    val exists = db.rawQuery(
+        "SELECT 1 FROM $table WHERE $keyColumn = ? LIMIT 1",
+        arrayOf(key),
+    ).use { it.moveToFirst() }
+    if (!exists) require(rowCount(db, table) < maxRows) { errorMessage }
+}
+
+private fun backupRowCounts(db: SQLiteDatabase): BackupRowCounts = BackupRowCounts(
+    attempts = rowCount(db, "attempts"),
+    bookmarks = rowCount(db, "bookmarks"),
+    wrongQueue = rowCount(db, "wrong_queue"),
+    elementProgress = rowCount(db, "element_progress"),
+    settings = rowCount(db, "settings"),
+)
+
+/**
+ * Serialized queue pointers are only hints. Reconnect each one to the newest detailed wrong row
+ * that matches every identity field; a missing or mismatched target deliberately becomes NULL.
+ */
+private fun reconnectWrongQueueAttemptPointers(db: SQLiteDatabase) {
+    db.execSQL(
+        """UPDATE wrong_queue
+           SET last_attempt_id = (
+               SELECT a.id FROM attempts a
+               WHERE a.element_id = wrong_queue.element_id
+                 AND a.template_id = wrong_queue.template_id
+                 AND a.instance_id = wrong_queue.last_instance_id
+                 AND a.is_correct = 0
+               ORDER BY a.created_at DESC, a.id DESC
+               LIMIT 1
+           )""".trimIndent()
+    )
+}
+
+/**
+ * Renderer/template revisions must not pin detailed attempts forever. Keep the newest unresolved
+ * row for each semantic learning target (element + mode + presentation). Resolved rows are history
+ * only, so retain at most one per element and a bounded global sample.
+ */
+private fun cleanupWrongQueue(db: SQLiteDatabase) {
+    val rows = buildList {
+        db.rawQuery(
+            "SELECT element_id, template_id, mode, presentation, resolved, updated_at FROM wrong_queue",
+            null,
+        ).use { cursor ->
+            while (cursor.moveToNext()) {
+                add(
+                    WrongQueueRetentionRow(
+                        elementId = cursor.getString(0),
+                        templateId = cursor.getString(1),
+                        mode = cursor.getString(2),
+                        presentation = cursor.getString(3),
+                        resolved = cursor.getInt(4) == 1,
+                        updatedAt = cursor.getLong(5),
+                    )
+                )
+            }
+        }
+    }
+    val retainedKeys = retainedWrongQueueKeys(rows)
+    rows.asSequence()
+        .filter { (it.elementId to it.templateId) !in retainedKeys }
+        .forEach { row ->
+            db.delete(
+                "wrong_queue",
+                "element_id = ? AND template_id = ?",
+                arrayOf(row.elementId, row.templateId),
+            )
+        }
+    requireTableRowsAtMost(db, "wrong_queue", MAX_WRONG_QUEUE, "오답 큐가 허용량을 넘습니다.")
+}
+
+private fun maintainBoundedUserHistory(db: SQLiteDatabase) {
+    cleanupWrongQueue(db)
+    reconnectWrongQueueAttemptPointers(db)
+    pruneAllAttempts(db)
+    pruneAllAutomaticBookmarks(db)
+}
+
+private fun pruneAttempts(db: SQLiteDatabase, elementId: String) {
+    pruneElementAttempts(db, elementId)
+    pruneGlobalAttempts(db)
+}
+
+private fun pruneElementAttempts(db: SQLiteDatabase, elementId: String) {
+    val protectedCount = db.rawQuery(
+        """SELECT COUNT(DISTINCT last_attempt_id) FROM wrong_queue
+           WHERE element_id = ? AND resolved = 0 AND last_attempt_id IS NOT NULL""".trimIndent(),
+        arrayOf(elementId),
+    ).use { cursor ->
+        check(cursor.moveToFirst())
+        cursor.getInt(0)
+    }
+    require(protectedCount <= MAX_RECENT_ATTEMPTS_PER_ELEMENT) {
+        "미해결 오답 상세 기록이 단원별 보존 한도를 넘습니다."
+    }
+    val recentNonProtectedToKeep = MAX_RECENT_ATTEMPTS_PER_ELEMENT - protectedCount
+    db.execSQL(
+        """DELETE FROM attempts
+           WHERE id IN (
+               SELECT a.id FROM attempts a
+               WHERE a.element_id = ?
+                 AND a.id NOT IN (
+                     SELECT w.last_attempt_id FROM wrong_queue w
+                     WHERE w.element_id = ? AND w.resolved = 0
+                       AND w.last_attempt_id IS NOT NULL
+                 )
+               ORDER BY a.created_at DESC, a.id DESC
+               LIMIT -1 OFFSET $recentNonProtectedToKeep
+             )""".trimIndent(),
+        arrayOf(elementId, elementId),
+    )
+}
+
+private fun pruneGlobalAttempts(db: SQLiteDatabase) {
+    val protectedCount = db.rawQuery(
+        """SELECT COUNT(DISTINCT last_attempt_id) FROM wrong_queue
+           WHERE resolved = 0 AND last_attempt_id IS NOT NULL""".trimIndent(),
+        null,
+    ).use { cursor ->
+        check(cursor.moveToFirst())
+        cursor.getInt(0)
+    }
+    require(protectedCount <= MAX_RECENT_ATTEMPTS_TOTAL) {
+        "미해결 오답 상세 기록이 전체 보존 한도를 넘습니다."
+    }
+    val recentNonProtectedToKeep = MAX_RECENT_ATTEMPTS_TOTAL - protectedCount
+    db.execSQL(
+        """DELETE FROM attempts
+           WHERE id IN (
+               SELECT a.id FROM attempts a
+               WHERE a.id NOT IN (
+                   SELECT w.last_attempt_id FROM wrong_queue w
+                   WHERE w.resolved = 0 AND w.last_attempt_id IS NOT NULL
+               )
+               ORDER BY a.created_at DESC, a.id DESC
+               LIMIT -1 OFFSET $recentNonProtectedToKeep
+             )""".trimIndent()
+    )
+}
+
+private fun pruneAllAttempts(db: SQLiteDatabase) {
+    val elementIds = buildList {
+        db.rawQuery("SELECT DISTINCT element_id FROM attempts", null).use { cursor ->
+            while (cursor.moveToNext()) add(cursor.getString(0))
+        }
+    }
+    elementIds.forEach { pruneElementAttempts(db, it) }
+    pruneGlobalAttempts(db)
+}
+
+private fun pruneAutomaticBookmarks(db: SQLiteDatabase, elementId: String) {
+    db.execSQL(
+        """DELETE FROM bookmarks
+           WHERE instance_id IN (
+               SELECT instance_id FROM bookmarks
+               WHERE element_id = ? AND origin = '${BookmarkOrigin.AUTO_WRONG.name}'
+               ORDER BY created_at DESC, rowid DESC
+               LIMIT -1 OFFSET $MAX_AUTO_BOOKMARKS_PER_ELEMENT
+           )""".trimIndent(),
+        arrayOf(elementId),
+    )
+}
+
+private fun pruneAllAutomaticBookmarks(db: SQLiteDatabase) {
+    val elementIds = buildList {
+        db.rawQuery(
+            "SELECT DISTINCT element_id FROM bookmarks WHERE origin = ?",
+            arrayOf(BookmarkOrigin.AUTO_WRONG.name),
+        ).use { cursor ->
+            while (cursor.moveToNext()) add(cursor.getString(0))
+        }
+    }
+    elementIds.forEach { pruneAutomaticBookmarks(db, it) }
+}
+
+private fun createSchema3Indexes(db: SQLiteDatabase) {
+    db.execSQL(
+        "CREATE INDEX IF NOT EXISTS attempts_element_recent_idx " +
+            "ON attempts(element_id, created_at DESC, id DESC)"
+    )
+    db.execSQL(
+        "CREATE INDEX IF NOT EXISTS attempts_wrong_recent_idx " +
+            "ON attempts(created_at DESC, id DESC) WHERE is_correct = 0"
+    )
+    db.execSQL(
+        "CREATE INDEX IF NOT EXISTS attempts_wrong_element_recent_idx " +
+            "ON attempts(element_id, created_at DESC, id DESC) WHERE is_correct = 0"
+    )
+    db.execSQL(
+        "CREATE INDEX IF NOT EXISTS bookmarks_recent_idx " +
+            "ON bookmarks(created_at DESC, instance_id DESC)"
+    )
+    db.execSQL(
+        "CREATE INDEX IF NOT EXISTS bookmarks_element_recent_idx " +
+            "ON bookmarks(element_id, created_at DESC, instance_id DESC)"
+    )
+    db.execSQL(
+        "CREATE INDEX IF NOT EXISTS bookmarks_auto_element_recent_idx " +
+            "ON bookmarks(element_id, created_at DESC, instance_id DESC) WHERE origin = 'AUTO_WRONG'"
+    )
+    db.execSQL(
+        "CREATE INDEX IF NOT EXISTS wrong_queue_open_recent_idx " +
+            "ON wrong_queue(updated_at DESC) WHERE resolved = 0"
+    )
+}
+
 private class UserDatabase(context: Context) : SQLiteOpenHelper(
     context,
     USER_DB_NAME,
@@ -755,7 +1268,6 @@ private class UserDatabase(context: Context) : SQLiteOpenHelper(
                 created_at INTEGER NOT NULL
             )""".trimIndent()
         )
-        db.execSQL("CREATE INDEX attempts_element_idx ON attempts(element_id, created_at DESC)")
         db.execSQL(
             """CREATE TABLE bookmarks(
                 instance_id TEXT PRIMARY KEY,
@@ -764,7 +1276,8 @@ private class UserDatabase(context: Context) : SQLiteOpenHelper(
                 mode TEXT NOT NULL,
                 seed INTEGER NOT NULL,
                 snapshot_json TEXT NOT NULL,
-                created_at INTEGER NOT NULL
+                created_at INTEGER NOT NULL,
+                origin TEXT NOT NULL DEFAULT 'MANUAL' CHECK(origin IN ('MANUAL','AUTO_WRONG'))
             )""".trimIndent()
         )
         db.execSQL(
@@ -774,11 +1287,13 @@ private class UserDatabase(context: Context) : SQLiteOpenHelper(
                 mode TEXT NOT NULL,
                 presentation TEXT NOT NULL,
                 last_instance_id TEXT NOT NULL,
+                last_attempt_id INTEGER,
                 last_seed INTEGER NOT NULL,
                 correct_streak INTEGER NOT NULL DEFAULT 0,
                 resolved INTEGER NOT NULL DEFAULT 0 CHECK(resolved IN (0,1)),
                 updated_at INTEGER NOT NULL,
-                PRIMARY KEY(element_id, template_id)
+                PRIMARY KEY(element_id, template_id),
+                FOREIGN KEY(last_attempt_id) REFERENCES attempts(id) ON DELETE SET NULL
             )""".trimIndent()
         )
         db.execSQL(
@@ -791,10 +1306,12 @@ private class UserDatabase(context: Context) : SQLiteOpenHelper(
             )""".trimIndent()
         )
         db.execSQL("CREATE TABLE settings(key TEXT PRIMARY KEY, value TEXT NOT NULL)")
+        createSchema3Indexes(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if (oldVersion < 2) migrateToSchema2(db)
+        if (oldVersion < 3) migrateToSchema3(db)
     }
 
     private fun migrateToSchema2(db: SQLiteDatabase) {
@@ -918,11 +1435,58 @@ private class UserDatabase(context: Context) : SQLiteOpenHelper(
         db.execSQL("DROP TABLE wrong_queue")
         db.execSQL("ALTER TABLE wrong_queue_v2 RENAME TO wrong_queue")
     }
+
+    private fun migrateToSchema3(db: SQLiteDatabase) {
+        db.execSQL(
+            "ALTER TABLE bookmarks ADD COLUMN origin TEXT NOT NULL DEFAULT 'MANUAL' " +
+                "CHECK(origin IN ('MANUAL','AUTO_WRONG'))"
+        )
+        db.execSQL(
+            """CREATE TABLE wrong_queue_v3(
+                element_id TEXT NOT NULL,
+                template_id TEXT NOT NULL,
+                mode TEXT NOT NULL,
+                presentation TEXT NOT NULL,
+                last_instance_id TEXT NOT NULL,
+                last_attempt_id INTEGER,
+                last_seed INTEGER NOT NULL,
+                correct_streak INTEGER NOT NULL DEFAULT 0,
+                resolved INTEGER NOT NULL DEFAULT 0 CHECK(resolved IN (0,1)),
+                updated_at INTEGER NOT NULL,
+                PRIMARY KEY(element_id, template_id),
+                FOREIGN KEY(last_attempt_id) REFERENCES attempts(id) ON DELETE SET NULL
+            )""".trimIndent()
+        )
+        db.execSQL(
+            """INSERT INTO wrong_queue_v3(
+                   element_id, template_id, mode, presentation, last_instance_id, last_attempt_id,
+                   last_seed, correct_streak, resolved, updated_at
+               )
+               SELECT w.element_id, w.template_id, w.mode, w.presentation, w.last_instance_id,
+                      (
+                          SELECT a.id FROM attempts a
+                          WHERE a.element_id = w.element_id
+                            AND a.template_id = w.template_id
+                            AND a.instance_id = w.last_instance_id
+                            AND a.is_correct = 0
+                          ORDER BY a.created_at DESC, a.id DESC
+                          LIMIT 1
+                      ),
+                      w.last_seed, w.correct_streak, w.resolved, w.updated_at
+               FROM wrong_queue w""".trimIndent()
+        )
+        db.execSQL("DROP TABLE wrong_queue")
+        db.execSQL("ALTER TABLE wrong_queue_v3 RENAME TO wrong_queue")
+        db.execSQL("DROP INDEX IF EXISTS attempts_element_idx")
+        createSchema3Indexes(db)
+        maintainBoundedUserHistory(db)
+    }
 }
 
-private const val USER_DB_VERSION = 2
+private const val USER_DB_VERSION = 3
 private const val USER_DB_NAME = "user.sqlite3"
-private const val BACKUP_FORMAT = "findone-user-backup-v3"
+private const val BACKUP_FORMAT = "findone-user-backup-v4"
+private const val SCHEMA_2_BACKUP_FORMAT = "findone-user-backup-v3"
 private const val LEGACY_BACKUP_FORMAT = "findone-user-backup-v2"
 private const val MAX_BACKUP_BYTES = 25 * 1024 * 1024
 private const val MAX_ATTEMPTS = 100_000
@@ -930,18 +1494,28 @@ private const val MAX_BOOKMARKS = 10_000
 private const val MAX_WRONG_QUEUE = 2_000
 private const val MAX_PROGRESS_ROWS = 135
 private const val MAX_SETTINGS = 100
+private const val MAX_RECENT_ATTEMPTS_PER_ELEMENT = 20
+private const val MAX_RECENT_ATTEMPTS_TOTAL = 2_000
+private const val MAX_RECENT_WRONG_ROWS = 135
+private const val MAX_RECENT_BOOKMARK_ROWS = 100
+private const val MAX_AUTO_BOOKMARKS_PER_ELEMENT = 10
+private const val MAX_RESOLVED_WRONG_QUEUE_ROWS = 135
+private val USER_DATA_TABLES = setOf("attempts", "bookmarks", "wrong_queue", "element_progress", "settings")
+private val USER_KEYED_TABLES = setOf("element_progress" to "element_id", "settings" to "key")
 private val ATTEMPT_COLUMNS = setOf(
     "id", "instance_id", "element_id", "template_id", "mode", "presentation", "seed", "prompt",
     "canonical_answer", "user_answer", "is_correct", "explanation_json", "elapsed_ms", "created_at",
 )
 private val LEGACY_ATTEMPT_COLUMNS = ATTEMPT_COLUMNS - "presentation"
 private val BOOKMARK_COLUMNS = setOf(
-    "instance_id", "element_id", "template_id", "mode", "seed", "snapshot_json", "created_at",
+    "instance_id", "element_id", "template_id", "mode", "seed", "snapshot_json", "created_at", "origin",
 )
+private val SCHEMA_2_BOOKMARK_COLUMNS = BOOKMARK_COLUMNS - "origin"
 private val WRONG_QUEUE_COLUMNS = setOf(
-    "element_id", "template_id", "mode", "presentation", "last_instance_id", "last_seed",
+    "element_id", "template_id", "mode", "presentation", "last_instance_id", "last_attempt_id", "last_seed",
     "correct_streak", "resolved", "updated_at",
 )
-private val LEGACY_WRONG_QUEUE_COLUMNS = WRONG_QUEUE_COLUMNS - setOf("mode", "presentation")
+private val SCHEMA_2_WRONG_QUEUE_COLUMNS = WRONG_QUEUE_COLUMNS - "last_attempt_id"
+private val LEGACY_WRONG_QUEUE_COLUMNS = SCHEMA_2_WRONG_QUEUE_COLUMNS - setOf("mode", "presentation")
 private val PROGRESS_COLUMNS = setOf("element_id", "attempts", "correct", "current_streak", "last_attempt_at")
 private val SETTING_COLUMNS = setOf("key", "value")

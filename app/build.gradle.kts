@@ -27,8 +27,8 @@ android {
         applicationId = "com.findone.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.2.0"
+        versionCode = 2
+        versionName = "0.3.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -81,6 +81,8 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("io.noties.markwon:core:4.6.2")
+    implementation("io.noties.markwon:ext-latex:4.6.2")
     debugImplementation("androidx.compose.ui:ui-tooling")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")

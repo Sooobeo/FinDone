@@ -9,7 +9,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.findone.app.data.AttemptInput
+import com.findone.app.data.AttemptRecord
 import com.findone.app.data.BookmarkInput
+import com.findone.app.data.BookmarkOrigin
 import com.findone.app.data.BookmarkRecord
 import com.findone.app.data.ContentRepository
 import com.findone.app.data.ElementProgress
@@ -42,7 +44,7 @@ enum class MainTab { HOME, STUDY, QUIZ, RECORDS }
 enum class QuizTrack(val title: String, val description: String) {
     DOMAIN("분야별 학습", "선택한 분야의 요소를 고르게 섞습니다."),
     WEAK("약점 집중", "최근 오답이 남은 요소부터 다시 풉니다."),
-    SPRINT("면접 스프린트", "30·60·90초 개념·암산 문제를 섞습니다."),
+    SPRINT("금융권 스프린트", "30·60·90초 개념·계산 문제를 섞습니다."),
     CONCEPT("개념 랜덤", "핵심 관계와 흔한 혼동을 객관식으로 점검합니다."),
     ORAL("구술 연습", "30~60초로 답한 뒤 핵심 관계와 스스로 비교합니다."),
     CASE("통합 케이스", "리서치·기업가치·딜 요소를 연결해 연습합니다."),
@@ -119,9 +121,17 @@ class AppViewModel(
         private set
     var progress by mutableStateOf<Map<String, ElementProgress>>(emptyMap())
         private set
+    var recordDomainId by mutableStateOf(savedStateHandle.get<String>("recordDomainId"))
+        private set
+    var recordElementId by mutableStateOf(savedStateHandle.get<String>("recordElementId"))
+        private set
     var bookmarks by mutableStateOf<List<BookmarkRecord>>(emptyList())
         private set
-    var recentWrong by mutableStateOf(userRepository.recentWrong())
+    var recordBookmarks by mutableStateOf<List<BookmarkRecord>>(emptyList())
+        private set
+    var recentWrong by mutableStateOf<List<AttemptRecord>>(emptyList())
+        private set
+    var recordUnresolvedWrongCount by mutableStateOf(0)
         private set
     var resolutionSuggestions by mutableStateOf<Set<String>>(emptySet())
         private set
@@ -146,6 +156,12 @@ class AppViewModel(
         allElements = loadedElements
         contentManifest = loadedManifest
         studyResults = loadedElements
+        recordDomainId = recordDomainId?.takeIf { id -> domains.any { it.id == id } }
+        recordElementId = recordElementId?.takeIf { id ->
+            allElements.any { element ->
+                element.id == id && (recordDomainId == null || element.domainId == recordDomainId)
+            }
+        }
         refreshUserData()
         savedStateHandle.get<String>("quizSession")?.let { saved ->
             runCatching { restoreQuizSession(saved) }
@@ -185,6 +201,26 @@ class AppViewModel(
         updateStudyResults()
     }
 
+    fun setRecordDomain(domainId: String?) {
+        recordDomainId = domainId?.takeIf { candidate -> domains.any { it.id == candidate } }
+        recordElementId = null
+        if (recordDomainId == null) savedStateHandle.remove<String>("recordDomainId")
+        else savedStateHandle["recordDomainId"] = recordDomainId
+        savedStateHandle.remove<String>("recordElementId")
+        refreshRecordData()
+    }
+
+    fun setRecordElement(elementId: String?) {
+        recordElementId = elementId?.takeIf { candidate ->
+            allElements.any { element ->
+                element.id == candidate && (recordDomainId == null || element.domainId == recordDomainId)
+            }
+        }
+        if (recordElementId == null) savedStateHandle.remove<String>("recordElementId")
+        else savedStateHandle["recordElementId"] = recordElementId
+        refreshRecordData()
+    }
+
     private fun updateStudyResults() {
         studyResults = runCatching { contentRepository?.elements(studyDomainId, studyQuery).orEmpty() }
             .onFailure { contentError = it.message }
@@ -211,6 +247,23 @@ class AppViewModel(
     }
 
     fun startWeakQuiz() = startQuiz(QuizTrack.WEAK, quizDomainId, quizCount, quizDifficulty)
+
+    fun startRecordWeakQuiz() {
+        if (recordUnresolvedWrongCount <= 0) {
+            quizMessage = "선택한 조회 범위에 남은 오답이 없습니다."
+            return
+        }
+        val elementId = recordElementId
+        val domainId = recordDomainId
+            ?: elementId?.let { selectedId -> allElements.firstOrNull { it.id == selectedId }?.domainId }
+        startQuiz(
+            track = QuizTrack.WEAK,
+            domainId = domainId,
+            count = quizCount,
+            difficulty = quizDifficulty,
+            explicitElementIds = elementId?.let { listOf(it) },
+        )
+    }
 
     fun startBookmarkReview(bookmark: BookmarkRecord, freshNumbers: Boolean = false) {
         val element = allElements.firstOrNull { it.id == bookmark.elementId } ?: return
@@ -285,9 +338,11 @@ class AppViewModel(
             persistQuizSession()
             return
         }
+        val explicitElementSet = explicitElementIds?.toSet()
         val unresolvedWrong = if (track == QuizTrack.WEAK) {
             userRepository.unresolvedWrong().filter { entry ->
-                domainId == null || allElements.firstOrNull { it.id == entry.elementId }?.domainId == domainId
+                (domainId == null || allElements.firstOrNull { it.id == entry.elementId }?.domainId == domainId) &&
+                    (explicitElementSet == null || entry.elementId in explicitElementSet)
             }
         } else emptyList()
         val weakTargets = unresolvedWrong.groupBy { it.elementId }.mapValues { (_, entries) ->
@@ -319,14 +374,14 @@ class AppViewModel(
 
         val maxPerElement = floor(sessionCount * 0.25).toInt().coerceAtLeast(1)
         val requiredUnique = ceil(sessionCount / maxPerElement.toDouble()).toInt()
-        if (basePool.size < requiredUnique) {
+        if (explicitElementIds == null && basePool.size < requiredUnique) {
             allElements.asSequence()
                 .filter { candidate -> domainId == null || candidate.domainId == domainId }
                 .filterNot { candidate -> basePool.any { it.id == candidate.id } }
                 .take(requiredUnique - basePool.size)
                 .forEach(basePool::add)
         }
-        if (sessionCount >= 4 && basePool.size < requiredUnique) {
+        if (explicitElementIds == null && sessionCount >= 4 && basePool.size < requiredUnique) {
             quizMessage = "한 요소가 세션의 25%를 넘지 않게 구성할 수 없습니다."
             return
         }
@@ -414,15 +469,20 @@ class AppViewModel(
             quizMessage = it.message ?: "답변 기록을 저장하지 못했습니다."
             return
         }
+        var bookmarkSetChanged = false
         if (!correct && autoBookmarkWrong && !userRepository.isBookmarked(question.instanceId)) {
-            runCatching { userRepository.toggleBookmark(question.bookmarkInput(presentation)) }
+            runCatching {
+                userRepository.toggleBookmark(
+                    question.bookmarkInput(presentation, BookmarkOrigin.AUTO_WRONG)
+                )
+            }.onSuccess { bookmarkSetChanged = it }
         }
         quizSession = session.copy(
             submitted = true,
             wasCorrect = correct,
             correctCount = session.correctCount + if (correct) 1 else 0,
         )
-        refreshUserData()
+        refreshUserData(refreshAllBookmarks = bookmarkSetChanged)
         persistQuizSession()
     }
 
@@ -474,7 +534,7 @@ class AppViewModel(
 
     fun confirmWrongResolved(elementId: String, templateId: String) {
         userRepository.confirmWrongResolved(elementId, templateId)
-        refreshUserData()
+        refreshUserData(refreshAllBookmarks = false)
     }
 
     fun resolutionSuggested(elementId: String, templateId: String): Boolean =
@@ -492,13 +552,31 @@ class AppViewModel(
 
     fun reloadUserData() = refreshUserData()
 
-    private fun refreshUserData() {
+    private fun refreshUserData(refreshAllBookmarks: Boolean = true) {
         stats = userRepository.stats()
         progress = userRepository.allProgress()
-        bookmarks = userRepository.bookmarks()
-        recentWrong = userRepository.recentWrong()
+        if (refreshAllBookmarks) bookmarks = userRepository.bookmarks()
+        refreshRecordData()
         resolutionSuggestions = userRepository.resolutionSuggestions()
         autoBookmarkWrong = userRepository.setting("auto_bookmark_wrong", "false").toBoolean()
+    }
+
+    private fun refreshRecordData() {
+        val elementIds = when {
+            recordElementId != null -> listOf(recordElementId!!)
+            recordDomainId != null -> allElements.filter { it.domainId == recordDomainId }.map { it.id }
+            else -> null
+        }
+        recentWrong = if (elementIds == null) {
+            userRepository.recentWrong()
+        } else {
+            userRepository.recentWrongForElements(elementIds)
+        }
+        recordBookmarks = userRepository.recentBookmarks(elementIds)
+        val elementIdSet = elementIds?.toSet()
+        recordUnresolvedWrongCount = userRepository.unresolvedWrong().count { entry ->
+            elementIdSet == null || entry.elementId in elementIdSet
+        }
     }
 
     override fun onCleared() {
@@ -529,12 +607,16 @@ class AppViewModel(
         "해석: ${explanationSteps.interpretation}",
     )
 
-    private fun QuizQuestion.bookmarkInput(presentation: QuizPresentation): BookmarkInput = BookmarkInput(
+    private fun QuizQuestion.bookmarkInput(
+        presentation: QuizPresentation,
+        origin: BookmarkOrigin = BookmarkOrigin.MANUAL,
+    ): BookmarkInput = BookmarkInput(
         instanceId = instanceId,
         elementId = elementId,
         templateId = templateId(presentation),
         mode = mode.name,
         seed = snapshot.generationSeed,
+        origin = origin,
         snapshotJson = JSONObject().apply {
             put("instanceId", instanceId)
             put("elementId", elementId)

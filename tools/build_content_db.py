@@ -26,7 +26,7 @@ DEFAULT_SPEC = ROOT / "finance_interview_app_final_spec.md"
 DEFAULT_ASSET_DIR = ROOT / "app" / "src" / "main" / "assets"
 
 SCHEMA_VERSION = 1
-CONTENT_DB_VERSION = 1
+CONTENT_DB_VERSION = 2
 DOMAIN_ORDER = ("ACC", "CF", "INV", "FI", "DER", "EQV", "IBT")
 EXPECTED_DOMAIN_COUNTS = {
     "ACC": 12,
@@ -46,6 +46,65 @@ DOMAIN_COLOR_TOKENS = {
     "EQV": "insight.dark",
     "IBT": "outlineStrong",
 }
+
+DOMAIN_INTUITION = {
+    "ACC": "재무제표의 숫자가 어떤 인식·측정·분류 과정을 거쳐 만들어지는지 연결하는 개념입니다. 손익 효과와 현금 효과, 일시적 효과와 지속 효과를 구분해 읽는 것이 핵심입니다.",
+    "CF": "기업의 현금흐름·위험·자본비용·가치가 어떻게 연결되는지 설명하는 개념입니다. 계산값보다 현금흐름의 시점과 할인율의 기준을 일치시키는 판단이 중요합니다.",
+    "INV": "위험을 감수한 대가로 얻는 수익을 측정하고 비교하는 개념입니다. 기대수익과 실현수익, 총위험과 체계적 위험, 절대성과 상대성을 구분해 해석해야 합니다.",
+    "FI": "채권의 약정 현금흐름을 금리·신용·유동성 위험과 연결하는 개념입니다. 가격과 수익률의 역관계뿐 아니라 만기·듀레이션·스프레드가 민감도를 어떻게 바꾸는지 보는 것이 핵심입니다.",
+    "DER": "기초자산의 미래 가격 위험을 계약 구조와 손익으로 전환하는 개념입니다. 포지션 방향, 만기 손익, 무차익 가정과 헤지 목적을 한 흐름으로 확인해야 합니다.",
+    "EQV": "기업의 사업 성과를 재무제표·현금흐름·가치평가로 이어 붙이는 개념입니다. 지표의 분자·분모와 기간을 맞추고, 일회성 요인과 지속 가능한 동인을 분리해야 합니다.",
+    "IBT": "거래 구조와 자금 흐름을 기업가치·지분가치·주당가치로 연결하는 개념입니다. 거래 전후 기준, 조달 방식, 희석과 이해관계자별 경제성을 일관되게 추적해야 합니다.",
+}
+
+DOMAIN_CHECKLIST = {
+    "ACC": ("인식 시점과 측정 기준을 확인한다", "손익·자산/부채·현금흐름 영향을 각각 추적한다", "반대 분개와 롤포워드로 값이 맞는지 검산한다"),
+    "CF": ("현금흐름의 시점과 명목/실질 기준을 확인한다", "할인율의 위험·세전/세후·통화 기준을 맞춘다", "가정 변화가 가치에 미치는 방향을 설명한다"),
+    "INV": ("수익률의 기간과 벤치마크를 맞춘다", "분산 가능한 위험과 시장 위험을 구분한다", "성과가 위험 조정 후에도 유효한지 확인한다"),
+    "FI": ("쿠폰·원금·만기 현금흐름을 먼저 그린다", "금리와 가격의 방향 및 민감도를 확인한다", "국채금리·신용·유동성 스프레드를 분리한다"),
+    "DER": ("롱/숏과 권리/의무를 먼저 구분한다", "만기 손익과 현재가치를 분리한다", "무차익 조건과 헤지 후 남는 위험을 확인한다"),
+    "EQV": ("지표의 분자·분모·기간을 일치시킨다", "회계 수치에서 반복 가능한 영업 동인을 분리한다", "가정 변화가 실적·현금흐름·가치에 이어지는 경로를 설명한다"),
+    "IBT": ("기업가치와 지분가치 브리지를 명시한다", "거래 전후 주식수·순부채·조달조건을 확인한다", "희석·시너지·수수료를 이해관계자별로 검산한다"),
+}
+
+KOCW_COURSE_URLS = {
+    "finance": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
+    "derivatives": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
+}
+KOCW_FINANCE_SOURCE_IDS = {
+    "KO-CF-01", "KO-CF-02", "KO-FI-01", "KO-EQV-01", "KO-EQV-02",
+    "KO-INV-01", "KO-INV-02",
+}
+KOCW_DERIVATIVE_SOURCE_IDS = {
+    "KO-DER-01", "KO-DER-02", "KO-DER-03", "KO-DER-04", "KO-DER-05", "KO-DER-06",
+}
+TECHNICAL_AUTHORING_MARKERS = (
+    "randInt", "randDec", "randChoice", "파라미터", "정수 보장", "answer-first",
+    "생성·검증", "생성 규칙", "reference solver", "MentalMathAudit",
+    "rejection sampling", "generation", "generator", "renderer", "seed", "solver",
+    "template", "mod ", "중요 생성 원칙", "정수·암산 보장", "암산 보장",
+    "tuple", "audit", "fallback", "score ", "Android 계산형",
+    "뽑아", "뽑은", "정수화",
+)
+
+
+def contains_authoring_marker(value: str) -> bool:
+    normalized = value.casefold()
+    return any(marker.casefold() in normalized for marker in TECHNICAL_AUTHORING_MARKERS)
+
+
+def learning_safe_line(value: str) -> str:
+    """Remove an authoring-only line, retaining a factual prefix before its semicolon."""
+    stripped = value.strip()
+    if not contains_authoring_marker(stripped):
+        return stripped
+    for separator in (";", "；"):
+        if separator not in stripped:
+            continue
+        factual_prefix = stripped.split(separator, 1)[0].rstrip()
+        if factual_prefix and not contains_authoring_marker(factual_prefix):
+            return factual_prefix
+    return ""
 
 # EQV-20~64 are intentionally specified as formula/scope rows rather than as
 # element headings.  These labels are the concise UI names of those canonical
@@ -201,6 +260,266 @@ def clean_markdown_block(lines: Iterable[str]) -> str:
     return "\n".join(output)
 
 
+def scope_to_markdown(value: str) -> str:
+    """Turn the compact spec projection into readable CommonMark without changing facts."""
+    output: list[str] = []
+    for raw_line in value.splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        line = re.sub(r"^[•-]\s*", "- ", line)
+        line = re.sub(
+            r"^- ([^:：]{1,28})([:：])\s*",
+            lambda match: f"- **{match.group(1).strip()}**{match.group(2)} ",
+            line,
+        )
+        output.append(line)
+    return "\n".join(output)
+
+
+SYMBOLIC_CLAUSE_RE = re.compile(
+    r"[A-Za-z0-9_αβγδμρσλΔΣ∑()\[\]{}+\-−–—×÷*/^%.,=≈≤≥<>²√ ]+"
+)
+FORMULA_CLAUSE_SEPARATOR_RE = re.compile(r";\s*|(?<=[.!?。])\s+")
+
+
+def balanced_delimiters(value: str) -> bool:
+    """Require correctly nested (), [], and {}; equal counts alone are insufficient."""
+    pairs = {")": "(", "]": "[", "}": "{"}
+    stack: list[str] = []
+    for character in value:
+        if character in "([{":
+            stack.append(character)
+        elif character in pairs:
+            if not stack or stack.pop() != pairs[character]:
+                return False
+    return not stack
+
+
+def matching_delimiter_index(value: str, start: int) -> int | None:
+    pairs = {"(": ")", "[": "]", "{": "}"}
+    opening = value[start]
+    closing = pairs[opening]
+    depth = 0
+    for index in range(start, len(value)):
+        if value[index] == opening:
+            depth += 1
+        elif value[index] == closing:
+            depth -= 1
+            if depth == 0:
+                return index
+    return None
+
+
+def brace_multichar_scripts(value: str) -> str:
+    """Brace multi-character subscripts/superscripts without changing their contents."""
+    output: list[str] = []
+    index = 0
+    while index < len(value):
+        operator = value[index]
+        if operator not in "_^" or index + 1 >= len(value):
+            output.append(operator)
+            index += 1
+            continue
+        output.append(operator)
+        script_start = index + 1
+        next_character = value[script_start]
+        if next_character == "{":
+            script_end = matching_delimiter_index(value, script_start)
+            if script_end is None:
+                output.append(value[script_start:])
+                break
+            output.append(value[script_start : script_end + 1])
+            index = script_end + 1
+            continue
+        if next_character == "(":
+            script_end = matching_delimiter_index(value, script_start)
+            if script_end is None:
+                output.append(value[script_start:])
+                break
+            output.append("{" + value[script_start : script_end + 1] + "}")
+            index = script_end + 1
+            continue
+        token_match = re.match(r"(?:[A-Za-z][A-Za-z0-9]*|[0-9]+)", value[script_start:])
+        if token_match is None:
+            output.append(next_character)
+            index += 2
+            continue
+        token = token_match.group(0)
+        output.append("{" + token + "}" if len(token) > 1 else token)
+        index = script_start + len(token)
+    return "".join(output)
+
+
+def replace_square_roots(value: str) -> str | None:
+    """Convert complete square-root atoms; reject the whole clause when an atom is ambiguous."""
+    output: list[str] = []
+    index = 0
+    while index < len(value):
+        if value[index] != "√":
+            output.append(value[index])
+            index += 1
+            continue
+        atom_start = index + 1
+        if atom_start >= len(value):
+            return None
+        if value[atom_start] == "(":
+            atom_end = matching_delimiter_index(value, atom_start)
+            if atom_end is None:
+                return None
+            atom = value[atom_start : atom_end + 1]
+        else:
+            atom_match = re.match(
+                r"(?:[A-Za-zαβγδμρσλΔΣ](?:_[A-Za-z0-9]+)?)",
+                value[atom_start:],
+            )
+            if atom_match is None:
+                return None
+            atom = atom_match.group(0)
+            atom_end = atom_start + len(atom) - 1
+        output.append(r"\sqrt{" + atom + "}")
+        index = atom_end + 1
+    return "".join(output)
+
+
+def split_formula_clauses(value: str) -> list[str]:
+    """Split prose/formula clauses without ever treating a decimal point as a delimiter."""
+    clauses = [part.strip() for part in FORMULA_CLAUSE_SEPARATOR_RE.split(value) if part.strip()]
+    return clauses or [value.strip()]
+
+
+def latex_formula(value: str) -> str | None:
+    """Convert a whole, balanced symbolic clause or return None without extracting a fragment."""
+    candidate = value.strip()
+    if (
+        not candidate
+        or not re.search(r"[=≈≤≥<>]", candidate)
+        or re.search(r"[가-힣]", candidate)
+        or SYMBOLIC_CLAUSE_RE.fullmatch(candidate) is None
+        or not balanced_delimiters(candidate)
+    ):
+        return None
+    rooted = replace_square_roots(candidate)
+    if rooted is None:
+        return None
+    formula = brace_multichar_scripts(rooted)
+    formula = (
+        formula.replace("×", r" \times ")
+        .replace("÷", r" \div ")
+        .replace("−", "-")
+        .replace("–", "-")
+        .replace("—", "-")
+        .replace("≈", r" \approx ")
+        .replace("≤", r" \le ")
+        .replace("≥", r" \ge ")
+        .replace("²", "^{2}")
+        .replace("%", r"\%")
+    )
+    greek = {
+        "α": r"\alpha ", "β": r"\beta ", "γ": r"\gamma ",
+        "δ": r"\delta ", "μ": r"\mu ", "ρ": r"\rho ",
+        "σ": r"\sigma ", "λ": r"\lambda ", "Δ": r"\Delta ",
+        "Σ": r"\sum ", "∑": r"\sum ",
+    }
+    for symbol, command in greek.items():
+        formula = formula.replace(symbol, command)
+    return re.sub(r"\s+", " ", formula).strip()
+
+
+def formula_to_markdown(value: str) -> str:
+    """Render every complete clause as LaTeX or preserve that complete clause as code."""
+    rendered = []
+    for clause in split_formula_clauses(value):
+        latex = latex_formula(clause)
+        if latex is not None:
+            rendered.append(f"- $${latex}$$")
+        else:
+            escaped = clause.replace("`", "\\`")
+            rendered.append(f"- `{escaped}`")
+    return "### 핵심 식과 관계\n\n" + "\n".join(rendered)
+
+
+def assumption_markdown(element: ElementDraft) -> str:
+    keywords = ("가정", "조건", "단 ", "기준", "기간", "단위")
+    selected = []
+    for raw_line in element.scope_notes.splitlines():
+        safe_line = learning_safe_line(raw_line)
+        if not safe_line:
+            continue
+        cleaned = re.sub(r"^[•-]\s*", "", safe_line)
+        if cleaned and any(keyword in cleaned for keyword in keywords):
+            selected.append(cleaned)
+        if len(selected) == 6:
+            break
+    if not selected:
+        selected = [
+            "식에 넣는 값의 기간·통화·단위가 서로 같은지 확인합니다.",
+            "명목/실질, 세전/세후, 기업가치/지분가치 기준을 섞지 않습니다.",
+        ]
+    return "### 적용 전 가정\n\n" + "\n".join(f"- {item}" for item in selected)
+
+
+def concept_definition_markdown(element: ElementDraft) -> str:
+    return (
+        "### 한 문장 정의\n\n"
+        f"**{element.title}**의 핵심은 다음 관계를 정확히 이해하고 설명하는 것입니다.\n\n"
+        f"> {element.core_relation}"
+    )
+
+
+def concept_intuition_markdown(element: ElementDraft) -> str:
+    safe_scope_lines = [
+        safe_line
+        for line in element.scope_notes.splitlines()
+        if (safe_line := learning_safe_line(line))
+    ]
+    application = next(
+        (
+            re.sub(
+                r"^(유형\s*[A-Z가-힣0-9]*\s*[—-]\s*|출제 범위:\s*)",
+                "",
+                re.sub(r"^[•-]\s*", "", line.strip()),
+            ).strip()
+            for line in safe_scope_lines
+            if line.strip()
+            and "개념·수식" not in line
+        ),
+        f"{element.title}의 정의와 핵심 관계를 실제 금융 자료에 적용하는 상황",
+    )
+    return (
+        "### 왜 중요한가\n\n"
+        f"{DOMAIN_INTUITION[element.domain_id]}\n\n"
+        f"**{element.title}에서 확인할 장면:** {application}\n\n"
+        "### 이 개념을 읽는 순서\n\n"
+        "1. 무엇을 측정하는지 정의합니다.\n"
+        "2. 식의 각 항목과 단위를 확인합니다.\n"
+        "3. 입력값이 변할 때 결과의 방향을 설명합니다.\n"
+        f"4. **{element.title}**을 실제 재무자료나 거래 상황에 적용할 때 생길 예외를 확인합니다.\n\n"
+        f"> 핵심 관계: {element.core_relation}"
+    )
+
+
+def learning_notes_markdown(element: ElementDraft) -> str:
+    learning_lines = []
+    for line in element.scope_notes.splitlines():
+        safe_line = learning_safe_line(line)
+        if safe_line:
+            learning_lines.append(safe_line)
+    return "### 적용·연습 범위\n\n" + scope_to_markdown("\n".join(learning_lines))
+
+
+def checklist_markdown(element: ElementDraft) -> str:
+    domain_items = DOMAIN_CHECKLIST[element.domain_id]
+    return (
+        "### 학습 체크리스트\n\n"
+        + f"- **{element.title}**을 한 문장으로 정의한다\n"
+        + f"- `{element.core_relation}`의 각 항목과 방향을 설명한다\n"
+        + "\n".join(f"- {item}" for item in domain_items)
+        + "\n- 공식의 결과를 숫자뿐 아니라 한 문장으로 해석한다"
+        + "\n- 흔한 기준 불일치나 이중계산 가능성을 마지막에 점검한다"
+    )
+
+
 def markdown_links(value: str) -> list[tuple[str, str]]:
     return [(label.strip(), locator.strip()) for label, locator in MARKDOWN_LINK_RE.findall(value)]
 
@@ -218,6 +537,14 @@ def infer_source_type(locator: str, source_id: str = "") -> str:
     if locator.startswith("finance_interview_app_final_spec.md"):
         return "local_spec"
     return "web"
+
+
+def canonical_learning_locator(locator: str, source_id: str = "") -> str:
+    if source_id in KOCW_FINANCE_SOURCE_IDS or "/wku/chunghoil0208/" in locator:
+        return KOCW_COURSE_URLS["finance"]
+    if source_id in KOCW_DERIVATIVE_SOURCE_IDS or "/cau/yooshiyong0724/" in locator:
+        return KOCW_COURSE_URLS["derivatives"]
+    return locator
 
 
 def heading_paths(lines: Sequence[str]) -> list[str]:
@@ -276,7 +603,21 @@ def parse_source_registry(lines: Sequence[str]) -> dict[str, SourceDraft]:
             locator="finance_interview_app_final_spec.md",
             source_type="local_spec",
             notes="요소 정의, 핵심 관계, 범위 및 원문 절 위치의 기준 문서",
-        )
+        ),
+        "KOCW-FINANCE-COURSE": SourceDraft(
+            source_id="KOCW-FINANCE-COURSE",
+            label="원광대 재무관리 공식 강의",
+            locator=KOCW_COURSE_URLS["finance"],
+            source_type="web",
+            notes="화폐의 시간가치·채권·주식가치·포트폴리오·CAPM·자본예산 강의 모음",
+        ),
+        "KOCW-DERIVATIVES-COURSE": SourceDraft(
+            source_id="KOCW-DERIVATIVES-COURSE",
+            label="중앙대 파생상품 공식 강의",
+            locator=KOCW_COURSE_URLS["derivatives"],
+            source_type="web",
+            notes="선물가격·헤징·이항모형·옵션 Greeks 강의 모음",
+        ),
     }
     in_source_section = False
     for line in lines:
@@ -296,8 +637,15 @@ def parse_source_registry(lines: Sequence[str]) -> dict[str, SourceDraft]:
         source_id = id_match.group(1)
         links = markdown_links(cells[1])
         label = clean_inline_markdown(cells[1]) or source_id
-        locator = links[0][1] if links else ""
+        original_locator = links[0][1] if links else ""
+        locator = canonical_learning_locator(original_locator, source_id)
         notes = clean_inline_markdown(" · ".join(cells[2:])) if len(cells) > 2 else ""
+        if source_id in KOCW_DERIVATIVE_SOURCE_IDS:
+            notes = f"{notes} · 원문 PDF: {original_locator}".strip(" ·")
+            label = label.replace(" PDF", " 공식 강의")
+        elif source_id in KOCW_FINANCE_SOURCE_IDS:
+            notes = f"{notes} · 원문 PDF: {original_locator}".strip(" ·")
+            label = label.replace(" PDF", " 공식 강의")
         sources[source_id] = SourceDraft(
             source_id=source_id,
             label=label,
@@ -315,8 +663,11 @@ def register_url_sources(
         source.locator: source_id for source_id, source in sources.items() if source.locator
     }
     result: list[str] = []
-    for label, locator in links:
-        source_id = locator_to_id.get(locator)
+    for label, raw_locator in links:
+        locator = canonical_learning_locator(raw_locator)
+        if locator != raw_locator:
+            label = label.replace(" PDF", " 공식 강의")
+        source_id = when_kocw_course_source(locator) or locator_to_id.get(locator)
         if source_id is None:
             source_id = "URL-" + hashlib.sha1(locator.encode("utf-8")).hexdigest()[:12].upper()
             sources[source_id] = SourceDraft(
@@ -324,12 +675,24 @@ def register_url_sources(
                 label=label,
                 locator=locator,
                 source_type=infer_source_type(locator),
-                notes="명세의 요소별 참고자료",
+                notes=(
+                    f"명세의 요소별 참고자료 · 원문 PDF: {raw_locator}"
+                    if locator != raw_locator
+                    else "명세의 요소별 참고자료"
+                ),
             )
             locator_to_id[locator] = source_id
         if source_id not in result:
             result.append(source_id)
     return tuple(result)
+
+
+def when_kocw_course_source(locator: str) -> str | None:
+    if locator == KOCW_COURSE_URLS["finance"]:
+        return "KOCW-FINANCE-COURSE"
+    if locator == KOCW_COURSE_URLS["derivatives"]:
+        return "KOCW-DERIVATIVES-COURSE"
+    return None
 
 
 def extract_core_relation(block: Sequence[str], element_id: str) -> str:
@@ -454,6 +817,57 @@ def parse_table_elements(
     return elements
 
 
+KNOWN_FORMULA_MODES = {
+    "FI-04": ("latex", "latex", "code"),
+    "EQV-50": ("latex", "code"),
+    "INV-03": ("latex",),
+    "INV-07": ("latex", "code", "code"),
+    "DER-08": ("code", "code", "latex"),
+}
+
+
+def validate_formula_rendering(elements: Sequence[ElementDraft]) -> None:
+    """Protect whole-clause fidelity, decimal tokens, and script bracing."""
+    script_probe = latex_formula("X_AB=Y_Long^Term")
+    if script_probe != "X_{AB}=Y_{Long}^{Term}":
+        raise ValueError(f"Multi-character script bracing regressed: {script_probe!r}")
+    unsafe_probes = ("설명: X=Y", "X=(Y]", "X=Y 일부 설명")
+    if any(latex_formula(probe) is not None for probe in unsafe_probes):
+        raise ValueError("LaTeX conversion accepted a partial or unbalanced clause")
+
+    elements_by_id = {element.element_id: element for element in elements}
+    for element in elements:
+        rendered = formula_to_markdown(element.core_relation)
+        for decimal in re.findall(r"\d+\.\d+", element.core_relation):
+            if decimal not in rendered:
+                raise ValueError(
+                    f"{element.element_id} split or lost decimal token {decimal!r}"
+                )
+        for clause in split_formula_clauses(element.core_relation):
+            latex = latex_formula(clause)
+            if latex is not None:
+                expected_line = f"- $${latex}$$"
+            else:
+                expected_line = f"- `{clause.replace('`', r'\`')}`"
+            if expected_line not in rendered:
+                raise ValueError(
+                    f"{element.element_id} did not preserve complete formula clause {clause!r}"
+                )
+
+    for element_id, expected_modes in KNOWN_FORMULA_MODES.items():
+        element = elements_by_id.get(element_id)
+        if element is None:
+            raise ValueError(f"Known formula element is missing: {element_id}")
+        actual_modes = tuple(
+            "latex" if latex_formula(clause) is not None else "code"
+            for clause in split_formula_clauses(element.core_relation)
+        )
+        if actual_modes != expected_modes:
+            raise ValueError(
+                f"{element_id} formula modes differ: expected {expected_modes}, got {actual_modes}"
+            )
+
+
 def validate_parsed_content(domains: Sequence[DomainDraft], elements: Sequence[ElementDraft]) -> None:
     if len(domains) != len(DOMAIN_ORDER):
         raise ValueError(f"Expected 7 domains, found {len(domains)}")
@@ -484,6 +898,7 @@ def validate_parsed_content(domains: Sequence[DomainDraft], elements: Sequence[E
                 )
             ):
                 raise ValueError(f"{element.element_id} has an empty required content field")
+    validate_formula_rendering(elements)
 
 
 SCHEMA_SQL = """
@@ -649,6 +1064,12 @@ def build_database(
                 source_ids_json = json.dumps(
                     element.source_ids, ensure_ascii=False, separators=(",", ":")
                 )
+                definition_markdown = concept_definition_markdown(element)
+                intuition_markdown = concept_intuition_markdown(element)
+                learning_notes = learning_notes_markdown(element)
+                formula_markdown = formula_to_markdown(element.core_relation)
+                assumptions_markdown = assumption_markdown(element)
+                checklist = checklist_markdown(element)
                 database.execute(
                     """
                     INSERT INTO elements(
@@ -682,9 +1103,9 @@ def build_database(
                         f"{element.element_id}-C01",
                         element.element_id,
                         element.title,
-                        element.core_relation,
-                        element.scope_notes.splitlines()[0],
-                        element.scope_notes,
+                        definition_markdown,
+                        intuition_markdown,
+                        learning_notes,
                         source_ids_json,
                     ),
                 )
@@ -699,9 +1120,9 @@ def build_database(
                         f"{element.element_id}-F01",
                         element.element_id,
                         element.title,
-                        element.core_relation,
-                        "명세에 적힌 단위·기간·모형 가정을 적용한다.",
-                        element.scope_notes,
+                        formula_markdown,
+                        assumptions_markdown,
+                        checklist,
                         source_ids_json,
                     ),
                 )
@@ -720,7 +1141,12 @@ def build_database(
                         element.element_id,
                         element.title,
                         element.core_relation,
-                        element.scope_notes,
+                        definition_markdown,
+                        intuition_markdown,
+                        learning_notes,
+                        formula_markdown,
+                        assumptions_markdown,
+                        checklist,
                     )
                 )
                 database.execute(
@@ -797,6 +1223,108 @@ def validate_database(path: Path) -> dict[str, int]:
             raise ValueError(
                 f"Domain element counts differ: {actual_domain_counts}"
             )
+        thin_cards = database.execute(
+            """SELECT e.element_id FROM elements e
+               JOIN concept_cards c ON c.element_id = e.element_id
+               JOIN formula_cards f ON f.element_id = e.element_id
+               WHERE c.definition = e.core_relation
+                  OR c.intuition NOT LIKE '%왜 중요한가%'
+                  OR c.scope_notes NOT LIKE '%적용·연습 범위%'
+                  OR f.expression NOT LIKE '%핵심 식과 관계%'
+                  OR f.notes NOT LIKE '%학습 체크리스트%'"""
+        ).fetchall()
+        if thin_cards:
+            raise ValueError(f"Learning cards are not expanded Markdown: {thin_cards[:3]}")
+        visible_field_names = (
+            "definition", "intuition", "learning_scope",
+            "formula", "assumptions", "checklist",
+        )
+        visible_rows = database.execute(
+            """SELECT e.element_id, c.definition, c.intuition, c.scope_notes,
+                      f.expression, f.assumptions, f.notes
+               FROM elements e
+               JOIN concept_cards c ON c.element_id = e.element_id
+               JOIN formula_cards f ON f.element_id = e.element_id
+               ORDER BY e.display_order"""
+        ).fetchall()
+        empty_visible_fields: list[tuple[str, str]] = []
+        authoring_leaks: list[tuple[str, str, str]] = []
+        distinct_visible_values = {field: set() for field in visible_field_names}
+        for row in visible_rows:
+            element_id = row[0]
+            for field_name, value in zip(visible_field_names, row[1:]):
+                if not value.strip():
+                    empty_visible_fields.append((element_id, field_name))
+                distinct_visible_values[field_name].add(value)
+                leaked_marker = next(
+                    (
+                        marker for marker in TECHNICAL_AUTHORING_MARKERS
+                        if marker.casefold() in value.casefold()
+                    ),
+                    None,
+                )
+                if leaked_marker is not None:
+                    authoring_leaks.append((element_id, field_name, leaked_marker))
+        if empty_visible_fields:
+            raise ValueError(f"Visible learning-card fields are empty: {empty_visible_fields[:3]}")
+        if authoring_leaks:
+            raise ValueError(f"Authoring internals leaked into visible cards: {authoring_leaks[:3]}")
+
+        uniqueness_floors = {
+            "definition": 135,
+            "intuition": 135,
+            "learning_scope": 135,
+            "formula": 135,
+            "assumptions": 25,
+            "checklist": 135,
+        }
+        uniqueness_counts = {
+            field: len(values) for field, values in distinct_visible_values.items()
+        }
+        uniqueness_failures = {
+            field: (uniqueness_counts[field], minimum)
+            for field, minimum in uniqueness_floors.items()
+            if uniqueness_counts[field] < minimum
+        }
+        if uniqueness_failures:
+            raise ValueError(
+                f"Learning-card copy regression detected (actual, minimum): {uniqueness_failures}"
+            )
+
+        formula_rows = database.execute(
+            """SELECT e.element_id, e.core_relation, f.expression
+               FROM elements e JOIN formula_cards f USING(element_id)"""
+        ).fetchall()
+        formula_mismatches = [
+            element_id
+            for element_id, core_relation, expression in formula_rows
+            if formula_to_markdown(core_relation) != expression
+        ]
+        if formula_mismatches:
+            raise ValueError(f"Stored formula Markdown differs from generator: {formula_mismatches[:3]}")
+        latex_card_count = sum("$$" in expression for _, _, expression in formula_rows)
+        if latex_card_count < 50:
+            raise ValueError(f"Whole-clause LaTeX coverage is unexpectedly low: {latex_card_count}")
+        linked_raw_kocw = database.execute(
+            """SELECT es.element_id FROM element_sources es
+               JOIN sources s ON s.source_id = es.source_id
+               WHERE s.locator LIKE 'http://kocw-n.%'"""
+        ).fetchall()
+        if linked_raw_kocw:
+            raise ValueError(f"Raw HTTP KOCW links remain in learning sources: {linked_raw_kocw[:3]}")
+        elements_without_learning_link = database.execute(
+            """SELECT e.element_id FROM elements e
+               WHERE NOT EXISTS (
+                   SELECT 1 FROM element_sources es
+                   JOIN sources s ON s.source_id = es.source_id
+                   WHERE es.element_id = e.element_id
+                     AND (s.locator LIKE 'https://%' OR s.locator LIKE 'http://%')
+               )"""
+        ).fetchall()
+        if elements_without_learning_link:
+            raise ValueError(
+                f"Elements without a web learning source: {elements_without_learning_link[:3]}"
+            )
         duplicate_fts = database.execute(
             """
             SELECT element_id, COUNT(*) AS n
@@ -807,6 +1335,26 @@ def validate_database(path: Path) -> dict[str, int]:
         ).fetchall()
         if duplicate_fts:
             raise ValueError(f"FTS projection is not one row per element: {duplicate_fts[:3]}")
+        fts_projection_rows = database.execute(
+            """SELECT k.element_id, k.normalized_text, e.title, e.core_relation,
+                      c.definition, c.intuition, c.scope_notes,
+                      f.expression, f.assumptions, f.notes
+               FROM knowledge_fts k
+               JOIN elements e ON e.element_id = k.element_id
+               JOIN concept_cards c ON c.element_id = e.element_id
+               JOIN formula_cards f ON f.element_id = e.element_id"""
+        ).fetchall()
+        malformed_fts_rows = []
+        for row in fts_projection_rows:
+            element_id, normalized_text = row[:2]
+            expected_text = "\n".join((element_id, *row[2:]))
+            if normalized_text != expected_text:
+                malformed_fts_rows.append(element_id)
+        if malformed_fts_rows:
+            raise ValueError(
+                "FTS normalized_text contains raw scope or misses visible content: "
+                f"{malformed_fts_rows[:3]}"
+            )
         return row_counts
     finally:
         database.close()

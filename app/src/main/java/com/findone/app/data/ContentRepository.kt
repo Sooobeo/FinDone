@@ -8,6 +8,7 @@ import androidx.sqlite.driver.bundled.SQLITE_OPEN_FULLMUTEX
 import androidx.sqlite.driver.bundled.SQLITE_OPEN_READONLY
 import com.findone.app.model.ContentElement
 import com.findone.app.model.ContentManifest
+import com.findone.app.model.ContentSource
 import com.findone.app.model.Domain
 import org.json.JSONObject
 import java.io.Closeable
@@ -31,6 +32,7 @@ class ContentRepository(context: Context) : Closeable {
     val manifest: ContentManifest
 
     private val database: SQLiteConnection
+    private val sourcesByElement: Map<String, List<ContentSource>>
     private val queryLock = Any()
 
     init {
@@ -39,6 +41,7 @@ class ContentRepository(context: Context) : Closeable {
         validateManifestInvariants(manifest)
         val databaseFile = prepareDatabase(appContext, manifest)
         database = openReadOnly(databaseFile)
+        sourcesByElement = loadElementSources()
     }
 
     fun domains(): List<Domain> = synchronized(queryLock) {
@@ -77,7 +80,10 @@ class ContentRepository(context: Context) : Closeable {
         if (normalizedId.isEmpty()) return null
         return synchronized(queryLock) {
             database.query(
-                "SELECT $ELEMENT_PROJECTION FROM elements e WHERE e.element_id = ? LIMIT 1",
+                """SELECT $ELEMENT_PROJECTION FROM elements e
+                   JOIN concept_cards c ON c.element_id = e.element_id
+                   JOIN formula_cards f ON f.element_id = e.element_id
+                   WHERE e.element_id = ? LIMIT 1""".trimIndent(),
                 listOf(normalizedId),
             ) { statement -> if (statement.step()) statement.contentElement() else null }
         }
@@ -90,7 +96,10 @@ class ContentRepository(context: Context) : Closeable {
         val arguments = if (domainId == null) emptyList() else listOf(domainId)
         return database.query(
             """SELECT $ELEMENT_PROJECTION
-               FROM elements e JOIN domains d ON d.domain_id = e.domain_id
+               FROM elements e
+               JOIN domains d ON d.domain_id = e.domain_id
+               JOIN concept_cards c ON c.element_id = e.element_id
+               JOIN formula_cards f ON f.element_id = e.element_id
                $whereClause ORDER BY d.display_order, e.element_number""".trimIndent(),
             arguments,
         ) { it.readElements() }
@@ -104,24 +113,41 @@ class ContentRepository(context: Context) : Closeable {
             add(ftsQuery)
             if (domainId != null) add(domainId)
         }
-        return database.query(
+        val ftsResults = database.query(
             """SELECT $ELEMENT_PROJECTION
-               FROM knowledge_fts JOIN elements e ON e.element_id = knowledge_fts.element_id
+               FROM knowledge_fts
+               JOIN elements e ON e.element_id = knowledge_fts.element_id
+               JOIN concept_cards c ON c.element_id = e.element_id
+               JOIN formula_cards f ON f.element_id = e.element_id
                WHERE knowledge_fts MATCH ? $domainClause
                ORDER BY bm25(knowledge_fts), e.display_order""".trimIndent(),
             arguments,
         ) { it.readElements() }
+        return if (ftsResults.isNotEmpty()) ftsResults
+        else searchElementsWithLike(domainId, query)
     }
 
     private fun searchElementsWithLike(domainId: String?, query: String): List<ContentElement> {
         val domainClause = if (domainId == null) "" else "AND e.domain_id = ?"
+        val escapedQuery = buildString(query.length) {
+            query.forEach { character ->
+                if (character == '\\' || character == '%' || character == '_') append('\\')
+                append(character)
+            }
+        }
+        val likeArgument = "%$escapedQuery%"
         val arguments = buildList {
-            repeat(3) { add("%$query%") }
+            repeat(8) { add(likeArgument) }
             if (domainId != null) add(domainId)
         }
         return database.query(
             """SELECT $ELEMENT_PROJECTION FROM elements e
-               WHERE (e.title LIKE ? OR e.core_relation LIKE ? OR e.scope_notes LIKE ?)
+               JOIN concept_cards c ON c.element_id = e.element_id
+               JOIN formula_cards f ON f.element_id = e.element_id
+               WHERE (e.title LIKE ? ESCAPE '\' OR e.core_relation LIKE ? ESCAPE '\'
+                   OR c.definition LIKE ? ESCAPE '\' OR c.intuition LIKE ? ESCAPE '\'
+                   OR c.scope_notes LIKE ? ESCAPE '\' OR f.expression LIKE ? ESCAPE '\'
+                   OR f.assumptions LIKE ? ESCAPE '\' OR f.notes LIKE ? ESCAPE '\')
                $domainClause ORDER BY e.display_order""".trimIndent(),
             arguments,
         ) { it.readElements() }
@@ -140,7 +166,34 @@ class ContentRepository(context: Context) : Closeable {
         sourceLabel = getText(5),
         sourceLocator = getText(6),
         specSectionLocator = getText(7),
+        definitionMarkdown = getText(8),
+        intuitionMarkdown = getText(9),
+        learningNotesMarkdown = getText(10),
+        formulaMarkdown = getText(11),
+        assumptionsMarkdown = getText(12),
+        checklistMarkdown = getText(13),
+        sources = sourcesByElement[getText(0)].orEmpty(),
     )
+
+    private fun loadElementSources(): Map<String, List<ContentSource>> = database.query(
+        """SELECT es.element_id, s.source_id, s.label, s.locator, s.source_type, s.notes
+           FROM element_sources es JOIN sources s ON s.source_id = es.source_id
+           ORDER BY es.element_id, es.ordinal""".trimIndent()
+    ) { statement ->
+        buildMap<String, MutableList<ContentSource>> {
+            while (statement.step()) {
+                getOrPut(statement.getText(0)) { mutableListOf() }.add(
+                    ContentSource(
+                        id = statement.getText(1),
+                        label = statement.getText(2),
+                        locator = statement.getText(3),
+                        type = statement.getText(4),
+                        notes = statement.getText(5),
+                    )
+                )
+            }
+        }
+    }
 
     companion object {
         private const val MANIFEST_ASSET = "content-manifest.json"
@@ -154,7 +207,9 @@ class ContentRepository(context: Context) : Closeable {
         )
         private const val ELEMENT_PROJECTION = """
             e.element_id, e.domain_id, e.title, e.core_relation, e.scope_notes,
-            e.source_label, e.source_locator, e.spec_section_locator
+            e.source_label, e.source_locator, e.spec_section_locator,
+            c.definition, c.intuition, c.scope_notes,
+            f.expression, f.assumptions, f.notes
         """
 
         private fun loadManifest(context: Context): ContentManifest {
