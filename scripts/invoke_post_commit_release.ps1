@@ -168,6 +168,46 @@ function Clear-SigningEnvironment {
     }
 }
 
+function Get-FinDoneGitRepositoryLocalEnvironmentVariableNames {
+    # Keep this list byte-for-byte equivalent to `git rev-parse --local-env-vars`.
+    # These variables describe one repository and must not leak from the hook's
+    # main worktree into a detached child worktree.
+    return @(
+        'GIT_ALTERNATE_OBJECT_DIRECTORIES',
+        'GIT_CONFIG',
+        'GIT_CONFIG_PARAMETERS',
+        'GIT_CONFIG_COUNT',
+        'GIT_OBJECT_DIRECTORY',
+        'GIT_DIR',
+        'GIT_WORK_TREE',
+        'GIT_IMPLICIT_WORK_TREE',
+        'GIT_GRAFT_FILE',
+        'GIT_INDEX_FILE',
+        'GIT_NO_REPLACE_OBJECTS',
+        'GIT_REPLACE_REF_BASE',
+        'GIT_PREFIX',
+        'GIT_SHALLOW_FILE',
+        'GIT_COMMON_DIR'
+    )
+}
+
+function Clear-FinDoneGitRepositoryEnvironment {
+    foreach ($name in @(Get-FinDoneGitRepositoryLocalEnvironmentVariableNames)) {
+        [Environment]::SetEnvironmentVariable($name, $null, 'Process')
+    }
+}
+
+function Get-FinDoneGitExecutable {
+    $uniquePaths = @(
+        Get-Command git.exe -CommandType Application -All -ErrorAction Stop |
+            Select-Object -ExpandProperty Source -Unique
+    )
+    if ($uniquePaths.Count -eq 0 -or [string]::IsNullOrWhiteSpace([string]$uniquePaths[0])) {
+        throw 'Unable to resolve git.exe from PATH.'
+    }
+    return [string]$uniquePaths[0]
+}
+
 function Write-FinDoneCleanupDiagnostic {
     param([Parameter(Mandatory = $true)][string]$Message)
 
@@ -182,7 +222,7 @@ function Write-FinDoneCleanupDiagnostic {
 function Invoke-FinDoneGitCleanupCommand {
     param([Parameter(Mandatory = $true)][string[]]$GitArguments)
 
-    $gitCommand = (Get-Command git -CommandType Application -ErrorAction Stop).Source
+    $gitCommand = Get-FinDoneGitExecutable
     $previousErrorActionPreference = $ErrorActionPreference
     try {
         # Windows PowerShell promotes redirected native stderr to ErrorRecord objects.
@@ -377,14 +417,16 @@ function Get-HighestReleaseVersionCode {
     return $highest
 }
 
-Clear-SigningEnvironment
 $repoRoot = Get-FullPath (Split-Path -Parent $PSScriptRoot)
-$resolvedCommit = (& git -C $repoRoot rev-parse --verify "$Commit^{commit}" 2>&1).ToString().Trim().ToLowerInvariant()
+$gitExecutable = Get-FinDoneGitExecutable
+Clear-FinDoneGitRepositoryEnvironment
+Clear-SigningEnvironment
+$resolvedCommit = (& $gitExecutable -C $repoRoot rev-parse --verify "$Commit^{commit}" 2>&1).ToString().Trim().ToLowerInvariant()
 if ($LASTEXITCODE -ne 0 -or $resolvedCommit -notmatch '^[0-9a-f]{40}$') {
     throw "The post-commit release target is not a valid commit: $Commit"
 }
 
-$gitCommonText = (& git -C $repoRoot rev-parse --git-common-dir 2>&1).ToString().Trim()
+$gitCommonText = (& $gitExecutable -C $repoRoot rev-parse --git-common-dir 2>&1).ToString().Trim()
 if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($gitCommonText)) {
     throw 'Unable to locate the repository Git metadata directory.'
 }
@@ -466,7 +508,7 @@ try {
     $temporaryRootItem = Get-Item -LiteralPath $temporaryRoot -Force
     Assert-FinDoneReparsePointAllowed -Item $temporaryRootItem -Context 'Temporary release worktree root'
     $worktreePath = Join-Path $temporaryRoot ('worktree-' + [guid]::NewGuid().ToString('N'))
-    & git -C $repoRoot worktree add --detach $worktreePath $resolvedCommit
+    & $gitExecutable -C $repoRoot worktree add --detach $worktreePath $resolvedCommit
     if ($LASTEXITCODE -ne 0) { throw "Failed to create an exact-commit release worktree for $resolvedCommit" }
     $worktreeItem = Get-Item -LiteralPath $worktreePath -Force
     Assert-FinDoneReparsePointAllowed -Item $worktreeItem -Context 'Temporary release worktree'

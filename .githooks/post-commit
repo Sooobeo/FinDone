@@ -6,6 +6,26 @@
 repo_root=$(git rev-parse --show-toplevel) || exit 1
 commit=$(git rev-parse --verify HEAD) || exit 1
 
+# Git exports repository-local variables to hooks. They are correct for the
+# just-committed worktree but must not leak into the detached release checkout.
+git_local_env_vars=$(git rev-parse --local-env-vars) || exit 1
+for git_local_name in $git_local_env_vars; do
+    case "$git_local_name" in
+        GIT_*) ;;
+        *)
+            echo "Unexpected repository-local Git environment name: $git_local_name" >&2
+            exit 1
+            ;;
+    esac
+    case "$git_local_name" in
+        *[!A-Z0-9_]*)
+            echo "Invalid repository-local Git environment name: $git_local_name" >&2
+            exit 1
+            ;;
+    esac
+    unset "$git_local_name" || exit 1
+done
+
 if command -v powershell.exe >/dev/null 2>&1; then
     powershell_command=powershell.exe
 elif command -v powershell >/dev/null 2>&1; then
