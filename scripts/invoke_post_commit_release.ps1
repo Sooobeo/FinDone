@@ -129,25 +129,120 @@ function Get-FullPath {
     )
 }
 
+function Write-FinDoneAtomicJsonDiagnostic {
+    param([Parameter(Mandatory = $true)][string]$Message)
+    try { [Console]::Error.WriteLine("[FinDone atomic JSON] $Message") } catch { }
+}
+
 function Write-Utf8JsonAtomically {
     param(
         [Parameter(Mandatory = $true)][object]$Value,
         [Parameter(Mandatory = $true)][string]$Path
     )
-    $directory = Split-Path -Parent $Path
-    New-Item -ItemType Directory -Path $directory -Force | Out-Null
-    $temporary = Join-Path $directory ('.tmp-' + [guid]::NewGuid().ToString('N'))
-    try {
-        $json = $Value | ConvertTo-Json
-        [System.IO.File]::WriteAllText($temporary, $json + [Environment]::NewLine, [System.Text.UTF8Encoding]::new($false))
-        if (Test-Path -LiteralPath $Path) {
-            [System.IO.File]::Replace($temporary, $Path, $null)
-        } else {
-            [System.IO.File]::Move($temporary, $Path)
-        }
-    } finally {
-        if (Test-Path -LiteralPath $temporary) { Remove-Item -LiteralPath $temporary -Force }
+
+    $destinationFull = [System.IO.Path]::GetFullPath($Path)
+    $directoryFull = Get-FullPath ([System.IO.Path]::GetDirectoryName($destinationFull))
+    $destinationLeaf = [System.IO.Path]::GetFileName($destinationFull)
+    if (@('state.json', 'credentials.json', '.findone-release-root.json') -cnotcontains $destinationLeaf -or
+        -not ([System.IO.Path]::GetDirectoryName($destinationFull)).Equals($directoryFull, [StringComparison]::OrdinalIgnoreCase)) {
+        throw "Atomic JSON destination is not an approved direct-child path: $destinationFull"
     }
+
+    New-Item -ItemType Directory -Path $directoryFull -Force | Out-Null
+    $directoryItem = Get-Item -LiteralPath $directoryFull -Force
+    Assert-FinDoneReparsePointAllowed -Item $directoryItem -Context 'Atomic JSON parent directory'
+
+    $temporaryFull = Get-FullPath (Join-Path $directoryFull ('.tmp-' + [guid]::NewGuid().ToString('N')))
+    $backupFull = Get-FullPath (Join-Path $directoryFull ('.bak-' + [guid]::NewGuid().ToString('N')))
+    if (([System.IO.Path]::GetDirectoryName($temporaryFull)) -ne $directoryFull -or
+        ([System.IO.Path]::GetFileName($temporaryFull)) -cnotmatch '^\.tmp-[0-9a-f]{32}$' -or
+        ([System.IO.Path]::GetDirectoryName($backupFull)) -ne $directoryFull -or
+        ([System.IO.Path]::GetFileName($backupFull)) -cnotmatch '^\.bak-[0-9a-f]{32}$') {
+        throw 'Atomic JSON temporary paths failed their same-parent or strict-name safety check.'
+    }
+
+    $primaryError = $null
+    $committed = $false
+    try {
+        $jsonBytes = [System.Text.UTF8Encoding]::new($false).GetBytes(
+            (($Value | ConvertTo-Json) + [Environment]::NewLine)
+        )
+        $fileStream = $null
+        $writeError = $null
+        try {
+            $fileStream = [System.IO.FileStream]::new(
+                $temporaryFull,
+                [System.IO.FileMode]::CreateNew,
+                [System.IO.FileAccess]::Write,
+                [System.IO.FileShare]::None
+            )
+            $fileStream.Write($jsonBytes, 0, $jsonBytes.Length)
+            $fileStream.Flush($true)
+        } catch {
+            $writeError = $_
+        }
+        if ($null -ne $fileStream) {
+            try {
+                $fileStream.Dispose()
+            } catch {
+                if ($null -eq $writeError) { $writeError = $_ } else {
+                    Write-FinDoneAtomicJsonDiagnostic "File stream disposal also failed: $($_.Exception.Message)"
+                }
+            }
+        }
+        if ($null -ne $writeError) { throw $writeError }
+
+        if (Test-Path -LiteralPath $destinationFull) {
+            $destinationItem = Get-Item -LiteralPath $destinationFull -Force
+            if ($destinationItem.PSIsContainer) {
+                throw "Atomic JSON destination must be a regular file, not a directory: $destinationFull"
+            }
+            Assert-FinDoneReparsePointAllowed -Item $destinationItem -Context 'Atomic JSON destination'
+            [System.IO.File]::Replace($temporaryFull, $destinationFull, $backupFull)
+        } else {
+            [System.IO.File]::Move($temporaryFull, $destinationFull)
+        }
+        $committed = $true
+    } catch {
+        $primaryError = $_
+    }
+
+    if ($committed) {
+        foreach ($artifact in @($temporaryFull, $backupFull)) {
+            try { [System.IO.File]::Delete($artifact) } catch {
+                Write-FinDoneAtomicJsonDiagnostic "Committed JSON, but could not delete cleanup artifact '$artifact'; it was preserved: $($_.Exception.Message)"
+            }
+        }
+        return
+    }
+
+    $restoreFailed = $false
+    if (-not [System.IO.File]::Exists($destinationFull) -and [System.IO.File]::Exists($backupFull)) {
+        try {
+            $backupItem = Get-Item -LiteralPath $backupFull -Force
+            if ($backupItem.PSIsContainer -or
+                ($backupItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+                throw "Atomic JSON backup became an unsafe reparse point: $backupFull"
+            }
+            [System.IO.File]::Move($backupFull, $destinationFull)
+        } catch {
+            $restoreFailed = $true
+            Write-FinDoneAtomicJsonDiagnostic "Could not restore the original JSON; temporary and backup artifacts were preserved when present: $($_.Exception.Message)"
+        }
+    }
+
+    if (-not $restoreFailed) {
+        if ([System.IO.File]::Exists($destinationFull) -or [System.IO.File]::Exists($backupFull)) {
+            try { [System.IO.File]::Delete($temporaryFull) } catch {
+                Write-FinDoneAtomicJsonDiagnostic "Could not delete failed-write temporary '$temporaryFull'; it was preserved: $($_.Exception.Message)"
+            }
+        } elseif ([System.IO.File]::Exists($temporaryFull)) {
+            Write-FinDoneAtomicJsonDiagnostic "The failed write produced no destination or backup; its temporary was preserved: $temporaryFull"
+        }
+    }
+    # A backup created by a failed replace is never deleted here. It either moved
+    # back to a missing destination above or remains as the recoverable original.
+    throw $primaryError
 }
 
 function Convert-DpapiValueToSecureString {
