@@ -168,6 +168,165 @@ function Clear-SigningEnvironment {
     }
 }
 
+function Write-FinDoneCleanupDiagnostic {
+    param([Parameter(Mandatory = $true)][string]$Message)
+
+    try {
+        [Console]::Error.WriteLine("[FinDone release cleanup] $Message")
+    } catch {
+        # Cleanup diagnostics are intentionally non-throwing, including when stderr
+        # is unavailable or the caller configured WarningPreference=Stop.
+    }
+}
+
+function Invoke-FinDoneGitCleanupCommand {
+    param([Parameter(Mandatory = $true)][string[]]$GitArguments)
+
+    $gitCommand = (Get-Command git -CommandType Application -ErrorAction Stop).Source
+    $previousErrorActionPreference = $ErrorActionPreference
+    try {
+        # Windows PowerShell promotes redirected native stderr to ErrorRecord objects.
+        # Capture it with a non-terminating preference so a nonzero Git cleanup exit
+        # can be handled explicitly instead of masking the release result.
+        $ErrorActionPreference = 'Continue'
+        $commandOutput = @(& $gitCommand @GitArguments 2>&1)
+        $exitCode = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+
+    return [pscustomobject]@{
+        ExitCode = [int]$exitCode
+        Output = (($commandOutput | ForEach-Object { $_.ToString() }) -join [Environment]::NewLine).Trim()
+    }
+}
+
+function Assert-FinDoneDirectoryTreeSafeForRecursiveRemoval {
+    param([Parameter(Mandatory = $true)][string]$RootPath)
+
+    $rootFull = Get-FullPath $RootPath
+    $pending = New-Object 'System.Collections.Generic.Stack[string]'
+    $pending.Push($rootFull)
+    while ($pending.Count -gt 0) {
+        $currentPath = $pending.Pop()
+        $currentItem = Get-Item -LiteralPath $currentPath -Force
+        Assert-FinDoneReparsePointAllowed -Item $currentItem -Context 'Temporary worktree cleanup tree entry'
+
+        foreach ($child in @(Get-ChildItem -LiteralPath $currentPath -Force -ErrorAction Stop)) {
+            # Do not descend until the native tag check has proved any reparse point
+            # is a Microsoft Cloud placeholder, not a junction/mount/symlink.
+            Assert-FinDoneReparsePointAllowed -Item $child -Context 'Temporary worktree cleanup child'
+            if ($child.PSIsContainer) { $pending.Push($child.FullName) }
+        }
+    }
+}
+
+function Remove-FinDoneTemporaryWorktree {
+    param(
+        [Parameter(Mandatory = $true)][string]$RepositoryRoot,
+        [Parameter(Mandatory = $true)][string]$TemporaryRoot,
+        [Parameter(Mandatory = $true)][string]$WorktreePath
+    )
+
+    try {
+        $repositoryFull = Get-FullPath $RepositoryRoot
+        $temporaryFull = Get-FullPath $TemporaryRoot
+        $worktreeFull = Get-FullPath $WorktreePath
+        if (-not (Test-Path -LiteralPath $temporaryFull -PathType Container)) {
+            throw "Temporary worktree root does not exist: $temporaryFull"
+        }
+        $temporaryItem = Get-Item -LiteralPath $temporaryFull -Force
+        Assert-FinDoneReparsePointAllowed -Item $temporaryItem -Context 'Temporary release worktree root before cleanup'
+        $temporaryWithSeparator = $temporaryFull + [System.IO.Path]::DirectorySeparatorChar
+        if (-not $worktreeFull.StartsWith($temporaryWithSeparator, [StringComparison]::OrdinalIgnoreCase) -or
+            (Split-Path -Parent $worktreeFull) -ne $temporaryFull -or
+            (Split-Path -Leaf $worktreeFull) -cnotmatch '^worktree-[0-9a-f]{32}$') {
+            throw "Temporary worktree path failed its direct-child safety check: $worktreeFull"
+        }
+
+        if (Test-Path -LiteralPath $worktreeFull) {
+            $worktreeItem = Get-Item -LiteralPath $worktreeFull -Force
+            Assert-FinDoneReparsePointAllowed -Item $worktreeItem -Context 'Temporary release worktree before Git cleanup'
+        }
+
+        $removeResult = Invoke-FinDoneGitCleanupCommand -GitArguments @(
+            '-c', 'core.longpaths=true', '-C', $repositoryFull,
+            'worktree', 'remove', '--force', $worktreeFull
+        )
+
+        if (Test-Path -LiteralPath $worktreeFull) {
+            if ($removeResult.ExitCode -ne 0) {
+                $detail = if ([string]::IsNullOrWhiteSpace($removeResult.Output)) { 'no Git diagnostic' } else { $removeResult.Output }
+                Write-FinDoneCleanupDiagnostic "Git could not completely remove the temporary worktree; using the validated short-path fallback. $detail"
+            }
+
+            # Revalidate immediately before moving. Moving the root directory within
+            # the same temp volume does not enumerate long descendants and gives the
+            # PowerShell fallback enough path headroom for Android build outputs.
+            $worktreeItem = Get-Item -LiteralPath $worktreeFull -Force
+            Assert-FinDoneReparsePointAllowed -Item $worktreeItem -Context 'Temporary release worktree before short-path fallback'
+            $temporaryItem = Get-Item -LiteralPath $temporaryFull -Force
+            Assert-FinDoneReparsePointAllowed -Item $temporaryItem -Context 'Temporary release worktree root before short-path fallback'
+            if ((Split-Path -Parent $worktreeItem.FullName) -ne $temporaryFull) {
+                throw "Temporary worktree parent changed before fallback cleanup: $($worktreeItem.FullName)"
+            }
+
+            $systemTemporaryRoot = Get-FullPath ([System.IO.Path]::GetTempPath())
+            if ($systemTemporaryRoot.Equals([System.IO.Path]::GetPathRoot($systemTemporaryRoot), [StringComparison]::OrdinalIgnoreCase)) {
+                throw "A filesystem root cannot be used for fallback cleanup: $systemTemporaryRoot"
+            }
+            $systemTemporaryItem = Get-Item -LiteralPath $systemTemporaryRoot -Force
+            Assert-FinDoneReparsePointAllowed -Item $systemTemporaryItem -Context 'System temporary root for worktree cleanup'
+
+            $shortCleanupPath = Join-Path $systemTemporaryRoot ('FDR-' + [guid]::NewGuid().ToString('N'))
+            if (Test-Path -LiteralPath $shortCleanupPath) {
+                throw "Unexpected fallback cleanup path collision: $shortCleanupPath"
+            }
+            [System.IO.Directory]::Move($worktreeFull, $shortCleanupPath)
+
+            $shortCleanupFull = Get-FullPath $shortCleanupPath
+            if ((Split-Path -Parent $shortCleanupFull) -ne $systemTemporaryRoot -or
+                (Split-Path -Leaf $shortCleanupFull) -cnotmatch '^FDR-[0-9a-f]{32}$') {
+                throw "Short-path fallback failed its direct-child safety check: $shortCleanupFull"
+            }
+            $shortCleanupItem = Get-Item -LiteralPath $shortCleanupFull -Force
+            Assert-FinDoneReparsePointAllowed -Item $shortCleanupItem -Context 'Relocated temporary worktree before fallback cleanup'
+            Assert-FinDoneDirectoryTreeSafeForRecursiveRemoval -RootPath $shortCleanupFull
+
+            # Recheck the root and its exact parent immediately before recursive
+            # deletion. A forbidden nested reparse point leaves the relocated tree
+            # intact for inspection instead of risking traversal outside temp.
+            $shortCleanupItem = Get-Item -LiteralPath $shortCleanupFull -Force
+            Assert-FinDoneReparsePointAllowed -Item $shortCleanupItem -Context 'Relocated temporary worktree immediately before fallback cleanup'
+            if ((Split-Path -Parent $shortCleanupItem.FullName) -ne $systemTemporaryRoot -or
+                (Split-Path -Leaf $shortCleanupItem.FullName) -cnotmatch '^FDR-[0-9a-f]{32}$') {
+                throw "Relocated temporary worktree changed before recursive cleanup: $($shortCleanupItem.FullName)"
+            }
+            Remove-Item -LiteralPath $shortCleanupFull -Recurse -Force -ErrorAction Stop
+            if (Test-Path -LiteralPath $shortCleanupFull) {
+                throw "Short-path fallback did not remove the temporary worktree: $shortCleanupFull"
+            }
+        }
+    } catch {
+        # Cleanup must never replace a build/state exception or turn a successful
+        # release into a failed commit. Preserve unsafe/locked paths for inspection.
+        Write-FinDoneCleanupDiagnostic "Temporary release worktree cleanup was incomplete and did not change the release result: $($_.Exception.Message)"
+    } finally {
+        try {
+            $pruneResult = Invoke-FinDoneGitCleanupCommand -GitArguments @(
+                '-c', 'core.longpaths=true', '-C', (Get-FullPath $RepositoryRoot),
+                'worktree', 'prune'
+            )
+            if ($pruneResult.ExitCode -ne 0) {
+                $detail = if ([string]::IsNullOrWhiteSpace($pruneResult.Output)) { 'no Git diagnostic' } else { $pruneResult.Output }
+                Write-FinDoneCleanupDiagnostic "Git worktree metadata prune was incomplete and did not change the release result: $detail"
+            }
+        } catch {
+            Write-FinDoneCleanupDiagnostic "Git worktree metadata prune could not run and did not change the release result: $($_.Exception.Message)"
+        }
+    }
+}
+
 function Get-HighestReleaseVersionCode {
     param([string]$ReleaseRoot)
 
@@ -415,42 +574,56 @@ try {
         }
         Write-Utf8JsonAtomically -Value $successfulState -Path $statePath
     } finally {
-        if ($null -ne $storePassword) { $storePassword.Dispose() }
-        if ($null -ne $keyPassword) { $keyPassword.Dispose() }
-        $storePassword = $null
-        $keyPassword = $null
-        Clear-SigningEnvironment
-    }
-} finally {
-    Clear-SigningEnvironment
-
-    if ($null -ne $worktreePath) {
-        $worktreeFull = Get-FullPath $worktreePath
-        $temporaryRootWithSeparator = $temporaryRoot + [System.IO.Path]::DirectorySeparatorChar
-        if ($worktreeFull.StartsWith($temporaryRootWithSeparator, [StringComparison]::OrdinalIgnoreCase) -and
-            (Split-Path -Parent $worktreeFull) -eq $temporaryRoot -and
-            (Split-Path -Leaf $worktreeFull) -like 'worktree-*') {
-            $cleanupAllowed = $true
-            if (Test-Path -LiteralPath $worktreeFull) {
-                try {
-                    $worktreeItem = Get-Item -LiteralPath $worktreeFull -Force
-                    Assert-FinDoneReparsePointAllowed -Item $worktreeItem -Context 'Temporary release worktree before cleanup'
-                } catch {
-                    Write-Warning "Temporary worktree was preserved because its reparse point could not be validated safely: $worktreeFull ($($_.Exception.Message))"
-                    $cleanupAllowed = $false
-                }
-            }
-            if ($cleanupAllowed) {
-                & git -C $repoRoot worktree remove --force $worktreeFull 2>$null
-                if (Test-Path -LiteralPath $worktreeFull) {
-                    $worktreeItem = Get-Item -LiteralPath $worktreeFull -Force
-                    Assert-FinDoneReparsePointAllowed -Item $worktreeItem -Context 'Temporary release worktree before fallback cleanup'
-                    Remove-Item -LiteralPath $worktreeFull -Recurse -Force
-                }
-                & git -C $repoRoot worktree prune 2>$null
+        if ($null -ne $storePassword) {
+            try {
+                $storePassword.Dispose()
+            } catch {
+                Write-FinDoneCleanupDiagnostic "Store password SecureString disposal was incomplete and did not change the release result: $($_.Exception.Message)"
             }
         }
+        if ($null -ne $keyPassword) {
+            try {
+                $keyPassword.Dispose()
+            } catch {
+                Write-FinDoneCleanupDiagnostic "Key password SecureString disposal was incomplete and did not change the release result: $($_.Exception.Message)"
+            }
+        }
+        $storePassword = $null
+        $keyPassword = $null
+        try {
+            Clear-SigningEnvironment
+        } catch {
+            Write-FinDoneCleanupDiagnostic "Inner signing environment cleanup was incomplete and did not change the release result: $($_.Exception.Message)"
+        }
     }
-    if ($hasMutex) { $mutex.ReleaseMutex() }
-    $mutex.Dispose()
+} finally {
+    try {
+        Clear-SigningEnvironment
+    } catch {
+        Write-FinDoneCleanupDiagnostic "Signing environment cleanup was incomplete and did not change the release result: $($_.Exception.Message)"
+    }
+
+    if ($null -ne $worktreePath) {
+        try {
+            Remove-FinDoneTemporaryWorktree `
+                -RepositoryRoot $repoRoot `
+                -TemporaryRoot $temporaryRoot `
+                -WorktreePath $worktreePath
+        } catch {
+            # Defense in depth: the cleanup helper is best-effort by contract.
+            Write-FinDoneCleanupDiagnostic "Temporary release cleanup returned unexpectedly and did not change the release result: $($_.Exception.Message)"
+        }
+    }
+    if ($hasMutex) {
+        try {
+            $mutex.ReleaseMutex()
+        } catch {
+            Write-FinDoneCleanupDiagnostic "Release mutex could not be released cleanly and did not change the release result: $($_.Exception.Message)"
+        }
+    }
+    try {
+        $mutex.Dispose()
+    } catch {
+        Write-FinDoneCleanupDiagnostic "Release mutex could not be disposed cleanly and did not change the release result: $($_.Exception.Message)"
+    }
 }

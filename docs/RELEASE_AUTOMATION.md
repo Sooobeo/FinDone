@@ -18,6 +18,8 @@
 
 훅은 동기식입니다. 따라서 `git commit` 명령은 릴리스 빌드가 끝날 때까지 수 분 걸릴 수 있습니다. 빌드가 실패해도 이미 만들어진 Git 커밋은 사라지지 않으며, 오류가 콘솔에 표시됩니다.
 
+임시 worktree 정리는 `core.longpaths=true`로 실행합니다. Git metadata가 먼저 없어졌거나 Android 산출물 경로가 Windows 기본 길이를 넘겨 디렉터리가 남으면, 안전 검사를 다시 거친 worktree root를 같은 임시 볼륨의 짧은 이름으로 옮긴 뒤 정리합니다. junction·symlink·mount point는 재귀 삭제하지 않습니다. 이 정리는 best-effort이며, 정리 오류나 진단 메시지가 원래 build/state 결과를 덮어쓰지 않습니다.
+
 ## 위협 모델과 한계
 
 이 자동화는 비밀번호가 Gradle 환경에 우연히 노출되는 시간을 줄이고, setup 당시 검토한 builder SHA-256과 공개 인증서 pin을 확인합니다. 그러나 별도 계정이나 VM 같은 OS 보안 경계는 아닙니다. 같은 Windows 사용자 권한으로 실행되는 악성 코드는 DPAPI 암호문을 복호화하거나 keystore·SDK 도구·프로세스 메모리에 접근할 수 있습니다.
