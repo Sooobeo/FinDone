@@ -90,15 +90,15 @@ try {
 }
 ```
 
-스크립트는 `clean test lintRelease assembleRelease`, APK 서명 확인, APK SHA-256 계산을 수행하고 `dist/findone-<version>-<timestamp>/`에 다음 파일을 만듭니다.
+스크립트는 서명 정보가 없는 환경에서 `clean test lintRelease assembleRelease`로 unsigned APK를 만든 다음, setup에서 SHA-256을 고정한 로컬 래퍼에서 SDK `zipalign`과 `apksigner`로 외부 서명합니다. 이후 APK 서명 확인과 APK SHA-256 계산을 수행하고 `dist/findone-<version>-<timestamp>/`에 다음 파일을 만듭니다.
 
 - 서명된 `FinDone-<version>.apk`
 - 외부 `release-manifest.json`
 - `SHA256SUMS.txt`
 
-이 세 산출물만 개인 OneDrive로 수동 전송합니다. 앱은 OneDrive에 로그인하거나 자동 동기화하지 않습니다. 설치 전 체크섬·서명·권한을 확인하고, Android의 “이 출처의 앱 설치 허용”은 설치할 때만 켰다가 다시 끄세요.
+수동 릴리스라면 이 세 산출물만 개인 OneDrive로 전송합니다. 로컬 커밋 자동화를 설정하면 별도의 `FinDone-Releases` mirror에 검증된 산출물을 복사하고 최신 두 릴리스만 남깁니다. 앱은 OneDrive에 직접 로그인하거나 API로 동기화하지 않으며, 사용자가 Android 문서 선택기로 연결한 릴리스 폴더만 읽습니다. 설치 전 체크섬·서명·권한을 확인하고, Android의 “이 출처의 앱 설치 허용”은 설치할 때만 켰다가 다시 끄세요.
 
-키 준비부터 오프라인 기기 시험, upgrade와 사용자 백업 복원까지의 상세 절차는 [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md)를 따르세요.
+키 준비부터 오프라인 기기 시험, upgrade와 사용자 백업 복원까지의 상세 절차는 [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md)를 따르세요. 커밋마다 정확한 HEAD 스냅샷을 자동 빌드하고 최신 두 릴리스만 보관하는 로컬 훅 설정은 [docs/RELEASE_AUTOMATION.md](docs/RELEASE_AUTOMATION.md)에 설명되어 있습니다.
 
 ## 개인정보와 용도
 

@@ -1,6 +1,6 @@
 # FinDone 개인 릴리스 체크리스트
 
-이 문서는 FinDone을 **본인 Android 기기에만** 설치하는 개인 서명 APK의 준비·빌드·검증 절차입니다. OneDrive는 APK와 사용자가 명시적으로 만든 백업 파일을 옮기는 수단일 뿐, 앱의 서버나 자동 동기화 계층이 아닙니다.
+이 문서는 FinDone을 **본인 Android 기기에만** 설치하는 개인 서명 APK의 준비·빌드·검증 절차입니다. OneDrive는 APK와 사용자가 명시적으로 만든 백업 파일을 옮기는 수단일 뿐, 앱의 서버나 자동 동기화 계층이 아닙니다. 앱에는 직접 OneDrive API·로그인·동기화가 없으며, 업데이트 확인은 사용자가 Android Storage Access Framework에서 명시적으로 선택한 document tree만 읽습니다.
 
 > 개인 설치가 가능한 기술 빌드와 전체 명세 완료는 서로 다른 상태입니다. 1,461개 이상의 authored/approved claim과 독립 solver를 포함한 전체 10,000-seed 검증이 끝나기 전에는 산출물을 “전체 콘텐츠 완성판”으로 표시하지 않습니다.
 
@@ -61,7 +61,9 @@ git ls-files -- '*.jks' '*.keystore' '*.apk' '*.aab' '*.idsig'
 
 ## 4. 개인 서명 릴리스 빌드
 
-비밀번호는 명령행 문자열, `setx`, 설정 파일에 넣지 않습니다. 아래 방식은 현재 PowerShell 프로세스에만 평문 환경 변수를 만들고 빌드 직후 제거합니다.
+비밀번호는 명령행 문자열, `setx`, 설정 파일에 넣지 않습니다. 아래 수동 호환 방식은 현재 PowerShell 프로세스에만 평문 환경 변수를 만들지만, 릴리스 스크립트가 이를 즉시 `SecureString`으로 가져온 뒤 Gradle·플러그인·테스트를 실행하기 전에 제거합니다. 비밀번호는 unsigned APK 빌드가 모두 끝난 뒤 로컬 SDK `apksigner` 프로세스에만 다시 전달되고 즉시 제거됩니다.
+
+이 절차는 OS sandbox가 아닙니다. 같은 Windows 사용자 권한으로 실행되는 악성 코드는 DPAPI 암호문, keystore, 프로세스 또는 SDK 도구에 접근할 수 있습니다. 본인이 변경 내용을 검토하고 신뢰한 commit에서만 훅을 사용하며, 더 강한 격리가 필요하면 별도 Windows 계정이나 VM에서 릴리스합니다.
 
 ```powershell
 $storeSecret = Read-Host '키 저장소 비밀번호' -AsSecureString
@@ -78,7 +80,7 @@ try {
 }
 ```
 
-[scripts/build_private_release.ps1](../scripts/build_private_release.ps1)는 `clean test lintRelease assembleRelease`를 실행하고 `apksigner`로 서명을 확인한 뒤, 새 `dist/findone-<version>-<timestamp>/`에 APK·외부 release manifest·checksum을 만듭니다.
+[scripts/build_private_release.ps1](../scripts/build_private_release.ps1)는 비밀번호가 없는 환경에서 `clean test lintRelease assembleRelease`를 실행하고, SDK `zipalign`과 `apksigner`로 외부 서명한 뒤 서명·정렬을 재검증합니다. 그 다음 새 `dist/findone-<version>-<timestamp>/`에 APK·외부 release manifest·checksum을 만듭니다.
 
 - [ ] 스크립트가 오류 없이 종료되었다.
 - [ ] 비밀번호 환경 변수가 제거되었는지 확인했다.
@@ -109,7 +111,7 @@ Get-Content -Raw -Encoding UTF8 (Join-Path $releaseDir.FullName 'release-manifes
 - [ ] Android SDK의 `apksigner verify --verbose --print-certs`를 다시 실행해 APK 검증이 성공한다.
 - [ ] 인증서 SHA-256 fingerprint가 최초에 별도 기록한 개인 키 fingerprint와 일치한다.
 - [ ] release manifest의 application ID, version, content DB version/hash, user DB schema version이 빌드 입력과 일치하며 필수 값이 빈 문자열이나 `null`이 아니다.
-- [ ] release manifest에 `targetUser=self_only`, `publicStoreRelease=false`, `internetPermission=false`, `oneDriveRuntimeSync=false`가 기록되어 있다.
+- [ ] release manifest에 `targetUser=self_only`, `publicStoreRelease=false`, `internetPermission=false`, `oneDriveRuntimeSync=false`, `updateSource=user_selected_saf_document_tree`, `directOneDriveApi=false`가 기록되어 있다.
 - [ ] Android Studio의 APK Analyzer 또는 SDK의 `apkanalyzer manifest permissions <APK>`로 확인했을 때 `android.permission.INTERNET`가 없다.
 - [ ] APK 안에 키 저장소, private key, 비밀번호, 복구 문구, API key, 사용자 백업이 포함되지 않았다.
 
@@ -128,7 +130,7 @@ Get-Content -Raw -Encoding UTF8 (Join-Path $releaseDir.FullName 'release-manifes
 기존 데이터가 필요한 폰에서는 앱을 제거하거나 “데이터 삭제”를 누르지 않습니다. clean install은 백업을 검증한 뒤 별도 기기나 프로필에서 수행합니다.
 
 - [ ] 설치 파일의 출처가 본인 OneDrive이고 APK 이름·version·SHA-256이 릴리스 기록과 일치한다.
-- [ ] OneDrive 또는 파일 앱에 “이 출처의 앱 설치 허용”을 잠시 켜고 설치한 뒤 바로 다시 껐다.
+- [ ] FinDone에 “이 출처의 앱 설치 허용”을 잠시 켜고 시스템 설치 화면에서 설치한 뒤 바로 다시 껐다.
 - [ ] 첫 실행 전에 비행기 모드를 켰고, 비행기 모드에서 별도로 다시 켤 수 있는 Wi-Fi도 껐다.
 - [ ] 앱이 네트워크 오류나 로그인 요구 없이 시작된다.
 - [ ] 7개 분야와 총 135개 요소가 보이고 각 분야 수량이 manifest와 일치한다.

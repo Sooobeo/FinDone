@@ -21,3 +21,4 @@ secrets.properties
 *.p12
 *.pfx
 *.pem
+.findone-release/

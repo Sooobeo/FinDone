@@ -4,20 +4,17 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
-fun secret(name: String, propertyName: String): String? =
-    providers.gradleProperty(propertyName).orNull ?: System.getenv(name)
-
-val personalKeystorePath = secret("FINDONE_KEYSTORE_PATH", "findone.keystore.path")
-val personalKeyAlias = secret("FINDONE_KEY_ALIAS", "findone.key.alias")
-// Passwords are intentionally environment-only so they cannot be persisted in Gradle properties.
-val personalStorePassword = System.getenv("FINDONE_STORE_PASSWORD")
-val personalKeyPassword = System.getenv("FINDONE_KEY_PASSWORD")
-val personalSigningReady = listOf(
-    personalKeystorePath,
-    personalKeyAlias,
-    personalStorePassword,
-    personalKeyPassword,
-).all { !it.isNullOrBlank() }
+// Local release automation can override these values for an installable build from an
+// exact Git commit. Ordinary/manual builds keep the declared application version.
+val declaredVersionCode = 2
+val declaredVersionName = "0.3.0"
+val appVersionCode = providers.gradleProperty("findone.versionCode").orNull?.let { value ->
+    value.toIntOrNull()?.takeIf { it in 1..2_100_000_000 }
+        ?: throw GradleException("findone.versionCode must be an integer from 1 to 2100000000")
+} ?: declaredVersionCode
+val appVersionName = providers.gradleProperty("findone.versionName").orNull?.also { value ->
+    if (value.isBlank()) throw GradleException("findone.versionName must not be blank")
+} ?: declaredVersionName
 
 android {
     namespace = "com.findone.app"
@@ -27,8 +24,8 @@ android {
         applicationId = "com.findone.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 2
-        versionName = "0.3.0"
+        versionCode = appVersionCode
+        versionName = appVersionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -38,25 +35,10 @@ android {
     }
     packaging { resources.excludes += "/META-INF/{AL2.0,LGPL2.1}" }
 
-    signingConfigs {
-        if (personalSigningReady) {
-            create("personalRelease") {
-                storeFile = rootProject.file(personalKeystorePath!!)
-                storePassword = personalStorePassword
-                keyAlias = personalKeyAlias
-                keyPassword = personalKeyPassword
-                enableV1Signing = true
-                enableV2Signing = true
-                enableV3Signing = true
-            }
-        }
-    }
-
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            signingConfig = signingConfigs.findByName("personalRelease")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

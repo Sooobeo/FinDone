@@ -125,6 +125,7 @@ import com.findone.app.ui.OfflineBanner
 import com.findone.app.ui.PageHeader
 import com.findone.app.ui.SectionTitle
 import com.findone.app.ui.StatCard
+import com.findone.app.ui.UpdateLandingScreen
 import com.findone.app.ui.domainAccent
 import com.findone.app.ui.theme.FinDoneTheme
 import kotlinx.coroutines.launch
@@ -143,8 +144,13 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             FinDoneTheme {
-                val appViewModel: AppViewModel = viewModel()
-                FinDoneApp(appViewModel)
+                var continueToHome by rememberSaveable { mutableStateOf(false) }
+                if (continueToHome) {
+                    val appViewModel: AppViewModel = viewModel()
+                    FinDoneApp(appViewModel)
+                } else {
+                    UpdateLandingScreen(onContinue = { continueToHome = true })
+                }
             }
         }
     }

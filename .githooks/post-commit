@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Every configured clone builds the commit that just completed. The hook is
+# intentionally synchronous: serialization and a detached worktree prevent a
+# later working-tree edit or a second commit from contaminating this release.
+repo_root=$(git rev-parse --show-toplevel) || exit 1
+commit=$(git rev-parse --verify HEAD) || exit 1
+
+if command -v powershell.exe >/dev/null 2>&1; then
+    powershell_command=powershell.exe
+elif command -v powershell >/dev/null 2>&1; then
+    powershell_command=powershell
+else
+    echo "FinDone release automation requires Windows PowerShell." >&2
+    exit 1
+fi
+
+"$powershell_command" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass \
+    -File "$repo_root/scripts/invoke_post_commit_release.ps1" -Commit "$commit"
+status=$?
+if [ "$status" -ne 0 ]; then
+    echo "FinDone release automation failed for $commit. The Git commit itself already exists." >&2
+fi
+exit "$status"
