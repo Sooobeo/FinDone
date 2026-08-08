@@ -1,0 +1,8 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>FinDone Folio Sprout currentColor mark</title>
+  <g fill="currentColor">
+    <rect x="18" y="13" width="7" height="38" rx="3.5"/>
+    <path d="M25 15.5C32.5 11.5 42.5 11.8 50 16.2C49.2 24.8 40.5 29.2 25 27.6V15.5Z"/>
+    <path d="M25 33.6C31.5 30.5 39.5 30.8 45 34.1C43.8 41.2 36.5 44.8 25 42.3V33.6Z"/>
+  </g>
+</svg>
