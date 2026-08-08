@@ -8,6 +8,116 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 3.0
 
+if ($null -eq ('FinDone.ReleaseAutomation.ReparsePointNative' -as [type])) {
+    Add-Type -TypeDefinition @'
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
+
+namespace FinDone.ReleaseAutomation
+{
+    public static class ReparsePointNative
+    {
+        private const uint FileFlagBackupSemantics = 0x02000000;
+        private const uint FileFlagOpenReparsePoint = 0x00200000;
+        private const uint FsctlGetReparsePoint = 0x000900A8;
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern SafeFileHandle CreateFileW(
+            string fileName,
+            uint desiredAccess,
+            FileShare shareMode,
+            IntPtr securityAttributes,
+            FileMode creationDisposition,
+            uint flagsAndAttributes,
+            IntPtr templateFile);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool DeviceIoControl(
+            SafeFileHandle device,
+            uint controlCode,
+            IntPtr inputBuffer,
+            uint inputBufferSize,
+            byte[] outputBuffer,
+            uint outputBufferSize,
+            out uint bytesReturned,
+            IntPtr overlapped);
+
+        public static uint GetTag(string path)
+        {
+            using (SafeFileHandle handle = CreateFileW(
+                path,
+                0,
+                FileShare.Read | FileShare.Write | FileShare.Delete,
+                IntPtr.Zero,
+                FileMode.Open,
+                FileFlagBackupSemantics | FileFlagOpenReparsePoint,
+                IntPtr.Zero))
+            {
+                if (handle.IsInvalid)
+                    throw new Win32Exception(Marshal.GetLastWin32Error(), "Unable to open reparse point.");
+
+                byte[] buffer = new byte[16 * 1024];
+                uint bytesReturned;
+                if (!DeviceIoControl(
+                    handle,
+                    FsctlGetReparsePoint,
+                    IntPtr.Zero,
+                    0,
+                    buffer,
+                    (uint)buffer.Length,
+                    out bytesReturned,
+                    IntPtr.Zero))
+                {
+                    throw new Win32Exception(Marshal.GetLastWin32Error(), "Unable to query reparse point.");
+                }
+                if (bytesReturned < 8)
+                    throw new InvalidDataException("Reparse point data is shorter than its header.");
+
+                return BitConverter.ToUInt32(buffer, 0);
+            }
+        }
+
+        public static bool IsMicrosoftCloudTag(uint tag)
+        {
+            return (tag & 0xFFFF0FFFu) == 0x9000001Au;
+        }
+    }
+}
+'@
+}
+
+function Get-FinDoneReparsePointTag {
+    param([Parameter(Mandatory = $true)][System.IO.FileSystemInfo]$Item)
+    if (($Item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -eq 0) {
+        throw "The path is not a reparse point: $($Item.FullName)"
+    }
+    return [FinDone.ReleaseAutomation.ReparsePointNative]::GetTag($Item.FullName)
+}
+
+function Test-FinDoneReparsePointAllowed {
+    param([Parameter(Mandatory = $true)][System.IO.FileSystemInfo]$Item)
+    if (($Item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -eq 0) { return $true }
+    $tag = Get-FinDoneReparsePointTag -Item $Item
+    return [FinDone.ReleaseAutomation.ReparsePointNative]::IsMicrosoftCloudTag($tag)
+}
+
+function Assert-FinDoneReparsePointAllowed {
+    param(
+        [Parameter(Mandatory = $true)][System.IO.FileSystemInfo]$Item,
+        [Parameter(Mandatory = $true)][string]$Context
+    )
+    if (($Item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -eq 0) { return }
+    $tag = Get-FinDoneReparsePointTag -Item $Item
+    if (-not [FinDone.ReleaseAutomation.ReparsePointNative]::IsMicrosoftCloudTag($tag)) {
+        $formattedTag = '0x{0:x8}' -f $tag
+        throw "$Context uses a forbidden reparse point tag ($formattedTag): $($Item.FullName)"
+    }
+}
+
+
 function Get-FullPath {
     param([Parameter(Mandatory = $true)][string]$Path)
     $full = [System.IO.Path]::GetFullPath($Path)
@@ -66,12 +176,15 @@ function Get-HighestReleaseVersionCode {
         return 0L
     }
 
+    $releaseRootItem = Get-Item -LiteralPath $ReleaseRoot -Force
+    Assert-FinDoneReparsePointAllowed -Item $releaseRootItem -Context 'Version allocation release root'
+
     $highest = 0L
     foreach ($directory in @(Get-ChildItem -LiteralPath $ReleaseRoot -Directory -Force)) {
         if ($directory.Name -notmatch '^findone-[0-9A-Za-z][0-9A-Za-z.+_-]*-\d{8}-\d{6}(?:\d{3})?(?:-[0-9a-f]{7,40})?$') {
             continue
         }
-        if (($directory.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) { continue }
+        if (-not (Test-FinDoneReparsePointAllowed -Item $directory)) { continue }
 
         try {
             $manifestPath = Join-Path $directory.FullName 'release-manifest.json'
@@ -191,9 +304,13 @@ try {
     if (-not $hasMutex) { throw 'Timed out waiting for another FinDone release build to finish.' }
 
     New-Item -ItemType Directory -Path $temporaryRoot -Force | Out-Null
+    $temporaryRootItem = Get-Item -LiteralPath $temporaryRoot -Force
+    Assert-FinDoneReparsePointAllowed -Item $temporaryRootItem -Context 'Temporary release worktree root'
     $worktreePath = Join-Path $temporaryRoot ('worktree-' + [guid]::NewGuid().ToString('N'))
     & git -C $repoRoot worktree add --detach $worktreePath $resolvedCommit
     if ($LASTEXITCODE -ne 0) { throw "Failed to create an exact-commit release worktree for $resolvedCommit" }
+    $worktreeItem = Get-Item -LiteralPath $worktreePath -Force
+    Assert-FinDoneReparsePointAllowed -Item $worktreeItem -Context 'Temporary release worktree'
 
     $sdkLine = Get-Content -LiteralPath (Join-Path $repoRoot 'local.properties') -Encoding UTF8 |
         Where-Object { $_ -match '^\s*sdk\.dir\s*=' } |
@@ -313,11 +430,25 @@ try {
         if ($worktreeFull.StartsWith($temporaryRootWithSeparator, [StringComparison]::OrdinalIgnoreCase) -and
             (Split-Path -Parent $worktreeFull) -eq $temporaryRoot -and
             (Split-Path -Leaf $worktreeFull) -like 'worktree-*') {
-            & git -C $repoRoot worktree remove --force $worktreeFull 2>$null
+            $cleanupAllowed = $true
             if (Test-Path -LiteralPath $worktreeFull) {
-                Remove-Item -LiteralPath $worktreeFull -Recurse -Force
+                try {
+                    $worktreeItem = Get-Item -LiteralPath $worktreeFull -Force
+                    Assert-FinDoneReparsePointAllowed -Item $worktreeItem -Context 'Temporary release worktree before cleanup'
+                } catch {
+                    Write-Warning "Temporary worktree was preserved because its reparse point could not be validated safely: $worktreeFull ($($_.Exception.Message))"
+                    $cleanupAllowed = $false
+                }
             }
-            & git -C $repoRoot worktree prune 2>$null
+            if ($cleanupAllowed) {
+                & git -C $repoRoot worktree remove --force $worktreeFull 2>$null
+                if (Test-Path -LiteralPath $worktreeFull) {
+                    $worktreeItem = Get-Item -LiteralPath $worktreeFull -Force
+                    Assert-FinDoneReparsePointAllowed -Item $worktreeItem -Context 'Temporary release worktree before fallback cleanup'
+                    Remove-Item -LiteralPath $worktreeFull -Recurse -Force
+                }
+                & git -C $repoRoot worktree prune 2>$null
+            }
         }
     }
     if ($hasMutex) { $mutex.ReleaseMutex() }

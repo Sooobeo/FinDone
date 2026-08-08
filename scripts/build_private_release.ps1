@@ -20,6 +20,116 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 3.0
 
+if ($null -eq ('FinDone.ReleaseAutomation.ReparsePointNative' -as [type])) {
+    Add-Type -TypeDefinition @'
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
+
+namespace FinDone.ReleaseAutomation
+{
+    public static class ReparsePointNative
+    {
+        private const uint FileFlagBackupSemantics = 0x02000000;
+        private const uint FileFlagOpenReparsePoint = 0x00200000;
+        private const uint FsctlGetReparsePoint = 0x000900A8;
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern SafeFileHandle CreateFileW(
+            string fileName,
+            uint desiredAccess,
+            FileShare shareMode,
+            IntPtr securityAttributes,
+            FileMode creationDisposition,
+            uint flagsAndAttributes,
+            IntPtr templateFile);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool DeviceIoControl(
+            SafeFileHandle device,
+            uint controlCode,
+            IntPtr inputBuffer,
+            uint inputBufferSize,
+            byte[] outputBuffer,
+            uint outputBufferSize,
+            out uint bytesReturned,
+            IntPtr overlapped);
+
+        public static uint GetTag(string path)
+        {
+            using (SafeFileHandle handle = CreateFileW(
+                path,
+                0,
+                FileShare.Read | FileShare.Write | FileShare.Delete,
+                IntPtr.Zero,
+                FileMode.Open,
+                FileFlagBackupSemantics | FileFlagOpenReparsePoint,
+                IntPtr.Zero))
+            {
+                if (handle.IsInvalid)
+                    throw new Win32Exception(Marshal.GetLastWin32Error(), "Unable to open reparse point.");
+
+                byte[] buffer = new byte[16 * 1024];
+                uint bytesReturned;
+                if (!DeviceIoControl(
+                    handle,
+                    FsctlGetReparsePoint,
+                    IntPtr.Zero,
+                    0,
+                    buffer,
+                    (uint)buffer.Length,
+                    out bytesReturned,
+                    IntPtr.Zero))
+                {
+                    throw new Win32Exception(Marshal.GetLastWin32Error(), "Unable to query reparse point.");
+                }
+                if (bytesReturned < 8)
+                    throw new InvalidDataException("Reparse point data is shorter than its header.");
+
+                return BitConverter.ToUInt32(buffer, 0);
+            }
+        }
+
+        public static bool IsMicrosoftCloudTag(uint tag)
+        {
+            return (tag & 0xFFFF0FFFu) == 0x9000001Au;
+        }
+    }
+}
+'@
+}
+
+function Get-FinDoneReparsePointTag {
+    param([Parameter(Mandatory = $true)][System.IO.FileSystemInfo]$Item)
+    if (($Item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -eq 0) {
+        throw "The path is not a reparse point: $($Item.FullName)"
+    }
+    return [FinDone.ReleaseAutomation.ReparsePointNative]::GetTag($Item.FullName)
+}
+
+function Test-FinDoneReparsePointAllowed {
+    param([Parameter(Mandatory = $true)][System.IO.FileSystemInfo]$Item)
+    if (($Item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -eq 0) { return $true }
+    $tag = Get-FinDoneReparsePointTag -Item $Item
+    return [FinDone.ReleaseAutomation.ReparsePointNative]::IsMicrosoftCloudTag($tag)
+}
+
+function Assert-FinDoneReparsePointAllowed {
+    param(
+        [Parameter(Mandatory = $true)][System.IO.FileSystemInfo]$Item,
+        [Parameter(Mandatory = $true)][string]$Context
+    )
+    if (($Item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -eq 0) { return }
+    $tag = Get-FinDoneReparsePointTag -Item $Item
+    if (-not [FinDone.ReleaseAutomation.ReparsePointNative]::IsMicrosoftCloudTag($tag)) {
+        $formattedTag = '0x{0:x8}' -f $tag
+        throw "$Context uses a forbidden reparse point tag ($formattedTag): $($Item.FullName)"
+    }
+}
+
+
 $orchestratorScriptSha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $PSCommandPath).Hash.ToLowerInvariant()
 if (-not [string]::IsNullOrWhiteSpace($ExpectedOrchestratorScriptSha256) -and
     ($ExpectedOrchestratorScriptSha256 -notmatch '^[0-9a-fA-F]{64}$' -or
@@ -81,9 +191,7 @@ function Assert-SafeReleaseRoot {
         return $root
     }
     $rootItem = Get-Item -LiteralPath $root -Force
-    if (($rootItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
-        throw "A reparse point, junction, or symlink cannot be used as a release root: $root"
-    }
+    Assert-FinDoneReparsePointAllowed -Item $rootItem -Context 'Release root'
     return $root
 }
 
@@ -188,7 +296,7 @@ function Get-ValidatedReleaseBundle {
 
     if (-not (Test-Path -LiteralPath $Directory -PathType Container)) { return $null }
     $item = Get-Item -LiteralPath $Directory -Force
-    if (($item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) { return $null }
+    if (-not (Test-FinDoneReparsePointAllowed -Item $item)) { return $null }
 
     $files = @(Get-ChildItem -LiteralPath $Directory -File -Force)
     $childDirectories = @(Get-ChildItem -LiteralPath $Directory -Directory -Force)
@@ -281,8 +389,8 @@ function Remove-OldReleaseBundles {
             continue
         }
         $candidateItem = Get-Item -LiteralPath $candidatePath -Force
-        if (($candidateItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
-            Write-Warning "Release became a reparse point before retention and was preserved: $candidatePath"
+        if (-not (Test-FinDoneReparsePointAllowed -Item $candidateItem)) {
+            Write-Warning "Release became a forbidden reparse point before retention and was preserved: $candidatePath"
             continue
         }
         $freshBundle = Get-ValidatedReleaseBundle -Directory $candidatePath
@@ -347,7 +455,7 @@ function Copy-ReleaseToMirror {
             $mirror = Assert-SafeReleaseRoot -Path $mirror -MustExist
             $mirrorWithSeparator = $mirror + [System.IO.Path]::DirectorySeparatorChar
             $partialItem = Get-Item -LiteralPath $partialFull -Force
-            if (($partialItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -eq 0 -and
+            if ((Test-FinDoneReparsePointAllowed -Item $partialItem) -and
                 $partialFull.StartsWith($mirrorWithSeparator, [StringComparison]::OrdinalIgnoreCase) -and
                 (Split-Path -Parent $partialFull) -eq $mirror -and
                 (Split-Path -Leaf $partialFull) -like '.findone-partial-*') {
@@ -639,7 +747,7 @@ try {
             $dist = Assert-SafeReleaseRoot -Path $dist -MustExist
             $distWithSeparator = $dist + [System.IO.Path]::DirectorySeparatorChar
             $stagingItem = Get-Item -LiteralPath $stagingFull -Force
-            if (($stagingItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -eq 0 -and
+            if ((Test-FinDoneReparsePointAllowed -Item $stagingItem) -and
                 $stagingFull.StartsWith($distWithSeparator, [StringComparison]::OrdinalIgnoreCase) -and
                 (Split-Path -Parent $stagingFull) -eq $dist -and
                 (Split-Path -Leaf $stagingFull) -like '.findone-partial-*') {

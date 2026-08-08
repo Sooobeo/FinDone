@@ -69,13 +69,15 @@ mirror가 필요 없으면 `-MirrorRoot`를 생략합니다. 설정만 저장하
 자동화는 각 release root 바로 아래에서 다음 조건을 모두 만족하는 디렉터리만 오래된 릴리스로 삭제할 수 있습니다.
 
 - 이름이 엄격한 `findone-<version>-<timestamp>[-<commit>]` 형식
-- release root 자체가 drive root, reparse point, junction 또는 symlink가 아님
-- reparse point, symlink, junction이 아님
+- release root 자체가 drive root가 아니며, 일반 디렉터리 또는 Microsoft Cloud reparse point임
+- release 디렉터리도 일반 디렉터리 또는 Microsoft Cloud reparse point임
 - 바로 아래에 APK, `release-manifest.json`, `SHA256SUMS.txt` 세 파일만 존재
 - application ID가 `com.findone.app`
 - manifest와 checksum의 SHA-256이 실제 APK와 일치
 
-그 밖의 파일과 폴더, 인식할 수 없는 `findone-*` 폴더는 보존합니다. 삭제 직전에 root와 candidate의 실제 parent·경로·reparse 속성·bundle checksum을 다시 확인하며, 열거 이후 바뀐 항목은 삭제하지 않습니다. 새 릴리스가 완전히 빌드되고 검증된 뒤에만 로컬 retention을 수행합니다. mirror는 `.findone-release-root.json` 안전 marker가 있는 경우에만 복사하고, 복사가 완성된 뒤에만 mirror retention을 수행합니다.
+OneDrive Files On-Demand가 root나 하위 폴더에 붙이는 Microsoft Cloud 계열 tag만 예외로 허용합니다. Windows API로 실제 reparse tag를 읽어 `(tag & 0xFFFF0FFF) == 0x9000001A`인지 검사하며, `LinkType`이 비어 있다는 이유만으로 허용하지 않습니다. symlink, junction, mount point와 그 밖의 알 수 없는 reparse tag는 계속 거부합니다.
+
+그 밖의 파일과 폴더, 인식할 수 없는 `findone-*` 폴더는 보존합니다. 삭제 직전에 root와 candidate의 실제 parent·경로·reparse tag·bundle checksum을 다시 확인하며, 열거 이후 바뀐 항목은 삭제하지 않습니다. 새 릴리스가 완전히 빌드되고 검증된 뒤에만 로컬 retention을 수행합니다. mirror는 `.findone-release-root.json` 안전 marker가 있는 경우에만 복사하고, 복사가 완성된 뒤에만 mirror retention을 수행합니다.
 
 보관 개수는 의도적으로 2로 고정되어 현재 릴리스와 직전 릴리스만 남습니다.
 
