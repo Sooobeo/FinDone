@@ -100,6 +100,15 @@ data class ElementProgress(
     val lastAttemptAt: Long,
 )
 
+data class ConceptNote(
+    val id: Long,
+    val elementId: String,
+    val title: String,
+    val body: String,
+    val createdAt: Long,
+    val updatedAt: Long,
+)
+
 class UserRepository(context: Context) {
     private val databaseContext = context.applicationContext
     private val helper: UserDatabase
@@ -319,6 +328,111 @@ class UserRepository(context: Context) {
         }
     }
 
+    fun conceptNotes(elementId: String): List<ConceptNote> = buildList {
+        val validatedElementId = requireConceptNoteElementId(elementId)
+        helper.readableDatabase.rawQuery(
+            """SELECT id, element_id, title, body, created_at, updated_at
+               FROM concept_notes
+               WHERE element_id = ?
+               ORDER BY updated_at DESC, id DESC""".trimIndent(),
+            arrayOf(validatedElementId),
+        ).use { cursor ->
+            while (cursor.moveToNext()) {
+                add(
+                    ConceptNote(
+                        id = cursor.getLong(0),
+                        elementId = cursor.getString(1),
+                        title = cursor.getString(2),
+                        body = cursor.getString(3),
+                        createdAt = cursor.getLong(4),
+                        updatedAt = cursor.getLong(5),
+                    )
+                )
+            }
+        }
+    }
+
+    fun addConceptNote(elementId: String, title: String, body: String): ConceptNote {
+        val draft = normalizeConceptNoteDraft(elementId, title, body)
+        val now = System.currentTimeMillis()
+        val db = helper.writableDatabase
+        return db.inTransaction {
+            require(rowCount(db, "concept_notes") < MAX_CONCEPT_NOTES) {
+                "개인 메모가 전체 허용량을 넘습니다. 오래된 메모를 삭제한 뒤 다시 시도하세요."
+            }
+            val elementNoteCount = db.rawQuery(
+                "SELECT COUNT(*) FROM concept_notes WHERE element_id = ?",
+                arrayOf(draft.elementId),
+            ).use { cursor ->
+                check(cursor.moveToFirst()) { "학습요소 메모 수를 읽지 못했습니다." }
+                cursor.getInt(0)
+            }
+            require(elementNoteCount < MAX_CONCEPT_NOTES_PER_ELEMENT) {
+                "이 학습요소의 개인 메모가 허용량을 넘습니다. 오래된 메모를 삭제한 뒤 다시 시도하세요."
+            }
+            requireConceptNoteTextBudget(
+                storedConceptNoteTextBytes(db) + conceptNoteUtf8Bytes(draft.title, draft.body)
+            )
+            val id = db.insertOrThrow("concept_notes", null, ContentValues().apply {
+                put("element_id", draft.elementId)
+                put("title", draft.title)
+                put("body", draft.body)
+                put("created_at", now)
+                put("updated_at", now)
+            })
+            ConceptNote(id, draft.elementId, draft.title, draft.body, now, now)
+        }
+    }
+
+    fun updateConceptNote(id: Long, elementId: String, title: String, body: String): Boolean {
+        require(id > 0) { "메모 ID가 올바르지 않습니다." }
+        val draft = normalizeConceptNoteDraft(elementId, title, body)
+        val db = helper.writableDatabase
+        return db.inTransaction {
+            val previous = db.rawQuery(
+                "SELECT title, body, updated_at FROM concept_notes WHERE id = ? AND element_id = ?",
+                arrayOf(id.toString(), draft.elementId),
+            ).use { cursor ->
+                if (!cursor.moveToFirst()) null else Triple(
+                    cursor.getString(0),
+                    cursor.getString(1),
+                    cursor.getLong(2),
+                )
+            }
+                ?: return@inTransaction false
+            val previousUpdatedAt = previous.third
+            val proposedTextBytes = storedConceptNoteTextBytes(db) -
+                conceptNoteUtf8Bytes(previous.first, previous.second) +
+                conceptNoteUtf8Bytes(draft.title, draft.body)
+            requireConceptNoteTextBudget(proposedTextBytes)
+            val nextUpdatedAt = if (previousUpdatedAt == Long.MAX_VALUE) {
+                Long.MAX_VALUE
+            } else {
+                maxOf(System.currentTimeMillis(), previousUpdatedAt + 1)
+            }
+            db.update(
+                "concept_notes",
+                ContentValues().apply {
+                    put("title", draft.title)
+                    put("body", draft.body)
+                    put("updated_at", nextUpdatedAt)
+                },
+                "id = ? AND element_id = ?",
+                arrayOf(id.toString(), draft.elementId),
+            ) == 1
+        }
+    }
+
+    fun deleteConceptNote(id: Long, elementId: String): Boolean {
+        require(id > 0) { "메모 ID가 올바르지 않습니다." }
+        val validatedElementId = requireConceptNoteElementId(elementId)
+        return helper.writableDatabase.delete(
+            "concept_notes",
+            "id = ? AND element_id = ?",
+            arrayOf(id.toString(), validatedElementId),
+        ) == 1
+    }
+
     /** Latest retained wrong attempt per learning element, newest first. */
     fun recentWrong(limit: Int = MAX_RECENT_WRONG_ROWS): List<AttemptRecord> =
         recentWrongForScope(null, limit)
@@ -423,6 +537,7 @@ class UserRepository(context: Context) {
         val db = helper.writableDatabase
         db.beginTransaction()
         try {
+            // Personal notes are authored content, so resetting quiz history deliberately preserves them.
             listOf("attempts", "bookmarks", "wrong_queue", "element_progress").forEach { db.delete(it, null, null) }
             db.setTransactionSuccessful()
         } finally {
@@ -437,6 +552,7 @@ class UserRepository(context: Context) {
         val payload = db.inTransaction {
             maintainBoundedUserHistory(db)
             requireBackupRowCounts(backupRowCounts(db))
+            requireConceptNoteTextBudget(storedConceptNoteTextBytes(db))
             JSONObject().apply {
                 put("schemaVersion", USER_DB_VERSION)
                 put("exportedAt", System.currentTimeMillis())
@@ -444,6 +560,7 @@ class UserRepository(context: Context) {
                 put("bookmarks", tableAsJson(db, "bookmarks"))
                 put("wrongQueue", tableAsJson(db, "wrong_queue"))
                 put("elementProgress", tableAsJson(db, "element_progress"))
+                put("conceptNotes", tableAsJson(db, "concept_notes"))
                 put("settings", tableAsJson(db, "settings"))
             }
         }
@@ -466,18 +583,22 @@ class UserRepository(context: Context) {
         val envelope = JSONObject(envelopeBytes.toString(Charsets.UTF_8))
         val format = envelope.getString("format")
         require(
-            format == BACKUP_FORMAT || format == SCHEMA_2_BACKUP_FORMAT || format == LEGACY_BACKUP_FORMAT
+            format == BACKUP_FORMAT || format == SCHEMA_3_BACKUP_FORMAT ||
+                format == SCHEMA_2_BACKUP_FORMAT || format == LEGACY_BACKUP_FORMAT
         ) { "지원하지 않는 백업 형식입니다." }
+        val backupContainsConceptNotes = backupFormatIncludesConceptNotes(format)
         val payloadText = envelope.getString("payload")
         val actualHash = sha256(payloadText.toByteArray(Charsets.UTF_8))
         require(actualHash == envelope.getString("sha256")) { "백업 파일의 무결성 검증에 실패했습니다." }
         val rawPayload = JSONObject(payloadText)
         val payload = when {
             format == BACKUP_FORMAT && rawPayload.getInt("schemaVersion") == USER_DB_VERSION -> rawPayload
+            format == SCHEMA_3_BACKUP_FORMAT && rawPayload.getInt("schemaVersion") == 3 ->
+                migrateSchema3Backup(rawPayload)
             format == SCHEMA_2_BACKUP_FORMAT && rawPayload.getInt("schemaVersion") == 2 ->
-                migrateSchema2Backup(rawPayload)
+                migrateSchema3Backup(migrateSchema2Backup(rawPayload))
             format == LEGACY_BACKUP_FORMAT && rawPayload.getInt("schemaVersion") == 1 ->
-                migrateSchema2Backup(migrateLegacyBackup(rawPayload))
+                migrateSchema3Backup(migrateSchema2Backup(migrateLegacyBackup(rawPayload)))
             else -> throw IllegalArgumentException("지원하지 않는 사용자 DB 버전입니다.")
         }
 
@@ -485,6 +606,7 @@ class UserRepository(context: Context) {
         val bookmarks = payload.getJSONArray("bookmarks")
         val wrongQueue = payload.getJSONArray("wrongQueue")
         val elementProgress = payload.getJSONArray("elementProgress")
+        val conceptNotes = payload.getJSONArray("conceptNotes")
         val settings = payload.getJSONArray("settings")
         requireBackupRowCounts(
             BackupRowCounts(
@@ -493,19 +615,27 @@ class UserRepository(context: Context) {
                 wrongQueue = wrongQueue.length(),
                 elementProgress = elementProgress.length(),
                 settings = settings.length(),
+                conceptNotes = conceptNotes.length(),
             )
         )
 
         val db = helper.writableDatabase
         db.beginTransaction()
         try {
-            val mappings = listOf(
-                Triple("attempts", attempts, ATTEMPT_COLUMNS),
-                Triple("bookmarks", bookmarks, BOOKMARK_COLUMNS),
-                Triple("wrong_queue", wrongQueue, WRONG_QUEUE_COLUMNS),
-                Triple("element_progress", elementProgress, PROGRESS_COLUMNS),
-                Triple("settings", settings, SETTING_COLUMNS),
-            )
+            val conceptNoteCountsByElement = mutableMapOf<String, Int>()
+            var importedConceptNoteTextBytes = 0L
+            val mappings = buildList {
+                add(Triple("attempts", attempts, ATTEMPT_COLUMNS))
+                add(Triple("bookmarks", bookmarks, BOOKMARK_COLUMNS))
+                add(Triple("wrong_queue", wrongQueue, WRONG_QUEUE_COLUMNS))
+                add(Triple("element_progress", elementProgress, PROGRESS_COLUMNS))
+                // Backups before schema 4 could not contain notes. Restoring one must not silently
+                // erase notes authored after the backup format was created.
+                if (backupContainsConceptNotes) {
+                    add(Triple("concept_notes", conceptNotes, CONCEPT_NOTE_COLUMNS))
+                }
+                add(Triple("settings", settings, SETTING_COLUMNS))
+            }
             mappings.forEach { (table, rows, allowedColumns) ->
                 db.delete(table, null, null)
                 for (index in 0 until rows.length()) {
@@ -514,6 +644,19 @@ class UserRepository(context: Context) {
                         "$table 백업의 열 구성이 현재 schema와 다릅니다."
                     }
                     validateBackupRow(table, row)
+                    if (table == "concept_notes") {
+                        val elementId = row.getString("element_id")
+                        val count = conceptNoteCountsByElement.getOrDefault(elementId, 0) + 1
+                        require(count <= MAX_CONCEPT_NOTES_PER_ELEMENT) {
+                            "$elementId 개인 메모가 학습요소별 허용량을 넘습니다."
+                        }
+                        conceptNoteCountsByElement[elementId] = count
+                        importedConceptNoteTextBytes += conceptNoteUtf8Bytes(
+                            row.getString("title"),
+                            row.getString("body"),
+                        )
+                        requireConceptNoteTextBudget(importedConceptNoteTextBytes)
+                    }
                     val values = ContentValues()
                     row.keys().forEach { key ->
                         // Never trust a serialized FK merely because the target ID exists. Rebuild
@@ -535,6 +678,7 @@ class UserRepository(context: Context) {
             }
             maintainBoundedUserHistory(db)
             requireBackupRowCounts(backupRowCounts(db))
+            requireConceptNoteTextBudget(storedConceptNoteTextBytes(db))
             db.setTransactionSuccessful()
         } finally {
             db.endTransaction()
@@ -660,6 +804,13 @@ class UserRepository(context: Context) {
             )]
             row.put("last_attempt_id", attemptId ?: JSONObject.NULL)
         }
+        payload.put("schemaVersion", 3)
+        return payload
+    }
+
+    /** Adds the schema-4 personal-note collection while retaining every schema-3 row unchanged. */
+    private fun migrateSchema3Backup(payload: JSONObject): JSONObject {
+        payload.put("conceptNotes", JSONArray())
         payload.put("schemaVersion", USER_DB_VERSION)
         return payload
     }
@@ -719,6 +870,15 @@ class UserRepository(context: Context) {
                 val streak = row.requiredInt("current_streak", 0)
                 require(correct <= attempts && streak <= attempts) { "진도 집계가 서로 일치하지 않습니다." }
                 row.requiredLong("last_attempt_at", 0)
+            }
+            "concept_notes" -> {
+                row.requiredLong("id", 1)
+                row.requireElementId()
+                row.requiredText("title", CONCEPT_NOTE_TITLE_MAX_LENGTH)
+                row.requiredText("body", CONCEPT_NOTE_BODY_MAX_LENGTH)
+                val createdAt = row.requiredLong("created_at", 0)
+                val updatedAt = row.requiredLong("updated_at", createdAt)
+                require(updatedAt >= createdAt) { "메모 수정 시간이 생성 시간보다 빠릅니다." }
             }
             "settings" -> {
                 row.requiredText("key", 100)
@@ -889,6 +1049,7 @@ internal data class BackupRowCounts(
     val wrongQueue: Int,
     val elementProgress: Int,
     val settings: Int,
+    val conceptNotes: Int = 0,
 )
 
 /** The exact same bounded row policy is applied before export and before import. */
@@ -898,6 +1059,7 @@ internal fun requireBackupRowCounts(counts: BackupRowCounts) {
     require(counts.wrongQueue <= MAX_WRONG_QUEUE) { "오답 큐가 허용량을 넘습니다." }
     require(counts.elementProgress <= MAX_PROGRESS_ROWS) { "진도 행이 허용량을 넘습니다." }
     require(counts.settings <= MAX_SETTINGS) { "설정 행이 허용량을 넘습니다." }
+    require(counts.conceptNotes <= MAX_CONCEPT_NOTES) { "개인 메모가 허용량을 넘습니다." }
 }
 
 /** Conservatively merges schema-1 rows whose session-specific IDs now share one template ID. */
@@ -913,6 +1075,50 @@ internal fun mergeMigratingWrongRows(rows: List<MigratingWrongRow>): List<Migrat
     }
 
 private val ELEMENT_ID_PATTERN = Regex("^(ACC|CF|INV|FI|DER|EQV|IBT)-\\d{2}$")
+
+internal data class NormalizedConceptNoteDraft(
+    val elementId: String,
+    val title: String,
+    val body: String,
+)
+
+internal fun requireConceptNoteElementId(elementId: String): String = elementId.also {
+    require(ELEMENT_ID_PATTERN.matches(it)) { "학습요소 ID 형식이 올바르지 않습니다." }
+}
+
+internal fun backupFormatIncludesConceptNotes(format: String): Boolean = format == BACKUP_FORMAT
+
+internal fun conceptNoteUtf8Bytes(title: String, body: String): Long =
+    title.toByteArray(Charsets.UTF_8).size.toLong() + body.toByteArray(Charsets.UTF_8).size.toLong()
+
+internal fun requireConceptNoteTextBudget(byteCount: Long) {
+    require(byteCount in 0..MAX_CONCEPT_NOTE_TEXT_BYTES) {
+        "개인 메모 내용이 전체 ${MAX_CONCEPT_NOTE_TEXT_BYTES / (1024 * 1024)}MB 허용량을 넘습니다. " +
+            "오래된 메모를 삭제한 뒤 다시 시도하세요."
+    }
+}
+
+internal fun normalizeConceptNoteDraft(
+    elementId: String,
+    title: String,
+    body: String,
+): NormalizedConceptNoteDraft {
+    val normalizedTitle = title.trim()
+    val normalizedBody = body.trim()
+    require(normalizedTitle.isNotEmpty()) { "메모 제목을 입력해 주세요." }
+    require(normalizedTitle.length <= CONCEPT_NOTE_TITLE_MAX_LENGTH) {
+        "메모 제목은 ${CONCEPT_NOTE_TITLE_MAX_LENGTH}자 이하여야 합니다."
+    }
+    require(normalizedBody.isNotEmpty()) { "메모 내용을 입력해 주세요." }
+    require(normalizedBody.length <= CONCEPT_NOTE_BODY_MAX_LENGTH) {
+        "메모 내용은 ${CONCEPT_NOTE_BODY_MAX_LENGTH}자 이하여야 합니다."
+    }
+    return NormalizedConceptNoteDraft(
+        elementId = requireConceptNoteElementId(elementId),
+        title = normalizedTitle,
+        body = normalizedBody,
+    )
+}
 
 private fun JSONObject.requiredText(key: String, maxLength: Int, allowBlank: Boolean = false): String {
     val value = get(key)
@@ -1013,6 +1219,17 @@ private fun rowCount(db: SQLiteDatabase, table: String): Int {
     }
 }
 
+private fun storedConceptNoteTextBytes(db: SQLiteDatabase): Long = db.rawQuery(
+    """SELECT COALESCE(
+           SUM(length(CAST(title AS BLOB)) + length(CAST(body AS BLOB))),
+           0
+       ) FROM concept_notes""".trimIndent(),
+    null,
+).use { cursor ->
+    check(cursor.moveToFirst()) { "개인 메모 용량을 읽지 못했습니다." }
+    cursor.getLong(0).also { require(it >= 0) { "개인 메모 용량이 올바르지 않습니다." } }
+}
+
 private fun requireTableRowsAtMost(
     db: SQLiteDatabase,
     table: String,
@@ -1044,6 +1261,7 @@ private fun backupRowCounts(db: SQLiteDatabase): BackupRowCounts = BackupRowCoun
     wrongQueue = rowCount(db, "wrong_queue"),
     elementProgress = rowCount(db, "element_progress"),
     settings = rowCount(db, "settings"),
+    conceptNotes = rowCount(db, "concept_notes"),
 )
 
 /**
@@ -1238,6 +1456,23 @@ private fun createSchema3Indexes(db: SQLiteDatabase) {
     )
 }
 
+internal fun schema4MigrationStatements(): List<String> = listOf(
+    """CREATE TABLE IF NOT EXISTS concept_notes(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        element_id TEXT NOT NULL,
+        title TEXT NOT NULL CHECK(length(trim(title)) BETWEEN 1 AND $CONCEPT_NOTE_TITLE_MAX_LENGTH),
+        body TEXT NOT NULL CHECK(length(trim(body)) BETWEEN 1 AND $CONCEPT_NOTE_BODY_MAX_LENGTH),
+        created_at INTEGER NOT NULL CHECK(created_at >= 0),
+        updated_at INTEGER NOT NULL CHECK(updated_at >= created_at)
+    )""".trimIndent(),
+    """CREATE INDEX IF NOT EXISTS concept_notes_element_updated_idx
+       ON concept_notes(element_id, updated_at DESC, id DESC)""".trimIndent(),
+)
+
+private fun createSchema4(db: SQLiteDatabase) {
+    schema4MigrationStatements().forEach(db::execSQL)
+}
+
 private class UserDatabase(context: Context) : SQLiteOpenHelper(
     context,
     USER_DB_NAME,
@@ -1307,11 +1542,13 @@ private class UserDatabase(context: Context) : SQLiteOpenHelper(
         )
         db.execSQL("CREATE TABLE settings(key TEXT PRIMARY KEY, value TEXT NOT NULL)")
         createSchema3Indexes(db)
+        createSchema4(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if (oldVersion < 2) migrateToSchema2(db)
         if (oldVersion < 3) migrateToSchema3(db)
+        if (oldVersion < 4) createSchema4(db)
     }
 
     private fun migrateToSchema2(db: SQLiteDatabase) {
@@ -1483,9 +1720,10 @@ private class UserDatabase(context: Context) : SQLiteOpenHelper(
     }
 }
 
-private const val USER_DB_VERSION = 3
+private const val USER_DB_VERSION = 4
 private const val USER_DB_NAME = "user.sqlite3"
-private const val BACKUP_FORMAT = "findone-user-backup-v4"
+private const val BACKUP_FORMAT = "findone-user-backup-v5"
+private const val SCHEMA_3_BACKUP_FORMAT = "findone-user-backup-v4"
 private const val SCHEMA_2_BACKUP_FORMAT = "findone-user-backup-v3"
 private const val LEGACY_BACKUP_FORMAT = "findone-user-backup-v2"
 private const val MAX_BACKUP_BYTES = 25 * 1024 * 1024
@@ -1494,13 +1732,20 @@ private const val MAX_BOOKMARKS = 10_000
 private const val MAX_WRONG_QUEUE = 2_000
 private const val MAX_PROGRESS_ROWS = 135
 private const val MAX_SETTINGS = 100
+private const val MAX_CONCEPT_NOTES = 10_000
+private const val MAX_CONCEPT_NOTES_PER_ELEMENT = 100
+internal const val MAX_CONCEPT_NOTE_TEXT_BYTES = 3L * 1024 * 1024
+internal const val CONCEPT_NOTE_TITLE_MAX_LENGTH = 120
+internal const val CONCEPT_NOTE_BODY_MAX_LENGTH = 20_000
 private const val MAX_RECENT_ATTEMPTS_PER_ELEMENT = 20
 private const val MAX_RECENT_ATTEMPTS_TOTAL = 2_000
 private const val MAX_RECENT_WRONG_ROWS = 135
 private const val MAX_RECENT_BOOKMARK_ROWS = 100
 private const val MAX_AUTO_BOOKMARKS_PER_ELEMENT = 10
 private const val MAX_RESOLVED_WRONG_QUEUE_ROWS = 135
-private val USER_DATA_TABLES = setOf("attempts", "bookmarks", "wrong_queue", "element_progress", "settings")
+private val USER_DATA_TABLES = setOf(
+    "attempts", "bookmarks", "wrong_queue", "element_progress", "concept_notes", "settings",
+)
 private val USER_KEYED_TABLES = setOf("element_progress" to "element_id", "settings" to "key")
 private val ATTEMPT_COLUMNS = setOf(
     "id", "instance_id", "element_id", "template_id", "mode", "presentation", "seed", "prompt",
@@ -1518,4 +1763,5 @@ private val WRONG_QUEUE_COLUMNS = setOf(
 private val SCHEMA_2_WRONG_QUEUE_COLUMNS = WRONG_QUEUE_COLUMNS - "last_attempt_id"
 private val LEGACY_WRONG_QUEUE_COLUMNS = SCHEMA_2_WRONG_QUEUE_COLUMNS - setOf("mode", "presentation")
 private val PROGRESS_COLUMNS = setOf("element_id", "attempts", "correct", "current_streak", "last_attempt_at")
+private val CONCEPT_NOTE_COLUMNS = setOf("id", "element_id", "title", "body", "created_at", "updated_at")
 private val SETTING_COLUMNS = setOf("key", "value")

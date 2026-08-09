@@ -9,8 +9,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +29,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -119,6 +120,7 @@ import com.findone.app.quiz.QuizMode
 import com.findone.app.quiz.QuizPresentation
 import com.findone.app.quiz.QuizQuestion
 import com.findone.app.ui.BrandHeader
+import com.findone.app.ui.ConceptNotesSection
 import com.findone.app.ui.DomainBadge
 import com.findone.app.ui.MarkdownText
 import com.findone.app.ui.OfflineBanner
@@ -127,6 +129,7 @@ import com.findone.app.ui.SectionTitle
 import com.findone.app.ui.StatCard
 import com.findone.app.ui.UpdateLandingScreen
 import com.findone.app.ui.domainAccent
+import com.findone.app.ui.safeMathMarkdown
 import com.findone.app.ui.theme.FinDoneTheme
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
@@ -492,7 +495,13 @@ private fun ElementRow(element: ContentElement, vm: AppViewModel, onClick: () ->
                     }
                 }
                 Text(element.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                Text(element.coreRelation, maxLines = 2, overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                MarkdownText(
+                    markdown = safeMathMarkdown(element.coreRelation),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    linksEnabled = false,
+                )
             }
             Spacer(Modifier.width(8.dp))
             Icon(Icons.Outlined.ChevronRight, contentDescription = "상세 보기")
@@ -561,6 +570,17 @@ private fun ElementDetailScreen(vm: AppViewModel) {
         }
         item {
             LearningMarkdownCard("학습 체크리스트", element.checklistMarkdown)
+        }
+        item(key = "concept-notes-${element.id}") {
+            ConceptNotesSection(
+                elementId = element.id,
+                notes = vm.conceptNotes,
+                errorMessage = vm.conceptNoteError,
+                onDismissError = vm::clearConceptNoteError,
+                onAdd = vm::addConceptNote,
+                onUpdate = vm::updateConceptNote,
+                onDelete = vm::deleteConceptNote,
+            )
         }
         item {
             OutlinedCard {
@@ -634,8 +654,11 @@ private fun QuizSetupScreen(vm: AppViewModel) {
             )
         }
         item { SectionTitle("학습 모드") }
-        items(QuizTrack.entries, key = { it.name }) { track ->
-            TrackCard(track, selected = vm.selectedTrack == track) { vm.setQuizTrack(track) }
+        item {
+            LearningModePicker(
+                selectedTrack = vm.selectedTrack,
+                onTrackSelected = vm::setQuizTrack,
+            )
         }
         item { SectionTitle("분야") }
         item {
@@ -692,6 +715,54 @@ private fun QuizSetupScreen(vm: AppViewModel) {
 }
 
 @Composable
+private fun LearningModePicker(
+    selectedTrack: QuizTrack,
+    onTrackSelected: (QuizTrack) -> Unit,
+) {
+    val listState = rememberLazyListState(
+        initialFirstVisibleItemIndex = QuizTrack.entries.indexOf(selectedTrack).coerceAtLeast(0),
+    )
+    OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+        Column {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(horizontal = 14.dp, vertical = 11.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    "${QuizTrack.entries.size}개 모드",
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f),
+                )
+                Text(
+                    "위아래로 스크롤해 선택",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            HorizontalDivider()
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth().height(350.dp).selectableGroup(),
+                state = listState,
+                contentPadding = PaddingValues(12.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                items(QuizTrack.entries, key = { it.name }) { track ->
+                    TrackCard(
+                        track = track,
+                        selected = selectedTrack == track,
+                        onClick = { onTrackSelected(track) },
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
 private fun TrackCard(track: QuizTrack, selected: Boolean, onClick: () -> Unit) {
     val icon = when (track) {
         QuizTrack.DOMAIN -> Icons.AutoMirrored.Outlined.MenuBook
@@ -703,7 +774,13 @@ private fun TrackCard(track: QuizTrack, selected: Boolean, onClick: () -> Unit) 
         QuizTrack.BOOKMARK -> Icons.Outlined.Bookmark
     }
     OutlinedCard(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
+        modifier = Modifier
+            .fillMaxWidth()
+            .selectable(
+                selected = selected,
+                role = Role.RadioButton,
+                onClick = onClick,
+            ),
         colors = CardDefaults.outlinedCardColors(
             containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
         ),
@@ -715,7 +792,7 @@ private fun TrackCard(track: QuizTrack, selected: Boolean, onClick: () -> Unit) 
                 Text(track.displayTitle(), fontWeight = FontWeight.Bold)
                 Text(track.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            if (selected) Icon(Icons.Outlined.CheckCircle, contentDescription = "선택됨", tint = MaterialTheme.colorScheme.primary)
+            if (selected) Icon(Icons.Outlined.CheckCircle, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
         }
     }
 }
@@ -902,11 +979,17 @@ private fun QuizQuestionCard(
                 }
             } else {
                 Text("문제", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+                val questionElement = vm.allElements.firstOrNull { it.id == question.elementId }
                 val prompt = if (oral) {
-                    val title = vm.allElements.firstOrNull { it.id == question.elementId }?.title ?: question.elementId
+                    val title = questionElement?.title ?: question.elementId
                     "‘$title’를 정의·핵심 관계·가정·금융권 실무 해석 순서로 30~60초 동안 설명하세요."
                 } else {
-                    question.prompt.financeCareerCopy()
+                    question.prompt.financeCareerCopy().let { rawPrompt ->
+                        questionElement?.coreRelation
+                            ?.takeIf(rawPrompt::contains)
+                            ?.let { relation -> rawPrompt.replace(relation, safeMathMarkdown(relation)) }
+                            ?: rawPrompt
+                    }
                 }
                 MarkdownText(
                     markdown = prompt,
@@ -1305,7 +1388,7 @@ private fun DataSettingsCard(
             Column(Modifier.padding(17.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("앱 정보", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Text("FinDone ${BuildConfig.VERSION_NAME} · 개인 Android 사이드로드")
-                Text("콘텐츠 DB v${vm.contentManifest?.contentDbVersion ?: "-"} · 사용자 DB schema 3")
+                Text("콘텐츠 DB v${vm.contentManifest?.contentDbVersion ?: "-"} · 사용자 DB schema 4")
                 Text("특정 학회 공식 기출이 아닌 자체 제작 문제입니다. 실시간 투자정보나 투자 조언을 제공하지 않습니다.", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 HorizontalDivider()
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1365,7 +1448,7 @@ private fun userAnswerSummary(question: QuizQuestion, userAnswer: String): Strin
 }
 
 private fun explanationMarkdown(label: String, value: String): String = when (label) {
-    "수식", "숫자 대입" -> if ('$' in value || '`' in value) value else "`${value.replace("`", "\\`")}`"
+    "수식", "숫자 대입" -> safeMathMarkdown(value)
     "정답" -> if ('*' in value) value else "**$value**"
     else -> value
 }

@@ -128,6 +128,7 @@ class UserMigrationTest {
                 wrongQueue = 2_000,
                 elementProgress = 135,
                 settings = 100,
+                conceptNotes = 10_000,
             )
         )
 
@@ -145,6 +146,11 @@ class UserMigrationTest {
         }
         assertThrows(IllegalArgumentException::class.java) {
             requireBackupRowCounts(BackupRowCounts(0, 0, 0, 0, 101))
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            requireBackupRowCounts(
+                BackupRowCounts(0, 0, 0, 0, 0, conceptNotes = 10_001)
+            )
         }
     }
 

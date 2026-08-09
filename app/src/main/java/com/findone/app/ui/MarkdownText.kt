@@ -1,6 +1,7 @@
 package com.findone.app.ui
 
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.util.TypedValue
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ private val latexExecutor = Executors.newFixedThreadPool(2) { runnable ->
 
 private val blockOrInlineLatex = Regex("""(?s)\$\$(.+?)\$\$""")
 private val singleDollarLatex = Regex("""(?<!\$)\$([^$\n]+?)\$(?!\$)""")
+private data class MarkdownRenderKey(val markdown: String, val textSizePx: Float, val textColor: Int)
 
 /**
  * Renders CommonMark and LaTeX without a WebView.
@@ -46,7 +48,10 @@ fun MarkdownText(
     modifier: Modifier = Modifier,
     style: TextStyle = LocalTextStyle.current,
     color: Color = LocalContentColor.current,
+    maxLines: Int = Int.MAX_VALUE,
+    linksEnabled: Boolean = true,
 ) {
+    require(maxLines > 0) { "maxLines must be greater than zero." }
     val context = LocalContext.current
     val density = LocalDensity.current
     val resolvedStyle = LocalTextStyle.current.merge(style)
@@ -75,6 +80,7 @@ fun MarkdownText(
     val latexAccessibilityText = remember(markdown) {
         if (containsLatex(markdown)) markdownAccessibilityText(markdown) else null
     }
+    val renderKey = MarkdownRenderKey(normalizedMarkdown, textSizePx, textColor)
 
     AndroidView(
         modifier = modifier.fillMaxWidth(),
@@ -85,8 +91,6 @@ fun MarkdownText(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                 )
                 includeFontPadding = false
-                linksClickable = true
-                movementMethod = LinkMovementMethod.getInstance()
                 highlightColor = android.graphics.Color.TRANSPARENT
             }
         },
@@ -94,6 +98,12 @@ fun MarkdownText(
             textView.setTextColor(textColor)
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizePx)
             textView.setLineSpacing(max(0f, lineHeightPx - textSizePx), 1f)
+            textView.maxLines = maxLines
+            textView.ellipsize = if (maxLines == Int.MAX_VALUE) null else TextUtils.TruncateAt.END
+            textView.linksClickable = linksEnabled
+            textView.movementMethod = if (linksEnabled) LinkMovementMethod.getInstance() else null
+            textView.isClickable = linksEnabled
+            if (!linksEnabled) textView.isLongClickable = false
             textView.contentDescription = latexAccessibilityText
             textView.setTypeface(
                 Typeface.DEFAULT,
@@ -103,7 +113,10 @@ fun MarkdownText(
                     Typeface.NORMAL
                 },
             )
-            markdownRenderer.setMarkdown(textView, normalizedMarkdown)
+            if (textView.tag != renderKey) {
+                markdownRenderer.setMarkdown(textView, normalizedMarkdown)
+                textView.tag = renderKey
+            }
         },
     )
 }
@@ -195,59 +208,181 @@ private fun speakLatex(latex: String): String {
         .trim()
 }
 
-private fun normalizeInlineLatex(markdown: String): String {
+private data class MarkdownFence(val marker: Char, val minimumLength: Int)
+
+private data class MarkdownFenceRun(
+    val marker: Char,
+    val length: Int,
+    val remainderIsBlank: Boolean,
+)
+
+/**
+ * Converts standard single-dollar inline math to Markwon's double-dollar inline syntax.
+ *
+ * The scanner deliberately leaves fenced code, inline code spans, escaped dollar signs,
+ * native `$$...$$`, and delimiter-only block math untouched. Malformed or unclosed input is
+ * preserved instead of guessing where a formula ends.
+ */
+internal fun normalizeInlineLatex(markdown: String): String {
     if ('$' !in markdown) return markdown
 
     val output = StringBuilder(markdown.length + 16)
+    var lineStart = 0
+    var fencedCode: MarkdownFence? = null
+    var blockLatex = false
+    while (lineStart < markdown.length) {
+        val newlineIndex = markdown.indexOf('\n', lineStart)
+        val lineEnd = if (newlineIndex >= 0) newlineIndex else markdown.length
+        val contentEnd = if (lineEnd > lineStart && markdown[lineEnd - 1] == '\r') {
+            lineEnd - 1
+        } else {
+            lineEnd
+        }
+        val line = markdown.substring(lineStart, contentEnd)
+        val lineEnding = when {
+            newlineIndex < 0 -> ""
+            contentEnd < lineEnd -> "\r\n"
+            else -> "\n"
+        }
+        val fenceRun = markdownFenceRun(line)
+
+        when {
+            fencedCode != null -> {
+                output.append(line)
+                if (
+                    fenceRun != null &&
+                    fenceRun.marker == fencedCode.marker &&
+                    fenceRun.length >= fencedCode.minimumLength &&
+                    fenceRun.remainderIsBlank
+                ) {
+                    fencedCode = null
+                }
+            }
+            blockLatex -> {
+                output.append(line)
+                if (line.trim() == "$$") blockLatex = false
+            }
+            fenceRun != null -> {
+                output.append(line)
+                fencedCode = MarkdownFence(fenceRun.marker, fenceRun.length)
+            }
+            line.trim() == "$$" -> {
+                output.append(line)
+                blockLatex = true
+            }
+            else -> output.append(normalizeInlineLatexLine(line))
+        }
+        output.append(lineEnding)
+        lineStart = if (newlineIndex >= 0) newlineIndex + 1 else markdown.length
+    }
+    return output.toString()
+}
+
+private fun markdownFenceRun(line: String): MarkdownFenceRun? {
+    var markerIndex = 0
+    while (markerIndex < line.length && markerIndex < 4 && line[markerIndex] == ' ') {
+        markerIndex += 1
+    }
+    if (markerIndex > 3 || markerIndex >= line.length) return null
+    val marker = line[markerIndex]
+    if (marker != '`' && marker != '~') return null
+    var end = markerIndex
+    while (end < line.length && line[end] == marker) end += 1
+    val length = end - markerIndex
+    if (length < 3) return null
+    return MarkdownFenceRun(
+        marker = marker,
+        length = length,
+        remainderIsBlank = line.substring(end).isBlank(),
+    )
+}
+
+private fun normalizeInlineLatexLine(line: String): String {
+    if ('$' !in line) return line
+    val output = StringBuilder(line.length + 8)
     var index = 0
-    var fencedCode = false
-    while (index < markdown.length) {
-        if (markdown.startsWith("```", index)) {
-            fencedCode = !fencedCode
-            output.append("```")
-            index += 3
+    var inlineCodeDelimiterLength = 0
+    while (index < line.length) {
+        if (line[index] == '`') {
+            var runEnd = index
+            while (runEnd < line.length && line[runEnd] == '`') runEnd += 1
+            val runLength = runEnd - index
+            output.append(line, index, runEnd)
+            inlineCodeDelimiterLength = when {
+                inlineCodeDelimiterLength == 0 -> runLength
+                inlineCodeDelimiterLength == runLength -> 0
+                else -> inlineCodeDelimiterLength
+            }
+            index = runEnd
             continue
         }
-        if (!fencedCode && markdown.startsWith("$$", index)) {
-            output.append("$$")
-            index += 2
+        if (inlineCodeDelimiterLength > 0) {
+            output.append(line[index])
+            index += 1
             continue
         }
-        val char = markdown[index]
-        if (
-            !fencedCode &&
-            char == '$' &&
-            (index == 0 || markdown[index - 1] != '\\') &&
-            (index == 0 || markdown[index - 1] != '$') &&
-            (index + 1 >= markdown.length || markdown[index + 1] != '$')
-        ) {
-            val closing = findClosingSingleDollar(markdown, index + 1)
-            if (closing > index + 1) {
+        if (line[index] == '\\') {
+            output.append(line[index])
+            if (index + 1 < line.length) {
+                output.append(line[index + 1])
+                index += 2
+            } else {
+                index += 1
+            }
+            continue
+        }
+        if (line.startsWith("$$", index)) {
+            val closing = findClosingDoubleDollar(line, index + 2)
+            if (closing < 0) {
+                output.append(line, index, line.length)
+                break
+            }
+            output.append(line, index, closing + 2)
+            index = closing + 2
+            continue
+        }
+        if (line[index] == '$') {
+            val closing = findClosingSingleDollar(line, index + 1)
+            if (
+                closing > index + 1 &&
+                !line[index + 1].isWhitespace() &&
+                !line[closing - 1].isWhitespace()
+            ) {
                 output.append("$$")
-                output.append(markdown, index + 1, closing)
+                output.append(line, index + 1, closing)
                 output.append("$$")
                 index = closing + 1
                 continue
             }
         }
-        output.append(char)
+        output.append(line[index])
         index += 1
     }
     return output.toString()
 }
 
-private fun findClosingSingleDollar(markdown: String, start: Int): Int {
+private fun findClosingDoubleDollar(line: String, start: Int): Int {
     var index = start
-    while (index < markdown.length) {
-        if (markdown[index] == '\n') return -1
-        if (
-            markdown[index] == '$' &&
-            markdown[index - 1] != '\\' &&
-            markdown[index - 1] != '$' &&
-            (index + 1 >= markdown.length || markdown[index + 1] != '$')
-        ) {
-            return index
+    while (index + 1 < line.length) {
+        if (line[index] == '\\') {
+            index += 2
+            continue
         }
+        if (line.startsWith("$$", index)) return index
+        index += 1
+    }
+    return -1
+}
+
+private fun findClosingSingleDollar(line: String, start: Int): Int {
+    var index = start
+    while (index < line.length) {
+        if (line[index] == '\\') {
+            index += 2
+            continue
+        }
+        if (line.startsWith("$$", index)) return -1
+        if (line[index] == '$') return index
         index += 1
     }
     return -1

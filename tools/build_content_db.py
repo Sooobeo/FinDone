@@ -26,7 +26,7 @@ DEFAULT_SPEC = ROOT / "finance_interview_app_final_spec.md"
 DEFAULT_ASSET_DIR = ROOT / "app" / "src" / "main" / "assets"
 
 SCHEMA_VERSION = 1
-CONTENT_DB_VERSION = 2
+CONTENT_DB_VERSION = 3
 DOMAIN_ORDER = ("ACC", "CF", "INV", "FI", "DER", "EQV", "IBT")
 EXPECTED_DOMAIN_COUNTS = {
     "ACC": 12,
@@ -260,6 +260,49 @@ def clean_markdown_block(lines: Iterable[str]) -> str:
     return "\n".join(output)
 
 
+PROSE_CLAUSE_SEPARATOR_RE = re.compile(
+    r"((?<!\d)[.!?。](?!\d)(?:\s+|$)|;\s*)"
+)
+BACKTICK_RUN_RE = re.compile(r"`+")
+
+
+def markdown_code_span(value: str) -> str:
+    """Wrap a complete value in a CommonMark code span without losing embedded backticks."""
+    longest_run = max((len(match.group(0)) for match in BACKTICK_RUN_RE.finditer(value)), default=0)
+    fence = "`" * (longest_run + 1)
+    needs_padding = (
+        value.startswith("`")
+        or value.endswith("`")
+        or (value.startswith(" ") and value.endswith(" "))
+    )
+    return f"{fence} {value} {fence}" if needs_padding else f"{fence}{value}{fence}"
+
+
+def render_math_in_prose(value: str) -> str:
+    """Render complete symbolic sentences while preserving surrounding prose and punctuation."""
+    output: list[str] = []
+    parts = PROSE_CLAUSE_SEPARATOR_RE.split(value)
+    for index, part in enumerate(parts):
+        if index % 2 == 1 or not part:
+            output.append(part)
+            continue
+        leading = part[: len(part) - len(part.lstrip())]
+        trailing = part[len(part.rstrip()) :]
+        clause = part.strip()
+        if not clause:
+            output.append(part)
+            continue
+        latex = latex_formula(clause)
+        if latex is not None:
+            rendered = f"$${latex}$$"
+        elif re.search(r"[=≈≤≥<>]", clause):
+            rendered = markdown_code_span(clause)
+        else:
+            rendered = clause
+        output.append(leading + rendered + trailing)
+    return "".join(output)
+
+
 def scope_to_markdown(value: str) -> str:
     """Turn the compact spec projection into readable CommonMark without changing facts."""
     output: list[str] = []
@@ -268,11 +311,14 @@ def scope_to_markdown(value: str) -> str:
         if not line:
             continue
         line = re.sub(r"^[•-]\s*", "- ", line)
-        line = re.sub(
-            r"^- ([^:：]{1,28})([:：])\s*",
-            lambda match: f"- **{match.group(1).strip()}**{match.group(2)} ",
-            line,
-        )
+        label_match = re.match(r"^- ([^:：]{1,28})([:：])\s*(.*)$", line)
+        if label_match is not None:
+            label, separator, body = label_match.groups()
+            line = f"- **{label.strip()}**{separator} {render_math_in_prose(body)}"
+        elif line.startswith("- "):
+            line = "- " + render_math_in_prose(line[2:])
+        else:
+            line = render_math_in_prose(line)
         output.append(line)
     return "\n".join(output)
 
@@ -280,7 +326,7 @@ def scope_to_markdown(value: str) -> str:
 SYMBOLIC_CLAUSE_RE = re.compile(
     r"[A-Za-z0-9_αβγδμρσλΔΣ∑()\[\]{}+\-−–—×÷*/^%.,=≈≤≥<>²√ ]+"
 )
-FORMULA_CLAUSE_SEPARATOR_RE = re.compile(r";\s*|(?<=[.!?。])\s+")
+FORMULA_CLAUSE_SEPARATOR_RE = re.compile(r";\s*|\r?\n+|(?<=[.!?。])\s+")
 
 
 def balanced_delimiters(value: str) -> bool:
@@ -340,7 +386,10 @@ def brace_multichar_scripts(value: str) -> str:
             output.append("{" + value[script_start : script_end + 1] + "}")
             index = script_end + 1
             continue
-        token_match = re.match(r"(?:[A-Za-z][A-Za-z0-9]*|[0-9]+)", value[script_start:])
+        token_match = re.match(
+            r"(?:[A-Z]+[0-9]*(?![a-z])|[A-Z][a-z0-9]*|[a-z][a-z0-9]*|[0-9]+)",
+            value[script_start:],
+        )
         if token_match is None:
             output.append(next_character)
             index += 2
@@ -384,7 +433,11 @@ def replace_square_roots(value: str) -> str | None:
 
 def split_formula_clauses(value: str) -> list[str]:
     """Split prose/formula clauses without ever treating a decimal point as a delimiter."""
-    clauses = [part.strip() for part in FORMULA_CLAUSE_SEPARATOR_RE.split(value) if part.strip()]
+    clauses = []
+    for part in FORMULA_CLAUSE_SEPARATOR_RE.split(value):
+        cleaned = re.sub(r"^(?:•|[-+])\s+", "", part.strip())
+        if cleaned:
+            clauses.append(cleaned)
     return clauses or [value.strip()]
 
 
@@ -428,15 +481,23 @@ def latex_formula(value: str) -> str | None:
 
 def formula_to_markdown(value: str) -> str:
     """Render every complete clause as LaTeX or preserve that complete clause as code."""
-    rendered = []
-    for clause in split_formula_clauses(value):
-        latex = latex_formula(clause)
-        if latex is not None:
-            rendered.append(f"- $${latex}$$")
-        else:
-            escaped = clause.replace("`", "\\`")
-            rendered.append(f"- `{escaped}`")
-    return "### 핵심 식과 관계\n\n" + "\n".join(rendered)
+    return "### 핵심 식과 관계\n\n" + formula_items_markdown(value)
+
+
+def formula_clause_markdown(value: str) -> str:
+    """Render one complete formula clause without ever dropping a fallback clause."""
+    latex = latex_formula(value)
+    if latex is not None:
+        return f"$${latex}$$"
+    return markdown_code_span(value)
+
+
+def formula_items_markdown(value: str, indent: str = "") -> str:
+    """Render a relation as Markdown list items suitable for nesting in learning cards."""
+    return "\n".join(
+        f"{indent}- {formula_clause_markdown(clause)}"
+        for clause in split_formula_clauses(value)
+    )
 
 
 def assumption_markdown(element: ElementDraft) -> str:
@@ -463,7 +524,8 @@ def concept_definition_markdown(element: ElementDraft) -> str:
     return (
         "### 한 문장 정의\n\n"
         f"**{element.title}**의 핵심은 다음 관계를 정확히 이해하고 설명하는 것입니다.\n\n"
-        f"> {element.core_relation}"
+        "**핵심 관계**\n\n"
+        f"{formula_items_markdown(element.core_relation)}"
     )
 
 
@@ -495,7 +557,8 @@ def concept_intuition_markdown(element: ElementDraft) -> str:
         "2. 식의 각 항목과 단위를 확인합니다.\n"
         "3. 입력값이 변할 때 결과의 방향을 설명합니다.\n"
         f"4. **{element.title}**을 실제 재무자료나 거래 상황에 적용할 때 생길 예외를 확인합니다.\n\n"
-        f"> 핵심 관계: {element.core_relation}"
+        "**핵심 관계**\n\n"
+        f"{formula_items_markdown(element.core_relation)}"
     )
 
 
@@ -505,15 +568,20 @@ def learning_notes_markdown(element: ElementDraft) -> str:
         safe_line = learning_safe_line(line)
         if safe_line:
             learning_lines.append(safe_line)
-    return "### 적용·연습 범위\n\n" + scope_to_markdown("\n".join(learning_lines))
+    return (
+        "**핵심 관계**\n\n"
+        f"{formula_items_markdown(element.core_relation)}\n\n"
+        + scope_to_markdown("\n".join(learning_lines))
+    )
 
 
 def checklist_markdown(element: ElementDraft) -> str:
     domain_items = DOMAIN_CHECKLIST[element.domain_id]
     return (
-        "### 학습 체크리스트\n\n"
-        + f"- **{element.title}**을 한 문장으로 정의한다\n"
-        + f"- `{element.core_relation}`의 각 항목과 방향을 설명한다\n"
+        f"- **{element.title}**을 한 문장으로 정의한다\n"
+        + "- **핵심 관계의 각 항목과 방향을 설명한다**\n"
+        + formula_items_markdown(element.core_relation, indent="  ")
+        + "\n"
         + "\n".join(f"- {item}" for item in domain_items)
         + "\n- 공식의 결과를 숫자뿐 아니라 한 문장으로 해석한다"
         + "\n- 흔한 기준 불일치나 이중계산 가능성을 마지막에 점검한다"
@@ -828,9 +896,16 @@ KNOWN_FORMULA_MODES = {
 
 def validate_formula_rendering(elements: Sequence[ElementDraft]) -> None:
     """Protect whole-clause fidelity, decimal tokens, and script bracing."""
+    if formula_clause_markdown("A `quoted` & B") != "``A `quoted` & B``":
+        raise ValueError("Embedded-backtick Markdown fallback regressed")
     script_probe = latex_formula("X_AB=Y_Long^Term")
     if script_probe != "X_{AB}=Y_{Long}^{Term}":
         raise ValueError(f"Multi-character script bracing regressed: {script_probe!r}")
+    scenario_probe = latex_formula("ExpectedValue=Σp_sV_s")
+    if scenario_probe != r"ExpectedValue=\sum p_sV_s":
+        raise ValueError(f"Adjacent symbol script parsing regressed: {scenario_probe!r}")
+    if split_formula_clauses("• A=B\n• C=D") != ["A=B", "C=D"]:
+        raise ValueError("Multiline formula clause splitting regressed")
     unsafe_probes = ("설명: X=Y", "X=(Y]", "X=Y 일부 설명")
     if any(latex_formula(probe) is not None for probe in unsafe_probes):
         raise ValueError("LaTeX conversion accepted a partial or unbalanced clause")
@@ -845,10 +920,7 @@ def validate_formula_rendering(elements: Sequence[ElementDraft]) -> None:
                 )
         for clause in split_formula_clauses(element.core_relation):
             latex = latex_formula(clause)
-            if latex is not None:
-                expected_line = f"- $${latex}$$"
-            else:
-                expected_line = f"- `{clause.replace('`', r'\`')}`"
+            expected_line = f"- {formula_clause_markdown(clause)}"
             if expected_line not in rendered:
                 raise ValueError(
                     f"{element.element_id} did not preserve complete formula clause {clause!r}"
@@ -1191,6 +1263,11 @@ def validate_database(path: Path) -> dict[str, int]:
             raise ValueError(f"SQLite foreign_key_check failed: {foreign_key_errors[:3]}")
         if database.execute("PRAGMA user_version").fetchone()[0] != SCHEMA_VERSION:
             raise ValueError("Unexpected SQLite user_version")
+        metadata = dict(database.execute("SELECT key, value FROM metadata").fetchall())
+        if metadata.get("schema_version") != str(SCHEMA_VERSION):
+            raise ValueError("Metadata schema_version differs from the generator")
+        if metadata.get("content_db_version") != str(CONTENT_DB_VERSION):
+            raise ValueError("Metadata content_db_version differs from the generator")
         row_counts = {
             table: query_count(database, table)
             for table in (
@@ -1228,10 +1305,12 @@ def validate_database(path: Path) -> dict[str, int]:
                JOIN concept_cards c ON c.element_id = e.element_id
                JOIN formula_cards f ON f.element_id = e.element_id
                WHERE c.definition = e.core_relation
-                  OR c.intuition NOT LIKE '%왜 중요한가%'
-                  OR c.scope_notes NOT LIKE '%적용·연습 범위%'
-                  OR f.expression NOT LIKE '%핵심 식과 관계%'
-                  OR f.notes NOT LIKE '%학습 체크리스트%'"""
+                   OR c.intuition NOT LIKE '%왜 중요한가%'
+                   OR c.scope_notes NOT LIKE '%핵심 관계%'
+                   OR c.scope_notes LIKE '### 적용·연습 범위%'
+                   OR f.expression NOT LIKE '%핵심 식과 관계%'
+                   OR f.notes NOT LIKE '%핵심 관계%'
+                   OR f.notes LIKE '### 학습 체크리스트%'"""
         ).fetchall()
         if thin_cards:
             raise ValueError(f"Learning cards are not expanded Markdown: {thin_cards[:3]}")
@@ -1249,12 +1328,24 @@ def validate_database(path: Path) -> dict[str, int]:
         ).fetchall()
         empty_visible_fields: list[tuple[str, str]] = []
         authoring_leaks: list[tuple[str, str, str]] = []
+        malformed_math_fields: list[tuple[str, str]] = []
+        redundant_outer_headings: list[tuple[str, str]] = []
         distinct_visible_values = {field: set() for field in visible_field_names}
         for row in visible_rows:
             element_id = row[0]
             for field_name, value in zip(visible_field_names, row[1:]):
                 if not value.strip():
                     empty_visible_fields.append((element_id, field_name))
+                if value.count("$$") % 2 != 0:
+                    malformed_math_fields.append((element_id, field_name))
+                if (
+                    field_name == "learning_scope"
+                    and value.lstrip().startswith("### 적용·연습 범위")
+                ) or (
+                    field_name == "checklist"
+                    and value.lstrip().startswith("### 학습 체크리스트")
+                ):
+                    redundant_outer_headings.append((element_id, field_name))
                 distinct_visible_values[field_name].add(value)
                 leaked_marker = next(
                     (
@@ -1269,6 +1360,10 @@ def validate_database(path: Path) -> dict[str, int]:
             raise ValueError(f"Visible learning-card fields are empty: {empty_visible_fields[:3]}")
         if authoring_leaks:
             raise ValueError(f"Authoring internals leaked into visible cards: {authoring_leaks[:3]}")
+        if malformed_math_fields:
+            raise ValueError(f"Unbalanced Markdown math delimiters: {malformed_math_fields[:3]}")
+        if redundant_outer_headings:
+            raise ValueError(f"Redundant learning-card headings remain: {redundant_outer_headings[:3]}")
 
         uniqueness_floors = {
             "definition": 135,
@@ -1302,6 +1397,29 @@ def validate_database(path: Path) -> dict[str, int]:
         ]
         if formula_mismatches:
             raise ValueError(f"Stored formula Markdown differs from generator: {formula_mismatches[:3]}")
+        relation_card_rows = database.execute(
+            """SELECT e.element_id, e.core_relation, c.definition, c.intuition,
+                      c.scope_notes, f.notes
+               FROM elements e
+               JOIN concept_cards c USING(element_id)
+               JOIN formula_cards f USING(element_id)"""
+        ).fetchall()
+        relation_rendering_mismatches = []
+        for element_id, core_relation, definition, intuition, learning_scope, checklist in relation_card_rows:
+            rendered_relation = formula_items_markdown(core_relation)
+            nested_relation = formula_items_markdown(core_relation, indent="  ")
+            if (
+                rendered_relation not in definition
+                or rendered_relation not in intuition
+                or rendered_relation not in learning_scope
+                or nested_relation not in checklist
+            ):
+                relation_rendering_mismatches.append(element_id)
+        if relation_rendering_mismatches:
+            raise ValueError(
+                "Core relations are not rendered safely in every learning card: "
+                f"{relation_rendering_mismatches[:3]}"
+            )
         latex_card_count = sum("$$" in expression for _, _, expression in formula_rows)
         if latex_card_count < 50:
             raise ValueError(f"Whole-clause LaTeX coverage is unexpectedly low: {latex_card_count}")

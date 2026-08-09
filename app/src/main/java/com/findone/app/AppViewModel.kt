@@ -13,6 +13,7 @@ import com.findone.app.data.AttemptRecord
 import com.findone.app.data.BookmarkInput
 import com.findone.app.data.BookmarkOrigin
 import com.findone.app.data.BookmarkRecord
+import com.findone.app.data.ConceptNote
 import com.findone.app.data.ContentRepository
 import com.findone.app.data.ElementProgress
 import com.findone.app.data.StudyStats
@@ -121,6 +122,10 @@ class AppViewModel(
         private set
     var progress by mutableStateOf<Map<String, ElementProgress>>(emptyMap())
         private set
+    var conceptNotes by mutableStateOf<List<ConceptNote>>(emptyList())
+        private set
+    var conceptNoteError by mutableStateOf<String?>(null)
+        private set
     var recordDomainId by mutableStateOf(savedStateHandle.get<String>("recordDomainId"))
         private set
     var recordElementId by mutableStateOf(savedStateHandle.get<String>("recordElementId"))
@@ -163,6 +168,7 @@ class AppViewModel(
             }
         }
         refreshUserData()
+        refreshConceptNotes()
         savedStateHandle.get<String>("quizSession")?.let { saved ->
             runCatching { restoreQuizSession(saved) }
                 .onSuccess { quizSession = it }
@@ -184,11 +190,77 @@ class AppViewModel(
         savedStateHandle["elementId"] = elementId
         currentTab = MainTab.STUDY
         savedStateHandle["tab"] = MainTab.STUDY.name
+        refreshConceptNotes()
     }
 
     fun closeElement() {
         selectedElementId = null
         savedStateHandle.remove<String>("elementId")
+        conceptNotes = emptyList()
+        conceptNoteError = null
+    }
+
+    fun addConceptNote(title: String, body: String): Boolean {
+        val elementId = selectedElement?.id ?: return false
+        return runCatching {
+            userRepository.addConceptNote(elementId, title, body)
+            userRepository.conceptNotes(elementId)
+        }
+            .fold(
+                onSuccess = { refreshedNotes ->
+                    conceptNotes = refreshedNotes
+                    conceptNoteError = null
+                    true
+                },
+                onFailure = {
+                    conceptNoteError = it.message ?: "개인 메모를 저장하지 못했습니다."
+                    false
+                },
+            )
+    }
+
+    fun updateConceptNote(noteId: Long, title: String, body: String): Boolean {
+        val elementId = selectedElement?.id ?: return false
+        return runCatching {
+            check(userRepository.updateConceptNote(noteId, elementId, title, body)) {
+                "수정할 개인 메모를 찾지 못했습니다."
+            }
+            userRepository.conceptNotes(elementId)
+        }.fold(
+            onSuccess = { refreshedNotes ->
+                conceptNotes = refreshedNotes
+                conceptNoteError = null
+                true
+            },
+            onFailure = {
+                conceptNoteError = it.message ?: "개인 메모를 수정하지 못했습니다."
+                false
+            },
+        )
+    }
+
+    fun deleteConceptNote(noteId: Long): Boolean {
+        val elementId = selectedElement?.id ?: return false
+        return runCatching {
+            check(userRepository.deleteConceptNote(noteId, elementId)) {
+                "삭제할 개인 메모를 찾지 못했습니다."
+            }
+            userRepository.conceptNotes(elementId)
+        }.fold(
+            onSuccess = { refreshedNotes ->
+                conceptNotes = refreshedNotes
+                conceptNoteError = null
+                true
+            },
+            onFailure = {
+                conceptNoteError = it.message ?: "개인 메모를 삭제하지 못했습니다."
+                false
+            },
+        )
+    }
+
+    fun clearConceptNoteError() {
+        conceptNoteError = null
     }
 
     fun setStudyDomain(domainId: String?) {
@@ -550,7 +622,28 @@ class AppViewModel(
             ?: error("백업 파일을 열 수 없습니다.")
     }
 
-    fun reloadUserData() = refreshUserData()
+    fun reloadUserData() {
+        refreshUserData()
+        refreshConceptNotes()
+    }
+
+    private fun refreshConceptNotes() {
+        val elementId = selectedElement?.id
+        if (elementId == null) {
+            conceptNotes = emptyList()
+            conceptNoteError = null
+            return
+        }
+        runCatching { userRepository.conceptNotes(elementId) }
+            .onSuccess {
+                conceptNotes = it
+                conceptNoteError = null
+            }
+            .onFailure {
+                conceptNotes = emptyList()
+                conceptNoteError = it.message ?: "개인 메모를 불러오지 못했습니다."
+            }
+    }
 
     private fun refreshUserData(refreshAllBookmarks: Boolean = true) {
         stats = userRepository.stats()

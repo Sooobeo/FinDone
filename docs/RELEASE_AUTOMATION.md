@@ -37,7 +37,7 @@
 
 할당 상태는 `.git/findone-release/state.json`에만 저장됩니다. 빌드가 실패해도 이미 할당한 번호는 재사용하지 않아, 이후 성공한 APK의 `versionCode`가 항상 증가합니다. 실제 manifest에는 소스 정규식 값이 아니라 완성된 APK를 `aapt dump badging`으로 읽은 `versionCode`와 `versionName`이 기록됩니다.
 
-사용자 DB schema 버전은 정확한 커밋의 `UserRepository.kt`에 선언된 `USER_DB_VERSION`에서 추출하며, 현재 값은 3입니다. 값을 찾지 못하면 잘못된 manifest를 만들지 않고 릴리스를 중단합니다.
+사용자 DB schema 버전은 정확한 커밋의 `UserRepository.kt`에 선언된 `USER_DB_VERSION`에서 추출하며, 현재 값은 4입니다. 값을 찾지 못하면 잘못된 manifest를 만들지 않고 릴리스를 중단합니다.
 
 현재 선언값과 기존 릴리스가 각각 2라면 첫 자동 릴리스는 3, 다음은 4가 됩니다. 자동 APK를 설치한 뒤 더 작은 선언 기본값의 수동 APK로 덮어쓸 수는 없으므로 휴대폰 배포본은 자동 릴리스를 사용하고, 선언 기본값은 개발 빌드용으로 유지합니다. 새 clone에서도 기존 번호를 이어가려면 검증된 `dist` 또는 설정된 mirror를 보존해야 합니다.
 
