@@ -1,6 +1,7 @@
 package com.findone.app.ui
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class MathMarkdownTest {
@@ -39,6 +40,31 @@ class MathMarkdownTest {
             "\$\$D_{\\mathrm{Mod}}=D_{\\mathrm{Base}}\$\$",
             safeMathMarkdown("D_Mod=D_Base"),
         )
+        assertEquals("\$\$S_u=u \\times S_0\$\$", safeMathMarkdown("S_u=uS_0"))
+        assertEquals(
+            "\$\$F_0=(S_0-I)(1+r \\times T)\$\$",
+            safeMathMarkdown("F_0=(S_0-I)(1+rT)"),
+        )
+        assertEquals(
+            "\$\$E(R_p)=w \\times R_A+(1-w) \\times R_B\$\$",
+            safeMathMarkdown("E(R_p)=wR_A+(1−w)R_B"),
+        )
+        assertEquals(
+            "\$\$w \\times D_1+(1-w) \\times D_2=D_L\$\$",
+            safeMathMarkdown("wD_1+(1−w)D_2=D_L"),
+        )
+        assertEquals(
+            "\$\$\\mathrm{WACC}=w_E \\times k_e+w_D \\times k_d \\times (1-T)\$\$",
+            safeMathMarkdown("WACC=wE×ke+wD×kd×(1-T)"),
+        )
+        assertEquals(
+            "\$\$K \\times e^{(-r \\times T)} \\times N(d_2)\$\$",
+            safeMathMarkdown("Ke^(−rT)N(d_2)"),
+        )
+        assertEquals(
+            "\$\$\\mathrm{PV}(K)=K \\times e^{(-r \\times T)}\$\$",
+            safeMathMarkdown("PV(K)=Ke^(−rT)"),
+        )
     }
 
     @Test
@@ -71,9 +97,13 @@ class MathMarkdownTest {
             safeMathMarkdown("민감도: ΔEV=EBITDA×ΔMultiple"),
         )
         assertEquals(
-            "**설명**: `X=Y 일부 설명`",
+            "**설명**: \$\$X\$\$=\$\$Y\$\$ 일부 설명",
             safeMathMarkdown("설명: X=Y 일부 설명"),
         )
+        val mixedBsm = safeMathMarkdown("설명: PV(K)=Ke^(−rT) 일부 설명")
+        assertTrue(mixedBsm.contains("×"))
+        assertTrue(mixedBsm.contains("\$\$K\$\$"))
+        assertTrue(!mixedBsm.contains("\\mathrm{Ke}"))
     }
 
     @Test
@@ -105,8 +135,11 @@ class MathMarkdownTest {
     @Test
     fun `long formulas use delimiter only block math while short formulas stay inline`() {
         val longFormula = "X=1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19"
+        val rendered = safeMathMarkdown(longFormula)
 
-        assertEquals("\$\$\n$longFormula\n\$\$", safeMathMarkdown(longFormula))
+        assertTrue(rendered.startsWith("\$\$\n"))
+        assertTrue(rendered.count { it == '$' } >= 8)
+        assertTrue(rendered.contains("\n\$\$\n\n\$\$\n+"))
         assertEquals("\$\$x+1\$\$", safeMathMarkdown("x+1"))
     }
 
@@ -143,6 +176,10 @@ class MathMarkdownTest {
             "- \$\$X=Y\$\$.\n- `explanation`",
             safeMathMarkdown("X=Y. explanation"),
         )
+        assertEquals(
+            "- \$\$X=Y\$\$.\n- 한글 설명.",
+            safeMathMarkdown("X=Y. 한글 설명."),
+        )
     }
 
     @Test
@@ -150,6 +187,12 @@ class MathMarkdownTest {
         assertEquals("\$\$x^{-2}\$\$", safeMathMarkdown("x^-2"))
         assertEquals("`x_=1`", safeMathMarkdown("x_=1"))
         assertEquals("`x_^2`", safeMathMarkdown("x_^2"))
+        assertEquals("`NBV_at_sale`", safeMathMarkdown("NBV_at_sale"))
+        assertEquals("\$\$\\mathrm{NBV}_{\\mathrm{sale}}\$\$", safeMathMarkdown("NBV_sale"))
+        assertEquals(
+            "\$\$(V_P \\times D_P)/(V_F \\times D_F)\$\$",
+            safeMathMarkdown("(V_PD_P)/(V_FD_F)"),
+        )
     }
 
     @Test
@@ -172,10 +215,14 @@ class MathMarkdownTest {
     }
 
     @Test
-    fun `Korean or ampersand mixed relation falls back as one code span`() {
-        assertEquals("`현금 = 부채 + 자본`", safeMathMarkdown("현금 = 부채 + 자본"))
-        assertEquals("`A & B = C`", safeMathMarkdown("A & B = C"))
-        assertEquals("`제시된 관계를 각 선택지와 대조합니다.`", safeMathMarkdown("제시된 관계를 각 선택지와 대조합니다."))
+    fun `Korean remains native while symbolic atoms use math spans`() {
+        assertEquals("현금 = 부채 + 자본", safeMathMarkdown("현금 = 부채 + 자본"))
+        assertEquals(
+            "자산\$\$(A)\$\$ = 부채\$\$(L)\$\$ + 자본\$\$(E)\$\$",
+            safeMathMarkdown("자산(A) = 부채(L) + 자본(E)"),
+        )
+        assertEquals("\$\$A \\& B = C\$\$", safeMathMarkdown("A & B = C"))
+        assertEquals("제시된 관계를 각 선택지와 대조합니다.", safeMathMarkdown("제시된 관계를 각 선택지와 대조합니다."))
     }
 
     @Test

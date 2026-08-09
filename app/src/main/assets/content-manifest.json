@@ -1,6 +1,6 @@
 {
-  "byteSize": 2134016,
-  "contentDbVersion": 4,
+  "byteSize": 2211840,
+  "contentDbVersion": 5,
   "databaseAsset": "content.sqlite3",
   "domainElementCounts": {
     "ACC": 12,
@@ -23,7 +23,7 @@
     "sources": 174
   },
   "schemaVersion": 1,
-  "sha256": "e78a0a5ff42c58be4d4770ed2fba739ddb698dbe5975bb3278943d376a1d6e1e",
+  "sha256": "26bdc94c193ee9e559ff763275e98f64a46a95f7e244c9c085995c60add084df",
   "sourceSha256": "b30667961fe81404d507baec5cc2f3af57c5b324c4abe6fc9fe325af27136a32",
   "sourceSpec": "finance_interview_app_final_spec.md"
 }

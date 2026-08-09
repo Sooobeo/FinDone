@@ -66,6 +66,40 @@ class QuizEngineTest {
     }
 
     @Test
+    fun `multi-domain ordering is deterministic balanced and duplicate free`() {
+        val candidates = buildList {
+            listOf("A", "B", "C").forEach { domain ->
+                (1..4).forEach { index ->
+                    add(ElementSeed("$domain-$index", "$domain $index", domain, "$domain=$index"))
+                }
+            }
+            add(ElementSeed("A-1", "duplicate", "A", "A=1"))
+            add(ElementSeed("D-1", "unselected", "D", "D=1"))
+        }
+        val selected = setOf("A", "B", "C")
+
+        val first = QuizEngine.balancedDomainElementIds(candidates, selected, seed = 42L)
+        val repeated = QuizEngine.balancedDomainElementIds(candidates.reversed(), selected, seed = 42L)
+
+        assertEquals(first, repeated)
+        assertEquals(12, first.size)
+        assertEquals(first.size, first.distinct().size)
+        assertTrue(first.all { it.substringBefore('-') in selected })
+        assertEquals(
+            mapOf("A" to 3, "B" to 3, "C" to 3),
+            first.take(9).groupingBy { it.substringBefore('-') }.eachCount(),
+        )
+    }
+
+    @Test
+    fun `multi-domain ordering returns no candidates for empty or unavailable selection`() {
+        val candidates = listOf(ElementSeed("A-1", "A", "A", "A=1"))
+
+        assertTrue(QuizEngine.balancedDomainElementIds(candidates, emptySet(), 1L).isEmpty())
+        assertTrue(QuizEngine.balancedDomainElementIds(candidates, setOf("B"), 1L).isEmpty())
+    }
+
+    @Test
     fun `calculation catalogue spans every domain and all IBT elements`() {
         val ids = QuizEngine.calculationElementIds
 

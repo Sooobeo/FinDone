@@ -47,6 +47,12 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions { jvmTarget = "17" }
+    sourceSets.getByName("testDebug").resources.srcDir(
+        layout.buildDirectory.dir("intermediates/assets/debug/mergeDebugAssets")
+    )
+    sourceSets.getByName("testRelease").resources.srcDir(
+        layout.buildDirectory.dir("intermediates/assets/release/mergeReleaseAssets")
+    )
 }
 
 dependencies {
@@ -66,7 +72,18 @@ dependencies {
     implementation("io.noties.markwon:ext-latex:4.6.2")
     debugImplementation("androidx.compose.ui:ui-tooling")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.xerial:sqlite-jdbc:3.49.1.0")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+// The LaTeX corpus regression test consumes the same merged database and jlatexmath assets that
+// are packaged in each APK variant. Processing them as test resources avoids copies in source
+// control and makes dependency upgrades visible to the JVM test, including clean release builds.
+tasks.matching { it.name == "processDebugUnitTestJavaRes" }.configureEach {
+    dependsOn("mergeDebugAssets")
+}
+tasks.matching { it.name == "processReleaseUnitTestJavaRes" }.configureEach {
+    dependsOn("mergeReleaseAssets")
 }

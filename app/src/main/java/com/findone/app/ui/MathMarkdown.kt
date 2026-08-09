@@ -3,9 +3,9 @@ package com.findone.app.ui
 /**
  * Converts an untrusted one-line formula/relation value to safe Markdown without dropping text.
  *
- * Complete existing math/code spans are kept intact. Only a deliberately small symbolic alphabet
- * is promoted to LaTeX; prose, mixed-language relations, and ambiguous delimiter input fall back
- * to a code span containing the complete original value.
+ * Complete existing math/code spans are kept intact. Symbolic expressions are promoted to LaTeX,
+ * while Korean labels and prose stay as native Markdown text. JLatexMath does not ship a Hangul
+ * math font, so a whole mixed-language relation must never be handed to the formula renderer.
  */
 fun safeMathMarkdown(rawValue: String): String {
     val value = rawValue.trim()
@@ -17,7 +17,13 @@ fun safeMathMarkdown(rawValue: String): String {
             val hasExplicitMathSignal = clause.any { character ->
                 character.isDigit() || character in MATH_SIGNALS
             }
-            val rendered = if (index > 0 && !hasExplicitMathSignal) {
+            val rendered = if (
+                index > 0 &&
+                !hasExplicitMathSignal &&
+                HANGUL.containsMatchIn(clause)
+            ) {
+                clause
+            } else if (index > 0 && !hasExplicitMathSignal) {
                 inlineCodeSpan(clause)
             } else {
                 safeMathMarkdown(clause)
@@ -30,7 +36,7 @@ fun safeMathMarkdown(rawValue: String): String {
     val labeled = renderLabeledMath(formula)
     val safeExpression = isSafeSymbolicExpression(formula)
     if (!isCompleteMathSpan(formula) && !isCompleteCodeSpan(formula) && labeled == null && !safeExpression) {
-        return inlineCodeSpan(value)
+        return nativeMixedMathMarkdown(value) ?: inlineCodeSpan(value)
     }
     val rendered = when {
         isCompleteMathSpan(formula) || isCompleteCodeSpan(formula) -> formula
@@ -40,7 +46,7 @@ fun safeMathMarkdown(rawValue: String): String {
     }
     if (punctuation.isEmpty()) return rendered
     return if ('\n' in rendered && rendered.endsWith("\$\$")) {
-        "$rendered\n$punctuation"
+        if (punctuation.all { it == '.' || it == '。' }) rendered else "$rendered\n$punctuation"
     } else {
         rendered + punctuation
     }
@@ -142,15 +148,65 @@ private fun hasUnsafeTopLevelPunctuation(value: String): Boolean {
 
 private fun latexMarkdown(value: String): String {
     val latex = toLatex(value)
-    return if (value.length > BLOCK_MATH_SOURCE_LENGTH) {
-        "\$\$\n$latex\n\$\$"
-    } else {
-        "\$\$$latex\$\$"
+    if (latexRenderWeight(latex) <= MAX_INLINE_MATH_WEIGHT) return "\$\$$latex\$\$"
+    return semanticFormulaLines(value).joinToString("\n\n") { lineSource ->
+        "\$\$\n${toLatex(lineSource)}\n\$\$"
     }
 }
 
+/** Estimate visible width from transformed TeX instead of counting unrelated source characters. */
+private fun latexRenderWeight(latex: String): Int {
+    val visible = LATEX_UPRIGHT_GROUP.replace(latex, "$1")
+        .let { LATEX_NAMED_SYMBOL.replace(it, "x") }
+        .replace("\\%", "%")
+        .replace("\\&", "&")
+    return visible.count { character -> !character.isWhitespace() && character !in "{}" }
+}
+
+/** Split a long top-level sum at semantic operator boundaries into independent block spans. */
+private fun semanticFormulaLines(source: String): List<String> {
+    val stack = ArrayDeque<Char>()
+    val breakpoints = mutableListOf<Int>()
+    source.forEachIndexed { index, character ->
+        when (character) {
+            '(', '[', '{' -> stack.addLast(character)
+            ')' -> if (stack.lastOrNull() == '(') stack.removeLast()
+            ']' -> if (stack.lastOrNull() == '[') stack.removeLast()
+            '}' -> if (stack.lastOrNull() == '{') stack.removeLast()
+            '+', '-', '−', '–', '—', '×', '*' -> if (
+                stack.isEmpty() &&
+                index > 0 &&
+                source[index - 1] !in SEMANTIC_BREAK_PREDECESSORS
+            ) {
+                breakpoints += index
+            }
+        }
+    }
+    if (breakpoints.isEmpty()) return listOf(source)
+
+    val parts = buildList {
+        add(source.substring(0, breakpoints.first()))
+        breakpoints.zipWithNext().forEach { (start, end) -> add(source.substring(start, end)) }
+        add(source.substring(breakpoints.last()))
+    }
+    val lines = mutableListOf<String>()
+    var current = ""
+    parts.forEach { part ->
+        val candidate = current + part
+        if (current.isNotEmpty() && latexRenderWeight(toLatex(candidate)) > MAX_BLOCK_LINE_WEIGHT) {
+            lines += current.trim()
+            current = part
+        } else {
+            current = candidate
+        }
+    }
+    current.trim().takeIf(String::isNotEmpty)?.let(lines::add)
+    return if (lines.size > 1) lines else listOf(source)
+}
+
 private fun toLatex(value: String): String {
-    val rooted = checkNotNull(replaceSquareRoots(value))
+    val canonicalValue = canonicalSymbolicSource(value)
+    val rooted = checkNotNull(replaceSquareRoots(canonicalValue))
     val scripted = checkNotNull(braceMulticharScripts(rooted))
     return scripted
         .replace("×", " \\times ")
@@ -174,6 +230,10 @@ private fun toLatex(value: String): String {
         .replace("Δ", "\\Delta ")
         .replace("Σ", "\\sum ")
         .replace("∑", "\\sum ")
+        .replace("Π", "\\prod ")
+        .replace("∂", "\\partial ")
+        .replace("±", "\\pm ")
+        .replace("&", "\\&")
         .let { DIGIT_GROUPING_COMMA.replace(it, "{,}") }
         .let(::uprightAsciiIdentifiers)
         .replace(Regex("[ \\t]+"), " ")
@@ -268,7 +328,7 @@ private fun labeledMarkdown(label: String, separator: String, expression: String
     val renderedExpression = when {
         isCompleteMathSpan(expression) || isCompleteCodeSpan(expression) -> expression
         isSafeSymbolicExpression(expression) -> latexMarkdown(expression)
-        else -> inlineCodeSpan(expression)
+        else -> nativeMixedMathMarkdown(expression) ?: inlineCodeSpan(expression)
     }
     val prefix = if (separator == ":" || separator == "：") {
         "**${escapeMarkdownLabel(label)}**$separator"
@@ -287,6 +347,29 @@ private fun looksLikeFormula(value: String): Boolean =
         isCompleteCodeSpan(value) ||
         isSafeSymbolicExpression(value) ||
         value.any { it in COMPARISON_SIGNALS }
+
+/**
+ * Keeps Hangul in the native TextView and promotes only unambiguous symbolic atoms. Operators
+ * between native terms deliberately remain native text: they are readable without asking the
+ * formula renderer to synthesize glyphs it does not contain.
+ */
+private fun nativeMixedMathMarkdown(value: String): String? {
+    if (!HANGUL.containsMatchIn(value)) return null
+    val candidate = canonicalSymbolicSource(value)
+    if (!hasBalancedDelimiters(candidate) || candidate.any { it == '$' || it == '`' }) return null
+    if (!candidate.any { character -> character.isDigit() || character in MATH_SIGNALS }) return candidate
+
+    val output = StringBuilder(candidate.length + 16)
+    var cursor = 0
+    MIXED_SYMBOL_ATOM.findAll(candidate).forEach { match ->
+        output.append(candidate, cursor, match.range.first)
+        val atom = match.value
+        output.append(if (isSafeSymbolicExpression(atom)) latexMarkdown(atom) else atom)
+        cursor = match.range.last + 1
+    }
+    output.append(candidate, cursor, candidate.length)
+    return output.toString()
+}
 
 private fun isReadableLabel(value: String): Boolean =
     value.any(Char::isLetter) && value.all { character ->
@@ -403,12 +486,14 @@ private fun matchingDelimiterIndex(value: String, start: Int): Int {
 }
 
 private fun isSafeSymbolicExpression(value: String): Boolean {
-    if (!SAFE_SYMBOLIC.matches(value) || !hasBalancedDelimiters(value)) return false
+    val canonicalValue = canonicalSymbolicSource(value)
+    if (!SAFE_SYMBOLIC.matches(canonicalValue) || !hasBalancedDelimiters(canonicalValue)) return false
     if (value.contains("**") || value.contains("__")) return false
     if (hasProseLikeComparisonLabel(value)) return false
     if (hasUnsafeTopLevelPunctuation(value)) return false
-    val rooted = replaceSquareRoots(value) ?: return false
-    if (braceMulticharScripts(rooted) == null) return false
+    val rooted = replaceSquareRoots(canonicalValue) ?: return false
+    val scripted = braceMulticharScripts(rooted) ?: return false
+    if (REPEATED_TEX_SCRIPT.containsMatchIn(scripted)) return false
 
     val hasMathSignal = value.any { character ->
         character.isDigit() || character in MATH_SIGNALS
@@ -416,8 +501,17 @@ private fun isSafeSymbolicExpression(value: String): Boolean {
     if (hasMathSignal) return true
 
     // A single identifier is unambiguous; multiple prose-like words are not promoted to math.
-    return SINGLE_SYMBOL.matches(value)
+    return SINGLE_SYMBOL.matches(value) || PARENTHESIZED_SINGLE_SYMBOL.matches(value)
 }
+
+private fun canonicalSymbolicSource(value: String): String =
+    KNOWN_SYMBOLIC_REWRITES.fold(value) { result, (original, canonical) ->
+        result.replace(original, canonical)
+    }.let { source ->
+        KNOWN_SYMBOLIC_REGEX_REWRITES.fold(source) { result, (pattern, canonical) ->
+            pattern.replace(result, canonical)
+        }
+    }
 
 /**
  * TeX discards ordinary spaces and treats hyphens as subtraction. A comparison label such as
@@ -486,12 +580,15 @@ private fun precedingBackslashCount(value: String, index: Int): Int {
 }
 
 private val SAFE_SYMBOLIC = Regex(
-    "[A-Za-z0-9_αβγδμρσλΔΣ∑()\\[\\]{}+\\-−–—×÷*/^%.,=≈≤≥<>²√ \\t]+",
+    "[A-Za-z0-9_αβγδμρσλΔΣΠ∑∂()\\[\\]{}+\\-−–—×÷*/^%.,=≈≤≥<>²√±& \\t]+",
 )
-private val SINGLE_SYMBOL = Regex("[A-Za-zαβγδμρσλΔΣ][A-Za-z0-9_αβγδμρσλΔΣ]*")
+private val SINGLE_SYMBOL = Regex("[A-Za-zαβγδμρσλΔΣΠ][A-Za-z0-9_αβγδμρσλΔΣΠ]*")
+private val PARENTHESIZED_SINGLE_SYMBOL = Regex(
+    "\\([A-Za-zαβγδμρσλΔΣΠ∑∂][A-Za-z0-9_αβγδμρσλΔΣΠ∑∂]*\\)",
+)
 private val MATH_SIGNALS = setOf(
     '_', '+', '-', '−', '–', '—', '×', '÷', '*', '/', '^', '%', '=',
-    '≈', '≤', '≥', '<', '>', '²', 'Σ', '∑', '√',
+    '≈', '≤', '≥', '<', '>', '²', 'Σ', 'Π', '∑', '√', '∂', '±', '&',
 )
 private val COMPARISON_SIGNALS = setOf('=', '≈', '≤', '≥', '<', '>')
 private val COMPARISON_OPERATOR = Regex("≤|≥|≈|<=|>=|=|<|>")
@@ -505,12 +602,57 @@ private val SCRIPT_TOKEN = Regex(
     "[A-Z]+[0-9]*(?![a-z])|[A-Z][a-z0-9]*|[a-z][a-z0-9]*|[0-9]+",
 )
 private val ROOT_BASE_TOKEN = Regex(
-    "[A-Za-z][A-Za-z0-9]*|[αβγδμρσλΔΣ]",
+    "[A-Za-z][A-Za-z0-9]*|[αβγδμρσλΔΣΠ]",
 )
 private const val SINGLE_DOLLAR = "\$"
 private const val DOUBLE_DOLLAR = "\$\$"
-private const val BLOCK_MATH_SOURCE_LENGTH = 45
+private const val MAX_INLINE_MATH_WEIGHT = 40
+private const val MAX_BLOCK_LINE_WEIGHT = 40
 private val TERMINAL_PUNCTUATION = setOf('.', '!', '?', '。')
 private val LATEX_FUNCTIONS = setOf("max", "min", "ln", "log")
 private val LABEL_PUNCTUATION = setOf('_', '-', '–', '—', '/', '&', '(', ')', '.', ',')
 private val LABEL_MARKDOWN_ESCAPES = setOf('\\', '`', '*', '_', '[', ']')
+private val HANGUL = Regex("[가-힣]")
+private val MIXED_SYMBOL_ATOM = Regex(
+    "(?<![A-Za-z0-9_])(?:\\([A-Za-zαβγδμρσλΔΣΠ∑∂][A-Za-z0-9_αβγδμρσλΔΣΠ∑∂]*\\)|" +
+        "[A-Za-zαβγδμρσλΔΣΠ∑∂][A-Za-z0-9_αβγδμρσλΔΣΠ∑∂]*|" +
+        "[0-9]+(?:\\.[0-9]+)?%?)(?![A-Za-z0-9_])",
+)
+private val LATEX_UPRIGHT_GROUP = Regex("""\\mathrm\{([^{}]*)}""")
+private val LATEX_NAMED_SYMBOL = Regex(
+    """\\(?:alpha|beta|gamma|delta|mu|rho|sigma|lambda|Delta|times|div|approx|le|ge|pm|partial|sum|prod)""",
+)
+private val SEMANTIC_BREAK_PREDECESSORS = setOf(
+    '=', '<', '>', '≈', '≤', '≥', '^', '_', '+', '-', '−', '–', '—', '×', '÷', '*', '/',
+    '(', ',', '[', '{',
+)
+private val REPEATED_TEX_SCRIPT = Regex(
+    """(?:_(?:\{[^{}]*}|[A-Za-z0-9])){2}|(?:\^(?:\{[^{}]*}|[A-Za-z0-9])){2}""",
+)
+private val KNOWN_SYMBOLIC_REWRITES = listOf(
+    "(V_PD_P)/(V_FD_F)" to "(V_P×D_P)/(V_F×D_F)",
+    "uS_0" to "u×S_0",
+    "dS_0" to "d×S_0",
+    "RS_0" to "R×S_0",
+    "qV_u" to "q×V_u",
+    "(1−q)V_d" to "(1−q)×V_d",
+    "wR_A" to "w×R_A",
+    "(1−w)R_B" to "(1−w)×R_B",
+    "(1-w)R_B" to "(1-w)×R_B",
+    "wD_1" to "w×D_1",
+    "(1−w)D_2" to "(1−w)×D_2",
+    "(1-w)D_2" to "(1-w)×D_2",
+    "Ke^(−rT)N(" to "K×e^(−r×T)×N(",
+    "Ke^(−rT)" to "K×e^(−r×T)",
+    "Ke^(-rT)" to "K×e^(-r×T)",
+    "S_0N(" to "S_0×N(",
+    "(r+σ²/2)T" to "(r+σ²/2)×T",
+    "σ√T" to "σ×√T",
+)
+private val KNOWN_SYMBOLIC_REGEX_REWRITES = listOf(
+    Regex("(?<![A-Za-z0-9_])rT(?![A-Za-z0-9_])") to "r×T",
+    Regex("(?<![A-Za-z0-9_])wE(?![A-Za-z0-9_])") to "w_E",
+    Regex("(?<![A-Za-z0-9_])wD(?![A-Za-z0-9_])") to "w_D",
+    Regex("(?<![A-Za-z0-9_])ke(?![A-Za-z0-9_])") to "k_e",
+    Regex("(?<![A-Za-z0-9_])kd(?![A-Za-z0-9_])") to "k_d",
+)

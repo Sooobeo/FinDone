@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -659,16 +660,36 @@ private fun QuizSetupScreen(vm: AppViewModel) {
                 onTrackSelected = vm::setQuizTrack,
             )
         }
-        item { SectionTitle("분야") }
         item {
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                item { FilterChip(selected = vm.quizDomainId == null, onClick = { vm.setQuizDomain(null) }, label = { Text("전체") }) }
-                items(vm.domains, key = { it.id }) { domain ->
-                    FilterChip(
-                        selected = vm.quizDomainId == domain.id,
-                        onClick = { vm.setQuizDomain(if (vm.quizDomainId == domain.id) null else domain.id) },
-                        label = { Text(domain.id) },
-                    )
+            SectionTitle(
+                "분야",
+                if (vm.selectedTrack == QuizTrack.DOMAIN) {
+                    "${vm.quizDomainIds.size} / ${vm.domains.size}개 선택"
+                } else {
+                    "전체 또는 1개 분야"
+                },
+            )
+        }
+        item {
+            if (vm.selectedTrack == QuizTrack.DOMAIN) {
+                QuizDomainPicker(
+                    domains = vm.domains,
+                    selectedDomainIds = vm.quizDomainIds,
+                    errorMessage = vm.configuredQuizSelectionError,
+                    onToggle = vm::toggleQuizDomain,
+                    onSelectAll = vm::selectAllQuizDomains,
+                    onClear = vm::clearQuizDomains,
+                )
+            } else {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    item { FilterChip(selected = vm.quizDomainId == null, onClick = { vm.setQuizDomain(null) }, label = { Text("전체") }) }
+                    items(vm.domains, key = { it.id }) { domain ->
+                        FilterChip(
+                            selected = vm.quizDomainId == domain.id,
+                            onClick = { vm.setQuizDomain(if (vm.quizDomainId == domain.id) null else domain.id) },
+                            label = { Text(domain.id) },
+                        )
+                    }
                 }
             }
         }
@@ -694,7 +715,11 @@ private fun QuizSetupScreen(vm: AppViewModel) {
             }
         }
         item {
-            Button(onClick = vm::startConfiguredQuiz, modifier = Modifier.fillMaxWidth()) {
+            Button(
+                onClick = vm::startConfiguredQuiz,
+                modifier = Modifier.fillMaxWidth(),
+                enabled = vm.configuredQuizSelectionError == null,
+            ) {
                 Icon(Icons.Outlined.School, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
                 Text("${vm.selectedTrack.displayTitle()} 시작")
@@ -708,6 +733,119 @@ private fun QuizSetupScreen(vm: AppViewModel) {
                 Icon(Icons.Outlined.Calculate, contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(8.dp))
                 Text("암산 문제에는 계산기·메모장·풀이 힌트를 제공하지 않습니다.", style = MaterialTheme.typography.bodySmall)
+            }
+        }
+    }
+}
+
+@Composable
+private fun QuizDomainPicker(
+    domains: List<Domain>,
+    selectedDomainIds: Set<String>,
+    errorMessage: String?,
+    onToggle: (String) -> Unit,
+    onSelectAll: () -> Unit,
+    onClear: () -> Unit,
+) {
+    val listState = rememberLazyListState()
+    OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+        Column {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(horizontal = 14.dp, vertical = 10.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        "${selectedDomainIds.size}개 분야 선택",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.weight(1f),
+                    )
+                    TextButton(
+                        onClick = onSelectAll,
+                        enabled = domains.isNotEmpty() && selectedDomainIds.size < domains.size,
+                    ) { Text("전체 선택") }
+                    TextButton(onClick = onClear, enabled = selectedDomainIds.isNotEmpty()) {
+                        Text("전체 해제")
+                    }
+                }
+                Text(
+                    "위아래로 스크롤해 1개 이상 선택하세요.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            HorizontalDivider()
+            if (domains.isEmpty()) {
+                Text(
+                    "선택할 수 있는 분야가 없습니다.",
+                    modifier = Modifier.padding(16.dp),
+                    color = MaterialTheme.colorScheme.error,
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp)
+                        .semantics { contentDescription = "퀴즈 분야 복수 선택 목록" },
+                    state = listState,
+                    contentPadding = PaddingValues(vertical = 6.dp),
+                ) {
+                    itemsIndexed(domains, key = { _, domain -> domain.id }) { index, domain ->
+                        val selected = domain.id in selectedDomainIds
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .toggleable(
+                                    value = selected,
+                                    role = Role.Checkbox,
+                                    onValueChange = { onToggle(domain.id) },
+                                )
+                                .padding(horizontal = 14.dp, vertical = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Checkbox(checked = selected, onCheckedChange = null)
+                            Spacer(Modifier.width(10.dp))
+                            DomainBadge(domain.id)
+                            Spacer(Modifier.width(10.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text(domain.name, fontWeight = FontWeight.Bold)
+                                Text(
+                                    "${domain.count}개 학습요소",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            }
+                        }
+                        if (index < domains.lastIndex) HorizontalDivider()
+                    }
+                }
+            }
+            if (errorMessage != null) {
+                HorizontalDivider()
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.errorContainer)
+                        .padding(12.dp)
+                        .semantics { liveRegion = LiveRegionMode.Polite },
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        Icons.Outlined.ErrorOutline,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onErrorContainer,
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        errorMessage,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
             }
         }
     }
@@ -804,6 +942,7 @@ private fun QuizSessionScreen(vm: AppViewModel, requestLeave: () -> Unit) {
         return
     }
     val question = session.currentQuestion ?: return
+    val questionElement = vm.allElements.firstOrNull { it.id == question.elementId }
     val oral = session.currentPresentation == QuizPresentation.ORAL
     var showAnswer by rememberSaveable(question.instanceId) { mutableStateOf(session.submitted) }
     var showSolution by rememberSaveable(question.instanceId) { mutableStateOf(false) }
@@ -862,6 +1001,7 @@ private fun QuizSessionScreen(vm: AppViewModel, requestLeave: () -> Unit) {
             QuizQuestionCard(
                 vm = vm,
                 question = question,
+                questionElement = questionElement,
                 oral = oral,
                 showAnswer = showAnswer,
             )
@@ -892,7 +1032,7 @@ private fun QuizSessionScreen(vm: AppViewModel, requestLeave: () -> Unit) {
                         Text(if (showSolution) "풀이 접기" else "풀이")
                     }
                 }
-                if (showSolution) item { SolutionContent(question) }
+                if (showSolution) item { SolutionContent(question, questionElement) }
             }
             item {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -930,6 +1070,7 @@ private fun LearningMarkdownCard(title: String, markdown: String) {
 private fun QuizQuestionCard(
     vm: AppViewModel,
     question: QuizQuestion,
+    questionElement: ContentElement?,
     oral: Boolean,
     showAnswer: Boolean,
 ) {
@@ -978,15 +1119,21 @@ private fun QuizQuestionCard(
                 }
             } else {
                 Text("문제", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
-                val questionElement = vm.allElements.firstOrNull { it.id == question.elementId }
                 val prompt = if (oral) {
                     val title = questionElement?.title ?: question.elementId
                     "‘$title’를 정의·핵심 관계·가정·금융권 실무 해석 순서로 30~60초 동안 설명하세요."
                 } else {
                     question.prompt.financeCareerCopy().let { rawPrompt ->
-                        questionElement?.coreRelation
+                        questionElement
+                            ?.takeIf { question.mode == QuizMode.CONCEPT }
+                            ?.coreRelation
                             ?.takeIf(rawPrompt::contains)
-                            ?.let { relation -> rawPrompt.replace(relation, safeMathMarkdown(relation)) }
+                            ?.let { relation ->
+                                rawPrompt.replace(
+                                    relation,
+                                    "\n\n${questionElement.canonicalFormulaBody()}\n\n",
+                                )
+                            }
                             ?: rawPrompt
                     }
                 }
@@ -1114,21 +1261,40 @@ private fun ChoiceButton(
 }
 
 @Composable
-private fun SolutionContent(question: QuizQuestion) {
+private fun SolutionContent(question: QuizQuestion, questionElement: ContentElement?) {
+    val canonicalFormula = questionElement
+        ?.takeIf { element ->
+            question.mode == QuizMode.CONCEPT &&
+                question.explanationSteps.formula == element.coreRelation
+        }
+        ?.canonicalFormulaBody()
+        ?.takeIf(String::isNotBlank)
+    val interpretation = questionElement?.let { element ->
+        question.explanationSteps.interpretation.replace(
+            element.coreRelation,
+            "**${element.title}의 핵심 관계**",
+        )
+    } ?: question.explanationSteps.interpretation
     OutlinedCard(modifier = Modifier.fillMaxWidth()) {
         Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(11.dp)) {
             Text("풀이", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             ExplanationLine("관련 개념", question.explanationSteps.concept)
-            ExplanationLine("수식", question.explanationSteps.formula)
+            ExplanationLine(
+                label = "수식",
+                value = question.explanationSteps.formula,
+                renderedMarkdown = canonicalFormula,
+            )
             ExplanationLine("숫자 대입", question.explanationSteps.substitution)
             if (question.mode == QuizMode.CALCULATION && question.audit.operations.isNotEmpty()) {
                 ExplanationLine(
                     "암산 경로",
-                    question.audit.operations.joinToString("\n") { "- `${it.expression} = ${it.result}`" },
+                    question.audit.operations.joinToString("\n") { operation ->
+                        "- ${safeMathMarkdown("${operation.expression} = ${operation.result}")}"
+                    },
                 )
             }
             ExplanationLine("정답", question.explanationSteps.answer)
-            ExplanationLine("해석", question.explanationSteps.interpretation)
+            ExplanationLine("해석", interpretation)
             Text(
                 "snapshot ${question.snapshot.id.take(12)}… · seed ${question.snapshot.generationSeed}",
                 style = MaterialTheme.typography.labelSmall,
@@ -1139,17 +1305,22 @@ private fun SolutionContent(question: QuizQuestion) {
 }
 
 @Composable
-private fun ExplanationLine(label: String, value: String) {
+private fun ExplanationLine(label: String, value: String, renderedMarkdown: String? = null) {
     if (value.isBlank()) return
     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
         Text(label, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
         MarkdownText(
-            markdown = explanationMarkdown(label, value),
+            markdown = renderedMarkdown ?: explanationMarkdown(label, value),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
     }
 }
+
+private fun ContentElement.canonicalFormulaBody(): String =
+    formulaMarkdown.trim()
+        .removePrefix("### 핵심 식과 관계")
+        .trim()
 
 @Composable
 private fun QuizResultScreen(vm: AppViewModel) {

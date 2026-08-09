@@ -9,7 +9,9 @@ import android.graphics.drawable.Drawable
 import android.text.TextPaint
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.util.TypedValue
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,7 +30,9 @@ import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.viewinterop.AndroidView
 import io.noties.markwon.Markwon
 import io.noties.markwon.ext.latex.JLatexMathPlugin
+import io.noties.markwon.image.AsyncDrawableScheduler
 import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
+import java.util.LinkedHashMap
 import java.util.concurrent.Executors
 import kotlin.math.ceil
 import kotlin.math.max
@@ -36,6 +40,12 @@ import kotlin.math.max
 /** A bounded process-wide pool avoids one cached executor per MarkdownText composition. */
 private val latexExecutor = Executors.newFixedThreadPool(2) { runnable ->
     Thread(runnable, "findone-latex").apply { isDaemon = true }
+}
+
+/** Avoid flooding logcat without retaining an unbounded set of user-supplied formula keys. */
+private val reportedLatexErrors = object : LinkedHashMap<String, Unit>(16, 0.75f, true) {
+    override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Unit>?): Boolean =
+        size > 128
 }
 
 private val blockOrInlineLatex = Regex("""(?s)\$\$(.+?)\$\$""")
@@ -80,7 +90,8 @@ fun MarkdownText(
                 JLatexMathPlugin.create(textSizePx) { builder ->
                     builder.inlinesEnabled(true)
                     builder.executorService(latexExecutor)
-                    builder.errorHandler { latex, _ ->
+                    builder.errorHandler { latex, error ->
+                        reportLatexRenderingError(latex, error)
                         LatexFallbackDrawable(latex, textSizePx, textColor)
                     }
                     builder.theme().textColor(textColor)
@@ -105,6 +116,18 @@ fun MarkdownText(
                 )
                 includeFontPadding = false
                 highlightColor = android.graphics.Color.TRANSPARENT
+                addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+                    override fun onViewAttachedToWindow(view: View) {
+                        // Markwon cancels pending drawable work when a TextView detaches. Compose
+                        // can later reuse the same AndroidView with an unchanged render key, so
+                        // explicitly resume the existing spans instead of waiting for setMarkdown.
+                        AsyncDrawableScheduler.schedule(view as TextView)
+                    }
+
+                    override fun onViewDetachedFromWindow(view: View) {
+                        AsyncDrawableScheduler.unschedule(view as TextView)
+                    }
+                })
             }
         },
         update = { textView ->
@@ -132,6 +155,22 @@ fun MarkdownText(
             }
         },
     )
+}
+
+private fun reportLatexRenderingError(latex: String, error: Throwable) {
+    // Formula text can eventually come from user content. Log only a stable diagnostic key,
+    // never the source itself, while preserving the full exception and stack trace.
+    val diagnosticKey = "${latex.length}:${latex.hashCode().toUInt().toString(16)}"
+    val shouldLog = synchronized(reportedLatexErrors) {
+        reportedLatexErrors.put(diagnosticKey, Unit) == null
+    }
+    if (shouldLog) {
+        Log.e(
+            "FinDoneLatex",
+            "Bundled LaTeX renderer failed (formula=$diagnosticKey)",
+            error,
+        )
+    }
 }
 
 /** Never leave a blank span when the bundled LaTeX engine rejects an expression. */

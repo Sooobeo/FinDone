@@ -26,7 +26,7 @@ DEFAULT_SPEC = ROOT / "finance_interview_app_final_spec.md"
 DEFAULT_ASSET_DIR = ROOT / "app" / "src" / "main" / "assets"
 
 SCHEMA_VERSION = 1
-CONTENT_DB_VERSION = 4
+CONTENT_DB_VERSION = 5
 DOMAIN_ORDER = ("ACC", "CF", "INV", "FI", "DER", "EQV", "IBT")
 EXPECTED_DOMAIN_COUNTS = {
     "ACC": 12,
@@ -192,6 +192,7 @@ class ElementDraft:
     title: str
     mode: str
     core_relation: str
+    formula_segments: tuple[str, ...]
     scope_notes: str
     source_ids: tuple[str, ...]
     spec_section_locator: str
@@ -264,6 +265,16 @@ PROSE_CLAUSE_SEPARATOR_RE = re.compile(
     r"((?<!\d)[.!?。](?!\d)(?:\s+|$)|;\s*)"
 )
 BACKTICK_RUN_RE = re.compile(r"`+")
+MARKDOWN_CODE_SPAN_RE = re.compile(r"(?P<fence>`+)(?P<body>.*?)(?P=fence)", re.DOTALL)
+
+
+def markdown_formula_segments(value: str) -> tuple[str, ...]:
+    """Keep the spec author's explicit formula boundaries before prose cleanup removes them."""
+    return tuple(
+        re.sub(r"\s+", " ", match.group("body")).strip()
+        for match in MARKDOWN_CODE_SPAN_RE.finditer(value)
+        if match.group("body").strip()
+    )
 
 
 def markdown_code_span(value: str) -> str:
@@ -342,7 +353,7 @@ def scope_to_markdown(value: str) -> str:
 
 
 SYMBOLIC_CLAUSE_RE = re.compile(
-    r"[A-Za-z0-9_αβγδμρσλΔΣ∑()\[\]{}+\-−–—×÷*/^%.,=≈≤≥<>²√ ]+"
+    r"[A-Za-z0-9_αβγδμρσλΔΣΠ∑∂()\[\]{}+\-−–—×÷*/^%.,=≈≤≥<>²√±& ]+"
 )
 FORMULA_CLAUSE_SEPARATOR_RE = re.compile(r";\s*|\r?\n+")
 COMPARISON_RE = re.compile(r"≤|≥|≈|<=|>=|=|<|>")
@@ -350,21 +361,120 @@ PROSE_LHS_TOKEN_GAP_RE = re.compile(
     r"[A-Za-z0-9_αβγδμρσλΔΣ]\s+[A-Za-z0-9_αβγδμρσλΔΣ]"
 )
 PROSE_HYPHENATED_LABEL_RE = re.compile(r"[A-Za-z]{2,}[-–—][A-Za-z]{2,}")
-SINGLE_SYMBOL_RE = re.compile(r"[A-Za-zαβγδμρσλΔΣ][A-Za-z0-9_αβγδμρσλΔΣ]*")
-MATH_SIGNAL_RE = re.compile(r"[0-9_+\-−–—×÷*/^%=\u2248≤≥<>²√Σ∑]")
+SINGLE_SYMBOL_RE = re.compile(r"[A-Za-zαβγδμρσλΔΣΠ][A-Za-z0-9_αβγδμρσλΔΣΠ]*")
+PARENTHESIZED_SINGLE_SYMBOL_RE = re.compile(
+    r"\([A-Za-zαβγδμρσλΔΣΠ∑∂][A-Za-z0-9_αβγδμρσλΔΣΠ∑∂]*\)"
+)
+MATH_SIGNAL_RE = re.compile(r"[0-9_+\-−–—×÷*/^%=\u2248≤≥<>²√ΣΠ∑∂±&]")
+REPEATED_TEX_SCRIPT_RE = re.compile(
+    r"(?:_(?:\{[^{}]*\}|[A-Za-z0-9])){2}|(?:\^(?:\{[^{}]*\}|[A-Za-z0-9])){2}"
+)
+FORBIDDEN_MERGED_PRODUCT_TEX_RE = re.compile(
+    r"\\mathrm\{(?:Ke|uS|dS|RS|qV|rT|wR|wD|wE|ke|kd)\}"
+)
 DIGIT_GROUPING_COMMA_RE = re.compile(r"(?<=\d),(?=\d{3}(?:\D|$))")
 ROOT_BASE_TOKEN_RE = re.compile(
-    r"(?:[A-Za-z][A-Za-z0-9]*|[αβγδμρσλΔΣ])"
+    r"(?:[A-Za-z][A-Za-z0-9]*|[αβγδμρσλΔΣΠ])"
 )
 LATEX_FUNCTIONS = {"max", "min", "ln", "log"}
 SUPPORTED_GENERATED_LATEX_COMMANDS = {
     "alpha", "approx", "beta", "delta", "div", "gamma", "ge", "lambda",
     "le", "ln", "log", "mathrm", "max", "min", "mu", "rho", "sigma",
-    "sqrt", "sum", "times", "Delta",
+    "sqrt", "sum", "prod", "times", "Delta", "partial", "pm",
 }
 LABEL_PUNCTUATION = {"_", "-", "–", "—", "/", "&", "(", ")", ".", ","}
 LABEL_MARKDOWN_ESCAPES = {"\\", "`", "*", "_", "[", "]"}
-BLOCK_MATH_SOURCE_LENGTH = 45
+MAX_INLINE_MATH_WEIGHT = 40
+MAX_BLOCK_LINE_WEIGHT = 40
+
+# The source spec writes these relations entirely with Korean term names. JLatexMath has no Hangul
+# glyphs, so each entry supplies a faithful symbolic projection plus a native Korean legend instead
+# of guessing that the whole sentence is TeX. Keep this list small and review it with the spec.
+CANONICAL_FORMULA_OVERRIDES: dict[str, tuple[tuple[str, str], ...]] = {
+    "ACC-02": (("발생주의 매출", "Revenue_accrual=CashCollected+AR_end-AR_begin"),),
+    "ACC-03": (
+        ("기말 대손충당금", "Allowance_end=Allowance_begin+BadDebtExpense-WriteOffs"),
+        ("순매출채권", "NetAR=GrossAR-Allowance"),
+    ),
+    "ACC-04": (
+        ("판매가능재고", "GoodsAvailable=BeginningInventory+NetPurchases"),
+        ("매출원가", "COGS=GoodsAvailable-EndingInventory"),
+    ),
+    "ACC-05": (
+        ("정액법 감가상각비", "Depreciation=(Cost-SalvageValue)/UsefulLife"),
+        ("장부가", "NBV=Cost-AccumulatedDepreciation"),
+        ("처분손익", "GainLoss=SaleProceeds-NBV_sale"),
+    ),
+    "ACC-06": (
+        ("현금이자", "CashInterest=FaceValue×CouponRate"),
+        ("이자비용", "InterestExpense=CarryingValue_begin×EffectiveRate"),
+        (
+            "기말 장부금액",
+            "CarryingValue_end=CarryingValue_begin+InterestExpense-CashInterest",
+        ),
+    ),
+    "ACC-07": (
+        (
+            "기본 주당순이익",
+            "BasicEPS=(NetIncome-PreferredDividends)/WeightedAverageCommonShares",
+        ),
+    ),
+    "ACC-10": (
+        ("영업현금흐름 출발점", "CFO_start=NI"),
+        ("감가상각의 CFO 조정", "CFO_adjustment=+Depreciation"),
+        ("설비투자의 CFI 조정", "CFI_adjustment=-Capex"),
+        ("설비투자의 유형자산 조정", "PPE_adjustment=+Capex"),
+    ),
+    "ACC-11": (
+        ("영업이익률", "OperatingMargin=OperatingIncome/Revenue"),
+        ("총자산회전율", "AssetTurnover=Revenue/AverageAssets"),
+        ("재고회전율", "InventoryTurnover=COGS/AverageInventory"),
+        ("부채비율", "DebtToEquity=Debt/Equity"),
+    ),
+    "DER-07": (
+        ("상승 상태 주가", "S_u=u×S_0"),
+        ("하락 상태 주가", "S_d=d×S_0"),
+        ("무차익 조건", "d<R<u"),
+        ("위험중립확률", "q=(R-d)/(u-d)=(R×S_0-S_d)/(S_u-S_d)"),
+        ("옵션 현재가", "V_0=[q×V_u+(1-q)×V_d]/R"),
+        ("복제 델타", "Δ=(V_u-V_d)/(S_u-S_d)"),
+    ),
+    "DER-08": (
+        ("무배당 유럽형 콜", "C=S_0×N(d_1)-K×e^(-r×T)×N(d_2)"),
+        ("무배당 유럽형 풋", "P=K×e^(-r×T)×N(-d_2)-S_0×N(-d_1)"),
+        ("d1", "d_1=[ln(S_0/K)+(r+σ²/2)×T]/(σ×√T)"),
+        ("d2", "d_2=d_1-σ×√T"),
+    ),
+    "EQV-51": (("Reverse DCF 역산 관계", "EV=DCF(g,Margin,ROIC)"),),
+}
+
+CANONICAL_EXPRESSION_REWRITES = (
+    ("(V_PD_P)/(V_FD_F)", "(V_P×D_P)/(V_F×D_F)"),
+    ("uS_0", "u×S_0"),
+    ("dS_0", "d×S_0"),
+    ("RS_0", "R×S_0"),
+    ("qV_u", "q×V_u"),
+    ("(1−q)V_d", "(1−q)×V_d"),
+    ("wR_A", "w×R_A"),
+    ("(1−w)R_B", "(1−w)×R_B"),
+    ("(1-w)R_B", "(1-w)×R_B"),
+    ("wD_1", "w×D_1"),
+    ("(1−w)D_2", "(1−w)×D_2"),
+    ("(1-w)D_2", "(1-w)×D_2"),
+    ("Ke^(−rT)N(", "K×e^(−r×T)×N("),
+    ("Ke^(−rT)", "K×e^(−r×T)"),
+    ("Ke^(-rT)", "K×e^(-r×T)"),
+    ("S_0N(", "S_0×N("),
+    ("(r+σ²/2)T", "(r+σ²/2)×T"),
+    ("σ√T", "σ×√T"),
+)
+CANONICAL_EXPRESSION_REGEX_REWRITES = (
+    (re.compile(r"(?<![A-Za-z0-9_])rT(?![A-Za-z0-9_])"), "r×T"),
+    (re.compile(r"(?<![A-Za-z0-9_])wE(?![A-Za-z0-9_])"), "w_E"),
+    (re.compile(r"(?<![A-Za-z0-9_])wD(?![A-Za-z0-9_])"), "w_D"),
+    (re.compile(r"(?<![A-Za-z0-9_])ke(?![A-Za-z0-9_])"), "k_e"),
+    (re.compile(r"(?<![A-Za-z0-9_])kd(?![A-Za-z0-9_])"), "k_d"),
+)
 
 
 def balanced_delimiters(value: str) -> bool:
@@ -652,9 +762,18 @@ def upright_ascii_identifiers(value: str) -> str:
     return "".join(output)
 
 
+def canonical_expression_source(value: str) -> str:
+    candidate = value
+    for original, canonical in CANONICAL_EXPRESSION_REWRITES:
+        candidate = candidate.replace(original, canonical)
+    for pattern, canonical in CANONICAL_EXPRESSION_REGEX_REWRITES:
+        candidate = pattern.sub(canonical, candidate)
+    return candidate
+
+
 def latex_expression(value: str, *, require_comparison: bool = False) -> str | None:
     """Convert a complete safe symbolic expression without extracting a fragment."""
-    candidate = value.strip()
+    candidate = canonical_expression_source(value.strip())
     if (
         not candidate
         or (require_comparison and COMPARISON_RE.search(candidate) is None)
@@ -667,6 +786,7 @@ def latex_expression(value: str, *, require_comparison: bool = False) -> str | N
             not require_comparison
             and MATH_SIGNAL_RE.search(candidate) is None
             and SINGLE_SYMBOL_RE.fullmatch(candidate) is None
+            and PARENTHESIZED_SINGLE_SYMBOL_RE.fullmatch(candidate) is None
         )
     ):
         return None
@@ -675,6 +795,8 @@ def latex_expression(value: str, *, require_comparison: bool = False) -> str | N
         return None
     formula = brace_multichar_scripts(rooted)
     if formula is None:
+        return None
+    if REPEATED_TEX_SCRIPT_RE.search(formula) is not None:
         return None
     formula = (
         formula.replace("×", r" \times ")
@@ -687,18 +809,22 @@ def latex_expression(value: str, *, require_comparison: bool = False) -> str | N
         .replace("≥", r" \ge ")
         .replace("²", "^{2}")
         .replace("%", r"\%")
+        .replace("∂", r"\partial ")
+        .replace("±", r"\pm ")
+        .replace("&", r"\&")
     )
     greek = {
         "α": r"\alpha ", "β": r"\beta ", "γ": r"\gamma ",
         "δ": r"\delta ", "μ": r"\mu ", "ρ": r"\rho ",
         "σ": r"\sigma ", "λ": r"\lambda ", "Δ": r"\Delta ",
-        "Σ": r"\sum ", "∑": r"\sum ",
+        "Σ": r"\sum ", "∑": r"\sum ", "Π": r"\prod ",
     }
     for symbol, command in greek.items():
         formula = formula.replace(symbol, command)
     formula = DIGIT_GROUPING_COMMA_RE.sub("{,}", formula)
     formula = upright_ascii_identifiers(formula)
-    return re.sub(r"\s+", " ", formula).strip()
+    formula = re.sub(r"\s+", " ", formula).strip()
+    return formula
 
 
 def latex_formula(value: str) -> str | None:
@@ -707,11 +833,64 @@ def latex_formula(value: str) -> str | None:
     return latex_expression(formula, require_comparison=True)
 
 
+def latex_render_weight(latex: str) -> int:
+    """Estimate visible width from transformed TeX rather than the unrelated source length."""
+    visible = re.sub(r"\\mathrm\{([^{}]*)}", r"\1", latex)
+    visible = re.sub(r"\\(?:alpha|beta|gamma|delta|mu|rho|sigma|lambda|Delta)", "x", visible)
+    visible = re.sub(r"\\(?:times|div|approx|le|ge|pm|partial|sum|prod)", "x", visible)
+    visible = visible.replace("\\%", "%").replace("\\&", "&")
+    return len(re.sub(r"[{}\s]", "", visible))
+
+
+def semantic_formula_lines(source: str) -> list[str]:
+    """Split a long top-level sum at operator boundaries without inventing TeX layout syntax."""
+    stack: list[str] = []
+    pairs = {")": "(", "]": "[", "}": "{"}
+    breakpoints: list[int] = []
+    for index, character in enumerate(source):
+        if character in "([{":
+            stack.append(character)
+        elif character in pairs:
+            if stack and stack[-1] == pairs[character]:
+                stack.pop()
+        elif (
+            character in "+-−–—×*"
+            and not stack
+            and index > 0
+            and source[index - 1] not in "=<>≈≤≥^_+-−–—×÷*/(,[{"
+        ):
+            breakpoints.append(index)
+    if not breakpoints:
+        return [source]
+
+    parts = [source[: breakpoints[0]]]
+    parts.extend(source[start:end] for start, end in zip(breakpoints, breakpoints[1:]))
+    parts.append(source[breakpoints[-1] :])
+    lines: list[str] = []
+    current = ""
+    for part in parts:
+        candidate = current + part
+        candidate_latex = latex_expression(candidate)
+        candidate_weight = latex_render_weight(candidate_latex) if candidate_latex else len(candidate)
+        if current and candidate_weight > MAX_BLOCK_LINE_WEIGHT:
+            lines.append(current.strip())
+            current = part
+        else:
+            current = candidate
+    if current.strip():
+        lines.append(current.strip())
+    return lines if len(lines) > 1 else [source]
+
+
 def math_markdown(source: str, latex: str) -> str:
-    """Use width-fitting delimiter-only block math for long source expressions."""
-    if len(source.strip()) > BLOCK_MATH_SOURCE_LENGTH:
-        return f"$$\n{latex}\n$$"
-    return f"$${latex}$$"
+    """Choose inline/block layout from transformed TeX and split long sums semantically."""
+    if latex_render_weight(latex) <= MAX_INLINE_MATH_WEIGHT:
+        return f"$${latex}$$"
+    blocks: list[str] = []
+    for line_source in semantic_formula_lines(source.strip()):
+        line_latex = latex_expression(line_source) or latex
+        blocks.append(f"$$\n{line_latex}\n$$")
+    return "\n\n".join(blocks)
 
 
 def is_readable_label(value: str) -> bool:
@@ -746,7 +925,7 @@ def labeled_formula_markdown(value: str) -> str | None:
             rendered = (
                 math_markdown(expression, expression_latex)
                 if expression_latex is not None
-                else markdown_code_span(expression)
+                else native_mixed_math_markdown(expression) or markdown_code_span(expression)
             )
             prefix = f"**{escape_markdown_label(label)}**{separator}"
             return f"{prefix}\n\n{rendered}" if rendered.startswith("$$\n") else f"{prefix} {rendered}"
@@ -762,46 +941,187 @@ def labeled_formula_markdown(value: str) -> str | None:
     rendered = (
         math_markdown(expression, expression_latex)
         if expression_latex is not None
-        else markdown_code_span(expression)
+        else native_mixed_math_markdown(expression) or markdown_code_span(expression)
     )
     prefix = f"**{escape_markdown_label(label)}** {comparison.group(0)}"
     return f"{prefix}\n\n{rendered}" if rendered.startswith("$$\n") else f"{prefix} {rendered}"
 
 
-def formula_to_markdown(value: str) -> str:
+HANGUL_RE = re.compile(r"[가-힣]")
+MIXED_SYMBOL_ATOM_RE = re.compile(
+    r"(?<![A-Za-z0-9_])(?:\([A-Za-zαβγδμρσλΔΣΠ∑∂][A-Za-z0-9_αβγδμρσλΔΣΠ∑∂]*\)|"
+    r"[A-Za-zαβγδμρσλΔΣΠ∑∂][A-Za-z0-9_αβγδμρσλΔΣΠ∑∂]*|"
+    r"[0-9]+(?:\.[0-9]+)?%?)(?![A-Za-z0-9_])"
+)
+
+
+def native_mixed_math_markdown(value: str) -> str | None:
+    """Render Hangul as native Markdown and only safe symbolic atoms as JLatex spans."""
+    if HANGUL_RE.search(value) is None:
+        return None
+    candidate = canonical_expression_source(value)
+    if not balanced_delimiters(candidate) or "$" in candidate or "`" in candidate:
+        return None
+    if MATH_SIGNAL_RE.search(candidate) is None:
+        return candidate
+
+    output: list[str] = []
+    cursor = 0
+    for match in MIXED_SYMBOL_ATOM_RE.finditer(candidate):
+        output.append(candidate[cursor : match.start()])
+        atom = match.group(0)
+        atom_latex = latex_expression(atom)
+        output.append(math_markdown(atom, atom_latex) if atom_latex is not None else atom)
+        cursor = match.end()
+    output.append(candidate[cursor:])
+    return "".join(output)
+
+
+def segmented_formula_markdown(value: str, explicit_segments: Sequence[str]) -> str | None:
+    """Rebuild a clause from the spec's code-span boundaries without putting prose in TeX."""
+    if not explicit_segments:
+        return None
+    output: list[str] = []
+    cursor = 0
+    matched = False
+    for raw_segment in explicit_segments:
+        segment = clean_inline_markdown(raw_segment)
+        if not segment:
+            continue
+        start = value.find(segment, cursor)
+        if start < 0:
+            continue
+        output.append(value[cursor:start])
+        segment_latex = latex_expression(segment)
+        rendered = (
+            math_markdown(segment, segment_latex)
+            if segment_latex is not None
+            else formula_clause_markdown(segment)
+        )
+        if rendered == markdown_code_span(segment):
+            # An explicit source formula is still safer and more readable as native text than as
+            # a fake monospaced 'formula'. Coverage validation below makes this case visible.
+            rendered = segment
+        if rendered.startswith("$$\n"):
+            rendered = "\n\n" + rendered + "\n\n"
+        output.append(rendered)
+        cursor = start + len(segment)
+        matched = True
+    if not matched:
+        return None
+    output.append(value[cursor:])
+    return "".join(output).strip()
+
+
+def formula_to_markdown(value: str, formula_segments: Sequence[str] = ()) -> str:
     """Render every complete clause as LaTeX or preserve that complete clause as code."""
-    return "### 핵심 식과 관계\n\n" + formula_items_markdown(value)
+    return "### 핵심 식과 관계\n\n" + formula_items_markdown(
+        value, formula_segments=formula_segments
+    )
 
 
-def formula_clause_markdown(value: str) -> str:
+def formula_clause_markdown(value: str, explicit_segments: Sequence[str] = ()) -> str:
     """Render one complete formula clause without ever dropping a fallback clause."""
     formula, punctuation = split_terminal_punctuation(value)
+    segmented = segmented_formula_markdown(formula, explicit_segments)
+    if segmented is not None:
+        rendered = segmented
+        if not punctuation:
+            return rendered
+        if "\n" in rendered and rendered.endswith("$$"):
+            if set(punctuation) <= {".", "。"}:
+                return rendered
+            return f"{rendered}\n{punctuation}"
+        return rendered + punctuation
     latex = latex_formula(formula)
     if latex is not None:
         rendered = math_markdown(formula, latex)
     else:
         labeled = labeled_formula_markdown(formula)
         if labeled is None:
-            return markdown_code_span(value.strip())
-        rendered = labeled
+            native = native_mixed_math_markdown(formula)
+            if native is None:
+                return markdown_code_span(value.strip())
+            rendered = native
+        else:
+            rendered = labeled
     if not punctuation:
         return rendered
     if "\n" in rendered and rendered.endswith("$$"):
+        if set(punctuation) <= {".", "。"}:
+            return rendered
         return f"{rendered}\n{punctuation}"
     return rendered + punctuation
 
 
-def formula_items_markdown(value: str, indent: str = "") -> str:
+def formula_items_markdown(
+    value: str,
+    indent: str = "",
+    formula_segments: Sequence[str] = (),
+) -> str:
     """Render a relation as Markdown list items suitable for nesting in learning cards."""
     items: list[str] = []
+    remaining_segments = list(formula_segments)
     for clause in split_formula_clauses(value):
-        rendered = formula_clause_markdown(clause)
+        clause_segments: list[str] = []
+        for segment in tuple(remaining_segments):
+            cleaned = clean_inline_markdown(segment)
+            if cleaned and cleaned in clause:
+                clause_segments.append(segment)
+                remaining_segments.remove(segment)
+        rendered = formula_clause_markdown(clause, clause_segments)
         if rendered.startswith("$$\n"):
             # A block delimiter must occupy its own line; `- $$` is parsed as inline math.
             items.append("\n".join(indent + line for line in rendered.splitlines()))
         else:
-            items.append(f"{indent}- {rendered}")
+            lines = [line.rstrip() for line in rendered.splitlines()]
+            item_lines = [f"{indent}- {lines[0]}"]
+            continuation_indent = indent + "  "
+            item_lines.extend(
+                (continuation_indent + line) if line else ""
+                for line in lines[1:]
+            )
+            items.append("\n".join(item_lines))
+    if remaining_segments:
+        raise ValueError(
+            "Explicit formula segment was not preserved in its canonical relation: "
+            f"{remaining_segments[0]!r}"
+        )
     return "\n".join(items)
+
+
+def element_formula_items_markdown(element: ElementDraft, indent: str = "") -> str:
+    override = CANONICAL_FORMULA_OVERRIDES.get(element.element_id)
+    if override is None:
+        return formula_items_markdown(
+            element.core_relation,
+            indent=indent,
+            formula_segments=element.formula_segments,
+        )
+
+    items: list[str] = []
+    for label, source in override:
+        latex = latex_expression(source, require_comparison=True)
+        if latex is None:
+            raise ValueError(
+                f"{element.element_id} canonical formula is not supported: {source!r}"
+            )
+        rendered = math_markdown(source, latex)
+        native_label = f"{indent}- **{escape_markdown_label(label)}**"
+        if rendered.startswith("$$\n"):
+            continuation_indent = indent + "  "
+            rendered = "\n".join(
+                (continuation_indent + line) if line else ""
+                for line in rendered.splitlines()
+            )
+            items.append(f"{native_label}\n{rendered}")
+        else:
+            items.append(f"{native_label}: {rendered}")
+    return "\n".join(items)
+
+
+def element_formula_to_markdown(element: ElementDraft) -> str:
+    return "### 핵심 식과 관계\n\n" + element_formula_items_markdown(element)
 
 
 def assumption_markdown(element: ElementDraft) -> str:
@@ -829,7 +1149,7 @@ def concept_definition_markdown(element: ElementDraft) -> str:
         "### 한 문장 정의\n\n"
         f"**{element.title}**의 핵심은 다음 관계를 정확히 이해하고 설명하는 것입니다.\n\n"
         "**핵심 관계**\n\n"
-        f"{formula_items_markdown(element.core_relation)}"
+        f"{element_formula_items_markdown(element)}"
     )
 
 
@@ -862,7 +1182,7 @@ def concept_intuition_markdown(element: ElementDraft) -> str:
         "3. 입력값이 변할 때 결과의 방향을 설명합니다.\n"
         f"4. **{element.title}**을 실제 재무자료나 거래 상황에 적용할 때 생길 예외를 확인합니다.\n\n"
         "**핵심 관계**\n\n"
-        f"{formula_items_markdown(element.core_relation)}"
+        f"{element_formula_items_markdown(element)}"
     )
 
 
@@ -874,7 +1194,7 @@ def learning_notes_markdown(element: ElementDraft) -> str:
             learning_lines.append(safe_line)
     return (
         "**핵심 관계**\n\n"
-        f"{formula_items_markdown(element.core_relation)}\n\n"
+        f"{element_formula_items_markdown(element)}\n\n"
         + scope_to_markdown("\n".join(learning_lines))
     )
 
@@ -884,7 +1204,7 @@ def checklist_markdown(element: ElementDraft) -> str:
     return (
         f"- **{element.title}**을 한 문장으로 정의한다\n"
         + "- **핵심 관계의 각 항목과 방향을 설명한다**\n"
-        + formula_items_markdown(element.core_relation, indent="  ")
+        + element_formula_items_markdown(element, indent="  ")
         + "\n"
         + "\n".join(f"- {item}" for item in domain_items)
         + "\n- 공식의 결과를 숫자뿐 아니라 한 문장으로 해석한다"
@@ -1067,7 +1387,7 @@ def when_kocw_course_source(locator: str) -> str | None:
     return None
 
 
-def extract_core_relation(block: Sequence[str], element_id: str) -> str:
+def extract_core_relation(block: Sequence[str], element_id: str) -> tuple[str, tuple[str, ...]]:
     for index, line in enumerate(block):
         match = re.match(
             r"^-\s+\*\*개념·수식(?::)?\*\*:?\s*(.*)$",
@@ -1086,7 +1406,7 @@ def extract_core_relation(block: Sequence[str], element_id: str) -> str:
                 parts.append(stripped)
         relation = clean_markdown_block(parts)
         if relation:
-            return relation
+            return relation, markdown_formula_segments("\n".join(parts))
     raise ValueError(f"{element_id} has no concept/formula block")
 
 
@@ -1113,6 +1433,7 @@ def parse_heading_elements(
         if not source_ids:
             source_ids = ("SPEC-FINAL",)
         scope_lines = [line for line in block if line not in reference_lines]
+        core_relation, formula_segments = extract_core_relation(block, element_id)
         elements.append(
             ElementDraft(
                 element_id=element_id,
@@ -1120,7 +1441,8 @@ def parse_heading_elements(
                 number=int(number_text),
                 title=clean_inline_markdown(raw_title),
                 mode="calculation",
-                core_relation=extract_core_relation(block, element_id),
+                core_relation=core_relation,
+                formula_segments=formula_segments,
                 scope_notes=clean_markdown_block(scope_lines),
                 source_ids=source_ids,
                 spec_section_locator=(
@@ -1178,6 +1500,7 @@ def parse_table_elements(
                 title=infer_table_title(element_id, raw_core),
                 mode=mode,
                 core_relation=clean_inline_markdown(raw_core),
+                formula_segments=markdown_formula_segments(raw_core),
                 scope_notes=scope_notes,
                 source_ids=source_ids,
                 spec_section_locator=(
@@ -1263,7 +1586,7 @@ def validate_formula_rendering(elements: Sequence[ElementDraft]) -> None:
             r"**민감도**: $$\Delta \mathrm{EV}=\mathrm{EBITDA} \times "
             r"\Delta \mathrm{Multiple}$$"
         ),
-        "설명: X=Y 일부 설명": "**설명**: `X=Y 일부 설명`",
+        "설명: X=Y 일부 설명": "**설명**: $$X$$=$$Y$$ 일부 설명",
     }
     for source, expected in exact_markdown_probes.items():
         actual = formula_clause_markdown(source)
@@ -1277,15 +1600,36 @@ def validate_formula_rendering(elements: Sequence[ElementDraft]) -> None:
     )
     if upright_probe != upright_expected:
         raise ValueError(f"Upright identifier rendering regressed: {upright_probe!r}")
+    factor_boundary_probes = {
+        "F_0=(S_0-I)(1+rT)": r"F_0=(S_0-I)(1+r \times T)",
+        "E(R_p)=wR_A+(1−w)R_B": r"E(R_p)=w \times R_A+(1-w) \times R_B",
+        "wD_1+(1−w)D_2=D_L": r"w \times D_1+(1-w) \times D_2=D_L",
+        "WACC=wE×ke+wD×kd×(1-T)": (
+            r"\mathrm{WACC}=w_E \times k_e+w_D \times k_d \times (1-T)"
+        ),
+        "S_u=u×S_0": r"S_u=u \times S_0",
+        "V_0=[q×V_u+(1-q)×V_d]/R": (
+            r"V_0=[q \times V_u+(1-q) \times V_d]/R"
+        ),
+        "C=S_0×N(d_1)-K×e^(-r×T)×N(d_2)": (
+            r"C=S_0 \times N(d_1)-K \times e^{(-r \times T)} \times N(d_2)"
+        ),
+    }
+    for source, expected in factor_boundary_probes.items():
+        actual = latex_expression(source, require_comparison=True)
+        if actual != expected:
+            raise ValueError(
+                f"Implicit-product boundary regressed: {source!r} -> {actual!r}"
+            )
     comma_probe = latex_expression("(1,000 - 800 + 20) × 100 / 1,000")
     if comma_probe != r"(1{,}000 - 800 + 20) \times 100 / 1{,}000":
         raise ValueError(f"Digit grouping comma rendering regressed: {comma_probe!r}")
 
     long_formula = "X=1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19"
-    expected_block = f"$$\n{long_formula}\n$$"
-    if formula_clause_markdown(long_formula) != expected_block:
-        raise ValueError("Long formula did not use delimiter-only block math")
-    if formula_items_markdown(long_formula) != expected_block:
+    rendered_long_formula = formula_clause_markdown(long_formula)
+    if rendered_long_formula.count("$$\n") < 2 or "\n$$" not in rendered_long_formula:
+        raise ValueError("Long formula was not split into delimiter-only semantic blocks")
+    if formula_items_markdown(long_formula) != rendered_long_formula:
         raise ValueError("Long formula block delimiter was prefixed as a list item")
     if formula_items_markdown("X=1") != "- $$X=1$$":
         raise ValueError("Short formula no longer uses inline math")
@@ -1306,14 +1650,30 @@ def validate_formula_rendering(elements: Sequence[ElementDraft]) -> None:
 
     elements_by_id = {element.element_id: element for element in elements}
     for element in elements:
-        rendered = formula_to_markdown(element.core_relation)
+        rendered = element_formula_to_markdown(element)
+        override = CANONICAL_FORMULA_OVERRIDES.get(element.element_id)
+        if override is not None:
+            for label, source in override:
+                latex = latex_expression(source, require_comparison=True)
+                if label not in rendered or latex is None or "$$" not in rendered:
+                    raise ValueError(
+                        f"{element.element_id} canonical relation was not preserved: {source!r}"
+                    )
+            continue
         for decimal in re.findall(r"\d+\.\d+", element.core_relation):
             if decimal not in rendered:
                 raise ValueError(
                     f"{element.element_id} split or lost decimal token {decimal!r}"
                 )
+        remaining_segments = list(element.formula_segments)
         for clause in split_formula_clauses(element.core_relation):
-            rendered_clause = formula_clause_markdown(clause)
+            clause_segments: list[str] = []
+            for segment in tuple(remaining_segments):
+                cleaned = clean_inline_markdown(segment)
+                if cleaned and cleaned in clause:
+                    clause_segments.append(segment)
+                    remaining_segments.remove(segment)
+            rendered_clause = formula_clause_markdown(clause, clause_segments)
             for math_body in re.findall(r"\$\$\n?(.*?)\n?\$\$", rendered_clause, re.DOTALL):
                 commands = set(re.findall(r"\\([A-Za-z]+)", math_body))
                 unsupported = commands - SUPPORTED_GENERATED_LATEX_COMMANDS
@@ -1344,12 +1704,15 @@ def validate_formula_rendering(elements: Sequence[ElementDraft]) -> None:
                         raise ValueError(
                             f"{element.element_id} collapsed a readable formula label into code"
                         )
-            if (
-                len(expression_source) > BLOCK_MATH_SOURCE_LENGTH
-                and re.search(r"\$\$[^\n]+\$\$", rendered_clause) is not None
-            ):
+            oversized_inline = [
+                body
+                for body in re.findall(r"\$\$([^$\n]+)\$\$", rendered_clause)
+                if latex_render_weight(body) > MAX_INLINE_MATH_WEIGHT
+            ]
+            if oversized_inline:
                 raise ValueError(
-                    f"{element.element_id} kept long formula inline: {expression_source!r}"
+                    f"{element.element_id} kept transformed long formula inline: "
+                    f"{oversized_inline[0]!r}"
                 )
 
             expected_line = (
@@ -1357,10 +1720,24 @@ def validate_formula_rendering(elements: Sequence[ElementDraft]) -> None:
                 if rendered_clause.startswith("$$\n")
                 else f"- {rendered_clause}"
             )
-            if expected_line not in rendered:
+            normalized_expected_line = "\n".join(
+                line.strip() for line in expected_line.splitlines()
+            )
+            normalized_rendered = "\n".join(
+                line.strip() for line in rendered.splitlines()
+            )
+            if normalized_expected_line not in normalized_rendered:
                 raise ValueError(
                     f"{element.element_id} did not preserve complete formula clause {clause!r}"
                 )
+
+    for fixture_id in ("DER-09", "EQV-44"):
+        fixture = elements_by_id[fixture_id]
+        nested = element_formula_items_markdown(fixture, indent="  ")
+        if any(line == "$$" for line in nested.splitlines()):
+            raise ValueError(f"{fixture_id} embedded block math escaped checklist indentation")
+        if any(line.strip() in {".", "。"} for line in nested.splitlines()):
+            raise ValueError(f"{fixture_id} left terminal punctuation on an orphan line")
 
     for element_id, expected_modes in KNOWN_FORMULA_MODES.items():
         element = elements_by_id.get(element_id)
@@ -1575,7 +1952,7 @@ def build_database(
                 definition_markdown = concept_definition_markdown(element)
                 intuition_markdown = concept_intuition_markdown(element)
                 learning_notes = learning_notes_markdown(element)
-                formula_markdown = formula_to_markdown(element.core_relation)
+                formula_markdown = element_formula_to_markdown(element)
                 assumptions_markdown = assumption_markdown(element)
                 checklist = checklist_markdown(element)
                 database.execute(
@@ -1767,6 +2144,10 @@ def validate_database(path: Path) -> dict[str, int]:
         malformed_math_fields: list[tuple[str, str]] = []
         malformed_math_contexts: list[tuple[str, str, int]] = []
         compound_math_spans: list[tuple[str, str]] = []
+        hangul_math_spans: list[tuple[str, str]] = []
+        oversized_inline_math: list[tuple[str, str, int]] = []
+        visible_code_spans: list[tuple[str, str, str]] = []
+        merged_product_math: list[tuple[str, str, str]] = []
         redundant_outer_headings: list[tuple[str, str]] = []
         distinct_visible_values = {field: set() for field in visible_field_names}
         for row in visible_rows:
@@ -1784,6 +2165,20 @@ def validate_database(path: Path) -> dict[str, int]:
                 for math_body in re.findall(r"\$\$\n?(.*?)\n?\$\$", value, re.DOTALL):
                     if len(split_formula_clauses(math_body.strip())) > 1:
                         compound_math_spans.append((element_id, field_name))
+                    if HANGUL_RE.search(math_body) is not None:
+                        hangul_math_spans.append((element_id, field_name))
+                    merged = FORBIDDEN_MERGED_PRODUCT_TEX_RE.search(math_body)
+                    if merged is not None:
+                        merged_product_math.append(
+                            (element_id, field_name, merged.group(0))
+                        )
+                for inline_body in re.findall(r"\$\$([^$\n]+)\$\$", value):
+                    weight = latex_render_weight(inline_body)
+                    if weight > MAX_INLINE_MATH_WEIGHT:
+                        oversized_inline_math.append((element_id, field_name, weight))
+                for code_match in MARKDOWN_CODE_SPAN_RE.finditer(value):
+                    code_body = code_match.group("body")
+                    visible_code_spans.append((element_id, field_name, code_body[:80]))
                 if (
                     field_name == "learning_scope"
                     and value.lstrip().startswith("### 적용·연습 범위")
@@ -1818,6 +2213,26 @@ def validate_database(path: Path) -> dict[str, int]:
                 "Top-level comma-connected equations remain in one math span: "
                 f"{compound_math_spans[:3]}"
             )
+        if hangul_math_spans:
+            raise ValueError(
+                "Hangul leaked into JLatex-only spans: "
+                f"{hangul_math_spans[:3]}"
+            )
+        if oversized_inline_math:
+            raise ValueError(
+                "Transformed long formulas remain inline: "
+                f"{oversized_inline_math[:3]}"
+            )
+        if visible_code_spans:
+            raise ValueError(
+                "Learning-card fields contain unapproved code spans: "
+                f"{visible_code_spans[:3]}"
+            )
+        if merged_product_math:
+            raise ValueError(
+                "Implicit products were merged into upright identifiers: "
+                f"{merged_product_math[:3]}"
+            )
         if redundant_outer_headings:
             raise ValueError(f"Redundant learning-card headings remain: {redundant_outer_headings[:3]}")
 
@@ -1843,32 +2258,40 @@ def validate_database(path: Path) -> dict[str, int]:
             )
 
         formula_rows = database.execute(
-            """SELECT e.element_id, e.core_relation, f.expression
+            """SELECT e.element_id, f.expression
                FROM elements e JOIN formula_cards f USING(element_id)"""
         ).fetchall()
-        formula_mismatches = [
+        formula_code_fallbacks = [
             element_id
-            for element_id, core_relation, expression in formula_rows
-            if formula_to_markdown(core_relation) != expression
+            for element_id, expression in formula_rows
+            if MARKDOWN_CODE_SPAN_RE.search(expression) is not None
         ]
-        if formula_mismatches:
-            raise ValueError(f"Stored formula Markdown differs from generator: {formula_mismatches[:3]}")
+        if formula_code_fallbacks:
+            raise ValueError(
+                "Formula cards contain code-span formula fallbacks: "
+                f"{formula_code_fallbacks[:3]}"
+            )
         relation_card_rows = database.execute(
-            """SELECT e.element_id, e.core_relation, c.definition, c.intuition,
+            """SELECT e.element_id, f.expression, c.definition, c.intuition,
                       c.scope_notes, f.notes
                FROM elements e
                JOIN concept_cards c USING(element_id)
                JOIN formula_cards f USING(element_id)"""
         ).fetchall()
         relation_rendering_mismatches = []
-        for element_id, core_relation, definition, intuition, learning_scope, checklist in relation_card_rows:
-            rendered_relation = formula_items_markdown(core_relation)
-            nested_relation = formula_items_markdown(core_relation, indent="  ")
+        for element_id, expression, definition, intuition, learning_scope, checklist in relation_card_rows:
+            rendered_relation = expression.split("\n\n", 1)[-1]
+            normalized_relation = "\n".join(
+                line.strip() for line in rendered_relation.splitlines()
+            )
+            normalized_checklist = "\n".join(
+                line.strip() for line in checklist.splitlines()
+            )
             if (
                 rendered_relation not in definition
                 or rendered_relation not in intuition
                 or rendered_relation not in learning_scope
-                or nested_relation not in checklist
+                or normalized_relation not in normalized_checklist
             ):
                 relation_rendering_mismatches.append(element_id)
         if relation_rendering_mismatches:
@@ -1876,9 +2299,11 @@ def validate_database(path: Path) -> dict[str, int]:
                 "Core relations are not rendered safely in every learning card: "
                 f"{relation_rendering_mismatches[:3]}"
             )
-        latex_card_count = sum("$$" in expression for _, _, expression in formula_rows)
-        if latex_card_count < 50:
-            raise ValueError(f"Whole-clause LaTeX coverage is unexpectedly low: {latex_card_count}")
+        latex_card_count = sum("$$" in expression for _, expression in formula_rows)
+        if latex_card_count != 135:
+            raise ValueError(
+                f"Every formula card must contain explicit LaTeX: {latex_card_count}/135"
+            )
         linked_raw_kocw = database.execute(
             """SELECT es.element_id FROM element_sources es
                JOIN sources s ON s.source_id = es.source_id

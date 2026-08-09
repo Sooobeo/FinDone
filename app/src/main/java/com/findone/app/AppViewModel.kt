@@ -42,6 +42,31 @@ import kotlin.math.floor
 
 enum class MainTab { HOME, STUDY, QUIZ, RECORDS }
 
+private const val QUIZ_DOMAIN_IDS_STATE = "quizDomainIds"
+private const val QUIZ_DOMAIN_ID_STATE = "quizDomainId"
+private const val QUIZ_TRACK_STATE = "quizTrack"
+
+internal fun normalizeQuizDomainSelection(
+    availableDomainIds: Collection<String>,
+    restoredDomainIds: Collection<String>?,
+): Set<String> {
+    val available = availableDomainIds.distinct()
+    val requested = restoredDomainIds?.toSet() ?: available.toSet()
+    return available.asSequence()
+        .filter { it in requested }
+        .toCollection(linkedSetOf())
+}
+
+internal fun quizDomainFilter(
+    track: QuizTrack,
+    selectedDomainIds: Set<String>,
+    singleDomainId: String?,
+): Set<String>? = if (track == QuizTrack.DOMAIN) {
+    selectedDomainIds
+} else {
+    singleDomainId?.let(::setOf)
+}
+
 enum class QuizTrack(val title: String, val description: String) {
     DOMAIN("분야별 학습", "선택한 분야의 요소를 고르게 섞습니다."),
     WEAK("약점 집중", "최근 오답이 남은 요소부터 다시 풉니다."),
@@ -106,13 +131,19 @@ class AppViewModel(
         private set
     var studyResults by mutableStateOf<List<ContentElement>>(emptyList())
         private set
-    var quizDomainId by mutableStateOf<String?>(null)
+    var quizDomainId by mutableStateOf(savedStateHandle.get<String>(QUIZ_DOMAIN_ID_STATE))
+        private set
+    var quizDomainIds by mutableStateOf<Set<String>>(emptySet())
         private set
     var quizDifficulty by mutableStateOf(1)
         private set
     var quizCount by mutableStateOf(10)
         private set
-    var selectedTrack by mutableStateOf(QuizTrack.DOMAIN)
+    var selectedTrack by mutableStateOf(
+        runCatching {
+            QuizTrack.valueOf(savedStateHandle[QUIZ_TRACK_STATE] ?: QuizTrack.DOMAIN.name)
+        }.getOrDefault(QuizTrack.DOMAIN)
+    )
         private set
     var quizSession by mutableStateOf<QuizSessionState?>(null)
         private set
@@ -161,6 +192,14 @@ class AppViewModel(
         allElements = loadedElements
         contentManifest = loadedManifest
         studyResults = loadedElements
+        val availableDomainIds = domains.map { it.id }
+        quizDomainId = quizDomainId?.takeIf { it in availableDomainIds }
+        quizDomainIds = normalizeQuizDomainSelection(
+            availableDomainIds = availableDomainIds,
+            restoredDomainIds = savedStateHandle.get<ArrayList<String>>(QUIZ_DOMAIN_IDS_STATE),
+        )
+        persistQuizDomainSelection()
+        if (quizDomainId == null) savedStateHandle.remove<String>(QUIZ_DOMAIN_ID_STATE)
         recordDomainId = recordDomainId?.takeIf { id -> domains.any { it.id == id } }
         recordElementId = recordElementId?.takeIf { id ->
             allElements.any { element ->
@@ -299,26 +338,82 @@ class AppViewModel(
             .getOrDefault(emptyList())
     }
 
-    fun setQuizDomain(domainId: String?) { quizDomainId = domainId }
+    fun setQuizDomain(domainId: String?) {
+        quizDomainId = domainId?.takeIf { candidate -> domains.any { it.id == candidate } }
+        if (quizDomainId == null) savedStateHandle.remove<String>(QUIZ_DOMAIN_ID_STATE)
+        else savedStateHandle[QUIZ_DOMAIN_ID_STATE] = quizDomainId
+    }
+
+    fun toggleQuizDomain(domainId: String) {
+        if (domains.none { it.id == domainId }) return
+        setQuizDomains(
+            if (domainId in quizDomainIds) quizDomainIds - domainId
+            else quizDomainIds + domainId,
+        )
+    }
+
+    fun selectAllQuizDomains() = setQuizDomains(domains.mapTo(linkedSetOf()) { it.id })
+
+    fun clearQuizDomains() = setQuizDomains(emptySet())
+
+    private fun setQuizDomains(domainIds: Set<String>) {
+        quizDomainIds = domains.asSequence()
+            .map { it.id }
+            .filter { it in domainIds }
+            .toCollection(linkedSetOf())
+        persistQuizDomainSelection()
+    }
+
+    private fun persistQuizDomainSelection() {
+        savedStateHandle[QUIZ_DOMAIN_IDS_STATE] = ArrayList(quizDomainIds)
+    }
+
     fun updateQuizDifficulty(difficulty: Int) { quizDifficulty = difficulty.coerceIn(1, 3) }
     fun updateQuizCount(count: Int) { quizCount = count.coerceIn(1, 20) }
-    fun setQuizTrack(track: QuizTrack) { selectedTrack = track }
+    fun setQuizTrack(track: QuizTrack) {
+        selectedTrack = track
+        savedStateHandle[QUIZ_TRACK_STATE] = track.name
+    }
     fun clearQuizMessage() { quizMessage = null }
 
-    fun startConfiguredQuiz() = startQuiz(selectedTrack, quizDomainId, quizCount, quizDifficulty)
+    val configuredQuizSelectionError: String?
+        get() = when {
+            selectedTrack != QuizTrack.DOMAIN -> null
+            quizDomainIds.isEmpty() -> "분야별 학습은 분야를 1개 이상 선택해야 합니다."
+            allElements.none { it.domainId in quizDomainIds } -> "선택한 분야에 출제할 학습요소가 없습니다."
+            else -> null
+        }
+
+    fun startConfiguredQuiz() {
+        configuredQuizSelectionError?.let { message ->
+            quizMessage = message
+            return
+        }
+        startQuiz(
+            track = selectedTrack,
+            domainIds = quizDomainFilter(selectedTrack, quizDomainIds, quizDomainId),
+            count = quizCount,
+            difficulty = quizDifficulty,
+        )
+    }
 
     fun startElementQuiz(elementId: String) {
         val element = allElements.firstOrNull { it.id == elementId } ?: return
         startQuiz(
             track = QuizTrack.DOMAIN,
-            domainId = element.domainId,
+            domainIds = setOf(element.domainId),
             count = 5,
             difficulty = quizDifficulty,
             explicitElementIds = listOf(elementId),
         )
     }
 
-    fun startWeakQuiz() = startQuiz(QuizTrack.WEAK, quizDomainId, quizCount, quizDifficulty)
+    fun startWeakQuiz() = startQuiz(
+        QuizTrack.WEAK,
+        quizDomainId?.let(::setOf),
+        quizCount,
+        quizDifficulty,
+    )
 
     fun startRecordWeakQuiz() {
         if (recordUnresolvedWrongCount <= 0) {
@@ -330,7 +425,7 @@ class AppViewModel(
             ?: elementId?.let { selectedId -> allElements.firstOrNull { it.id == selectedId }?.domainId }
         startQuiz(
             track = QuizTrack.WEAK,
-            domainId = domainId,
+            domainIds = domainId?.let(::setOf),
             count = quizCount,
             difficulty = quizDifficulty,
             explicitElementIds = elementId?.let { listOf(it) },
@@ -366,16 +461,25 @@ class AppViewModel(
 
     private fun startQuiz(
         track: QuizTrack,
-        domainId: String?,
+        domainIds: Set<String>?,
         count: Int,
         difficulty: Int,
         explicitElementIds: List<String>? = null,
     ) {
         quizMessage = null
         val sessionCount = count.coerceIn(1, 20)
+        val availableDomainIds = domains.mapTo(hashSetOf()) { it.id }
+        val normalizedDomainIds = domainIds?.intersect(availableDomainIds)
+        if (domainIds != null && normalizedDomainIds.isNullOrEmpty()) {
+            quizMessage = "선택한 분야에 출제할 학습요소가 없습니다."
+            return
+        }
+        fun ContentElement.inSelectedDomains(): Boolean =
+            normalizedDomainIds == null || domainId in normalizedDomainIds
+
         if (track == QuizTrack.BOOKMARK) {
             val replayCandidates = bookmarks.asSequence()
-                .filter { saved -> domainId == null || allElements.firstOrNull { it.id == saved.elementId }?.domainId == domainId }
+                .filter { saved -> allElements.firstOrNull { it.id == saved.elementId }?.inSelectedDomains() == true }
                 .mapNotNull { saved ->
                     runCatching { parseBookmarkedQuestion(saved.snapshotJson) to saved.presentation() }.getOrNull()
                 }
@@ -413,7 +517,7 @@ class AppViewModel(
         val explicitElementSet = explicitElementIds?.toSet()
         val unresolvedWrong = if (track == QuizTrack.WEAK) {
             userRepository.unresolvedWrong().filter { entry ->
-                (domainId == null || allElements.firstOrNull { it.id == entry.elementId }?.domainId == domainId) &&
+                (allElements.firstOrNull { it.id == entry.elementId }?.inSelectedDomains() == true) &&
                     (explicitElementSet == null || entry.elementId in explicitElementSet)
             }
         } else emptyList()
@@ -425,19 +529,28 @@ class AppViewModel(
                 WeakTemplateTarget(mode, presentation, entry.lastSeed, entry.templateId)
             }.distinctBy { it.templateId }
         }
+        val baseSeed = System.currentTimeMillis() and Long.MAX_VALUE
         val basePool = when {
             explicitElementIds != null -> explicitElementIds.mapNotNull { id -> allElements.firstOrNull { it.id == id } }
             track == QuizTrack.WEAK -> unresolvedWrong.mapNotNull { entry -> allElements.firstOrNull { it.id == entry.elementId } }
             track == QuizTrack.CASE -> CASE_ELEMENT_IDS.mapNotNull { id -> allElements.firstOrNull { it.id == id } }
-            domainId != null -> allElements.filter { it.domainId == domainId }
+            track == QuizTrack.DOMAIN && normalizedDomainIds != null -> {
+                val elementsById = allElements.associateBy { it.id }
+                QuizEngine.balancedDomainElementIds(
+                    candidates = allElements.map { it.seed() },
+                    selectedDomainIds = normalizedDomainIds,
+                    seed = baseSeed,
+                ).mapNotNull(elementsById::get)
+            }
+            normalizedDomainIds != null -> allElements.filter { it.domainId in normalizedDomainIds }
             else -> allElements
-        }.filter { candidate -> domainId == null || candidate.domainId == domainId }
+        }.filter { candidate -> candidate.inSelectedDomains() }
             .distinctBy { it.id }
             .toMutableList()
 
         if (basePool.isEmpty() && track == QuizTrack.WEAK) {
             quizMessage = "아직 남은 오답이 없어 전체 요소로 시작합니다."
-            basePool += allElements.filter { domainId == null || it.domainId == domainId }
+            basePool += allElements.filter { it.inSelectedDomains() }
         }
         if (basePool.isEmpty()) {
             quizMessage = if (track == QuizTrack.BOOKMARK) "저장된 북마크가 없습니다." else "출제할 요소가 없습니다."
@@ -448,7 +561,7 @@ class AppViewModel(
         val requiredUnique = ceil(sessionCount / maxPerElement.toDouble()).toInt()
         if (explicitElementIds == null && basePool.size < requiredUnique) {
             allElements.asSequence()
-                .filter { candidate -> domainId == null || candidate.domainId == domainId }
+                .filter { candidate -> candidate.inSelectedDomains() }
                 .filterNot { candidate -> basePool.any { it.id == candidate.id } }
                 .take(requiredUnique - basePool.size)
                 .forEach(basePool::add)
@@ -458,7 +571,6 @@ class AppViewModel(
             return
         }
 
-        val baseSeed = System.currentTimeMillis() and Long.MAX_VALUE
         val random = Random(baseSeed)
         val ordered = if (track == QuizTrack.WEAK) {
             basePool.sortedWith(
@@ -467,7 +579,11 @@ class AppViewModel(
                     if (item == null || item.attempts == 0) 1.0 else item.correct.toDouble() / item.attempts
                 }.thenBy { progress[it.id]?.lastAttemptAt ?: 0L }
             )
-        } else basePool.shuffled(random)
+        } else if (track == QuizTrack.DOMAIN && normalizedDomainIds != null) {
+            basePool
+        } else {
+            basePool.shuffled(random)
+        }
         val allSeeds = allElements.map { it.seed() }
         val elementOccurrences = mutableMapOf<String, Int>()
         val presentations = mutableListOf<QuizPresentation>()

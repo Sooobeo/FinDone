@@ -174,6 +174,48 @@ object QuizEngine {
         get() = calculationFactories.keys.toSortedSet()
 
     /**
+     * Produces a stable, duplicate-free round-robin order across the requested domains.
+     *
+     * Each domain is independently shuffled from [seed], then one element per non-empty domain is
+     * emitted per round. Sorting before the stable shuffle makes the result independent from the
+     * database query order while still varying predictably with the session seed.
+     */
+    fun balancedDomainElementIds(
+        candidates: List<ElementSeed>,
+        selectedDomainIds: Set<String>,
+        seed: Long,
+    ): List<String> {
+        if (selectedDomainIds.isEmpty()) return emptyList()
+        val candidatesByDomain = candidates.asSequence()
+            .filter { it.domainName in selectedDomainIds }
+            .distinctBy { it.id }
+            .groupBy { it.domainName }
+        if (candidatesByDomain.isEmpty()) return emptyList()
+
+        val domainOrder = StableRandom(seed xor stableHash64("domain-order"))
+            .shuffled(candidatesByDomain.keys.sorted())
+        val shuffledByDomain = domainOrder.associateWith { domainId ->
+            StableRandom(seed xor stableHash64("domain:$domainId"))
+                .shuffled(candidatesByDomain.getValue(domainId).sortedBy { it.id })
+        }
+        val nextIndex = domainOrder.associateWithTo(mutableMapOf()) { 0 }
+        return buildList {
+            while (true) {
+                var addedInRound = false
+                domainOrder.forEach { domainId ->
+                    val index = nextIndex.getValue(domainId)
+                    shuffledByDomain.getValue(domainId).getOrNull(index)?.let { candidate ->
+                        add(candidate.id)
+                        nextIndex[domainId] = index + 1
+                        addedInRound = true
+                    }
+                }
+                if (!addedInRound) break
+            }
+        }
+    }
+
+    /**
      * Generates a four-choice concept question for any valid [ElementSeed]. The pool can contain
      * all 135 elements; same-domain distractors are preferred at higher difficulty. If a tiny pool
      * is supplied, deterministic misconception placeholders complete the four choices.
