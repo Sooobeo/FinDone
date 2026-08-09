@@ -127,6 +127,7 @@ import com.findone.app.ui.SectionTitle
 import com.findone.app.ui.StatCard
 import com.findone.app.ui.LandingScreen
 import com.findone.app.ui.domainAccent
+import com.findone.app.ui.learningProgressPreview
 import com.findone.app.ui.safeMathMarkdown
 import com.findone.app.ui.theme.FinDoneTheme
 import kotlinx.coroutines.launch
@@ -493,12 +494,12 @@ private fun ElementRow(element: ContentElement, vm: AppViewModel, onClick: () ->
                     }
                 }
                 Text(element.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                MarkdownText(
-                    markdown = safeMathMarkdown(element.coreRelation),
+                Text(
+                    text = learningProgressPreview(element.coreRelation),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 2,
-                    linksEnabled = false,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
             Spacer(Modifier.width(8.dp))
