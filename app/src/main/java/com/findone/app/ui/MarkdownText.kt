@@ -11,7 +11,6 @@ import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.util.TypedValue
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,15 +29,18 @@ import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.viewinterop.AndroidView
 import io.noties.markwon.Markwon
 import io.noties.markwon.ext.latex.JLatexMathPlugin
-import io.noties.markwon.image.AsyncDrawableScheduler
 import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
 import java.util.LinkedHashMap
 import java.util.concurrent.Executors
 import kotlin.math.ceil
 import kotlin.math.max
+import ru.noties.jlatexmath.JLatexMathAndroid
 
-/** A bounded process-wide pool avoids one cached executor per MarkdownText composition. */
-private val latexExecutor = Executors.newFixedThreadPool(2) { runnable ->
+/**
+ * JLatexMath 0.2.0 owns process-wide mutable font/formula registries. Serial execution prevents
+ * first-use races when a detail page schedules several formulas at once.
+ */
+private val latexExecutor = Executors.newSingleThreadExecutor { runnable ->
     Thread(runnable, "findone-latex").apply { isDaemon = true }
 }
 
@@ -72,6 +74,7 @@ fun MarkdownText(
 ) {
     require(maxLines > 0) { "maxLines must be greater than zero." }
     val context = LocalContext.current
+    val applicationContext = context.applicationContext
     val density = LocalDensity.current
     val resolvedStyle = LocalTextStyle.current.merge(style)
     val textSizePx = with(density) {
@@ -83,8 +86,11 @@ fun MarkdownText(
         else textSizePx * 1.4f
     }
     val textColor = color.toArgb()
-    val markdownRenderer = remember(context, textSizePx, textColor) {
-        Markwon.builder(context)
+    val markdownRenderer = remember(applicationContext, textSizePx, textColor) {
+        // The dependency also registers an init provider, but explicit idempotent initialization
+        // keeps formula rendering safe if provider startup order differs across devices/OEMs.
+        JLatexMathAndroid.init(applicationContext)
+        Markwon.builder(applicationContext)
             .usePlugin(MarkwonInlineParserPlugin.create())
             .usePlugin(
                 JLatexMathPlugin.create(textSizePx) { builder ->
@@ -116,18 +122,6 @@ fun MarkdownText(
                 )
                 includeFontPadding = false
                 highlightColor = android.graphics.Color.TRANSPARENT
-                addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-                    override fun onViewAttachedToWindow(view: View) {
-                        // Markwon cancels pending drawable work when a TextView detaches. Compose
-                        // can later reuse the same AndroidView with an unchanged render key, so
-                        // explicitly resume the existing spans instead of waiting for setMarkdown.
-                        AsyncDrawableScheduler.schedule(view as TextView)
-                    }
-
-                    override fun onViewDetachedFromWindow(view: View) {
-                        AsyncDrawableScheduler.unschedule(view as TextView)
-                    }
-                })
             }
         },
         update = { textView ->
@@ -150,12 +144,30 @@ fun MarkdownText(
                 },
             )
             if (textView.tag != renderKey) {
-                markdownRenderer.setMarkdown(textView, normalizedMarkdown)
+                runCatching { markdownRenderer.setMarkdown(textView, normalizedMarkdown) }
+                    .onFailure { error ->
+                        reportMarkdownRenderingError(normalizedMarkdown, error)
+                        textView.text = markdownPlainTextFallback(normalizedMarkdown)
+                    }
                 textView.tag = renderKey
             }
         },
     )
 }
+
+private fun reportMarkdownRenderingError(markdown: String, error: Throwable) {
+    val diagnosticKey = "${markdown.length}:${markdown.hashCode().toUInt().toString(16)}"
+    Log.e(
+        "FinDoneMarkdown",
+        "Markdown renderer failed; displaying plain text (content=$diagnosticKey)",
+        error,
+    )
+}
+
+internal fun markdownPlainTextFallback(markdown: String): String =
+    markdownAccessibilityText(markdown)
+        .replace(Regex("[ \\t]+([.,;:!?。])"), "$1")
+        .ifBlank { markdown.trim() }
 
 private fun reportLatexRenderingError(latex: String, error: Throwable) {
     // Formula text can eventually come from user content. Log only a stable diagnostic key,

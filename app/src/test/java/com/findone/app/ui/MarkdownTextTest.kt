@@ -6,6 +6,21 @@ import org.junit.Test
 
 class MarkdownTextTest {
     @Test
+    fun `plain text fallback keeps learning content readable after renderer failure`() {
+        assertEquals(
+            "핵심 관계\n항목 자산 A = 부채 L + 자본 E.\n공식 문서, 링크",
+            markdownPlainTextFallback(
+                """
+                ### 핵심 관계
+
+                - 자산${'$'}${'$'}A${'$'}${'$'} = 부채${'$'}${'$'}L${'$'}${'$'} + 자본${'$'}${'$'}E${'$'}${'$'}.
+                [공식 문서](https://example.com)
+                """.trimIndent(),
+            ),
+        )
+    }
+
+    @Test
     fun `normalizes standard inline math and preserves native inline math`() {
         val input = "before \$x^2 + y_1\$ and \$\$\\frac{a}{b}\$\$ after"
 
