@@ -14,7 +14,7 @@
 8. 검증된 릴리스를 `dist/findone-*`에 원자적으로 게시하고 최신 두 개만 남깁니다.
 9. 선택한 mirror가 있으면 완성된 폴더를 복사·재검증한 뒤 그곳도 최신 두 개만 남깁니다.
 
-앱의 업데이트 탐색은 사용자가 Android Storage Access Framework에서 직접 선택한 document tree만 읽습니다. 앱 자체의 OneDrive API 호출·로그인·동기화는 없으며 인터넷 권한도 사용하지 않습니다. release manifest에는 이를 `updateSource=user_selected_saf_document_tree`, `directOneDriveApi=false`, 호환 필드 `oneDriveRuntimeSync=false`로 기록합니다.
+앱에는 업데이트 탐색이나 APK 설치 기능이 없으며 OneDrive API 호출·로그인·동기화 및 인터넷 권한도 사용하지 않습니다. 자동화는 검증된 릴리스 파일을 설정된 OneDrive mirror에 게시하는 역할만 합니다. 휴대폰에서는 OneDrive에서 최신 `.apk`를 직접 열어 Android 시스템 설치 화면으로 업데이트합니다.
 
 훅은 동기식입니다. 따라서 `git commit` 명령은 릴리스 빌드가 끝날 때까지 수 분 걸릴 수 있습니다. 빌드가 실패해도 이미 만들어진 Git 커밋은 사라지지 않으며, 오류가 콘솔에 표시됩니다.
 

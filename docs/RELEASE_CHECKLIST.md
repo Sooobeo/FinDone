@@ -1,6 +1,6 @@
 # FinDone 개인 릴리스 체크리스트
 
-이 문서는 FinDone을 **본인 Android 기기에만** 설치하는 개인 서명 APK의 준비·빌드·검증 절차입니다. OneDrive는 APK와 사용자가 명시적으로 만든 백업 파일을 옮기는 수단일 뿐, 앱의 서버나 자동 동기화 계층이 아닙니다. 앱에는 직접 OneDrive API·로그인·동기화가 없으며, 업데이트 확인은 사용자가 Android Storage Access Framework에서 명시적으로 선택한 document tree만 읽습니다.
+이 문서는 FinDone을 **본인 Android 기기에만** 설치하는 개인 서명 APK의 준비·빌드·검증 절차입니다. OneDrive는 APK와 사용자가 명시적으로 만든 백업 파일을 옮기는 수단일 뿐, 앱의 서버나 자동 동기화 계층이 아닙니다. 앱에는 OneDrive API·로그인·동기화나 인앱 업데이트 기능이 없습니다. 휴대폰의 OneDrive에서 최신 `.apk`를 직접 열어 Android 시스템 설치 화면으로 업데이트합니다.
 
 > 개인 설치가 가능한 기술 빌드와 전체 명세 완료는 서로 다른 상태입니다. 1,461개 이상의 authored/approved claim과 독립 solver를 포함한 전체 10,000-seed 검증이 끝나기 전에는 산출물을 “전체 콘텐츠 완성판”으로 표시하지 않습니다.
 
@@ -111,7 +111,7 @@ Get-Content -Raw -Encoding UTF8 (Join-Path $releaseDir.FullName 'release-manifes
 - [ ] Android SDK의 `apksigner verify --verbose --print-certs`를 다시 실행해 APK 검증이 성공한다.
 - [ ] 인증서 SHA-256 fingerprint가 최초에 별도 기록한 개인 키 fingerprint와 일치한다.
 - [ ] release manifest의 application ID, version, content DB version/hash, user DB schema version이 빌드 입력과 일치하며 필수 값이 빈 문자열이나 `null`이 아니다.
-- [ ] release manifest에 `targetUser=self_only`, `publicStoreRelease=false`, `internetPermission=false`, `oneDriveRuntimeSync=false`, `updateSource=user_selected_saf_document_tree`, `directOneDriveApi=false`가 기록되어 있다.
+- [ ] release manifest에 `targetUser=self_only`, `publicStoreRelease=false`, `internetPermission=false`, `oneDriveRuntimeSync=false`, `directOneDriveApi=false`가 기록되어 있다.
 - [ ] Android Studio의 APK Analyzer 또는 SDK의 `apkanalyzer manifest permissions <APK>`로 확인했을 때 `android.permission.INTERNET`가 없다.
 - [ ] APK 안에 키 저장소, private key, 비밀번호, 복구 문구, API key, 사용자 백업이 포함되지 않았다.
 
@@ -130,7 +130,7 @@ Get-Content -Raw -Encoding UTF8 (Join-Path $releaseDir.FullName 'release-manifes
 기존 데이터가 필요한 폰에서는 앱을 제거하거나 “데이터 삭제”를 누르지 않습니다. clean install은 백업을 검증한 뒤 별도 기기나 프로필에서 수행합니다.
 
 - [ ] 설치 파일의 출처가 본인 OneDrive이고 APK 이름·version·SHA-256이 릴리스 기록과 일치한다.
-- [ ] FinDone에 “이 출처의 앱 설치 허용”을 잠시 켜고 시스템 설치 화면에서 설치한 뒤 바로 다시 껐다.
+- [ ] APK를 연 OneDrive 또는 파일 관리자 앱에 “이 출처의 앱 설치 허용”을 잠시 켜고 시스템 설치 화면에서 설치한 뒤 바로 다시 껐다.
 - [ ] 첫 실행 전에 비행기 모드를 켰고, 비행기 모드에서 별도로 다시 켤 수 있는 Wi-Fi도 껐다.
 - [ ] 앱이 네트워크 오류나 로그인 요구 없이 시작된다.
 - [ ] 7개 분야와 총 135개 요소가 보이고 각 분야 수량이 manifest와 일치한다.

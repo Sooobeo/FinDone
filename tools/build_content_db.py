@@ -26,7 +26,7 @@ DEFAULT_SPEC = ROOT / "finance_interview_app_final_spec.md"
 DEFAULT_ASSET_DIR = ROOT / "app" / "src" / "main" / "assets"
 
 SCHEMA_VERSION = 1
-CONTENT_DB_VERSION = 3
+CONTENT_DB_VERSION = 4
 DOMAIN_ORDER = ("ACC", "CF", "INV", "FI", "DER", "EQV", "IBT")
 EXPECTED_DOMAIN_COUNTS = {
     "ACC": 12,
@@ -280,10 +280,16 @@ def markdown_code_span(value: str) -> str:
 
 def render_math_in_prose(value: str) -> str:
     """Render complete symbolic sentences while preserving surrounding prose and punctuation."""
+    top_level_clauses = split_formula_clauses(value)
+    if sum(COMPARISON_RE.search(clause) is not None for clause in top_level_clauses) > 1:
+        return formula_items_markdown(value)
+
     output: list[str] = []
     parts = PROSE_CLAUSE_SEPARATOR_RE.split(value)
     for index, part in enumerate(parts):
         if index % 2 == 1 or not part:
+            if part and output and "\n" in output[-1] and output[-1].endswith("$$"):
+                output.append("\n")
             output.append(part)
             continue
         leading = part[: len(part) - len(part.lstrip())]
@@ -292,11 +298,13 @@ def render_math_in_prose(value: str) -> str:
         if not clause:
             output.append(part)
             continue
-        latex = latex_formula(clause)
-        if latex is not None:
-            rendered = f"$${latex}$$"
-        elif re.search(r"[=≈≤≥<>]", clause):
-            rendered = markdown_code_span(clause)
+        if COMPARISON_RE.search(clause) is not None:
+            formula_clauses = split_formula_clauses(clause)
+            rendered = (
+                formula_items_markdown(clause)
+                if len(formula_clauses) > 1
+                else formula_clause_markdown(clause)
+            )
         else:
             rendered = clause
         output.append(leading + rendered + trailing)
@@ -314,9 +322,19 @@ def scope_to_markdown(value: str) -> str:
         label_match = re.match(r"^- ([^:：]{1,28})([:：])\s*(.*)$", line)
         if label_match is not None:
             label, separator, body = label_match.groups()
-            line = f"- **{label.strip()}**{separator} {render_math_in_prose(body)}"
+            rendered_body = render_math_in_prose(body)
+            if rendered_body.startswith("$$\n") or rendered_body.startswith("- "):
+                nested_body = "\n".join(
+                    ("  " + rendered_line) if rendered_line else ""
+                    for rendered_line in rendered_body.splitlines()
+                )
+                spacer = "\n\n" if rendered_body.startswith("$$\n") else "\n"
+                line = f"- **{label.strip()}**{separator}{spacer}{nested_body}"
+            else:
+                line = f"- **{label.strip()}**{separator} {rendered_body}"
         elif line.startswith("- "):
-            line = "- " + render_math_in_prose(line[2:])
+            rendered_body = render_math_in_prose(line[2:])
+            line = rendered_body if rendered_body.startswith("- ") else "- " + rendered_body
         else:
             line = render_math_in_prose(line)
         output.append(line)
@@ -326,7 +344,27 @@ def scope_to_markdown(value: str) -> str:
 SYMBOLIC_CLAUSE_RE = re.compile(
     r"[A-Za-z0-9_αβγδμρσλΔΣ∑()\[\]{}+\-−–—×÷*/^%.,=≈≤≥<>²√ ]+"
 )
-FORMULA_CLAUSE_SEPARATOR_RE = re.compile(r";\s*|\r?\n+|(?<=[.!?。])\s+")
+FORMULA_CLAUSE_SEPARATOR_RE = re.compile(r";\s*|\r?\n+")
+COMPARISON_RE = re.compile(r"≤|≥|≈|<=|>=|=|<|>")
+PROSE_LHS_TOKEN_GAP_RE = re.compile(
+    r"[A-Za-z0-9_αβγδμρσλΔΣ]\s+[A-Za-z0-9_αβγδμρσλΔΣ]"
+)
+PROSE_HYPHENATED_LABEL_RE = re.compile(r"[A-Za-z]{2,}[-–—][A-Za-z]{2,}")
+SINGLE_SYMBOL_RE = re.compile(r"[A-Za-zαβγδμρσλΔΣ][A-Za-z0-9_αβγδμρσλΔΣ]*")
+MATH_SIGNAL_RE = re.compile(r"[0-9_+\-−–—×÷*/^%=\u2248≤≥<>²√Σ∑]")
+DIGIT_GROUPING_COMMA_RE = re.compile(r"(?<=\d),(?=\d{3}(?:\D|$))")
+ROOT_BASE_TOKEN_RE = re.compile(
+    r"(?:[A-Za-z][A-Za-z0-9]*|[αβγδμρσλΔΣ])"
+)
+LATEX_FUNCTIONS = {"max", "min", "ln", "log"}
+SUPPORTED_GENERATED_LATEX_COMMANDS = {
+    "alpha", "approx", "beta", "delta", "div", "gamma", "ge", "lambda",
+    "le", "ln", "log", "mathrm", "max", "min", "mu", "rho", "sigma",
+    "sqrt", "sum", "times", "Delta",
+}
+LABEL_PUNCTUATION = {"_", "-", "–", "—", "/", "&", "(", ")", ".", ","}
+LABEL_MARKDOWN_ESCAPES = {"\\", "`", "*", "_", "[", "]"}
+BLOCK_MATH_SOURCE_LENGTH = 45
 
 
 def balanced_delimiters(value: str) -> bool:
@@ -357,47 +395,77 @@ def matching_delimiter_index(value: str, start: int) -> int | None:
     return None
 
 
-def brace_multichar_scripts(value: str) -> str:
-    """Brace multi-character subscripts/superscripts without changing their contents."""
+def script_end(value: str, start: int) -> int | None:
+    """Return a complete script atom end, rejecting missing/operator script bodies."""
+    if start >= len(value):
+        return None
+    if value[start] in "{(":
+        end = matching_delimiter_index(value, start)
+        return None if end is None or end <= start + 1 else end + 1
+    if value[start] in "+-−–—":
+        match = re.match(r"[+-−–—]\d+", value[start:])
+        return None if match is None else start + len(match.group(0))
+    match = re.match(
+        r"(?:[A-Z]+[0-9]*(?![a-z])|[A-Z][a-z0-9]*|[a-z][a-z0-9]*|[0-9]+)",
+        value[start:],
+    )
+    return None if match is None else start + len(match.group(0))
+
+
+def brace_multichar_scripts(value: str) -> str | None:
+    """Brace complete scripts and reject malformed script syntax without partial output."""
     output: list[str] = []
     index = 0
     while index < len(value):
         operator = value[index]
-        if operator not in "_^" or index + 1 >= len(value):
+        if operator not in "_^":
             output.append(operator)
             index += 1
             continue
+        if index + 1 >= len(value):
+            return None
         output.append(operator)
         script_start = index + 1
+        script_end_index = script_end(value, script_start)
+        if script_end_index is None:
+            return None
         next_character = value[script_start]
         if next_character == "{":
-            script_end = matching_delimiter_index(value, script_start)
-            if script_end is None:
-                output.append(value[script_start:])
-                break
-            output.append(value[script_start : script_end + 1])
-            index = script_end + 1
+            inner = brace_multichar_scripts(value[script_start + 1 : script_end_index - 1])
+            if inner is None:
+                return None
+            output.append("{" + inner + "}")
+            index = script_end_index
             continue
         if next_character == "(":
-            script_end = matching_delimiter_index(value, script_start)
-            if script_end is None:
-                output.append(value[script_start:])
-                break
-            output.append("{" + value[script_start : script_end + 1] + "}")
-            index = script_end + 1
+            inner = brace_multichar_scripts(value[script_start + 1 : script_end_index - 1])
+            if inner is None:
+                return None
+            output.append("{(" + inner + ")}")
+            index = script_end_index
             continue
-        token_match = re.match(
-            r"(?:[A-Z]+[0-9]*(?![a-z])|[A-Z][a-z0-9]*|[a-z][a-z0-9]*|[0-9]+)",
-            value[script_start:],
-        )
-        if token_match is None:
-            output.append(next_character)
-            index += 2
-            continue
-        token = token_match.group(0)
+        token = value[script_start:script_end_index]
         output.append("{" + token + "}" if len(token) > 1 else token)
-        index = script_start + len(token)
+        index = script_end_index
     return "".join(output)
+
+
+def root_atom_end(value: str, start: int) -> int | None:
+    match = ROOT_BASE_TOKEN_RE.match(value, start)
+    if match is None:
+        return None
+    cursor = match.end()
+    while cursor < len(value):
+        if value[cursor] == "²":
+            cursor += 1
+        elif value[cursor] in "_^":
+            next_cursor = script_end(value, cursor + 1)
+            if next_cursor is None:
+                return None
+            cursor = next_cursor
+        else:
+            break
+    return cursor
 
 
 def replace_square_roots(value: str) -> str | None:
@@ -418,44 +486,196 @@ def replace_square_roots(value: str) -> str | None:
                 return None
             atom = value[atom_start : atom_end + 1]
         else:
-            atom_match = re.match(
-                r"(?:[A-Za-zαβγδμρσλΔΣ](?:_[A-Za-z0-9]+)?)",
-                value[atom_start:],
-            )
-            if atom_match is None:
+            atom_end_exclusive = root_atom_end(value, atom_start)
+            if atom_end_exclusive is None:
                 return None
-            atom = atom_match.group(0)
-            atom_end = atom_start + len(atom) - 1
+            atom = value[atom_start:atom_end_exclusive]
+            atom_end = atom_end_exclusive - 1
         output.append(r"\sqrt{" + atom + "}")
         index = atom_end + 1
     return "".join(output)
 
 
+def is_digit_grouping_comma(value: str, index: int) -> bool:
+    return (
+        index > 0
+        and value[index - 1].isdigit()
+        and index + 3 < len(value)
+        and value[index + 1 : index + 4].isdigit()
+        and (index + 4 == len(value) or not value[index + 4].isdigit())
+    )
+
+
+def is_decimal_point(value: str, index: int) -> bool:
+    return (
+        value[index] == "."
+        and index > 0
+        and index + 1 < len(value)
+        and value[index - 1].isdigit()
+        and value[index + 1].isdigit()
+    )
+
+
+def has_unsafe_top_level_punctuation(value: str) -> bool:
+    stack: list[str] = []
+    pairs = {")": "(", "]": "[", "}": "{"}
+    for index, character in enumerate(value):
+        if character in "([{":
+            stack.append(character)
+        elif character in pairs:
+            if stack:
+                stack.pop()
+        elif character == "," and not stack and not is_digit_grouping_comma(value, index):
+            return True
+        elif (
+            character in ".!?。"
+            and not stack
+            and not is_decimal_point(value, index)
+            and value[index + 1 :].strip()
+        ):
+            return True
+    return False
+
+
 def split_formula_clauses(value: str) -> list[str]:
-    """Split prose/formula clauses without ever treating a decimal point as a delimiter."""
-    clauses = []
+    """Split top-level formula clauses without splitting function or numeric commas."""
+    clauses: list[str] = []
     for part in FORMULA_CLAUSE_SEPARATOR_RE.split(value):
         cleaned = re.sub(r"^(?:•|[-+])\s+", "", part.strip())
-        if cleaned:
+        if not cleaned:
+            continue
+        if not balanced_delimiters(cleaned):
             clauses.append(cleaned)
+            continue
+        stack: list[str] = []
+        segment_start = 0
+        pairs = {")": "(", "]": "[", "}": "{"}
+        for index, character in enumerate(cleaned):
+            if character in "([{":
+                stack.append(character)
+            elif character in pairs:
+                if stack and stack[-1] == pairs[character]:
+                    stack.pop()
+            elif character == "," and not stack:
+                if is_digit_grouping_comma(cleaned, index):
+                    continue
+                before = cleaned[segment_start:index]
+                after = cleaned[index + 1 :]
+                if COMPARISON_RE.search(before) is not None and COMPARISON_RE.search(after) is not None:
+                    clause = before.strip()
+                    if clause:
+                        clauses.append(clause)
+                    segment_start = index + 1
+            elif (
+                character in ".!?。"
+                and not stack
+                and not is_decimal_point(cleaned, index)
+                and cleaned[index + 1 :].strip()
+            ):
+                before = cleaned[segment_start:index]
+                if COMPARISON_RE.search(before) is not None:
+                    clause = cleaned[segment_start : index + 1].strip()
+                    if clause:
+                        clauses.append(clause)
+                    segment_start = index + 1
+        final_clause = cleaned[segment_start:].strip()
+        if final_clause:
+            clauses.append(final_clause)
     return clauses or [value.strip()]
 
 
-def latex_formula(value: str) -> str | None:
-    """Convert a whole, balanced symbolic clause or return None without extracting a fragment."""
+def split_terminal_punctuation(value: str) -> tuple[str, str]:
+    """Keep sentence punctuation visible but outside a generated math span."""
+    candidate = value.rstrip()
+    match = re.search(r"([.!?。]+)$", candidate)
+    if match is None:
+        return candidate, ""
+    formula = candidate[: match.start()].rstrip()
+    return (formula, match.group(1)) if formula else (candidate, "")
+
+
+def has_prose_like_comparison_label(value: str) -> bool:
+    """Reject labels whose spaces/hyphens would be corrupted by TeX math semantics."""
+    comparison = COMPARISON_RE.search(value)
+    if comparison is None:
+        return False
+    label = value[: comparison.start()]
+    return (
+        PROSE_LHS_TOKEN_GAP_RE.search(label) is not None
+        or PROSE_HYPHENATED_LABEL_RE.search(label) is not None
+    )
+
+
+def upright_ascii_identifiers(value: str) -> str:
+    """Make multi-letter identifiers upright while preserving generated TeX commands."""
+    output: list[str] = []
+    index = 0
+    while index < len(value):
+        if value[index] == "\\":
+            command_end = index + 1
+            while command_end < len(value) and value[command_end].isascii() and value[command_end].isalpha():
+                command_end += 1
+            output.append(value[index:command_end])
+            index = command_end
+            continue
+        if not (value[index].isascii() and value[index].isalpha()):
+            output.append(value[index])
+            index += 1
+            continue
+
+        if index > 0 and value[index - 1] in "_^":
+            # Multi-character scripts were braced above; an unbraced script is one atom.
+            token_end = index + 1
+        else:
+            token_end = index
+            while token_end < len(value) and (
+                (value[token_end].isascii() and value[token_end].isalpha())
+                or value[token_end].isdigit()
+            ):
+                token_end += 1
+        token = value[index:token_end]
+        letter_count = sum(character.isalpha() for character in token)
+        next_non_space = token_end
+        while next_non_space < len(value) and value[next_non_space].isspace():
+            next_non_space += 1
+        if (
+            token in LATEX_FUNCTIONS
+            and next_non_space < len(value)
+            and value[next_non_space] == "("
+        ):
+            output.append("\\" + token)
+        elif letter_count > 1:
+            output.append(r"\mathrm{" + token + "}")
+        else:
+            output.append(token)
+        index = token_end
+    return "".join(output)
+
+
+def latex_expression(value: str, *, require_comparison: bool = False) -> str | None:
+    """Convert a complete safe symbolic expression without extracting a fragment."""
     candidate = value.strip()
     if (
         not candidate
-        or not re.search(r"[=≈≤≥<>]", candidate)
+        or (require_comparison and COMPARISON_RE.search(candidate) is None)
         or re.search(r"[가-힣]", candidate)
         or SYMBOLIC_CLAUSE_RE.fullmatch(candidate) is None
         or not balanced_delimiters(candidate)
+        or has_prose_like_comparison_label(candidate)
+        or has_unsafe_top_level_punctuation(candidate)
+        or (
+            not require_comparison
+            and MATH_SIGNAL_RE.search(candidate) is None
+            and SINGLE_SYMBOL_RE.fullmatch(candidate) is None
+        )
     ):
         return None
     rooted = replace_square_roots(candidate)
     if rooted is None:
         return None
     formula = brace_multichar_scripts(rooted)
+    if formula is None:
+        return None
     formula = (
         formula.replace("×", r" \times ")
         .replace("÷", r" \div ")
@@ -476,7 +696,76 @@ def latex_formula(value: str) -> str | None:
     }
     for symbol, command in greek.items():
         formula = formula.replace(symbol, command)
+    formula = DIGIT_GROUPING_COMMA_RE.sub("{,}", formula)
+    formula = upright_ascii_identifiers(formula)
     return re.sub(r"\s+", " ", formula).strip()
+
+
+def latex_formula(value: str) -> str | None:
+    """Convert a whole comparison clause or return None without extracting a fragment."""
+    formula, _ = split_terminal_punctuation(value)
+    return latex_expression(formula, require_comparison=True)
+
+
+def math_markdown(source: str, latex: str) -> str:
+    """Use width-fitting delimiter-only block math for long source expressions."""
+    if len(source.strip()) > BLOCK_MATH_SOURCE_LENGTH:
+        return f"$$\n{latex}\n$$"
+    return f"$${latex}$$"
+
+
+def is_readable_label(value: str) -> bool:
+    return any(character.isalpha() for character in value) and all(
+        character.isalnum() or character.isspace() or character in LABEL_PUNCTUATION
+        for character in value
+    )
+
+
+def escape_markdown_label(value: str) -> str:
+    return "".join(
+        ("\\" if character in LABEL_MARKDOWN_ESCAPES else "") + character
+        for character in value
+    )
+
+
+def labeled_formula_markdown(value: str) -> str | None:
+    """Keep a prose label outside math and safely render or preserve the complete RHS."""
+    candidate = value.strip()
+    for separator in (":", "："):
+        separator_index = candidate.find(separator)
+        if separator_index <= 0:
+            continue
+        label = candidate[:separator_index].strip()
+        expression = candidate[separator_index + 1 :].strip()
+        expression_latex = latex_expression(expression)
+        if (
+            is_readable_label(label)
+            and expression
+            and (expression_latex is not None or COMPARISON_RE.search(expression) is not None)
+        ):
+            rendered = (
+                math_markdown(expression, expression_latex)
+                if expression_latex is not None
+                else markdown_code_span(expression)
+            )
+            prefix = f"**{escape_markdown_label(label)}**{separator}"
+            return f"{prefix}\n\n{rendered}" if rendered.startswith("$$\n") else f"{prefix} {rendered}"
+
+    comparison = COMPARISON_RE.search(candidate)
+    if comparison is None or not has_prose_like_comparison_label(candidate):
+        return None
+    label = candidate[: comparison.start()].strip()
+    expression = candidate[comparison.end() :].strip()
+    if not expression or not is_readable_label(label):
+        return None
+    expression_latex = latex_expression(expression)
+    rendered = (
+        math_markdown(expression, expression_latex)
+        if expression_latex is not None
+        else markdown_code_span(expression)
+    )
+    prefix = f"**{escape_markdown_label(label)}** {comparison.group(0)}"
+    return f"{prefix}\n\n{rendered}" if rendered.startswith("$$\n") else f"{prefix} {rendered}"
 
 
 def formula_to_markdown(value: str) -> str:
@@ -486,18 +775,33 @@ def formula_to_markdown(value: str) -> str:
 
 def formula_clause_markdown(value: str) -> str:
     """Render one complete formula clause without ever dropping a fallback clause."""
-    latex = latex_formula(value)
+    formula, punctuation = split_terminal_punctuation(value)
+    latex = latex_formula(formula)
     if latex is not None:
-        return f"$${latex}$$"
-    return markdown_code_span(value)
+        rendered = math_markdown(formula, latex)
+    else:
+        labeled = labeled_formula_markdown(formula)
+        if labeled is None:
+            return markdown_code_span(value.strip())
+        rendered = labeled
+    if not punctuation:
+        return rendered
+    if "\n" in rendered and rendered.endswith("$$"):
+        return f"{rendered}\n{punctuation}"
+    return rendered + punctuation
 
 
 def formula_items_markdown(value: str, indent: str = "") -> str:
     """Render a relation as Markdown list items suitable for nesting in learning cards."""
-    return "\n".join(
-        f"{indent}- {formula_clause_markdown(clause)}"
-        for clause in split_formula_clauses(value)
-    )
+    items: list[str] = []
+    for clause in split_formula_clauses(value):
+        rendered = formula_clause_markdown(clause)
+        if rendered.startswith("$$\n"):
+            # A block delimiter must occupy its own line; `- $$` is parsed as inline math.
+            items.append("\n".join(indent + line for line in rendered.splitlines()))
+        else:
+            items.append(f"{indent}- {rendered}")
+    return "\n".join(items)
 
 
 def assumption_markdown(element: ElementDraft) -> str:
@@ -886,11 +1190,15 @@ def parse_table_elements(
 
 
 KNOWN_FORMULA_MODES = {
+    "CF-09": ("code", "code", "code"),
     "FI-04": ("latex", "latex", "code"),
-    "EQV-50": ("latex", "code"),
-    "INV-03": ("latex",),
-    "INV-07": ("latex", "code", "code"),
-    "DER-08": ("code", "code", "latex"),
+    "INV-08": ("latex", "latex", "code"),
+    "INV-03": ("latex", "latex", "latex"),
+    "INV-07": ("latex", "code"),
+    "DER-08": ("code", "code", "latex", "latex"),
+    "EQV-35": ("code", "code"),
+    "EQV-37": ("latex", "code"),
+    "EQV-50": ("code", "code"),
 }
 
 
@@ -899,14 +1207,100 @@ def validate_formula_rendering(elements: Sequence[ElementDraft]) -> None:
     if formula_clause_markdown("A `quoted` & B") != "``A `quoted` & B``":
         raise ValueError("Embedded-backtick Markdown fallback regressed")
     script_probe = latex_formula("X_AB=Y_Long^Term")
-    if script_probe != "X_{AB}=Y_{Long}^{Term}":
+    if script_probe != r"X_{\mathrm{AB}}=Y_{\mathrm{Long}}^{\mathrm{Term}}":
         raise ValueError(f"Multi-character script bracing regressed: {script_probe!r}")
     scenario_probe = latex_formula("ExpectedValue=Σp_sV_s")
-    if scenario_probe != r"ExpectedValue=\sum p_sV_s":
+    if scenario_probe != r"\mathrm{ExpectedValue}=\sum p_sV_s":
         raise ValueError(f"Adjacent symbol script parsing regressed: {scenario_probe!r}")
     if split_formula_clauses("• A=B\n• C=D") != ["A=B", "C=D"]:
         raise ValueError("Multiline formula clause splitting regressed")
-    unsafe_probes = ("설명: X=Y", "X=(Y]", "X=Y 일부 설명")
+    compound_probe = "Cov(A,B)=X, rho_AB=Cov(A,B)/(s_A s_B), -1≤rho_AB≤1."
+    if split_formula_clauses(compound_probe) != [
+        "Cov(A,B)=X",
+        "rho_AB=Cov(A,B)/(s_A s_B)",
+        "-1≤rho_AB≤1.",
+    ]:
+        raise ValueError("Top-level equation comma splitting regressed")
+    if split_formula_clauses("X=max(A,B)+1,000") != ["X=max(A,B)+1,000"]:
+        raise ValueError("Function or digit-grouping comma splitting regressed")
+    if formula_clause_markdown("X=Y.") != "$$X=Y$$.":
+        raise ValueError("Terminal punctuation moved inside the math span")
+    if split_formula_clauses("X=Y. A=B.") != ["X=Y.", "A=B."]:
+        raise ValueError("Top-level sentence comparison splitting regressed")
+    if latex_formula("X=Y. explanation") is not None:
+        raise ValueError("Ambiguous sentence punctuation was promoted to LaTeX")
+    if split_formula_clauses("X=Y. explanation") != ["X=Y.", "explanation"]:
+        raise ValueError("Formula-to-prose sentence boundary was not preserved safely")
+
+    root_probe = latex_formula("SD=√Variance")
+    if root_probe != r"\mathrm{SD}=\sqrt{\mathrm{Variance}}":
+        raise ValueError(f"Complete square-root atom parsing regressed: {root_probe!r}")
+    squared_root_probe = latex_formula("σ=√σ²")
+    if squared_root_probe != r"\sigma =\sqrt{\sigma ^{2}}":
+        raise ValueError(f"Square-root script parsing regressed: {squared_root_probe!r}")
+    if latex_expression("x^-2") != "x^{-2}":
+        raise ValueError("Signed exponent bracing regressed")
+    if latex_formula("x_=1") is not None or latex_expression("x_^2") is not None:
+        raise ValueError("Malformed script syntax was accepted")
+
+    if latex_formula("X=1,234") != "X=1{,}234":
+        raise ValueError("Three-digit grouping comma conversion regressed")
+    if latex_formula("X=1,2") is not None:
+        raise ValueError("Non-grouping top-level comma was promoted to LaTeX")
+    if split_formula_clauses("X=1,Y=2") != ["X=1", "Y=2"]:
+        raise ValueError("Comma-connected equations were not split")
+    if latex_formula("X=max(1,2)") != r"X=\max(1,2)":
+        raise ValueError("Function argument comma handling regressed")
+
+    exact_markdown_probes = {
+        "Project FCF=OCF-Capex-ΔNWC": (
+            r"**Project FCF** = $$\mathrm{OCF}-\mathrm{Capex}-\Delta \mathrm{NWC}$$"
+        ),
+        "Mid-year PV=FCF_t/(1+r)^(t-0.5)": (
+            r"**Mid-year PV** = $$\mathrm{FCF}_t/(1+r)^{(t-0.5)}$$"
+        ),
+        "민감도: ΔEV=EBITDA×ΔMultiple": (
+            r"**민감도**: $$\Delta \mathrm{EV}=\mathrm{EBITDA} \times "
+            r"\Delta \mathrm{Multiple}$$"
+        ),
+        "설명: X=Y 일부 설명": "**설명**: `X=Y 일부 설명`",
+    }
+    for source, expected in exact_markdown_probes.items():
+        actual = formula_clause_markdown(source)
+        if actual != expected:
+            raise ValueError(f"Labeled formula rendering regressed: {source!r} -> {actual!r}")
+
+    upright_probe = latex_formula("ΔPrice=max(FCF,ln(WACC))+D_Mod")
+    upright_expected = (
+        r"\Delta \mathrm{Price}=\max(\mathrm{FCF},\ln(\mathrm{WACC}))"
+        r"+D_{\mathrm{Mod}}"
+    )
+    if upright_probe != upright_expected:
+        raise ValueError(f"Upright identifier rendering regressed: {upright_probe!r}")
+    comma_probe = latex_expression("(1,000 - 800 + 20) × 100 / 1,000")
+    if comma_probe != r"(1{,}000 - 800 + 20) \times 100 / 1{,}000":
+        raise ValueError(f"Digit grouping comma rendering regressed: {comma_probe!r}")
+
+    long_formula = "X=1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19"
+    expected_block = f"$$\n{long_formula}\n$$"
+    if formula_clause_markdown(long_formula) != expected_block:
+        raise ValueError("Long formula did not use delimiter-only block math")
+    if formula_items_markdown(long_formula) != expected_block:
+        raise ValueError("Long formula block delimiter was prefixed as a list item")
+    if formula_items_markdown("X=1") != "- $$X=1$$":
+        raise ValueError("Short formula no longer uses inline math")
+
+    unsafe_probes = (
+        "설명: X=Y",
+        "X=(Y]",
+        "X=Y 일부 설명",
+        "Project FCF=OCF-Capex-ΔNWC",
+        "Jensen α=R_p-[R_f+β_p(R_m-R_f)]",
+        "Treasury-stock method IncrementalShares=Options×max(P-K,0)/P",
+        "FD Shares=Basic+Incremental+RSU+Convertibles",
+        "debt-like deficit=max(DBO-PlanAssets,0)",
+        "Mid-year PV=FCF_t/(1+r)^(t-0.5)",
+    )
     if any(latex_formula(probe) is not None for probe in unsafe_probes):
         raise ValueError("LaTeX conversion accepted a partial or unbalanced clause")
 
@@ -919,8 +1313,50 @@ def validate_formula_rendering(elements: Sequence[ElementDraft]) -> None:
                     f"{element.element_id} split or lost decimal token {decimal!r}"
                 )
         for clause in split_formula_clauses(element.core_relation):
-            latex = latex_formula(clause)
-            expected_line = f"- {formula_clause_markdown(clause)}"
+            rendered_clause = formula_clause_markdown(clause)
+            for math_body in re.findall(r"\$\$\n?(.*?)\n?\$\$", rendered_clause, re.DOTALL):
+                commands = set(re.findall(r"\\([A-Za-z]+)", math_body))
+                unsupported = commands - SUPPORTED_GENERATED_LATEX_COMMANDS
+                if unsupported:
+                    raise ValueError(
+                        f"{element.element_id} generated unsupported LaTeX commands: "
+                        f"{sorted(unsupported)}"
+                    )
+
+            comparison = COMPARISON_RE.search(clause)
+            expression_source = clause.strip()
+            colon_split = next(
+                (
+                    (clause[:index].strip(), clause[index + 1 :].strip())
+                    for separator in (":", "：")
+                    if (index := clause.find(separator)) > 0
+                ),
+                None,
+            )
+            if colon_split is not None and is_readable_label(colon_split[0]):
+                expression_source = colon_split[1]
+            elif comparison is not None and has_prose_like_comparison_label(clause):
+                label = clause[: comparison.start()].strip()
+                candidate_rhs = clause[comparison.end() :].strip()
+                if is_readable_label(label) and candidate_rhs:
+                    expression_source = candidate_rhs
+                    if rendered_clause == markdown_code_span(clause):
+                        raise ValueError(
+                            f"{element.element_id} collapsed a readable formula label into code"
+                        )
+            if (
+                len(expression_source) > BLOCK_MATH_SOURCE_LENGTH
+                and re.search(r"\$\$[^\n]+\$\$", rendered_clause) is not None
+            ):
+                raise ValueError(
+                    f"{element.element_id} kept long formula inline: {expression_source!r}"
+                )
+
+            expected_line = (
+                rendered_clause
+                if rendered_clause.startswith("$$\n")
+                else f"- {rendered_clause}"
+            )
             if expected_line not in rendered:
                 raise ValueError(
                     f"{element.element_id} did not preserve complete formula clause {clause!r}"
@@ -1329,6 +1765,8 @@ def validate_database(path: Path) -> dict[str, int]:
         empty_visible_fields: list[tuple[str, str]] = []
         authoring_leaks: list[tuple[str, str, str]] = []
         malformed_math_fields: list[tuple[str, str]] = []
+        malformed_math_contexts: list[tuple[str, str, int]] = []
+        compound_math_spans: list[tuple[str, str]] = []
         redundant_outer_headings: list[tuple[str, str]] = []
         distinct_visible_values = {field: set() for field in visible_field_names}
         for row in visible_rows:
@@ -1338,6 +1776,14 @@ def validate_database(path: Path) -> dict[str, int]:
                     empty_visible_fields.append((element_id, field_name))
                 if value.count("$$") % 2 != 0:
                     malformed_math_fields.append((element_id, field_name))
+                for line_number, line in enumerate(value.splitlines(), start=1):
+                    if line.count("$$") % 2 != 0 and line.strip() != "$$":
+                        malformed_math_contexts.append(
+                            (element_id, field_name, line_number)
+                        )
+                for math_body in re.findall(r"\$\$\n?(.*?)\n?\$\$", value, re.DOTALL):
+                    if len(split_formula_clauses(math_body.strip())) > 1:
+                        compound_math_spans.append((element_id, field_name))
                 if (
                     field_name == "learning_scope"
                     and value.lstrip().startswith("### 적용·연습 범위")
@@ -1362,6 +1808,16 @@ def validate_database(path: Path) -> dict[str, int]:
             raise ValueError(f"Authoring internals leaked into visible cards: {authoring_leaks[:3]}")
         if malformed_math_fields:
             raise ValueError(f"Unbalanced Markdown math delimiters: {malformed_math_fields[:3]}")
+        if malformed_math_contexts:
+            raise ValueError(
+                "Block math delimiters share a line with Markdown content: "
+                f"{malformed_math_contexts[:3]}"
+            )
+        if compound_math_spans:
+            raise ValueError(
+                "Top-level comma-connected equations remain in one math span: "
+                f"{compound_math_spans[:3]}"
+            )
         if redundant_outer_headings:
             raise ValueError(f"Redundant learning-card headings remain: {redundant_outer_headings[:3]}")
 

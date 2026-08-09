@@ -1,6 +1,12 @@
 package com.findone.app.ui
 
+import android.graphics.Canvas
+import android.graphics.ColorFilter
+import android.graphics.Paint
+import android.graphics.PixelFormat
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
+import android.text.TextPaint
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.util.TypedValue
@@ -24,6 +30,7 @@ import io.noties.markwon.Markwon
 import io.noties.markwon.ext.latex.JLatexMathPlugin
 import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
 import java.util.concurrent.Executors
+import kotlin.math.ceil
 import kotlin.math.max
 
 /** A bounded process-wide pool avoids one cached executor per MarkdownText composition. */
@@ -33,6 +40,8 @@ private val latexExecutor = Executors.newFixedThreadPool(2) { runnable ->
 
 private val blockOrInlineLatex = Regex("""(?s)\$\$(.+?)\$\$""")
 private val singleDollarLatex = Regex("""(?<!\$)\$([^$\n]+?)\$(?!\$)""")
+private const val LATEX_FALLBACK_MAX_WIDTH_EM = 20f
+private const val LATEX_FALLBACK_MAX_CODE_POINTS = 512
 private data class MarkdownRenderKey(val markdown: String, val textSizePx: Float, val textColor: Int)
 
 /**
@@ -71,7 +80,11 @@ fun MarkdownText(
                 JLatexMathPlugin.create(textSizePx) { builder ->
                     builder.inlinesEnabled(true)
                     builder.executorService(latexExecutor)
+                    builder.errorHandler { latex, _ ->
+                        LatexFallbackDrawable(latex, textSizePx, textColor)
+                    }
                     builder.theme().textColor(textColor)
+                    builder.theme().blockFitCanvas(true)
                 }
             )
             .build()
@@ -119,6 +132,86 @@ fun MarkdownText(
             }
         },
     )
+}
+
+/** Never leave a blank span when the bundled LaTeX engine rejects an expression. */
+private class LatexFallbackDrawable(
+    latex: String,
+    textSizePx: Float,
+    textColor: Int,
+) : Drawable() {
+    private val fallbackText = normalizedLatexFallbackText(latex)
+    private val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = textColor
+        textSize = textSizePx
+        typeface = Typeface.MONOSPACE
+    }
+    private val intrinsicWidth = boundedLatexFallbackWidthPx(
+        measuredTextWidthPx = paint.measureText(fallbackText),
+        textSizePx = textSizePx,
+    )
+    private val displayText = TextUtils.ellipsize(
+        fallbackText,
+        paint,
+        intrinsicWidth.toFloat(),
+        TextUtils.TruncateAt.END,
+    ).toString()
+
+    override fun draw(canvas: Canvas) {
+        val metrics = paint.fontMetrics
+        canvas.drawText(
+            displayText,
+            bounds.left.toFloat(),
+            bounds.top - metrics.top,
+            paint,
+        )
+    }
+
+    override fun setAlpha(alpha: Int) {
+        paint.alpha = alpha
+    }
+
+    override fun setColorFilter(colorFilter: ColorFilter?) {
+        paint.colorFilter = colorFilter
+    }
+
+    @Suppress("OVERRIDE_DEPRECATION")
+    override fun getOpacity(): Int = PixelFormat.TRANSLUCENT
+
+    override fun getIntrinsicWidth(): Int = intrinsicWidth
+
+    override fun getIntrinsicHeight(): Int {
+        val metrics = paint.fontMetrics
+        return max(1, ceil(metrics.bottom - metrics.top).toInt())
+    }
+}
+
+internal fun normalizedLatexFallbackText(
+    latex: String,
+    maxCodePoints: Int = LATEX_FALLBACK_MAX_CODE_POINTS,
+): String {
+    require(maxCodePoints >= 2) { "maxCodePoints must leave room for content and an ellipsis." }
+    val normalized = latex.replace(Regex("\\s+"), " ").trim()
+        .ifEmpty { "[invalid formula]" }
+    val codePointCount = normalized.codePointCount(0, normalized.length)
+    if (codePointCount <= maxCodePoints) return normalized
+
+    val contentEnd = normalized.offsetByCodePoints(0, maxCodePoints - 1)
+    return normalized.substring(0, contentEnd).trimEnd() + "…"
+}
+
+internal fun boundedLatexFallbackWidthPx(
+    measuredTextWidthPx: Float,
+    textSizePx: Float,
+): Int {
+    val safeTextSize = textSizePx.takeIf { it.isFinite() && it > 0f } ?: 1f
+    val maximumWidth = safeTextSize * LATEX_FALLBACK_MAX_WIDTH_EM
+    val boundedWidth = when {
+        measuredTextWidthPx.isNaN() -> maximumWidth
+        measuredTextWidthPx <= 0f -> 1f
+        else -> measuredTextWidthPx.coerceAtMost(maximumWidth)
+    }
+    return max(1, ceil(boundedWidth).toInt())
 }
 
 private fun containsLatex(markdown: String): Boolean =
@@ -216,6 +309,11 @@ private data class MarkdownFenceRun(
     val remainderIsBlank: Boolean,
 )
 
+private data class NormalizedInlineLatexLine(
+    val markdown: String,
+    val inlineCodeDelimiterLength: Int,
+)
+
 /**
  * Converts standard single-dollar inline math to Markwon's double-dollar inline syntax.
  *
@@ -230,6 +328,7 @@ internal fun normalizeInlineLatex(markdown: String): String {
     var lineStart = 0
     var fencedCode: MarkdownFence? = null
     var blockLatex = false
+    var inlineCodeDelimiterLength = 0
     while (lineStart < markdown.length) {
         val newlineIndex = markdown.indexOf('\n', lineStart)
         val lineEnd = if (newlineIndex >= 0) newlineIndex else markdown.length
@@ -262,6 +361,11 @@ internal fun normalizeInlineLatex(markdown: String): String {
                 output.append(line)
                 if (line.trim() == "$$") blockLatex = false
             }
+            inlineCodeDelimiterLength > 0 -> {
+                val normalized = normalizeInlineLatexLine(line, inlineCodeDelimiterLength)
+                output.append(normalized.markdown)
+                inlineCodeDelimiterLength = normalized.inlineCodeDelimiterLength
+            }
             fenceRun != null -> {
                 output.append(line)
                 fencedCode = MarkdownFence(fenceRun.marker, fenceRun.length)
@@ -270,7 +374,12 @@ internal fun normalizeInlineLatex(markdown: String): String {
                 output.append(line)
                 blockLatex = true
             }
-            else -> output.append(normalizeInlineLatexLine(line))
+            isIndentedCodeLine(line) -> output.append(line)
+            else -> {
+                val normalized = normalizeInlineLatexLine(line, inlineCodeDelimiterLength)
+                output.append(normalized.markdown)
+                inlineCodeDelimiterLength = normalized.inlineCodeDelimiterLength
+            }
         }
         output.append(lineEnding)
         lineStart = if (newlineIndex >= 0) newlineIndex + 1 else markdown.length
@@ -297,11 +406,26 @@ private fun markdownFenceRun(line: String): MarkdownFenceRun? {
     )
 }
 
-private fun normalizeInlineLatexLine(line: String): String {
-    if ('$' !in line) return line
+private fun isIndentedCodeLine(line: String): Boolean {
+    var columns = 0
+    for (character in line) {
+        columns += when (character) {
+            ' ' -> 1
+            '\t' -> 4 - (columns % 4)
+            else -> return false
+        }
+        if (columns >= 4) return true
+    }
+    return false
+}
+
+private fun normalizeInlineLatexLine(
+    line: String,
+    initialInlineCodeDelimiterLength: Int,
+): NormalizedInlineLatexLine {
     val output = StringBuilder(line.length + 8)
     var index = 0
-    var inlineCodeDelimiterLength = 0
+    var inlineCodeDelimiterLength = initialInlineCodeDelimiterLength
     while (index < line.length) {
         if (line[index] == '`') {
             var runEnd = index
@@ -358,7 +482,7 @@ private fun normalizeInlineLatexLine(line: String): String {
         output.append(line[index])
         index += 1
     }
-    return output.toString()
+    return NormalizedInlineLatexLine(output.toString(), inlineCodeDelimiterLength)
 }
 
 private fun findClosingDoubleDollar(line: String, start: Int): Int {

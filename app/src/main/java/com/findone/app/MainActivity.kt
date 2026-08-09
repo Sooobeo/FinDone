@@ -50,12 +50,10 @@ import androidx.compose.material.icons.outlined.ExpandLess
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.HistoryEdu
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Quiz
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.RestartAlt
 import androidx.compose.material.icons.outlined.School
 import androidx.compose.material.icons.outlined.Search
@@ -127,7 +125,7 @@ import com.findone.app.ui.OfflineBanner
 import com.findone.app.ui.PageHeader
 import com.findone.app.ui.SectionTitle
 import com.findone.app.ui.StatCard
-import com.findone.app.ui.UpdateLandingScreen
+import com.findone.app.ui.LandingScreen
 import com.findone.app.ui.domainAccent
 import com.findone.app.ui.safeMathMarkdown
 import com.findone.app.ui.theme.FinDoneTheme
@@ -152,7 +150,7 @@ class MainActivity : ComponentActivity() {
                     val appViewModel: AppViewModel = viewModel()
                     FinDoneApp(appViewModel)
                 } else {
-                    UpdateLandingScreen(onContinue = { continueToHome = true })
+                    LandingScreen(onContinue = { continueToHome = true })
                 }
             }
         }

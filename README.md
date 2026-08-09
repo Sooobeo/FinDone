@@ -96,7 +96,7 @@ try {
 - 외부 `release-manifest.json`
 - `SHA256SUMS.txt`
 
-수동 릴리스라면 이 세 산출물만 개인 OneDrive로 전송합니다. 로컬 커밋 자동화를 설정하면 별도의 `FinDone-Releases` mirror에 검증된 산출물을 복사하고 최신 두 릴리스만 남깁니다. 앱은 OneDrive에 직접 로그인하거나 API로 동기화하지 않으며, 사용자가 Android 문서 선택기로 연결한 릴리스 폴더만 읽습니다. 설치 전 체크섬·서명·권한을 확인하고, Android의 “이 출처의 앱 설치 허용”은 설치할 때만 켰다가 다시 끄세요.
+수동 릴리스라면 이 세 산출물만 개인 OneDrive로 전송합니다. 로컬 커밋 자동화를 설정하면 별도의 `FinDone-Releases` mirror에 검증된 산출물을 복사하고 최신 두 릴리스만 남깁니다. 앱은 OneDrive에 로그인하거나 릴리스 폴더를 읽지 않습니다. 휴대폰의 OneDrive에서 최신 `.apk`를 직접 열어 Android 시스템 설치 화면으로 업데이트하세요. 설치 전 체크섬·서명·권한을 확인하고, APK를 연 앱에 대한 Android의 “이 출처의 앱 설치 허용”은 설치할 때만 켰다가 다시 끄세요.
 
 키 준비부터 오프라인 기기 시험, upgrade와 사용자 백업 복원까지의 상세 절차는 [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md)를 따르세요. 커밋마다 정확한 HEAD 스냅샷을 자동 빌드하고 최신 두 릴리스만 보관하는 로컬 훅 설정은 [docs/RELEASE_AUTOMATION.md](docs/RELEASE_AUTOMATION.md)에 설명되어 있습니다.
 

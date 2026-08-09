@@ -1,6 +1,7 @@
 package com.findone.app.ui
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class MarkdownTextTest {
@@ -35,6 +36,16 @@ class MarkdownTextTest {
     }
 
     @Test
+    fun `preserves variable length inline code delimiter state across CRLF lines`() {
+        val input = "before ``code\r\n\$x\$ and ` literal\r\nstill \$y\$`` after \$z\$\r\nlast \$w\$"
+
+        assertEquals(
+            "before ``code\r\n\$x\$ and ` literal\r\nstill \$y\$`` after \$\$z\$\$\r\nlast \$\$w\$\$",
+            normalizeInlineLatex(input),
+        )
+    }
+
+    @Test
     fun `does not normalize backtick or tilde fenced code`() {
         val dollar = '$'
         val input = """
@@ -58,6 +69,16 @@ class MarkdownTextTest {
         """.trimIndent()
 
         assertEquals(expected, normalizeInlineLatex(input))
+    }
+
+    @Test
+    fun `does not normalize four-column space or tab indented code lines`() {
+        val input = "    \$x\$\r\n\t\$y\$\n  \t\$w\$\r\n   \$z\$"
+
+        assertEquals(
+            "    \$x\$\r\n\t\$y\$\n  \t\$w\$\r\n   \$\$z\$\$",
+            normalizeInlineLatex(input),
+        )
     }
 
     @Test
@@ -87,5 +108,24 @@ class MarkdownTextTest {
         val input = "\\\\\$x\$"
 
         assertEquals("\\\\\$\$x\$\$", normalizeInlineLatex(input))
+    }
+
+    @Test
+    fun `normalizes and bounds very long invalid latex fallback text`() {
+        assertEquals("[invalid formula]", normalizedLatexFallbackText(" \r\n\t "))
+        assertEquals("alpha beta", normalizedLatexFallbackText("  alpha\n\tbeta  "))
+        assertEquals("😀😀😀…", normalizedLatexFallbackText("😀".repeat(10), maxCodePoints = 4))
+
+        val longFallback = normalizedLatexFallbackText("x".repeat(10_000))
+        assertEquals(512, longFallback.codePointCount(0, longFallback.length))
+        assertTrue(longFallback.endsWith("…"))
+    }
+
+    @Test
+    fun `caps invalid latex fallback intrinsic width to twenty em`() {
+        assertEquals(40, boundedLatexFallbackWidthPx(39.2f, textSizePx = 16f))
+        assertEquals(320, boundedLatexFallbackWidthPx(10_000f, textSizePx = 16f))
+        assertEquals(320, boundedLatexFallbackWidthPx(Float.POSITIVE_INFINITY, textSizePx = 16f))
+        assertEquals(1, boundedLatexFallbackWidthPx(0f, textSizePx = 16f))
     }
 }
