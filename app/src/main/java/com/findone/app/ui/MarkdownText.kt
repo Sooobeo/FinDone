@@ -1,12 +1,6 @@
 package com.findone.app.ui
 
-import android.graphics.Canvas
-import android.graphics.ColorFilter
-import android.graphics.Paint
-import android.graphics.PixelFormat
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
-import android.text.TextPaint
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.util.Log
@@ -28,40 +22,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.viewinterop.AndroidView
 import io.noties.markwon.Markwon
-import io.noties.markwon.ext.latex.JLatexMathPlugin
-import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
-import java.util.LinkedHashMap
-import java.util.concurrent.Executors
-import kotlin.math.ceil
 import kotlin.math.max
-import ru.noties.jlatexmath.JLatexMathAndroid
-
-/**
- * JLatexMath 0.2.0 owns process-wide mutable font/formula registries. Serial execution prevents
- * first-use races when a detail page schedules several formulas at once.
- */
-private val latexExecutor = Executors.newSingleThreadExecutor { runnable ->
-    Thread(runnable, "findone-latex").apply { isDaemon = true }
-}
-
-/** Avoid flooding logcat without retaining an unbounded set of user-supplied formula keys. */
-private val reportedLatexErrors = object : LinkedHashMap<String, Unit>(16, 0.75f, true) {
-    override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Unit>?): Boolean =
-        size > 128
-}
 
 private val blockOrInlineLatex = Regex("""(?s)\$\$(.+?)\$\$""")
 private val singleDollarLatex = Regex("""(?<!\$)\$([^$\n]+?)\$(?!\$)""")
-private const val LATEX_FALLBACK_MAX_WIDTH_EM = 20f
-private const val LATEX_FALLBACK_MAX_CODE_POINTS = 512
 private data class MarkdownRenderKey(val markdown: String, val textSizePx: Float, val textColor: Int)
 
 /**
- * Renders CommonMark and LaTeX without a WebView.
- *
- * Markwon uses `$$formula$$` for inline LaTeX and a pair of `$$` lines for block LaTeX.
- * Standard single-dollar inline expressions are normalized to Markwon's representation while
- * escaped dollar signs and block delimiters are left untouched.
+ * Renders CommonMark without a WebView. Formula spans are converted to code-styled text before
+ * Markwon sees them. This deliberately avoids jlatexmath's asynchronous Drawable/Canvas path,
+ * which can terminate the Android process after a detail screen starts drawing.
  */
 @Composable
 fun MarkdownText(
@@ -74,7 +44,6 @@ fun MarkdownText(
 ) {
     require(maxLines > 0) { "maxLines must be greater than zero." }
     val context = LocalContext.current
-    val applicationContext = context.applicationContext
     val density = LocalDensity.current
     val resolvedStyle = LocalTextStyle.current.merge(style)
     val textSizePx = with(density) {
@@ -86,27 +55,11 @@ fun MarkdownText(
         else textSizePx * 1.4f
     }
     val textColor = color.toArgb()
-    val markdownRenderer = remember(applicationContext, textSizePx, textColor) {
-        // The dependency also registers an init provider, but explicit idempotent initialization
-        // keeps formula rendering safe if provider startup order differs across devices/OEMs.
-        JLatexMathAndroid.init(applicationContext)
-        Markwon.builder(applicationContext)
-            .usePlugin(MarkwonInlineParserPlugin.create())
-            .usePlugin(
-                JLatexMathPlugin.create(textSizePx) { builder ->
-                    builder.inlinesEnabled(true)
-                    builder.executorService(latexExecutor)
-                    builder.errorHandler { latex, error ->
-                        reportLatexRenderingError(latex, error)
-                        LatexFallbackDrawable(latex, textSizePx, textColor)
-                    }
-                    builder.theme().textColor(textColor)
-                    builder.theme().blockFitCanvas(true)
-                }
-            )
-            .build()
+    val applicationContext = context.applicationContext
+    val markdownRenderer = remember(applicationContext) {
+        Markwon.create(applicationContext)
     }
-    val normalizedMarkdown = remember(markdown) { normalizeInlineLatex(markdown) }
+    val normalizedMarkdown = remember(markdown) { deviceSafeMarkdown(markdown) }
     val latexAccessibilityText = remember(markdown) {
         if (containsLatex(markdown)) markdownAccessibilityText(markdown) else null
     }
@@ -169,100 +122,141 @@ internal fun markdownPlainTextFallback(markdown: String): String =
         .replace(Regex("[ \\t]+([.,;:!?。])"), "$1")
         .ifBlank { markdown.trim() }
 
-private fun reportLatexRenderingError(latex: String, error: Throwable) {
-    // Formula text can eventually come from user content. Log only a stable diagnostic key,
-    // never the source itself, while preserving the full exception and stack trace.
-    val diagnosticKey = "${latex.length}:${latex.hashCode().toUInt().toString(16)}"
-    val shouldLog = synchronized(reportedLatexErrors) {
-        reportedLatexErrors.put(diagnosticKey, Unit) == null
+/**
+ * Converts formula delimiters to ordinary Markdown code spans/blocks. The result is safe to hand
+ * to Markwon core because it contains no nodes that can invoke the jlatexmath Drawable loader.
+ */
+internal fun deviceSafeMarkdown(markdown: String): String {
+    val normalized = normalizeInlineLatex(markdown)
+    if ("$$" !in normalized) return normalized
+
+    val output = StringBuilder(normalized.length + 32)
+    var lineStart = 0
+    var fencedCode: MarkdownFence? = null
+    var blockLatex = false
+    var inlineCodeDelimiterLength = 0
+    while (lineStart < normalized.length) {
+        val newlineIndex = normalized.indexOf('\n', lineStart)
+        val lineEnd = if (newlineIndex >= 0) newlineIndex else normalized.length
+        val contentEnd = if (lineEnd > lineStart && normalized[lineEnd - 1] == '\r') {
+            lineEnd - 1
+        } else {
+            lineEnd
+        }
+        val line = normalized.substring(lineStart, contentEnd)
+        val lineEnding = when {
+            newlineIndex < 0 -> ""
+            contentEnd < lineEnd -> "\r\n"
+            else -> "\n"
+        }
+        val fenceRun = markdownFenceRun(line)
+
+        when {
+            fencedCode != null -> {
+                output.append(line)
+                if (
+                    fenceRun != null &&
+                    fenceRun.marker == fencedCode.marker &&
+                    fenceRun.length >= fencedCode.minimumLength &&
+                    fenceRun.remainderIsBlank
+                ) {
+                    fencedCode = null
+                }
+            }
+            blockLatex -> {
+                if (line.trim() == "$$") {
+                    output.append(line.substringBefore("$$")).append("````")
+                    blockLatex = false
+                } else {
+                    output.append(line)
+                }
+            }
+            inlineCodeDelimiterLength > 0 -> {
+                val safe = deviceSafeInlineLatexLine(line, inlineCodeDelimiterLength)
+                output.append(safe.markdown)
+                inlineCodeDelimiterLength = safe.inlineCodeDelimiterLength
+            }
+            fenceRun != null -> {
+                output.append(line)
+                fencedCode = MarkdownFence(fenceRun.marker, fenceRun.length)
+            }
+            line.trim() == "$$" -> {
+                output.append(line.substringBefore("$$")).append("````text")
+                blockLatex = true
+            }
+            isIndentedCodeLine(line) -> output.append(line)
+            else -> {
+                val safe = deviceSafeInlineLatexLine(line, inlineCodeDelimiterLength)
+                output.append(safe.markdown)
+                inlineCodeDelimiterLength = safe.inlineCodeDelimiterLength
+            }
+        }
+        output.append(lineEnding)
+        lineStart = if (newlineIndex >= 0) newlineIndex + 1 else normalized.length
     }
-    if (shouldLog) {
-        Log.e(
-            "FinDoneLatex",
-            "Bundled LaTeX renderer failed (formula=$diagnosticKey)",
-            error,
-        )
-    }
+    return output.toString()
 }
 
-/** Never leave a blank span when the bundled LaTeX engine rejects an expression. */
-private class LatexFallbackDrawable(
-    latex: String,
-    textSizePx: Float,
-    textColor: Int,
-) : Drawable() {
-    private val fallbackText = normalizedLatexFallbackText(latex)
-    private val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = textColor
-        textSize = textSizePx
-        typeface = Typeface.MONOSPACE
+private fun deviceSafeInlineLatexLine(
+    line: String,
+    initialInlineCodeDelimiterLength: Int,
+): NormalizedInlineLatexLine {
+    val output = StringBuilder(line.length + 8)
+    var index = 0
+    var inlineCodeDelimiterLength = initialInlineCodeDelimiterLength
+    while (index < line.length) {
+        if (line[index] == '`') {
+            var runEnd = index
+            while (runEnd < line.length && line[runEnd] == '`') runEnd += 1
+            val runLength = runEnd - index
+            output.append(line, index, runEnd)
+            inlineCodeDelimiterLength = when {
+                inlineCodeDelimiterLength == 0 -> runLength
+                inlineCodeDelimiterLength == runLength -> 0
+                else -> inlineCodeDelimiterLength
+            }
+            index = runEnd
+            continue
+        }
+        if (inlineCodeDelimiterLength > 0) {
+            output.append(line[index])
+            index += 1
+            continue
+        }
+        if (line[index] == '\\') {
+            output.append(line[index])
+            if (index + 1 < line.length) {
+                output.append(line[index + 1])
+                index += 2
+            } else {
+                index += 1
+            }
+            continue
+        }
+        if (line.startsWith("$$", index)) {
+            val closing = findClosingDoubleDollar(line, index + 2)
+            if (closing < 0) {
+                output.append(line, index, line.length)
+                break
+            }
+            output.append(formulaCodeSpan(line.substring(index + 2, closing)))
+            index = closing + 2
+            continue
+        }
+        output.append(line[index])
+        index += 1
     }
-    private val intrinsicWidth = boundedLatexFallbackWidthPx(
-        measuredTextWidthPx = paint.measureText(fallbackText),
-        textSizePx = textSizePx,
-    )
-    private val displayText = TextUtils.ellipsize(
-        fallbackText,
-        paint,
-        intrinsicWidth.toFloat(),
-        TextUtils.TruncateAt.END,
-    ).toString()
-
-    override fun draw(canvas: Canvas) {
-        val metrics = paint.fontMetrics
-        canvas.drawText(
-            displayText,
-            bounds.left.toFloat(),
-            bounds.top - metrics.top,
-            paint,
-        )
-    }
-
-    override fun setAlpha(alpha: Int) {
-        paint.alpha = alpha
-    }
-
-    override fun setColorFilter(colorFilter: ColorFilter?) {
-        paint.colorFilter = colorFilter
-    }
-
-    @Suppress("OVERRIDE_DEPRECATION")
-    override fun getOpacity(): Int = PixelFormat.TRANSLUCENT
-
-    override fun getIntrinsicWidth(): Int = intrinsicWidth
-
-    override fun getIntrinsicHeight(): Int {
-        val metrics = paint.fontMetrics
-        return max(1, ceil(metrics.bottom - metrics.top).toInt())
-    }
+    return NormalizedInlineLatexLine(output.toString(), inlineCodeDelimiterLength)
 }
 
-internal fun normalizedLatexFallbackText(
-    latex: String,
-    maxCodePoints: Int = LATEX_FALLBACK_MAX_CODE_POINTS,
-): String {
-    require(maxCodePoints >= 2) { "maxCodePoints must leave room for content and an ellipsis." }
-    val normalized = latex.replace(Regex("\\s+"), " ").trim()
-        .ifEmpty { "[invalid formula]" }
-    val codePointCount = normalized.codePointCount(0, normalized.length)
-    if (codePointCount <= maxCodePoints) return normalized
-
-    val contentEnd = normalized.offsetByCodePoints(0, maxCodePoints - 1)
-    return normalized.substring(0, contentEnd).trimEnd() + "…"
-}
-
-internal fun boundedLatexFallbackWidthPx(
-    measuredTextWidthPx: Float,
-    textSizePx: Float,
-): Int {
-    val safeTextSize = textSizePx.takeIf { it.isFinite() && it > 0f } ?: 1f
-    val maximumWidth = safeTextSize * LATEX_FALLBACK_MAX_WIDTH_EM
-    val boundedWidth = when {
-        measuredTextWidthPx.isNaN() -> maximumWidth
-        measuredTextWidthPx <= 0f -> 1f
-        else -> measuredTextWidthPx.coerceAtMost(maximumWidth)
-    }
-    return max(1, ceil(boundedWidth).toInt())
+private fun formulaCodeSpan(latex: String): String {
+    val formula = latex.replace(Regex("\\s+"), " ").trim().ifEmpty { "invalid formula" }
+    val longestBacktickRun = Regex("`+").findAll(formula)
+        .maxOfOrNull { match -> match.value.length }
+        ?: 0
+    val delimiter = "`".repeat(longestBacktickRun + 1)
+    val needsPadding = formula.firstOrNull() == '`' || formula.lastOrNull() == '`'
+    return if (needsPadding) "$delimiter $formula $delimiter" else "$delimiter$formula$delimiter"
 }
 
 private fun containsLatex(markdown: String): Boolean =
