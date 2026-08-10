@@ -100,6 +100,9 @@ export function LoginForm({ mode }: { mode: RuntimeMode }) {
       <p className="login-footnote">
         회원가입은 제공하지 않습니다. 계정 접근이 필요한 경우 Supabase 프로젝트 관리자에게 문의하세요.
       </p>
+      <p className="login-copyright">
+        © 2026 FinDone · <a href="mailto:qyurimoon@yonsei.ac.kr">qyurimoon@yonsei.ac.kr</a>
+      </p>
     </div>
   );
 }

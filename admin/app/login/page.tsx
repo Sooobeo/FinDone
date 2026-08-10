@@ -12,20 +12,18 @@ export default async function LoginPage() {
   return (
     <main className="login-page">
       <section className="login-brand-panel" aria-label="FinDone Admin 소개">
-        <div className="login-brand-lockup">
-          <span className="brand-mark brand-mark-large" aria-hidden="true">F</span>
+        <div className="login-brand-lockup login-brand-lockup-centered">
+          <span className="login-brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="18" y="13" width="7" height="38" rx="3.5" fill="currentColor" />
+              <path d="M25 15.5C32.5 11.5 42.5 11.8 50 16.2C49.2 24.8 40.5 29.2 25 27.6V15.5Z" fill="currentColor" />
+              <path d="M25 33.6C31.5 30.5 39.5 30.8 45 34.1C43.8 41.2 36.5 44.8 25 42.3V33.6Z" fill="currentColor" />
+            </svg>
+          </span>
           <span>
             <strong>FinDone</strong>
             <small>CONTENT ADMIN</small>
           </span>
-        </div>
-        <div className="login-brand-copy">
-          <p className="eyebrow eyebrow-light">CURATE WITH CONFIDENCE</p>
-          <h1>배우는 화면에 닿기 전,<br />한 번 더 정확하게.</h1>
-          <p>개념과 수식을 정돈하고, 근거를 확인한 뒤 승인된 콘텐츠만 앱에 전달합니다.</p>
-        </div>
-        <div className="login-flow" aria-label="콘텐츠 작업 흐름">
-          <span>정리</span><i aria-hidden="true" /><span>검증</span><i aria-hidden="true" /><span>승인</span><i aria-hidden="true" /><span>반영</span>
         </div>
       </section>
       <section className="login-form-panel">

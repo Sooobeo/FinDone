@@ -3,7 +3,6 @@
 import {
   BookOpenText,
   CheckCircle2,
-  ChevronLeft,
   Database,
   FileArchive,
   FileCheck2,
@@ -77,7 +76,6 @@ export function AdminShell({ children, mode, email }: AdminShellProps) {
             <small>작업 공간</small>
             <strong>학습 콘텐츠</strong>
           </span>
-          <ChevronLeft className="context-chevron" size={16} aria-hidden="true" />
         </div>
 
         <nav className="sidebar-nav">
