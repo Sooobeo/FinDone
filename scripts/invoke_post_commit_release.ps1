@@ -538,7 +538,7 @@ if (-not (Test-Path -LiteralPath $configurationPath -PathType Leaf)) {
 }
 
 $configuration = Get-Content -Raw -Encoding UTF8 -LiteralPath $configurationPath | ConvertFrom-Json
-if ($configuration.schemaVersion -ne 2) { throw 'Unsupported release automation configuration version; run setup again.' }
+if ($configuration.schemaVersion -ne 3) { throw 'Unsupported release automation configuration version; run setup again.' }
 $requiredConfigurationProperties = @(
     'repositoryRoot',
     'keystorePath',
@@ -547,12 +547,24 @@ $requiredConfigurationProperties = @(
     'keyPasswordDpapi',
     'expectedSigningCertificateSha256',
     'orchestratorBuildScriptSha256',
-    'keepReleases'
+    'keepReleases',
+    'contentReleaseEndpoint'
 )
 foreach ($propertyName in $requiredConfigurationProperties) {
     if ($configuration.PSObject.Properties.Name -notcontains $propertyName) {
         throw "Release automation configuration is missing '$propertyName'; run setup again."
     }
+}
+[Uri]$configuredContentReleaseUri = $null
+if ([string]::IsNullOrWhiteSpace([string]$configuration.contentReleaseEndpoint) -or
+    -not [Uri]::TryCreate([string]$configuration.contentReleaseEndpoint, [UriKind]::Absolute, [ref]$configuredContentReleaseUri) -or
+    $configuredContentReleaseUri.Scheme -cne 'https' -or
+    [string]::IsNullOrWhiteSpace($configuredContentReleaseUri.Host) -or
+    -not [string]::IsNullOrEmpty($configuredContentReleaseUri.UserInfo) -or
+    -not [string]::IsNullOrEmpty($configuredContentReleaseUri.Query) -or
+    -not [string]::IsNullOrEmpty($configuredContentReleaseUri.Fragment) -or
+    $configuredContentReleaseUri.AbsoluteUri.TrimEnd('/') -cne [string]$configuration.contentReleaseEndpoint) {
+    throw 'Configured content release endpoint is invalid; run setup again.'
 }
 if ((Get-FullPath $configuration.repositoryRoot) -ne $repoRoot) {
     throw 'Release automation configuration belongs to a different repository path; run setup again.'
@@ -683,6 +695,7 @@ try {
             -ExpectedSigningCertificateSha256 $trackedSigningCertificateSha256 `
             -ExpectedOrchestratorScriptSha256 $activeBuilderSha256 `
             -ExpectedCommit $resolvedCommit `
+            -ContentReleaseEndpoint $configuration.contentReleaseEndpoint `
             -VersionCodeOverride ([int]$automaticVersionCode) `
             -VersionNameOverride $automaticVersionName `
             -KeepReleases 2 `

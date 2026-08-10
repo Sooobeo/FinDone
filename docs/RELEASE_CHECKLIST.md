@@ -1,6 +1,6 @@
 # FinDone 개인 릴리스 체크리스트
 
-이 문서는 FinDone을 **본인 Android 기기에만** 설치하는 개인 서명 APK의 준비·빌드·검증 절차입니다. OneDrive는 APK와 사용자가 명시적으로 만든 백업 파일을 옮기는 수단일 뿐, 앱의 서버나 자동 동기화 계층이 아닙니다. 앱에는 OneDrive API·로그인·동기화나 인앱 업데이트 기능이 없습니다. 휴대폰의 OneDrive에서 최신 `.apk`를 직접 열어 Android 시스템 설치 화면으로 업데이트합니다.
+이 문서는 FinDone을 **본인 Android 기기에만** 설치하는 개인 서명 APK의 준비·빌드·검증 절차입니다. OneDrive는 APK와 사용자가 명시적으로 만든 백업 파일을 옮기는 수단일 뿐입니다. 앱에는 OneDrive API·로그인·APK 자동 설치가 없고, 콘텐츠 DB만 HTTPS stable endpoint에서 검증 후 자동 갱신합니다. 코드/UI APK는 휴대폰의 OneDrive에서 직접 열어 Android 시스템 설치 화면으로 업데이트합니다.
 
 > 개인 설치가 가능한 기술 빌드와 전체 명세 완료는 서로 다른 상태입니다. 1,461개 이상의 authored/approved claim과 독립 solver를 포함한 전체 10,000-seed 검증이 끝나기 전에는 산출물을 “전체 콘텐츠 완성판”으로 표시하지 않습니다.
 
@@ -41,7 +41,8 @@ git ls-files -- '*.jks' '*.keystore' '*.apk' '*.aab' '*.idsig'
 - [ ] 추적되지 않는 `local.properties`에 올바른 `sdk.dir`이 있다.
 - [ ] 의도하지 않은 작업 트리 변경이 없는지 `git status --short`와 `git diff --check`로 확인했다.
 - [ ] `app/build.gradle.kts`의 `versionName`과 `versionCode`를 기록했다.
-- [ ] `app/src/main/AndroidManifest.xml`에 `android.permission.INTERNET`가 없고, 자동 백업과 cleartext 통신이 비활성화되어 있다.
+- [ ] `app/src/main/AndroidManifest.xml`에 콘텐츠 확인용 `android.permission.INTERNET`가 있고, 자동 백업과 cleartext 통신은 비활성화되어 있다.
+- [ ] 운영 Admin의 공개 HTTPS `/api/content/stable` URL을 확정했다.
 - [ ] `app/src/main/assets/content-manifest.json`의 7개 분야, 135개 요소, 분야별 수량, DB SHA-256과 byte size를 확인했다.
 - [ ] 원본 명세가 바뀐 경우에만 `python .\tools\build_content_db.py`를 실행하고 생성된 DB와 manifest 변경을 검토했다.
 - [ ] 디버그 검증이 성공했다.
@@ -71,9 +72,13 @@ $keySecret = Read-Host '개인 키 비밀번호' -AsSecureString
 $env:FINDONE_STORE_PASSWORD = [System.Net.NetworkCredential]::new('', $storeSecret).Password
 $env:FINDONE_KEY_PASSWORD = [System.Net.NetworkCredential]::new('', $keySecret).Password
 $keystorePath = Read-Host '저장소 밖 키 저장소의 절대 경로'
+$contentReleaseEndpoint = 'https://<admin-domain>/api/content/stable'
 
 try {
-    .\scripts\build_private_release.ps1 -KeystorePath $keystorePath -KeyAlias 'findone-release'
+    .\scripts\build_private_release.ps1 `
+      -KeystorePath $keystorePath `
+      -KeyAlias 'findone-release' `
+      -ContentReleaseEndpoint $contentReleaseEndpoint
 } finally {
     Remove-Item Env:FINDONE_STORE_PASSWORD, Env:FINDONE_KEY_PASSWORD -ErrorAction SilentlyContinue
     Remove-Variable storeSecret, keySecret -ErrorAction SilentlyContinue
@@ -111,8 +116,8 @@ Get-Content -Raw -Encoding UTF8 (Join-Path $releaseDir.FullName 'release-manifes
 - [ ] Android SDK의 `apksigner verify --verbose --print-certs`를 다시 실행해 APK 검증이 성공한다.
 - [ ] 인증서 SHA-256 fingerprint가 최초에 별도 기록한 개인 키 fingerprint와 일치한다.
 - [ ] release manifest의 application ID, version, content DB version/hash, user DB schema version이 빌드 입력과 일치하며 필수 값이 빈 문자열이나 `null`이 아니다.
-- [ ] release manifest에 `targetUser=self_only`, `publicStoreRelease=false`, `internetPermission=false`, `oneDriveRuntimeSync=false`, `directOneDriveApi=false`가 기록되어 있다.
-- [ ] Android Studio의 APK Analyzer 또는 SDK의 `apkanalyzer manifest permissions <APK>`로 확인했을 때 `android.permission.INTERNET`가 없다.
+- [ ] release manifest에 `targetUser=self_only`, `publicStoreRelease=false`, `internetPermission=true`, `updateSource=https_stable_content_channel`, 올바른 `contentReleaseEndpoint`, `oneDriveRuntimeSync=false`, `directOneDriveApi=false`가 기록되어 있다.
+- [ ] Android Studio의 APK Analyzer 또는 SDK의 `apkanalyzer manifest permissions <APK>`로 확인했을 때 `android.permission.INTERNET`가 있고 불필요한 위험 권한은 없다.
 - [ ] APK 안에 키 저장소, private key, 비밀번호, 복구 문구, API key, 사용자 백업이 포함되지 않았다.
 
 어느 값이든 다르거나 비어 있으면 OneDrive에 올리지 말고 빌드 입력이나 자동화 문제를 먼저 해결합니다.
@@ -143,8 +148,15 @@ Get-Content -Raw -Encoding UTF8 (Join-Path $releaseDir.FullName 'release-manifes
 - [ ] 학습 본문 구절에 형광펜·밑줄·코멘트를 만들고, 앱 재실행 후 같은 위치에 다시 표시된다.
 - [ ] 용어집의 대단원 전환, 학습 완료 체크, 별 북마크와 북마크 전용 보기가 동작한다.
 - [ ] 수동 백업 export와 import가 비행기 모드에서 동작하고 무결성 오류가 없는지 확인했다.
-- [ ] `adb shell dumpsys package com.findone.app` 출력에도 `android.permission.INTERNET`가 없다.
+- [ ] `adb shell dumpsys package com.findone.app` 출력에 `android.permission.INTERNET`가 있고, 위치·연락처·저장소 같은 불필요한 위험 권한은 없다.
 - [ ] crash, ANR, 데이터 유실이 없고 기기 모델·Android version·시험 일시를 기록했다.
+
+네트워크를 다시 켠 뒤에는 Admin에서 테스트 릴리스를 생성해 별도로 자동 반영을 확인합니다.
+
+- [ ] Worker가 SQLite 빌드와 검증을 통과한 뒤 해당 릴리스를 `stable`에 자동 공개했다.
+- [ ] 앱을 다시 실행하면 더 높은 콘텐츠 DB version으로 바뀌고, 해시가 릴리스 manifest와 일치한다.
+- [ ] 업데이트 중 네트워크를 끊거나 endpoint를 사용할 수 없게 해도 앱이 마지막 검증 DB로 정상 시작한다.
+- [ ] 콘텐츠 교체 전후에 오답·북마크·진도·메모가 그대로 남는다.
 
 ## 8. 동일 서명 upgrade 시험
 

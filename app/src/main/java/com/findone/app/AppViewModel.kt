@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.findone.app.data.AttemptInput
 import com.findone.app.data.AttemptRecord
 import com.findone.app.data.BookmarkInput
@@ -15,6 +16,8 @@ import com.findone.app.data.BookmarkOrigin
 import com.findone.app.data.BookmarkRecord
 import com.findone.app.data.ConceptNote
 import com.findone.app.data.ContentRepository
+import com.findone.app.data.ContentUpdateManager
+import com.findone.app.data.ContentUpdateResult
 import com.findone.app.data.ElementProgress
 import com.findone.app.data.GlossaryTermState
 import com.findone.app.data.LearningTextAnnotation
@@ -41,6 +44,9 @@ import com.findone.app.quiz.QuizTemplateIdentity
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.Random
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.ceil
 import kotlin.math.floor
 
@@ -151,13 +157,20 @@ class AppViewModel(
     private val savedStateHandle: SavedStateHandle,
 ) : AndroidViewModel(application) {
     private val userRepository = UserRepository(application)
-    private val contentRepository: ContentRepository?
+    private var contentRepository: ContentRepository? = null
 
-    val domains: List<Domain>
-    val allElements: List<ContentElement>
-    val contentManifest: ContentManifest?
+    var domains by mutableStateOf<List<Domain>>(emptyList())
+        private set
+    var allElements by mutableStateOf<List<ContentElement>>(emptyList())
+        private set
+    var contentManifest by mutableStateOf<ContentManifest?>(null)
+        private set
 
     var contentError by mutableStateOf<String?>(null)
+        private set
+    var contentUpdateInProgress by mutableStateOf(false)
+        private set
+    var contentUpdateMessage by mutableStateOf<String?>(null)
         private set
     var currentTab by mutableStateOf(
         runCatching { MainTab.valueOf(savedStateHandle["tab"] ?: MainTab.HOME.name) }.getOrDefault(MainTab.HOME)
@@ -273,7 +286,82 @@ class AppViewModel(
                 .onSuccess { quizSession = it }
                 .onFailure { savedStateHandle.remove<String>("quizSession") }
         }
+        checkForContentUpdate()
     }
+
+    fun checkForContentUpdate() {
+        if (BuildConfig.CONTENT_RELEASE_ENDPOINT.isBlank() || contentUpdateInProgress) return
+        val currentVersion = contentManifest?.contentDbVersion ?: return
+        contentUpdateInProgress = true
+        contentUpdateMessage = null
+        viewModelScope.launch {
+            try {
+                when (val result = withContext(Dispatchers.IO) {
+                    ContentUpdateManager(getApplication()).updateIfAvailable(currentVersion)
+                }) {
+                    ContentUpdateResult.Disabled,
+                    ContentUpdateResult.Current -> Unit
+                    is ContentUpdateResult.Failed -> {
+                        // A network failure must never block the offline app. Keep the
+                        // message available to the data/settings screen without turning it
+                        // into a fatal content error.
+                        contentUpdateMessage = result.message
+                    }
+                    is ContentUpdateResult.Installed -> {
+                        val loaded = withContext(Dispatchers.IO) {
+                            ContentRepository(getApplication()).let { repository ->
+                                LoadedContent(
+                                    repository = repository,
+                                    domains = repository.domains(),
+                                    elements = repository.elements(),
+                                    manifest = repository.manifest,
+                                )
+                            }
+                        }
+                        val previous = contentRepository
+                        contentRepository = loaded.repository
+                        domains = loaded.domains
+                        allElements = loaded.elements
+                        contentManifest = loaded.manifest
+                        previous?.close()
+                        normalizeContentSelections()
+                        updateStudyResults()
+                        refreshGlossaryTermStates()
+                        contentUpdateMessage = "콘텐츠 DB v${result.manifest.contentDbVersion} 업데이트 완료"
+                    }
+                }
+            } catch (error: Exception) {
+                contentUpdateMessage = error.message ?: "콘텐츠 업데이트를 적용하지 못했습니다."
+            } finally {
+                contentUpdateInProgress = false
+            }
+        }
+    }
+
+    private fun normalizeContentSelections() {
+        val validElementIds = allElements.mapTo(hashSetOf()) { it.id }
+        studyDomainId = studyDomainId?.takeIf { id -> domains.any { it.id == id } }
+        selectedElementId = selectedElementId?.takeIf { it in validElementIds }
+        navigationHistory = normalizeNavigationHistory(navigationHistory, validElementIds)
+        persistNavigationHistory()
+        val availableDomainIds = domains.map { it.id }
+        quizDomainId = quizDomainId?.takeIf { it in availableDomainIds }
+        quizDomainIds = normalizeQuizDomainSelection(availableDomainIds, quizDomainIds)
+        persistQuizDomainSelection()
+        recordDomainId = recordDomainId?.takeIf { it in availableDomainIds }
+        recordElementId = recordElementId?.takeIf { id ->
+            allElements.any { element ->
+                element.id == id && (recordDomainId == null || element.domainId == recordDomainId)
+            }
+        }
+    }
+
+    private data class LoadedContent(
+        val repository: ContentRepository,
+        val domains: List<Domain>,
+        val elements: List<ContentElement>,
+        val manifest: ContentManifest,
+    )
 
     val selectedElement: ContentElement?
         get() = selectedElementId?.let { id -> allElements.firstOrNull { it.id == id } }

@@ -197,6 +197,7 @@ class ContentRepository(context: Context) : Closeable {
 
     companion object {
         private const val MANIFEST_ASSET = "content-manifest.json"
+        private const val ACTIVE_MANIFEST = "active-manifest.json"
         private val EXPECTED_DOMAIN_COUNTS = mapOf(
             "ACC" to 12, "CF" to 12, "INV" to 9, "FI" to 10,
             "DER" to 10, "EQV" to 64, "IBT" to 18,
@@ -212,10 +213,8 @@ class ContentRepository(context: Context) : Closeable {
             f.expression, f.assumptions, f.notes
         """
 
-        private fun loadManifest(context: Context): ContentManifest {
-            val json = context.assets.open(MANIFEST_ASSET).bufferedReader(Charsets.UTF_8).use {
-                JSONObject(it.readText())
-            }
+        private fun parseManifest(value: String): ContentManifest {
+            val json = JSONObject(value)
             return ContentManifest(
                 manifestVersion = json.getInt("manifestVersion"),
                 schemaVersion = json.getInt("schemaVersion"),
@@ -230,6 +229,34 @@ class ContentRepository(context: Context) : Closeable {
             )
         }
 
+        private fun packagedManifest(context: Context): ContentManifest = context.assets
+            .open(MANIFEST_ASSET)
+            .bufferedReader(Charsets.UTF_8)
+            .use { parseManifest(it.readText()) }
+
+        private fun contentDirectory(context: Context): File = File(context.filesDir, "content")
+
+        private fun databaseFile(context: Context, manifest: ContentManifest): File = File(
+            contentDirectory(context),
+            "v${manifest.contentDbVersion}-${manifest.sha256.take(16)}.sqlite3",
+        )
+
+        private fun loadManifest(context: Context): ContentManifest {
+            val packaged = packagedManifest(context)
+            validateManifestInvariants(packaged)
+            val activeFile = File(contentDirectory(context), ACTIVE_MANIFEST)
+            val active = runCatching {
+                val candidate = parseManifest(activeFile.readText(Charsets.UTF_8))
+                validateManifestInvariants(candidate)
+                if (candidate.contentDbVersion < packaged.contentDbVersion) {
+                    throw ContentIntegrityException("Downloaded content is older than the packaged baseline")
+                }
+                verifyDatabase(databaseFile(context, candidate), candidate)
+                candidate
+            }.getOrNull()
+            return active ?: packaged
+        }
+
         private fun JSONObject.toIntMap(): Map<String, Int> = buildMap {
             val iterator = keys()
             while (iterator.hasNext()) iterator.next().let { key -> put(key, getInt(key)) }
@@ -239,11 +266,16 @@ class ContentRepository(context: Context) : Closeable {
             if (manifest.manifestVersion != 1 || manifest.schemaVersion != 1) {
                 throw ContentIntegrityException("Unsupported content manifest/schema version")
             }
-            if (!manifest.databaseAsset.matches(Regex("[A-Za-z0-9._-]+"))) {
-                throw ContentIntegrityException("Unsafe database asset name")
+            if (manifest.databaseAsset != "content.sqlite3") {
+                throw ContentIntegrityException("Unsupported database asset name")
             }
-            if (!manifest.sha256.matches(Regex("[0-9a-f]{64}"))) {
-                throw ContentIntegrityException("Malformed content database SHA-256")
+            if (!manifest.sha256.matches(Regex("[0-9a-f]{64}")) ||
+                !manifest.sourceSha256.matches(Regex("[0-9a-f]{64}"))
+            ) {
+                throw ContentIntegrityException("Malformed content SHA-256")
+            }
+            if (manifest.contentDbVersion < 1 || manifest.byteSize < 1) {
+                throw ContentIntegrityException("Invalid content version or size")
             }
             if (manifest.rowCounts["domains"] != 7 || manifest.rowCounts["elements"] != 135) {
                 throw ContentIntegrityException("Manifest domain/element invariant failed")
@@ -255,17 +287,17 @@ class ContentRepository(context: Context) : Closeable {
             if (manifest.domainElementCounts != EXPECTED_DOMAIN_COUNTS) {
                 throw ContentIntegrityException("Manifest domain row counts are not canonical")
             }
-            if (!manifest.rowCounts.keys.all { it in VERIFIED_TABLES }) {
-                throw ContentIntegrityException("Manifest asks to verify an unknown table")
+            if (manifest.rowCounts.keys != VERIFIED_TABLES) {
+                throw ContentIntegrityException("Manifest table verification set is incomplete")
             }
         }
 
         private fun prepareDatabase(context: Context, manifest: ContentManifest): File {
-            val contentDirectory = File(context.filesDir, "content")
+            val contentDirectory = contentDirectory(context)
             if (!contentDirectory.exists() && !contentDirectory.mkdirs()) {
                 throw ContentIntegrityException("Could not create app-private content directory")
             }
-            val target = File(contentDirectory, "v${manifest.contentDbVersion}-${manifest.sha256.take(16)}.sqlite3")
+            val target = databaseFile(context, manifest)
             if (target.isFile) {
                 runCatching { verifyDatabase(target, manifest) }.onSuccess { return target }
             }
@@ -342,6 +374,85 @@ class ContentRepository(context: Context) : Closeable {
                 }
             }
             return digest.digest().joinToString("") { "%02x".format(it) }
+        }
+
+        fun installDownloadedRelease(
+            context: Context,
+            manifestBytes: ByteArray,
+            downloadedDatabase: File,
+        ): ContentManifest {
+            val appContext = context.applicationContext
+            val manifestText = manifestBytes.toString(Charsets.UTF_8)
+            val manifest = try {
+                parseManifest(manifestText)
+            } catch (error: Exception) {
+                throw ContentIntegrityException("Downloaded content manifest is invalid", error)
+            }
+            validateManifestInvariants(manifest)
+            val current = loadManifest(appContext)
+            if (manifest.contentDbVersion <= current.contentDbVersion) {
+                throw ContentIntegrityException("Downloaded content is not newer than the active content")
+            }
+            verifyDatabase(downloadedDatabase, manifest)
+
+            val directory = contentDirectory(appContext)
+            if (!directory.exists() && !directory.mkdirs()) {
+                throw ContentIntegrityException("Could not create app-private content directory")
+            }
+            val target = databaseFile(appContext, manifest)
+            val databaseTemporary = File(
+                directory,
+                ".${target.name}.${android.os.Process.myPid()}.${System.nanoTime()}.tmp",
+            )
+            val manifestTarget = File(directory, ACTIVE_MANIFEST)
+            val manifestTemporary = File(
+                directory,
+                ".$ACTIVE_MANIFEST.${android.os.Process.myPid()}.${System.nanoTime()}.tmp",
+            )
+            try {
+                downloadedDatabase.inputStream().use { input ->
+                    FileOutputStream(databaseTemporary).use { output ->
+                        input.copyTo(output)
+                        output.flush()
+                        output.fd.sync()
+                    }
+                }
+                verifyDatabase(databaseTemporary, manifest)
+                moveReplacing(databaseTemporary, target)
+                verifyDatabase(target, manifest)
+
+                FileOutputStream(manifestTemporary).use { output ->
+                    output.write(manifestBytes)
+                    output.flush()
+                    output.fd.sync()
+                }
+                moveReplacing(manifestTemporary, manifestTarget)
+                val installed = loadManifest(appContext)
+                if (installed.contentDbVersion != manifest.contentDbVersion || installed.sha256 != manifest.sha256) {
+                    throw ContentIntegrityException("Downloaded content was not activated")
+                }
+                return installed
+            } catch (error: ContentIntegrityException) {
+                throw error
+            } catch (error: Exception) {
+                throw ContentIntegrityException("Could not activate downloaded content", error)
+            } finally {
+                Files.deleteIfExists(databaseTemporary.toPath())
+                Files.deleteIfExists(manifestTemporary.toPath())
+            }
+        }
+
+        private fun moveReplacing(source: File, target: File) {
+            try {
+                Files.move(
+                    source.toPath(),
+                    target.toPath(),
+                    StandardCopyOption.ATOMIC_MOVE,
+                    StandardCopyOption.REPLACE_EXISTING,
+                )
+            } catch (_: java.nio.file.AtomicMoveNotSupportedException) {
+                Files.move(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            }
         }
 
         private fun toFtsQuery(query: String): String = Regex("[\\p{L}\\p{N}]+")

@@ -17,7 +17,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -26,12 +26,59 @@ if __package__ in {None, ""}:
 
 from tools import admin_export_content as exporter
 
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_ADMIN_ENV_PATHS = (ROOT / "admin" / ".env.local", ROOT / "admin" / ".env")
 RPC_PATH = "/rest/v1/rpc/import_content_snapshot"
 MAX_RESPONSE_BYTES = 1024 * 1024
 
 
 class SupabaseImportError(RuntimeError):
     """Raised when the bootstrap RPC cannot be called safely."""
+
+
+def _env_file_value(path: Path, key: str) -> str:
+    """Read one public value from a Next env file without loading other secrets."""
+
+    try:
+        lines = path.read_text(encoding="utf-8-sig").splitlines()
+    except FileNotFoundError:
+        return ""
+    except OSError as error:
+        raise SupabaseImportError(f"Could not read Admin environment file: {path}") from error
+
+    result = ""
+    for raw_line in lines:
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[7:].lstrip()
+        name, separator, value = line.partition("=")
+        if not separator or name.strip() != key:
+            continue
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+            value = value[1:-1]
+        result = value.strip()
+    return result
+
+
+def resolve_supabase_url(
+    environment: Mapping[str, str] | None = None,
+    env_paths: Sequence[Path] = DEFAULT_ADMIN_ENV_PATHS,
+) -> str:
+    """Resolve the public project URL using process values, then Next env files."""
+
+    values = os.environ if environment is None else environment
+    for name in ("SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_URL"):
+        value = values.get(name, "").strip()
+        if value:
+            return value
+    for path in env_paths:
+        value = _env_file_value(path, "NEXT_PUBLIC_SUPABASE_URL")
+        if value:
+            return value
+    return ""
 
 
 def normalize_supabase_url(value: str) -> str:
@@ -97,7 +144,10 @@ def call_import_rpc(
     url = normalize_supabase_url(base_url) + RPC_PATH
     secret = secret_key.strip()
     if not secret:
-        raise SupabaseImportError("SUPABASE_SECRET_KEY is missing")
+        raise SupabaseImportError(
+            "SUPABASE_SECRET_KEY is missing. Set it in the current terminal session; "
+            "do not put it in admin/.env."
+        )
     payload = json.dumps(
         {
             "p_snapshot": snapshot,
@@ -158,7 +208,7 @@ def main(argv: Iterable[str] | None = None) -> int:
         print(json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True))
         return 0
 
-    base_url = os.environ.get("SUPABASE_URL", "")
+    base_url = resolve_supabase_url()
     secret_key = os.environ.get("SUPABASE_SECRET_KEY", "")
     result = call_import_rpc(
         base_url=base_url,

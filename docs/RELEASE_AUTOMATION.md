@@ -10,11 +10,11 @@
 4. Windows DPAPI 암호문을 현재 Windows 사용자 권한의 `SecureString`으로 복호화합니다.
 5. 서명 비밀번호가 전혀 없는 환경에서 정확한 커밋의 Gradle·플러그인·테스트를 실행해 unsigned APK를 만듭니다.
 6. setup에서 SHA-256을 고정한 활성 clone의 로컬 래퍼가 SDK `zipalign`을 실행한 뒤, 비밀번호 환경 변수를 `apksigner` 실행 순간에만 만들고 즉시 제거합니다.
-7. 서명, 정렬, APK checksum 및 권한을 다시 검증합니다.
+7. 서명, 정렬, APK checksum, 인터넷 권한과 콘텐츠 release endpoint 주입을 다시 검증합니다.
 8. 검증된 릴리스를 `dist/findone-*`에 원자적으로 게시하고 최신 두 개만 남깁니다.
 9. 선택한 mirror가 있으면 완성된 폴더를 복사·재검증한 뒤 그곳도 최신 두 개만 남깁니다.
 
-앱에는 업데이트 탐색이나 APK 설치 기능이 없으며 OneDrive API 호출·로그인·동기화 및 인터넷 권한도 사용하지 않습니다. 자동화는 검증된 릴리스 파일을 설정된 OneDrive mirror에 게시하는 역할만 합니다. 휴대폰에서는 OneDrive에서 최신 `.apk`를 직접 열어 Android 시스템 설치 화면으로 업데이트합니다.
+앱은 APK를 스스로 설치하지 않으며 OneDrive API·로그인·동기화도 사용하지 않습니다. 다만 콘텐츠는 설정된 HTTPS stable endpoint를 실행 때 확인해 새 버전만 검증 후 교체합니다. 앱 코드/UI APK는 이전처럼 OneDrive에서 직접 열어 Android 시스템 설치 화면으로 업데이트합니다.
 
 훅은 동기식입니다. 따라서 `git commit` 명령은 릴리스 빌드가 끝날 때까지 수 분 걸릴 수 있습니다. 빌드가 실패해도 이미 만들어진 Git 커밋은 사라지지 않으며, 오류가 콘솔에 표시됩니다.
 
@@ -57,14 +57,15 @@ New-Item -ItemType Directory -Path 'C:\Users\Insun\OneDrive\FinDone-Releases'
 .\scripts\setup_release_automation.ps1 `
   -KeystorePath 'C:\path\outside\the\repo\FinDoneSigning\findone-release.jks' `
   -KeyAlias 'findone-release' `
+  -ContentReleaseEndpoint 'https://<admin-domain>/api/content/stable' `
   -MirrorRoot 'C:\Users\Insun\OneDrive\FinDone-Releases'
 ```
 
-mirror가 필요 없으면 `-MirrorRoot`를 생략합니다. 설정만 저장하고 훅은 아직 켜지 않으려면 `-SkipHookActivation`을 추가합니다.
+`ContentReleaseEndpoint`는 사용자 인증정보·query·fragment가 없는 공개 HTTPS URL이어야 하며, Admin의 `/api/content/stable`을 가리킵니다. mirror가 필요 없으면 `-MirrorRoot`를 생략합니다. 설정만 저장하고 훅은 아직 켜지 않으려면 `-SkipHookActivation`을 추가합니다.
 
 설정 스크립트는 저장 전에 PATH의 JDK `keytool -certreq`를 실행해 keystore 비밀번호, private-key 비밀번호와 alias가 실제로 함께 동작하는지 검증합니다. 이어서 signing certificate DER의 SHA-256이 [tracked 공개 pin](../config/release-signing-certificate.sha256) 및 최신 검증 가능 릴리스 기록과 일치하는지 확인합니다. 비밀번호는 keytool의 `-storepass:env`·`-keypass:env` modifier로만 전달되어 명령줄에 나타나지 않으며, 임시 CSR·인증서·환경 변수는 즉시 제거됩니다. 검증 실패 또는 keytool 부재 시 설정 파일과 훅을 만들거나 활성화하지 않습니다.
 
-설정 파일은 이 clone의 `.git/findone-release/credentials.json`에 저장됩니다. 비밀번호 필드는 별도 key를 코드나 파일에 저장하지 않는 Windows DPAPI current-user ciphertext입니다. 다른 Windows 계정이나 다른 PC에서는 복호화되지 않습니다. 설정에는 검증된 인증서 SHA-256과 setup 당시 `build_private_release.ps1` SHA-256도 함께 고정됩니다. builder가 바뀌면 DPAPI 복호화 전에 자동 빌드를 중단하므로 변경을 검토한 뒤 setup을 다시 실행해야 합니다. keystore 자체는 계속 저장소 밖에 보관해야 합니다.
+설정 파일은 이 clone의 `.git/findone-release/credentials.json`에 저장됩니다. 비밀번호 필드는 별도 key를 코드나 파일에 저장하지 않는 Windows DPAPI current-user ciphertext입니다. 다른 Windows 계정이나 다른 PC에서는 복호화되지 않습니다. 공개 콘텐츠 endpoint, 검증된 인증서 SHA-256과 setup 당시 `build_private_release.ps1` SHA-256도 함께 고정됩니다. builder가 바뀌면 DPAPI 복호화 전에 자동 빌드를 중단하므로 변경을 검토한 뒤 setup을 다시 실행해야 합니다. keystore 자체는 계속 저장소 밖에 보관해야 합니다.
 
 ## 보관 정책과 삭제 안전장치
 

@@ -28,6 +28,7 @@
 8. `202608100008_security_hardening.sql`: 안전한 출처 URL, 릴리스 fingerprint와 검증 경계
 9. `202608100009_worker_boundaries.sql`: 출처·릴리스 RPC, worker write 경계와 최신 read view
 10. `202608100010_validation_worker_rpc.sql`: validation worker의 claim·완료·실패·lease 복구 RPC
+11. `202608100011_release_worker_rpc.sql`: SQLite release build·검증 완료와 자동 stable 공개 RPC
 
 ## 로컬 실행
 
@@ -184,12 +185,12 @@ create_release_from_approved(
 현재 Android SQLite `schema_version`은 `1`이고, 콘텐츠 배포 번호인 `content_version`은 기존 최대값(초기 기준 5) 다음 번호로 별도 증가한다. `findone-admin-content-v1`은 이 둘과 다른 최초 import용 export format 이름이다.
 
 ```text
-draft → building → ready → published
+draft → building → ready → published(stable 자동 전환)
                     ↘ withdrawn
           ↘ validation_failed → building
 ```
 
-`ready`가 되려면 승인 item, `content_database`/`manifest` artifact, hash/size/manifest, 성공한 release validation이 모두 있어야 한다. `activate_release(release_id, 'stable')`가 공개 상태 전환과 `release_channels` pointer 교체를 한 트랜잭션에서 수행한다. artifact object는 계속 private이고 Android용 signed URL은 추후 공개 release endpoint/worker가 service key로 짧게 발급한다.
+`ready`가 되려면 승인 item, `content_database`/`manifest` artifact, hash/size/manifest, 성공한 release validation이 모두 있어야 한다. 011 Worker 완료 RPC는 성공한 검증과 정확히 같은 트랜잭션에서 `ready → published`와 `stable` pointer 교체를 수행하므로 앱이 미검증 산출물을 볼 수 없다. `activate_release(release_id, 'stable')`는 이전 published 릴리스로 명시적으로 되돌릴 때도 사용할 수 있다. artifact object는 계속 private이고 Admin `/api/content/stable`이 service key로 10분짜리 signed URL을 발급한다.
 
 릴리스 검증은 item·artifact·manifest·hash를 포함한 SHA-256 fingerprint에 묶인다. 검증 도중 또는 통과 후 어느 구성요소라도 바뀌면 기존 결과로 `ready` 전환할 수 없고 `start_release_validation`을 다시 실행해야 한다.
 
@@ -202,7 +203,7 @@ draft → building → ready → published
 | `reviewer` | revision validation 시작, 승인/반려 |
 | `releaser` | 릴리스 생성·검증 요청·상태·channel RPC |
 
-사람 역할은 validation 결과나 release item/artifact 행을 직접 쓰지 않는다. validation 결과는 010의 service-role 전용 완료 RPC가, 릴리스 투영 산출물은 별도 build worker가 담당한다. 모든 `public` 테이블에 RLS가 켜져 있고 active allowlist admin만 읽을 수 있다. `anon`에는 테이블/view 권한이 없다. Storage도 bucket record와 object 모두 RLS 정책을 갖는다.
+사람 역할은 validation 결과나 release item/artifact 행을 직접 쓰지 않는다. revision validation 결과는 010의 service-role 전용 완료 RPC가, 릴리스 투영·검증·자동 stable 공개는 011의 service-role 전용 RPC와 `tools/admin_release_worker.py`가 담당한다. 모든 `public` 테이블에 RLS가 켜져 있고 active allowlist admin만 읽을 수 있다. `anon`에는 테이블/view 권한이 없다. Storage catalog는 Supabase가 관리하며, FinDone의 파일 접근은 `storage.objects` RLS 정책으로 제한한다.
 
 `audit_events`는 주요 mutable 테이블의 old/new 값을 남긴다. 용량 폭증을 막기 위해 `source_versions.extracted_text/extraction_metadata`, job input/output, release manifest 본문은 audit에서 원문 대신 byte length 또는 SHA-256만 저장한다. 실제 콘텐츠 편집 snapshot은 `content_revisions`에 보존된다.
 
@@ -216,4 +217,4 @@ supabase db push --linked --dry-run
 supabase db push --linked
 ```
 
-`tests/database/schema_and_security.test.sql`은 핵심 테이블/view/RPC, 모든 public table RLS, private bucket, append-only trigger, anon/non-admin 차단을 확인한다. 운영 push 전 local reset과 pgTAP을 모두 통과해야 한다.
+`tests/database/schema_and_security.test.sql`은 핵심 테이블/view/RPC, 모든 public table RLS, private bucket, append-only trigger, anon/non-admin 차단을 확인한다. `validation_worker_rpc.test.sql`과 `release_worker_rpc.test.sql`은 worker claim·완료·실패 및 검증 통과 후 stable 자동 공개를 확인한다. 운영 push 전 local reset과 pgTAP을 모두 통과해야 한다.

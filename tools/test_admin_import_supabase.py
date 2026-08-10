@@ -1,5 +1,7 @@
 import json
+import tempfile
 import unittest
+from pathlib import Path
 from unittest import mock
 
 from tools import admin_export_content as exporter
@@ -40,6 +42,34 @@ class AdminSupabaseImportTest(unittest.TestCase):
             "http://127.0.0.1:54321",
             importer.normalize_supabase_url("http://127.0.0.1:54321/"),
         )
+
+    def test_admin_env_url_is_used_when_process_url_is_missing(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            env_path = Path(directory) / ".env"
+            env_path.write_text(
+                "SUPABASE_SECRET_KEY=must-not-be-loaded\n"
+                "NEXT_PUBLIC_SUPABASE_URL='https://project.supabase.co'\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                "https://project.supabase.co",
+                importer.resolve_supabase_url({}, [env_path]),
+            )
+
+    def test_process_url_takes_precedence_over_admin_env(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            env_path = Path(directory) / ".env.local"
+            env_path.write_text(
+                "NEXT_PUBLIC_SUPABASE_URL=https://file.supabase.co\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                "https://process.supabase.co",
+                importer.resolve_supabase_url(
+                    {"SUPABASE_URL": "https://process.supabase.co"},
+                    [env_path],
+                ),
+            )
 
     @mock.patch("urllib.request.urlopen")
     def test_rpc_uses_secret_without_logging_it(self, urlopen: mock.Mock) -> None:

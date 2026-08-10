@@ -5,6 +5,8 @@ param(
     [string]$KeyAlias = 'findone-release',
     [Security.SecureString]$StorePassword,
     [Security.SecureString]$KeyPassword,
+    [Parameter(Mandatory = $true)]
+    [string]$ContentReleaseEndpoint,
     [string]$MirrorRoot,
     [switch]$SkipHookActivation
 )
@@ -345,6 +347,18 @@ if ($LASTEXITCODE -ne 0 -or (Get-FullPath $resolvedTopLevel) -ne $repoRoot) {
     throw "Unable to resolve the FinDone repository root: $repoRoot"
 }
 
+[Uri]$contentReleaseUri = $null
+if ([string]::IsNullOrWhiteSpace($ContentReleaseEndpoint) -or
+    -not [Uri]::TryCreate($ContentReleaseEndpoint.Trim(), [UriKind]::Absolute, [ref]$contentReleaseUri) -or
+    $contentReleaseUri.Scheme -cne 'https' -or
+    [string]::IsNullOrWhiteSpace($contentReleaseUri.Host) -or
+    -not [string]::IsNullOrEmpty($contentReleaseUri.UserInfo) -or
+    -not [string]::IsNullOrEmpty($contentReleaseUri.Query) -or
+    -not [string]::IsNullOrEmpty($contentReleaseUri.Fragment)) {
+    throw 'ContentReleaseEndpoint must be a public HTTPS URL without credentials, query, or fragment.'
+}
+$normalizedContentReleaseEndpoint = $contentReleaseUri.AbsoluteUri.TrimEnd('/')
+
 $signingPinPath = Join-Path $repoRoot 'config\release-signing-certificate.sha256'
 if (-not (Test-Path -LiteralPath $signingPinPath -PathType Leaf)) {
     throw "Tracked signing certificate pin is missing: $signingPinPath"
@@ -512,7 +526,7 @@ if ($PSBoundParameters.ContainsKey('MirrorRoot') -and -not [string]::IsNullOrWhi
 
 # ConvertFrom-SecureString without -Key uses Windows DPAPI for the current Windows user.
 $configuration = [ordered]@{
-    schemaVersion = 2
+    schemaVersion = 3
     repositoryRoot = $repoRoot
     keystorePath = $resolvedKeystore
     keyAlias = $KeyAlias
@@ -522,6 +536,7 @@ $configuration = [ordered]@{
     keyPasswordDpapi = ConvertFrom-SecureString $KeyPassword
     keepReleases = 2
     mirrorRoot = $configuredMirror
+    contentReleaseEndpoint = $normalizedContentReleaseEndpoint
     configuredAt = [DateTimeOffset]::UtcNow.ToString('o')
 }
 Write-Utf8JsonAtomically -Value $configuration -Path $configurationPath

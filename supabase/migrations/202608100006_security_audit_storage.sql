@@ -384,39 +384,10 @@ on conflict (id) do update set
     file_size_limit = excluded.file_size_limit,
     allowed_mime_types = excluded.allowed_mime_types;
 
-alter table storage.buckets enable row level security;
-alter table storage.objects enable row level security;
-
-create policy findone_admin_bucket_read
-on storage.buckets for select to authenticated
-using (
-    id in ('source-private', 'exports-private', 'release-bundles')
-    and (select public.is_admin())
-);
-create policy findone_owner_bucket_insert
-on storage.buckets for insert to authenticated
-with check (
-    id in ('source-private', 'exports-private', 'release-bundles')
-    and not "public"
-    and (select public.has_admin_role(array['owner']::public.admin_role[]))
-);
-create policy findone_owner_bucket_update
-on storage.buckets for update to authenticated
-using (
-    id in ('source-private', 'exports-private', 'release-bundles')
-    and (select public.has_admin_role(array['owner']::public.admin_role[]))
-)
-with check (
-    id in ('source-private', 'exports-private', 'release-bundles')
-    and not "public"
-    and (select public.has_admin_role(array['owner']::public.admin_role[]))
-);
-create policy findone_owner_bucket_delete
-on storage.buckets for delete to authenticated
-using (
-    id in ('source-private', 'exports-private', 'release-bundles')
-    and (select public.has_admin_role(array['owner']::public.admin_role[]))
-);
+-- Supabase owns the Storage catalog tables and keeps their RLS enabled.  Hosted
+-- projects do not grant a project role ownership of storage.buckets/objects,
+-- so migrations must not ALTER those tables or install bucket-level policies.
+-- Bucket metadata is provisioned above; object access is constrained below.
 
 create policy findone_admin_object_read
 on storage.objects for select to authenticated

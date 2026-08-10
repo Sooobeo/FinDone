@@ -13,7 +13,18 @@ Push-Location $adminRoot
 try {
     $hadDemoFlag = Test-Path Env:NEXT_PUBLIC_FINDONE_ADMIN_DEMO
     $previousDemoFlag = $env:NEXT_PUBLIC_FINDONE_ADMIN_DEMO
-    if (-not $env:NEXT_PUBLIC_SUPABASE_URL -and -not $env:NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+    $fileHasSupabaseUrl = $false
+    $fileHasSupabaseKey = $false
+    foreach ($environmentFile in @('.env.local', '.env')) {
+        if (-not (Test-Path -LiteralPath $environmentFile -PathType Leaf)) { continue }
+        foreach ($line in Get-Content -Encoding UTF8 -LiteralPath $environmentFile) {
+            if ($line -match '^\s*NEXT_PUBLIC_SUPABASE_URL\s*=\s*.+$') { $fileHasSupabaseUrl = $true }
+            if ($line -match '^\s*NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY\s*=\s*.+$') { $fileHasSupabaseKey = $true }
+        }
+    }
+    $hasSupabaseUrl = -not [string]::IsNullOrWhiteSpace($env:NEXT_PUBLIC_SUPABASE_URL) -or $fileHasSupabaseUrl
+    $hasSupabaseKey = -not [string]::IsNullOrWhiteSpace($env:NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) -or $fileHasSupabaseKey
+    if (-not $hasSupabaseUrl -and -not $hasSupabaseKey) {
         $env:NEXT_PUBLIC_FINDONE_ADMIN_DEMO = '1'
     }
     if (-not $SkipInstall -and -not (Test-Path 'node_modules')) {

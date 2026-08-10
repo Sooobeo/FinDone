@@ -9,6 +9,18 @@ plugins {
 val declaredVersionCode = 2
 val declaredVersionName = "0.3.0"
 val declaredReleaseSummary = "시작 화면·용어집 스크롤 개선"
+val contentReleaseEndpoint = (
+    providers.gradleProperty("findone.contentReleaseEndpoint").orNull
+        ?: System.getenv("FINDONE_CONTENT_RELEASE_ENDPOINT")
+        ?: ""
+).trim().also { value ->
+    if (value.isNotEmpty() && !value.startsWith("https://")) {
+        throw GradleException("findone.contentReleaseEndpoint must use HTTPS")
+    }
+}
+val escapedContentReleaseEndpoint = contentReleaseEndpoint
+    .replace("\\", "\\\\")
+    .replace("\"", "\\\"")
 val appVersionCode = providers.gradleProperty("findone.versionCode").orNull?.let { value ->
     value.toIntOrNull()?.takeIf { it in 1..2_100_000_000 }
         ?: throw GradleException("findone.versionCode must be an integer from 1 to 2100000000")
@@ -28,6 +40,7 @@ android {
         versionCode = appVersionCode
         versionName = appVersionName
         buildConfigField("String", "RELEASE_SUMMARY", "\"$declaredReleaseSummary\"")
+        buildConfigField("String", "CONTENT_RELEASE_ENDPOINT", "\"$escapedContentReleaseEndpoint\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

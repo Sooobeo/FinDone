@@ -1,6 +1,6 @@
 # FinDone Admin 배포 절차
 
-Admin은 Next.js 웹, Supabase Auth/PostgreSQL/Storage, 별도 worker로 나뉜다. 브라우저에는 publishable key만 두며 `SUPABASE_SECRET_KEY`는 최초 import나 worker 같은 신뢰 실행 환경에서만 사용한다. 현재 저장소의 worker는 개념 revision 자동 검증까지 담당한다.
+Admin은 Next.js 웹, Supabase Auth/PostgreSQL/Storage, 별도 worker로 나뉜다. 브라우저에는 publishable key만 두며 `SUPABASE_SECRET_KEY`는 최초 import, worker와 서버 전용 stable endpoint 같은 신뢰 실행 환경에서만 사용한다. 현재 저장소는 revision 검증과 승인본 SQLite 빌드·검증·stable 공개까지 자동화한다.
 
 ## 1. 로컬 확인
 
@@ -45,10 +45,9 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<publishable-key>
 
 ## 3. 현재 앱 데이터 최초 전송
 
-신뢰하는 로컬 셸에서만 secret을 프로세스 환경변수로 설정한다. 명령은 비밀값을 출력하지 않는다.
+신뢰하는 로컬 셸에서만 secret을 프로세스 환경변수로 설정한다. 프로젝트 URL은 `admin/.env.local` 또는 `admin/.env`의 `NEXT_PUBLIC_SUPABASE_URL`을 자동으로 읽으며, 필요할 때만 `SUPABASE_URL`로 덮어쓴다. 명령은 비밀값을 출력하지 않는다.
 
 ```powershell
-$env:SUPABASE_URL = 'https://<project-ref>.supabase.co'
 $env:SUPABASE_SECRET_KEY = '<secret-key>'
 python tools/admin_import_supabase.py --dry-run
 python tools/admin_import_supabase.py
@@ -57,7 +56,7 @@ Remove-Item Env:SUPABASE_SECRET_KEY
 
 같은 DB hash는 다시 넣어도 `already_imported`로 끝난다. 기존 제작 데이터를 덮는 `--allow-overwrite`는 owner가 검토한 복구 작업에서만 사용한다.
 
-## 4. 자동 검증 Worker
+## 4. 자동 Worker
 
 `202608100010_validation_worker_rpc.sql`까지 적용한 뒤 GitHub repository secret에 `SUPABASE_URL`, `SUPABASE_SECRET_KEY`를 등록하고 repository variable `ADMIN_VALIDATION_WORKER_ENABLED=true`를 설정한다. [Admin Validation Worker](../.github/workflows/admin-validation-worker.yml)는 그때부터 5분마다 revision validation 작업 한 건을 원자적으로 claim해 검사한다. 같은 worker ID의 실행 중 작업은 먼저 복구하고, 15분 넘게 중단된 lease는 retry 예산 안에서 회수하며, 예산을 소진한 작업은 실패로 봉인한다. variable이 없으면 예약 실행은 건너뛰며, 같은 작업을 수동 또는 로컬에서 한 번 실행할 수도 있다.
 
@@ -68,11 +67,22 @@ python tools/admin_validation_worker.py --worker-id 'validator:local-01'
 Remove-Item Env:SUPABASE_SECRET_KEY
 ```
 
-Worker는 URL fetch, 파일 파싱, `release_build`, `release_validation` 작업을 claim하지 않는다. 해당 작업자는 DNS rebinding·redirect·archive bomb·SQLite projection 계약을 갖춘 뒤 별도 배포해야 한다.
+Revision Validation Worker는 URL fetch, 파일 파싱, `release_build`, `release_validation` 작업을 claim하지 않는다. 릴리스 작업은 아래의 전용 Worker가 담당한다.
+
+`202608100011_release_worker_rpc.sql`까지 적용한 뒤 같은 GitHub secrets를 사용하고 repository variable `ADMIN_RELEASE_WORKER_ENABLED=true`도 설정한다. [Admin Release Worker](../.github/workflows/admin-release-worker.yml)는 5분마다 승인 릴리스 작업을 claim하며 한 실행에서 최대 4건을 처리한다. 보통 한 번의 실행에서 SQLite 빌드가 검증 작업을 만들고, 이어서 검증을 통과하면 `stable` 채널 공개까지 완료한다.
+
+```powershell
+$env:SUPABASE_URL = 'https://<project-ref>.supabase.co'
+$env:SUPABASE_SECRET_KEY = '<sb_secret key>'
+python tools/admin_release_worker.py --worker-id 'release:local-01' --max-jobs 4
+Remove-Item Env:SUPABASE_SECRET_KEY
+```
+
+릴리스 Worker는 현재 Android schema v1의 분야·요소·개념·수식 revision을 투영합니다. 앱 schema에 없는 distractor revision은 조용히 누락하지 않고 릴리스를 실패시킵니다. URL fetch와 파일 파싱 작업은 계속 별도 경계입니다.
 
 ## 5. 웹 배포
 
-Vercel 프로젝트의 Root Directory를 `admin`으로 지정하고 위의 공개 환경변수 두 개만 Production/Preview에 등록한다. 빌드 명령은 `npm run build`, 출력은 Next.js 기본값을 사용한다.
+Vercel 프로젝트의 Root Directory를 `admin`으로 지정하고 공개 환경변수 두 개와 서버 전용 `SUPABASE_SECRET_KEY`를 Production에 등록한다. secret에는 절대 `NEXT_PUBLIC_` 접두사를 붙이지 않는다. 빌드 명령은 `npm run build`, 출력은 Next.js 기본값을 사용한다.
 
 배포 후 Supabase Auth의 Site URL과 Redirect URL allowlist에 실제 HTTPS Admin 도메인을 추가한다. 다음을 직접 확인한다.
 
@@ -82,7 +92,8 @@ Vercel 프로젝트의 Root Directory를 `admin`으로 지정하고 위의 공�
 - 로그아웃 후 세션이 남지 않는다.
 - 브라우저 bundle과 네트워크 요청에 secret key가 없다.
 - 업로드 파일은 private bucket에서만 보인다.
+- `https://<admin-domain>/api/content/stable`이 published stable 릴리스의 버전·해시와 짧은 signed URL을 반환한다.
 
 ## 6. 아직 외부 설정이 필요한 경계
 
-코드만으로는 Supabase 프로젝트·관리자 Auth 사용자·호스팅 도메인을 생성할 수 없다. 실제 URL 배포는 프로젝트 URL/publishable key와 Vercel 프로젝트 권한이 준비된 뒤 수행한다. URL/file ingestion worker, 승인본 SQLite build/validation worker, Android의 서명된 원격 SQLite 활성화도 아직 별도 구현 경계다. 그 전까지 승인 콘텐츠는 기존 APK 빌드 흐름으로 `content.sqlite3`를 포함해 전달한다.
+코드만으로는 Supabase 프로젝트·관리자 Auth 사용자·호스팅 도메인이나 GitHub secrets/variables를 생성할 수 없다. 실제 반영 전에는 migration push, Vercel 환경변수·배포, 두 Worker variable 활성화, 그리고 APK 빌드 시 `https://<admin-domain>/api/content/stable` 주입이 필요하다. URL/file ingestion worker는 아직 별도 구현 경계다.

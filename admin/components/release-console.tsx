@@ -7,14 +7,13 @@ import {
   Download,
   Fingerprint,
   Package,
-  Play,
   RefreshCw,
   Rocket,
   ShieldCheck,
   Trash2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PageHeader } from "@/components/page-header";
 import {
   formatWorkflowDate,
@@ -40,7 +39,6 @@ export function ReleaseConsole({
 }) {
   const router = useRouter();
   const [selectedId, setSelectedId] = useState(workspace.releases[0]?.releaseId ?? "");
-  const [channel, setChannel] = useState("stable");
   const [withdrawNote, setWithdrawNote] = useState("");
   const [newVersionName, setNewVersionName] = useState("");
   const [newReleaseNotes, setNewReleaseNotes] = useState("");
@@ -67,6 +65,15 @@ export function ReleaseConsole({
     (job) => job.jobKind === "release_build" && (job.status === "queued" || job.status === "running"),
   );
 
+  useEffect(() => {
+    const hasActiveJob = workspace.jobs.some(
+      (job) => job.status === "queued" || job.status === "running",
+    );
+    if (!hasActiveJob) return;
+    const timer = window.setInterval(() => router.refresh(), 5_000);
+    return () => window.clearInterval(timer);
+  }, [router, workspace.jobs]);
+
   async function runAction(action: ReleaseAction) {
     if (action !== "create" && !selected) return;
     if (action === "withdraw" && !withdrawNote.trim()) {
@@ -88,7 +95,6 @@ export function ReleaseConsole({
         body: JSON.stringify({
           releaseId: selected?.releaseId,
           action,
-          channel,
           note: withdrawNote,
           versionName: newVersionName,
           releaseNotes: newReleaseNotes,
@@ -96,16 +102,21 @@ export function ReleaseConsole({
           requestKey: action === "create" ? createRequestKey.current : undefined,
         }),
       });
-      const result = await response.json().catch(() => ({})) as { error?: string; message?: string };
+      const result = await response.json().catch(() => ({})) as {
+        error?: string;
+        message?: string;
+        releaseId?: string;
+      };
       if (!response.ok) {
         setMessage(result.error ?? "릴리스 작업을 처리하지 못했습니다. 같은 요청으로 다시 시도할 수 있습니다.");
         return;
       }
       setMessage(
         result.message
-          ?? (action === "activate" ? `${channel} 채널을 활성화했습니다.` : "릴리스 상태를 갱신했습니다."),
+          ?? (action === "activate" ? "stable 채널을 활성화했습니다." : "릴리스 상태를 갱신했습니다."),
       );
       if (action === "create") {
+        if (result.releaseId) setSelectedId(result.releaseId);
         createRequestKey.current = null;
         setNewVersionName("");
         setNewReleaseNotes("");
@@ -124,7 +135,7 @@ export function ReleaseConsole({
       <PageHeader
         eyebrow="RELEASE CENTER"
         title="앱 반영"
-        description="실제 릴리스 이력, Worker 작업 큐, 검증 결과와 활성 채널을 확인합니다. 대기 중 작업을 완료로 표시하지 않습니다."
+        description="릴리스를 한 번 생성하면 SQLite 빌드, 검증, stable 공개까지 자동 진행됩니다. 앱은 다음 실행 때 검증된 DB를 받고 오프라인에서는 기존 DB를 계속 씁니다."
         actions={
           <div className="workflow-header-actions">
             <span className="role-pill">{roleLabel(capabilities.role)}</span>
@@ -190,7 +201,7 @@ export function ReleaseConsole({
               <Rocket size={16} />{submitting === "create" ? "생성 중…" : "승인본으로 릴리스 생성"}
             </button>
           </div>
-          <p className="release-create-help"><ShieldCheck size={15} />최신 승인 revision만 고정하며, Worker가 전체 135개 요소의 SQLite 산출물을 생성합니다.</p>
+          <p className="release-create-help"><ShieldCheck size={15} />최신 승인 revision을 고정한 뒤 Worker가 135개 요소를 빌드·검증하고, 통과한 릴리스만 stable에 자동 공개합니다.</p>
         </section>
       ) : null}
 
@@ -216,16 +227,8 @@ export function ReleaseConsole({
                 <div className="queued-job-callout compact-job-callout"><RefreshCw className={activeValidationJob.status === "running" ? "spin" : ""} size={17} /><div><strong>{activeValidationJob.status === "queued" ? "릴리스 검증 Worker 대기 중" : `릴리스 검증 중 · ${activeValidationJob.progressPercent}%`}</strong><p>대기·진행 상태는 완료가 아닙니다.</p></div></div>
               ) : null}
               {activeBuildJob ? (
-                <div className="queued-job-callout compact-job-callout"><RefreshCw className={activeBuildJob.status === "running" ? "spin" : ""} size={17} /><div><strong>{activeBuildJob.status === "queued" ? "SQLite 빌드 Worker 대기 중" : `SQLite 빌드 중 · ${activeBuildJob.progressPercent}%`}</strong><p>DB와 manifest 생성이 끝나야 릴리스 검증을 시작할 수 있습니다.</p></div></div>
+                <div className="queued-job-callout compact-job-callout"><RefreshCw className={activeBuildJob.status === "running" ? "spin" : ""} size={17} /><div><strong>{activeBuildJob.status === "queued" ? "자동 반영 Worker 대기 중" : `SQLite 빌드 중 · ${activeBuildJob.progressPercent}%`}</strong><p>완료되면 검증과 stable 공개가 자동으로 이어집니다.</p></div></div>
               ) : null}
-              <div className="release-action-row">
-                {selected.status === "building" ? (
-                  <button className="button button-secondary" type="button" onClick={() => runAction("validate")} disabled={!capabilities.canValidateRelease || Boolean(submitting) || Boolean(activeValidationJob) || Boolean(activeBuildJob) || selected.artifactCount < 2}><Play size={15} />{submitting === "validate" ? "등록 중…" : activeBuildJob ? "DB 빌드 대기" : "릴리스 검증 요청"}</button>
-                ) : null}
-                {selected.status === "ready" || selected.status === "published" ? (
-                  <div className="channel-action"><input value={channel} onChange={(event) => setChannel(event.target.value)} aria-label="활성 채널" /><button className="button button-primary" type="button" onClick={() => runAction("activate")} disabled={!capabilities.canRelease || Boolean(submitting)}><Rocket size={15} />{submitting === "activate" ? "활성화 중…" : "채널 활성화"}</button></div>
-                ) : null}
-              </div>
               {selected.status !== "withdrawn" && capabilities.canRelease ? (
                 <div className="withdraw-row"><input value={withdrawNote} onChange={(event) => setWithdrawNote(event.target.value)} placeholder="철회 사유" aria-label="릴리스 철회 사유" /><button className="button button-ghost-danger" type="button" onClick={() => runAction("withdraw")} disabled={Boolean(submitting)}><Trash2 size={15} />{submitting === "withdraw" ? "철회 중…" : "철회"}</button></div>
               ) : null}
@@ -239,8 +242,8 @@ export function ReleaseConsole({
         <div className="release-flow-steps">
           <div><span><Check size={20} /></span><strong>승인 revision 고정</strong><p>요청 키로 원자적·중복 없는 생성</p></div><ChevronRight size={20} />
           <div><span><Database size={20} /></span><strong>Worker DB 생성</strong><p>queued/running/succeeded 상태 구분</p></div><ChevronRight size={20} />
-          <div><span><ShieldCheck size={20} /></span><strong>릴리스 검증</strong><p>release fingerprint 기준 RPC</p></div><ChevronRight size={20} />
-          <div><span><Download size={20} /></span><strong>채널 활성화</strong><p>ready 릴리스만 stable 전환</p></div>
+          <div><span><ShieldCheck size={20} /></span><strong>자동 검증</strong><p>해시·스키마·135개 요소 확인</p></div><ChevronRight size={20} />
+          <div><span><Download size={20} /></span><strong>자동 앱 반영</strong><p>stable 공개 후 앱이 안전하게 교체</p></div>
         </div>
       </section>
 

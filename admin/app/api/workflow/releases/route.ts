@@ -70,7 +70,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       releaseId: release?.release_id,
       status: release?.status,
-      message: `${release?.version_name ?? "새 릴리스"} 빌드 작업을 대기열에 등록했습니다.`,
+      message: `${release?.version_name ?? "새 릴리스"} 자동 반영을 시작했습니다. 빌드와 검증을 통과하면 stable에 공개됩니다.`,
     });
   }
 

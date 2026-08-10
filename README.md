@@ -1,6 +1,6 @@
 # FinDone
 
-FinDone은 회계·기업재무·투자·채권·파생상품·주식 리서치·IB 실무의 핵심 개념과 문제를 익혀 **금융권 진출을 준비하는 개인용 오프라인 Android 앱**입니다. 서버, 로그인, 광고, 분석 SDK 없이 동작하며, 서명한 APK를 개인 OneDrive로 옮겨 본인 Android 기기에만 사이드로드하는 것을 전제로 합니다.
+FinDone은 회계·기업재무·투자·채권·파생상품·주식 리서치·IB 실무의 핵심 개념과 문제를 익혀 **금융권 진출을 준비하는 개인용 오프라인 우선 Android 앱**입니다. 학습·검색·퀴즈·기록은 네트워크 없이 동작하고, 연결되어 있을 때만 검증된 최신 콘텐츠 DB를 확인합니다. 앱 로그인, 광고, 분석 SDK는 없으며 코드/UI 업데이트 APK는 개인 OneDrive를 통해 본인 기기에만 사이드로드합니다.
 
 > 현재 저장소는 명세를 구현 중인 기준선입니다. 7개 분야와 135개 학습요소를 담은 앱 기반은 구현되어 있지만, 명세가 요구하는 1,461개 이상의 승인 claim과 전체 10,000-seed 검증은 아직 완료 조건으로 남아 있습니다. 현재 상태를 “최종 콘텐츠 완성” 또는 “전체 명세 통과”로 간주하면 안 됩니다.
 
@@ -15,7 +15,7 @@ FinDone은 회계·기업재무·투자·채권·파생상품·주식 리서치�
 - **결정론적 개념 퀴즈:** 요소의 제목과 핵심 관계를 사용해 4지선다 문항을 조립합니다. 동일한 요소·난이도·seed·renderer version은 동일한 snapshot을 만듭니다.
 - **결정론적 계산 퀴즈:** 현재 36개 학습요소에 정수답 계산 템플릿이 연결되어 있습니다. 생성 과정은 정수 중간값과 난이도별 연산 한도를 검사하고, 개념·수식·대입·정답·해석을 snapshot에 보존합니다.
 - **용량 제한 사용자 DB:** 누적 성적은 요소별 집계로 보존하고, 용량이 큰 상세 시도는 요소당 최근 20개·전체 2,000개로 제한합니다. 미해결 최신 오답과 수동 북마크는 자동 정리 대상에서 제외하며, 수동 JSON 백업에는 SHA-256 무결성 값이 포함됩니다.
-- **엄격한 오프라인 기본값:** Manifest에 `android.permission.INTERNET`가 없고 cleartext 통신과 Android 자동 백업도 비활성화되어 있습니다. OneDrive SDK나 런타임 동기화 기능은 앱에 넣지 않습니다.
+- **검증된 하이브리드 콘텐츠 업데이트:** 앱은 HTTPS stable endpoint에서 더 높은 콘텐츠 버전만 내려받아 크기·SHA-256·SQLite 무결성을 확인한 뒤 앱 전용 저장소에서 원자적으로 교체합니다. 연결 실패나 비행기 모드에서는 마지막 검증 DB 또는 APK 내장 DB를 그대로 사용하며, 사용자 학습기록은 서버로 보내지 않습니다.
 - **FinDone 브랜드:** 앱 이름, 아이콘, Compose 색상·타이포그래피와 별도의 로고·컬러 토큰이 포함되어 있습니다. 브랜드 자산과 사용 규칙은 [brand/README.md](brand/README.md)를 참고하세요.
 
 위 항목은 코드와 데이터 계층의 현재 기준선입니다. Compose 화면 연결과 로컬 단위 테스트·Lint·debug/release 빌드는 확인했지만, 실제 Android 기기의 비행기 모드·백업 복원·동일 서명 업데이트 검증은 아직 남아 있습니다.
@@ -41,7 +41,11 @@ APK
 └─ Android 앱 코드      검색·결정론적 퀴즈·로컬 저장
 
 앱 전용 저장소
+├─ content/              검증 후 활성화된 최신 콘텐츠 DB와 manifest
 └─ user.sqlite3          시도·오답·북마크·진도·개인 메모·본문 주석·용어 상태·설정
+
+관리자 stable endpoint
+└─ content.sqlite3       승인·빌드·검증을 통과한 새 버전만 짧은 signed URL로 전달
 
 사용자 명시적 작업
 └─ 수동 백업 파일        필요할 때만 export/import 및 OneDrive 전송
@@ -83,16 +87,20 @@ $keySecret = Read-Host '개인 키 비밀번호' -AsSecureString
 $env:FINDONE_STORE_PASSWORD = [System.Net.NetworkCredential]::new('', $storeSecret).Password
 $env:FINDONE_KEY_PASSWORD = [System.Net.NetworkCredential]::new('', $keySecret).Password
 $keystorePath = Read-Host '저장소 밖 키 저장소의 절대 경로'
+$contentReleaseEndpoint = 'https://<admin-domain>/api/content/stable'
 
 try {
-    .\scripts\build_private_release.ps1 -KeystorePath $keystorePath -KeyAlias 'findone-release'
+    .\scripts\build_private_release.ps1 `
+      -KeystorePath $keystorePath `
+      -KeyAlias 'findone-release' `
+      -ContentReleaseEndpoint $contentReleaseEndpoint
 } finally {
     Remove-Item Env:FINDONE_STORE_PASSWORD, Env:FINDONE_KEY_PASSWORD -ErrorAction SilentlyContinue
     Remove-Variable storeSecret, keySecret -ErrorAction SilentlyContinue
 }
 ```
 
-스크립트는 서명 정보가 없는 환경에서 `clean test lintRelease assembleRelease`로 unsigned APK를 만든 다음, setup에서 SHA-256을 고정한 로컬 래퍼에서 SDK `zipalign`과 `apksigner`로 외부 서명합니다. 이후 APK 서명 확인과 APK SHA-256 계산을 수행하고 `dist/findone-<version>-<timestamp>/`에 다음 파일을 만듭니다.
+스크립트는 공개 HTTPS 콘텐츠 endpoint를 APK의 `BuildConfig`에 주입하고, 서명 정보가 없는 환경에서 `clean test lintRelease assembleRelease`로 unsigned APK를 만든 다음 setup에서 SHA-256을 고정한 로컬 래퍼에서 SDK `zipalign`과 `apksigner`로 외부 서명합니다. 이후 인터넷 권한·APK 서명·APK SHA-256을 확인하고 `dist/findone-<version>-<timestamp>/`에 다음 파일을 만듭니다.
 
 - 서명된 `FinDone-<version>.apk`
 - 외부 `release-manifest.json`

@@ -9,6 +9,7 @@ param(
     [string]$ExpectedSigningCertificateSha256,
     [string]$ExpectedOrchestratorScriptSha256,
     [string]$ExpectedCommit,
+    [string]$ContentReleaseEndpoint = $env:FINDONE_CONTENT_RELEASE_ENDPOINT,
     [ValidateRange(0, 2100000000)]
     [int]$VersionCodeOverride = 0,
     [string]$VersionNameOverride,
@@ -505,6 +506,18 @@ try {
 if ($StorePassword.Length -eq 0 -or $KeyPassword.Length -eq 0) { throw 'Signing passwords must not be empty.' }
 $keystore = (Resolve-Path -LiteralPath $KeystorePath -ErrorAction Stop).Path
 
+[Uri]$contentReleaseUri = $null
+if ([string]::IsNullOrWhiteSpace($ContentReleaseEndpoint) -or
+    -not [Uri]::TryCreate($ContentReleaseEndpoint.Trim(), [UriKind]::Absolute, [ref]$contentReleaseUri) -or
+    $contentReleaseUri.Scheme -cne 'https' -or
+    [string]::IsNullOrWhiteSpace($contentReleaseUri.Host) -or
+    -not [string]::IsNullOrEmpty($contentReleaseUri.UserInfo) -or
+    -not [string]::IsNullOrEmpty($contentReleaseUri.Query) -or
+    -not [string]::IsNullOrEmpty($contentReleaseUri.Fragment)) {
+    throw 'A public HTTPS content release endpoint without credentials, query, or fragment is required.'
+}
+$normalizedContentReleaseEndpoint = $contentReleaseUri.AbsoluteUri.TrimEnd('/')
+
 $head = (& git -C $source rev-parse --verify HEAD 2>&1).ToString().Trim()
 if ($LASTEXITCODE -ne 0 -or $head -notmatch '^[0-9a-f]{40}$') { throw "Unable to resolve Git HEAD in $source" }
 $isExactCommitBuild = -not [string]::IsNullOrWhiteSpace($ExpectedCommit)
@@ -532,6 +545,7 @@ try {
     if (-not [string]::IsNullOrWhiteSpace($VersionNameOverride)) {
         $gradleArguments += "-Pfindone.versionName=$VersionNameOverride"
     }
+    $gradleArguments += "-Pfindone.contentReleaseEndpoint=$normalizedContentReleaseEndpoint"
 
     Push-Location $source
     try {
@@ -542,6 +556,16 @@ try {
     } finally {
         Clear-SigningEnvironment
         Pop-Location
+    }
+
+    $generatedBuildConfigPath = Join-Path $source 'app\build\generated\source\buildConfig\release\com\findone\app\BuildConfig.java'
+    if (-not (Test-Path -LiteralPath $generatedBuildConfigPath -PathType Leaf)) {
+        throw "Gradle did not generate the release BuildConfig: $generatedBuildConfigPath"
+    }
+    $generatedBuildConfig = Get-Content -Raw -Encoding UTF8 -LiteralPath $generatedBuildConfigPath
+    $endpointPattern = 'CONTENT_RELEASE_ENDPOINT\s*=\s*"' + [regex]::Escape($normalizedContentReleaseEndpoint) + '"\s*;'
+    if ($generatedBuildConfig -notmatch $endpointPattern) {
+        throw 'The generated release BuildConfig does not contain the configured content release endpoint.'
     }
 
     foreach ($toolPath in $trustedToolHashes.Keys) {
@@ -638,8 +662,8 @@ try {
 
     $permissionOutput = @(& $buildTools.Aapt dump permissions $apk 2>&1)
     if ($LASTEXITCODE -ne 0) { throw "APK permission inspection failed: $($permissionOutput -join [Environment]::NewLine)" }
-    if (($permissionOutput -join "`n") -match 'android\.permission\.INTERNET') {
-        throw 'The release APK requests android.permission.INTERNET; private offline release publication was stopped.'
+    if (($permissionOutput -join "`n") -notmatch 'android\.permission\.INTERNET') {
+        throw 'The release APK is missing android.permission.INTERNET required for verified content updates.'
     }
 
     $badgingOutput = @(& $buildTools.Aapt dump badging $apk 2>&1)
@@ -704,13 +728,14 @@ try {
         Copy-Item -LiteralPath $apk -Destination $releaseApk
 
         $releaseManifest = [ordered]@{
-            schemaVersion = 2
+            schemaVersion = 3
             distributionChannel = 'private_onedrive_sideload'
             publicStoreRelease = $false
             targetUser = 'self_only'
-            internetPermission = $false
+            internetPermission = $true
             oneDriveRuntimeSync = $false
-            updateSource = 'user_selected_saf_document_tree'
+            updateSource = 'https_stable_content_channel'
+            contentReleaseEndpoint = $normalizedContentReleaseEndpoint
             directOneDriveApi = $false
             applicationId = $applicationId
             versionCode = $actualVersionCode
