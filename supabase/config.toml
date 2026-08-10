@@ -1,0 +1,105 @@
+project_id = "findone-admin"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 2000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://127.0.0.1"
+
+[local_smtp]
+enabled = true
+port = 54324
+smtp_port = 54325
+pop3_port = 54326
+
+[storage]
+enabled = true
+file_size_limit = "100MiB"
+
+[storage.buckets.source-private]
+public = false
+file_size_limit = "100MiB"
+allowed_mime_types = [
+  "application/pdf",
+  "application/json",
+  "application/msword",
+  "application/vnd.ms-excel",
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "text/csv",
+  "text/html",
+  "text/markdown",
+  "text/plain",
+]
+
+[storage.buckets.exports-private]
+public = false
+file_size_limit = "100MiB"
+allowed_mime_types = [
+  "application/json",
+  "application/octet-stream",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/x-sqlite3",
+  "text/csv",
+  "text/plain",
+]
+
+[storage.buckets.release-bundles]
+public = false
+file_size_limit = "100MiB"
+allowed_mime_types = [
+  "application/json",
+  "application/octet-stream",
+  "application/x-sqlite3",
+  "text/plain",
+]
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["http://127.0.0.1:3000/**"]
+jwt_expiry = 3600
+enable_signup = false
+enable_anonymous_sign_ins = false
+enable_manual_linking = false
+
+[auth.email]
+enable_signup = false
+double_confirm_changes = true
+enable_confirmations = true
+secure_password_change = true
+max_frequency = "1m"
+
+[auth.sms]
+enable_signup = false
+enable_confirmations = false
+
+[auth.mfa]
+max_enrolled_factors = 4
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+[analytics]
+enabled = false

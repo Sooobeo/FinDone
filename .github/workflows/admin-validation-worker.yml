@@ -1,0 +1,42 @@
+name: Admin Validation Worker
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findone-admin-validation-worker
+  cancel-in-progress: false
+
+jobs:
+  validate-one-revision:
+    if: github.event_name == 'workflow_dispatch' || vars.ADMIN_VALIDATION_WORKER_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Check required secrets
+        shell: bash
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: |
+          test -n "$SUPABASE_URL" || { echo "SUPABASE_URL secret is missing"; exit 1; }
+          test -n "$SUPABASE_SECRET_KEY" || { echo "SUPABASE_SECRET_KEY secret is missing"; exit 1; }
+
+      - name: Claim and validate one revision
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: >-
+          python tools/admin_validation_worker.py
+          --worker-id "github:${{ github.run_id }}:${{ github.run_attempt }}"

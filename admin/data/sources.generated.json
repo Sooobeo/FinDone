@@ -1,0 +1,1568 @@
+[
+  {
+    "id": "AI-EMBED",
+    "label": "text-embedding-3-small",
+    "kind": "url",
+    "locator": "https://developers.openai.com/api/docs/models/text-embedding-3-small",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "AI-FILESEARCH",
+    "label": "File Search Guide",
+    "kind": "url",
+    "locator": "https://developers.openai.com/api/docs/guides/tools-file-search",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "AI-LUNA",
+    "label": "GPT-5.6 Luna 모델 페이지",
+    "kind": "url",
+    "locator": "https://developers.openai.com/api/docs/models/gpt-5.6-luna",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "AI-PRICE",
+    "label": "OpenAI API Pricing",
+    "kind": "url",
+    "locator": "https://developers.openai.com/api/docs/pricing",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "BOOK-ACC-01",
+    "label": "《사례와 함께하는 회계원리 5판》",
+    "kind": "document",
+    "locator": "https://www.yes24.com/product/goods/129395371",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "BOOK-ACC-02",
+    "label": "《IFRS 회계원리》 김기동·임태종",
+    "kind": "document",
+    "locator": "https://www.yes24.com/product/goods/170343919",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "BOOK-CF-01",
+    "label": "《Ross의 재무관리 13판》",
+    "kind": "document",
+    "locator": "https://www.yes24.com/Product/Goods/117498625",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "BOOK-CF-02",
+    "label": "《핵심 기업재무 5판》",
+    "kind": "document",
+    "locator": "https://m.yes24.com/goods/detail/124315764",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "BOOK-DER-01",
+    "label": "Hull, *Options, Futures, and Other Derivatives*, 11e",
+    "kind": "document",
+    "locator": "https://www.pearson.com/en-us/subject-catalog/p/options-futures-and-other-derivatives/P200000005938/9780136939917",
+    "status": "ready",
+    "linkedElements": 7,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "BOOK-DER-02",
+    "label": "《파생상품의 평가와 헤징전략 9판》",
+    "kind": "document",
+    "locator": "https://www.yes24.com/product/goods/124832392",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "BOOK-EQV-01",
+    "label": "《재무제표분석과 기업가치평가 4판》",
+    "kind": "document",
+    "locator": "https://www.yes24.com/product/goods/111384498",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "BOOK-EQV-02",
+    "label": "McKinsey, *Valuation*, 8e",
+    "kind": "document",
+    "locator": "https://books.wiley.com/series/wiley-valuation-7e/",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "BOOK-FI-01",
+    "label": "Tuckman & Serrat, *Fixed Income Securities*, 4e",
+    "kind": "document",
+    "locator": "https://onlinelibrary.wiley.com/doi/book/10.1002/9781119835622",
+    "status": "ready",
+    "linkedElements": 4,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "BOOK-IB-01",
+    "label": "Rosenbaum & Pearl, *Investment Banking*, 3e",
+    "kind": "document",
+    "locator": "https://uat.store.wiley.com/en-us/investment-banking-valuation-lbos-m-a-and-ipos-%28book-valuation-models%29-3rd-edition-p-9781119867883",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "BOOK-INV-01",
+    "label": "《Bodie의 기본투자론 12판》",
+    "kind": "document",
+    "locator": "https://www.yes24.com/Product/Goods/107667515",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "BOOK-INV-02",
+    "label": "Bodie, Kane & Marcus, *Investments*, 13e",
+    "kind": "document",
+    "locator": "https://www.mheducation.com/highered/product/Investments-Bodie.html",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "BOOK-RE-01",
+    "label": "Brueggeman & Fisher, *Real Estate Finance and Investments*",
+    "kind": "document",
+    "locator": "https://www.mheducation.com/highered/product/Real-Estate-Finance-and-Investments-Brueggeman.html",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-CFA-01",
+    "label": "CFA Institute Level I Sample Questions",
+    "kind": "url",
+    "locator": "https://www.cfainstitute.org/programs/cfa-program/cfa-program-level-i-sample-questions",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-CME-01",
+    "label": "CME — A Trader's Guide to Futures PDF",
+    "kind": "pdf",
+    "locator": "https://www.cmegroup.com/education/files/a-traders-guide-to-futures.pdf",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-DAMO-BOOK-01",
+    "label": "Damodaran — Investment Valuation 자료·스프레드시트",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/Inv2ed.htm",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-DAMO-CF-01",
+    "label": "NYU Damodaran — Corporate Finance Problems & Solutions",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/cfprset.htm",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-DAMO-CF-02",
+    "label": "Damodaran — 2026 Corporate Finance Lecture Notes",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/cflect.htm",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-DAMO-MA-01",
+    "label": "Damodaran — Acquisition Problems & Solutions",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/adamodar/New_Home_Page/problems/Acqprob.htm",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-DAMO-VAL-01",
+    "label": "Damodaran — DCF·Relative·Option·Acquisition Problems",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/eqprob.html",
+    "status": "ready",
+    "linkedElements": 3,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-DAMO-VAL-02",
+    "label": "Damodaran — Valuation Past Quizzes & Exams",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/eqexam.htm",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-MIT-ACC-01",
+    "label": "MIT 15.501 Accounting — Assignments & Solutions",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-501-introduction-to-financial-and-managerial-accounting-spring-2004/pages/assignments/",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-MIT-ACC-02",
+    "label": "MIT 15.501 — Exams & Solutions",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-501-introduction-to-financial-and-managerial-accounting-spring-2004/pages/exams/",
+    "status": "ready",
+    "linkedElements": 7,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-MIT-ACC-03",
+    "label": "MIT 15.501 — Lecture Notes",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-501-introduction-to-financial-and-managerial-accounting-spring-2004/pages/lecture-notes/",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-MIT-ACC-04",
+    "label": "MIT 15.514 Sample Midterm PDF",
+    "kind": "pdf",
+    "locator": "https://ocw.mit.edu/courses/15-514-financial-and-managerial-accounting-summer-2003/19734bb3c6872e3d0934f40febb2ec21_samplemidterm.pdf",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-MIT-ACC-05",
+    "label": "MIT 15.514 Sample Solutions PDF",
+    "kind": "pdf",
+    "locator": "https://ocw.mit.edu/courses/15-514-financial-and-managerial-accounting-summer-2003/c8d4748deabadc72a8fac83de99d6878_samplesolutions.pdf",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-MIT-CF2-01",
+    "label": "MIT 15.402 Finance Theory II — Exams & Solutions",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-402-finance-theory-ii-spring-2003/pages/exams/",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-MIT-FIN-01",
+    "label": "MIT 15.401 Finance Theory I — Problem Sets",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/problem-sets/",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-MIT-FIN-02",
+    "label": "MIT 15.401 — Sample Exams & Solutions",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/exams/",
+    "status": "ready",
+    "linkedElements": 5,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-MIT-FIN-03",
+    "label": "MIT 15.401 — Problem-solving Notes",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/resources/problem-solving-notes/",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-MIT-INV-01",
+    "label": "MIT 15.433 Investments — Assignments",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-433-investments-spring-2003/pages/assignments/",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-MIT-INV-02",
+    "label": "MIT 15.433 — Quizzes & Solutions",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-433-investments-spring-2003/pages/exams/",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-MIT-RE-01",
+    "label": "MIT 11.431 Real Estate Finance — Assignments",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/11-431j-real-estate-finance-and-investment-fall-2006/pages/assignments/",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-MIT-RE-02",
+    "label": "MIT 11.431 — Practice Exams",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/11-431j-real-estate-finance-and-investment-fall-2006/pages/exams/",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-OPENSTAX-ACC-01",
+    "label": "OpenStax Principles of Accounting Vol. 1",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/preface",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-OPENSTAX-FIN-01",
+    "label": "OpenStax Principles of Finance 2e",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-of-finance-2e/pages/preface",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "EN-YALE-01",
+    "label": "Open Yale ECON 252 — Options Markets",
+    "kind": "url",
+    "locator": "https://oyc.yale.edu/economics/econ-252-11/lecture-17",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-BIS-BASEL",
+    "label": "BIS Basel Framework",
+    "kind": "url",
+    "locator": "https://www.bis.org/basel_framework/",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-CFA-QUALITY",
+    "label": "CFA Institute — Evaluating Quality of Financial Reports",
+    "kind": "url",
+    "locator": "https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/evaluating-quality-financial-reports",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-DAMO-CYCLICAL",
+    "label": "Damodaran — Cyclical and Commodity Companies PDF",
+    "kind": "pdf",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/pdfiles/papers/commodity.pdf",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-DAMO-DCF-CHECK",
+    "label": "Damodaran DCF Valuation Checklist PDF",
+    "kind": "pdf",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/pdfiles/eqnotes/valuationtodolist.pdf",
+    "status": "ready",
+    "linkedElements": 3,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-DAMO-SOTP",
+    "label": "Damodaran Multi-business·SOTP Valuation PDF",
+    "kind": "pdf",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/pdfiles/DSV2/Ch17.pdf",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-DAMO-TOOLKIT",
+    "label": "Damodaran Valuation Tools",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/valuationtools.html",
+    "status": "ready",
+    "linkedElements": 14,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-DAMO-VAL",
+    "label": "NYU Damodaran Valuation 자료 허브",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/valuation/val.htm",
+    "status": "ready",
+    "linkedElements": 3,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-DART-API",
+    "label": "금융감독원 OpenDART 재무정보 API",
+    "kind": "url",
+    "locator": "https://opendart.fss.or.kr/guide/main.do?apiGrpCd=DE003",
+    "status": "ready",
+    "linkedElements": 7,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-EIA-API",
+    "label": "U.S. EIA Open Data API",
+    "kind": "url",
+    "locator": "https://www.eia.gov/opendata/documentation.php",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-FDIC-QBP",
+    "label": "FDIC Quarterly Banking Profile",
+    "kind": "url",
+    "locator": "https://www.fdic.gov/analysis/quarterly-banking-profile/qbp/",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-FED-BHCPR",
+    "label": "Federal Reserve BHCPR User Guide PDF",
+    "kind": "pdf",
+    "locator": "https://www.federalreserve.gov/publications/files/2026-03-UGBHCPR.pdf",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-IAS19",
+    "label": "IAS 19 Employee Benefits",
+    "kind": "url",
+    "locator": "https://www.ifrs.org/issued-standards/list-of-standards/ias-19-employee-benefits/",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-IFRS15",
+    "label": "IFRS 15 Revenue from Contracts with Customers",
+    "kind": "url",
+    "locator": "https://www.ifrs.org/issued-standards/list-of-standards/ifrs-15-revenue-from-contracts-with-customers/",
+    "status": "ready",
+    "linkedElements": 4,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-IFRS16",
+    "label": "IFRS 16 Leases",
+    "kind": "url",
+    "locator": "https://www.ifrs.org/issued-standards/list-of-standards/ifrs-16-leases/",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-IFRS17",
+    "label": "IFRS 17 Insurance Contracts",
+    "kind": "url",
+    "locator": "https://www.ifrs.org/issued-standards/list-of-standards/ifrs-17-insurance-contracts/",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-IFRS2",
+    "label": "IFRS 2 Share-based Payment",
+    "kind": "url",
+    "locator": "https://www.ifrs.org/issued-standards/list-of-standards/ifrs-2-share-based-payment/",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-IFRS9",
+    "label": "IFRS 9 Financial Instruments",
+    "kind": "url",
+    "locator": "https://www.ifrs.org/issued-standards/list-of-standards/ifrs-9-financial-instruments/",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-NAIC-PC",
+    "label": "NAIC Property & Casualty Industry Analysis PDF",
+    "kind": "pdf",
+    "locator": "https://content.naic.org/sites/default/files/2025-annual-property-and-casualty-and-title-insurance-industries-analysis-report.pdf",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-NAIC-RBC",
+    "label": "NAIC Risk-Based Capital",
+    "kind": "url",
+    "locator": "https://content.naic.org/insurance-topics/risk-based-capital",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-SEC-EDGAR",
+    "label": "SEC EDGAR API·XBRL Company Facts",
+    "kind": "url",
+    "locator": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+    "status": "ready",
+    "linkedElements": 8,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-SEC-FRM",
+    "label": "SEC Financial Reporting Manual",
+    "kind": "url",
+    "locator": "https://www.sec.gov/about/divisions-offices/division-corporation-finance/financial-reporting-manual",
+    "status": "ready",
+    "linkedElements": 9,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-SEC-NONGAAP",
+    "label": "SEC Non-GAAP Financial Measures C&DIs",
+    "kind": "url",
+    "locator": "https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures",
+    "status": "ready",
+    "linkedElements": 4,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-SEC-OILGAS",
+    "label": "SEC Oil and Gas Disclosure Rules",
+    "kind": "url",
+    "locator": "https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/oil-gas-rules",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "ER-SEC-SBC",
+    "label": "SEC Staff Accounting Bulletin No. 107",
+    "kind": "url",
+    "locator": "https://www.sec.gov/rules-regulations/staff-guidance/staff-accounting-bulletins/staff-accounting-bulletin-no-107",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-ACC-01",
+    "label": "건국대 회계원리 KOCW",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1196674",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-CF-01",
+    "label": "원광대 재무관리 — 화폐의 시간가치 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-CF-02",
+    "label": "원광대 재무관리 — 자본예산 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-DER-01",
+    "label": "중앙대 파생상품 — 선물가격 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-DER-02",
+    "label": "중앙대 파생상품 — 선물 헤징 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-DER-03",
+    "label": "중앙대 파생상품 — 이항모형 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-DER-04",
+    "label": "중앙대 파생상품 — 2018 CPA 문제 6 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-DER-05",
+    "label": "중앙대 파생상품 — Greeks·헤징 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-DER-06",
+    "label": "중앙대 파생상품 — 2018 CPA 문제 7 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-EQV-01",
+    "label": "원광대 재무관리 — 주식 가치평가 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-EQV-02",
+    "label": "원광대 재무관리 — 상대가치평가 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-FI-01",
+    "label": "원광대 재무관리 — 채권 가치평가 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-FI-02",
+    "label": "한국은행 — 우리나라 채권시장의 이해와 최근 동향",
+    "kind": "url",
+    "locator": "https://www.bok.or.kr/portal/bbs/B0000217/view.do?menuNo=200144&nttId=10088718",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-INV-01",
+    "label": "원광대 재무관리 — 포트폴리오 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-INV-02",
+    "label": "원광대 재무관리 — CAPM 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-INV-03",
+    "label": "한양대 투자론 KOCW",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1057221",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-MKT-01",
+    "label": "KRX 채권시장 공식 PDF",
+    "kind": "pdf",
+    "locator": "https://main.krxverse.co.kr/_contents/ACA/02/02010201/03.pdf",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KO-MKT-02",
+    "label": "KRX 파생상품시장 공식 PDF",
+    "kind": "pdf",
+    "locator": "https://main.krxverse.co.kr/_contents/ACA/02/02010201/04.pdf",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KOCW-DERIVATIVES-COURSE",
+    "label": "중앙대 파생상품 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
+    "status": "ready",
+    "linkedElements": 9,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "KOCW-FINANCE-COURSE",
+    "label": "원광대 재무관리 공식 강의",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
+    "status": "ready",
+    "linkedElements": 14,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-ACC",
+    "label": "MIT 15.501 회계 문제세트·해설 · 시험·해설",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-501-introduction-to-financial-and-managerial-accounting-spring-2004/pages/assignments/",
+    "status": "ready",
+    "linkedElements": 9,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-ACQ",
+    "label": "Damodaran Acquisition 문제와 풀이",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/problems/Acqprob.htm",
+    "status": "ready",
+    "linkedElements": 3,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-ACQPDF",
+    "label": "Damodaran Acquisition Valuation PDF",
+    "kind": "pdf",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/pdfiles/AcqValn.pdf",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-BIWS",
+    "label": "BIWS 공식 · YFL Study Sessions · YFL 교재 안내 이미지",
+    "kind": "url",
+    "locator": "https://breakingintowallstreet.com/biws/homepage/",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-CF",
+    "label": "Damodaran 기업재무 문제와 해설",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/cfprset.htm",
+    "status": "ready",
+    "linkedElements": 9,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-DCF",
+    "label": "Damodaran DCF 문제와 풀이 · Valuation 자료·PDF 허브",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/problems/dcfprob.htm",
+    "status": "ready",
+    "linkedElements": 19,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-DCF25",
+    "label": "Damodaran DCF 25문 25답 · FCFF 설명 · FCFF·DCF 장 PDF",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/valquestions/valquestions.htm",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-FED",
+    "label": "Federal Reserve Policy Rate · Money, Interest Rates, and Monetary Policy",
+    "kind": "url",
+    "locator": "https://www.federalreserve.gov/economy-at-a-glance-policy-rate.htm",
+    "status": "ready",
+    "linkedElements": 3,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-FEDPDF",
+    "label": "Federal Reserve Education Monetary Policy Guide PDF",
+    "kind": "pdf",
+    "locator": "https://www.federalreserveeducation.org/resources/lessons/lesson--ap-macro-monetary-policy-lecture-guide.pdf",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-IPO",
+    "label": "Damodaran — From Private to Publicly Traded Firm",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/invfables/ipo.htm",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-MITFIN",
+    "label": "MIT 15.401 문제세트·해설 · 시험·해설",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/problem-sets/",
+    "status": "ready",
+    "linkedElements": 6,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-MITINV",
+    "label": "MIT 15.433 Investments 과제 · 퀴즈·시험·풀이",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-433-investments-spring-2003/pages/assignments/",
+    "status": "ready",
+    "linkedElements": 9,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-RE",
+    "label": "MIT 11.431 부동산금융 문제세트·케이스 · Problem Set 1",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/11-431j-real-estate-finance-and-investment-fall-2006/pages/assignments/",
+    "status": "ready",
+    "linkedElements": 5,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-REEXAM",
+    "label": "MIT 11.431 연습시험 · Practice Midterm · Practice Final",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/11-431j-real-estate-finance-and-investment-fall-2006/pages/exams/",
+    "status": "ready",
+    "linkedElements": 4,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-REL",
+    "label": "Damodaran 상대가치 문제와 풀이 · 가치평가 문제 목록",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/problems/relval.htm",
+    "status": "ready",
+    "linkedElements": 10,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-SECIPO",
+    "label": "SEC Investor.gov — Investing in an IPO",
+    "kind": "url",
+    "locator": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins-17",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-SECPDF",
+    "label": "SEC IPO Investor Bulletin PDF",
+    "kind": "pdf",
+    "locator": "https://www.investor.gov/sites/default/files/ipo-investorbulletin_0.pdf",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "R-YIG",
+    "label": "YIG Research 전체 · 공개 기업분석 리포트 예시 · 예시 PDF",
+    "kind": "url",
+    "locator": "https://yig.yonsei.ac.kr/research",
+    "status": "ready",
+    "linkedElements": 9,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-CFA",
+    "label": "CFA Institute Terms and Conditions",
+    "kind": "url",
+    "locator": "https://www.cfainstitute.org/about/governance/policies/terms-conditions",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-CME",
+    "label": "CME Website Terms · 자동수집 관련 공지",
+    "kind": "url",
+    "locator": "https://www.cmegroup.com/tools-information/cme-website-terms-of-use.html",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-DAMO",
+    "label": "Damodaran Site Guide",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/guide.html",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-DART",
+    "label": "OpenDART API 소개 · OpenDART 이용약관",
+    "kind": "url",
+    "locator": "https://opendart.fss.or.kr/intro/main.do",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-FEDED",
+    "label": "Federal Reserve Education Terms",
+    "kind": "url",
+    "locator": "https://www.federalreserveeducation.org/terms-of-service",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-FRB",
+    "label": "Federal Reserve Board Disclaimer",
+    "kind": "url",
+    "locator": "https://www.federalreserve.gov/disclaimer.htm",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-KOCW",
+    "label": "KOCW 저작권 가이드",
+    "kind": "url",
+    "locator": "https://www.kocw.net/home/copyright/intro.do",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-MIT",
+    "label": "MIT OCW Privacy and Terms",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/pages/privacy-and-terms-of-use/",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-NYFED",
+    "label": "New York Fed Terms of Use",
+    "kind": "url",
+    "locator": "https://www.newyorkfed.org/privacy/termsofuse.html",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-OPENSTAX-ACC",
+    "label": "OpenStax Financial Accounting Preface · robots.txt",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/preface",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-OPENSTAX-FIN",
+    "label": "OpenStax Principles of Finance 2e Preface",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-of-finance-2e/pages/preface",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-SECDATA",
+    "label": "SEC Data APIs · SEC Fair Access",
+    "kind": "url",
+    "locator": "https://data.sec.gov/",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-USGOV",
+    "label": "17 U.S.C. § 105 · Copyright Office FAQ",
+    "kind": "url",
+    "locator": "https://www.copyright.gov/title17/92chap1.html",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-YFL",
+    "label": "YFL 이용약관",
+    "kind": "url",
+    "locator": "https://yflyonsei.com/join",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "RIGHT-YIG",
+    "label": "YIG 공식 사이트",
+    "kind": "url",
+    "locator": "https://yig.yonsei.ac.kr/",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "SCOPE-YFL-01",
+    "label": "YFL 공식 1차 면접 안내 이미지",
+    "kind": "url",
+    "locator": "https://yflyonsei.com/uploads/%EB%B0%95%EC%84%9C%ED%98%84/Recruiting%203.PNG",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "SCOPE-YFL-02",
+    "label": "YFL 공식 Study 교재 안내 이미지",
+    "kind": "url",
+    "locator": "https://yflyonsei.com/uploads/%EB%B0%95%EC%84%9C%ED%98%84/Study%201.PNG",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "SCOPE-YFL-03",
+    "label": "YFL 공식 시사 세션 안내 이미지",
+    "kind": "url",
+    "locator": "https://yflyonsei.com/uploads/%EB%B0%95%EC%84%9C%ED%98%84/Study%202.PNG",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "SCOPE-YFL-04",
+    "label": "YFL 팀 활동",
+    "kind": "url",
+    "locator": "https://yflyonsei.com/teamactivities",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "SCOPE-YIG-01",
+    "label": "YIG 2026-2 공식 Recruiting",
+    "kind": "url",
+    "locator": "https://yig.yonsei.ac.kr/recruiting",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "SCOPE-YIG-02",
+    "label": "YIG 공개 리서치",
+    "kind": "url",
+    "locator": "https://yig.yonsei.ac.kr/research",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "SPEC-FINAL",
+    "label": "Finance Interview 앱 최종 명세",
+    "kind": "document",
+    "locator": "finance_interview_app_final_spec.md",
+    "status": "ready",
+    "linkedElements": 0,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-0080CBE28659",
+    "label": "OpenStax CAPM",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-finance/pages/15-3-the-capital-asset-pricing-model-capm",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-088AA90769BD",
+    "label": "OpenStax 조정분개",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/4-3-record-and-post-the-common-types-of-adjusting-entries",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-0FDED7B87E8E",
+    "label": "OpenStax 간접법 현금흐름표",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/16-3-prepare-the-statement-of-cash-flows-using-the-indirect-method",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-10080547C609",
+    "label": "CME Calculating the Dollar Value of a Basis Point PDF",
+    "kind": "pdf",
+    "locator": "https://www.cmegroup.com/trading/interest-rates/files/Calculating_the_Dollar_Value_of_a_Basis_Point_Final_Dec_4.pdf",
+    "status": "ready",
+    "linkedElements": 3,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-10528B8074C9",
+    "label": "Damodaran 현재가치 공식풀이 PDF",
+    "kind": "pdf",
+    "locator": "https://www.stern.nyu.edu/~adamodar/pdfiles/pvsol.pdf",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-11DF408F840A",
+    "label": "Damodaran 투자수익 문제·해설",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/problems/invret.htm",
+    "status": "ready",
+    "linkedElements": 4,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-1EE6E108C719",
+    "label": "Damodaran 현재가치 문제",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/problems/pvpr.htm",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-1F7A72FB5546",
+    "label": "OpenStax 회계순환·거래기록",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/3-3-define-and-describe-the-initial-steps-in-the-accounting-cycle",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-27F8FDFE660B",
+    "label": "FINRA Bond Spreads 설명",
+    "kind": "url",
+    "locator": "https://www.finra.org/investors/insights/spread-word-what-you-need-know-about-bond-spreads",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-3BC5FD4258C3",
+    "label": "MIT 15.401 CAPM·APT 강의와 PDF",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/the-capm-and-apt",
+    "status": "ready",
+    "linkedElements": 3,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-4409BC91B766",
+    "label": "Damodaran 가치평가 공식풀이 PDF",
+    "kind": "pdf",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/pdfiles/valpr.pdf",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-445D1FAC8BDE",
+    "label": "Damodaran 과거 기업재무 시험·해설",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/cfprob0.html",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-4511F9D320EF",
+    "label": "MIT Problem Set 4 공식해설 PDF",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-501-introduction-to-financial-and-managerial-accounting-spring-2004/resources/ps4_sol/",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-4C9C2DB9FF68",
+    "label": "OpenStax Bond Valuation",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-finance/pages/10-2-bond-valuation",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-4CF25E691F64",
+    "label": "OpenStax 감가상각 방법과 예제",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/11-3-explain-and-apply-depreciation-methods-to-allocate-capitalized-costs",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-524CC1FF5A53",
+    "label": "OpenStax 유동부채와 현금흐름 효과",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/12-1-identify-and-describe-current-liabilities",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-5FD4CAACDB6C",
+    "label": "OpenStax EPS와 가중평균주식수",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/14-5-discuss-the-applicability-of-earnings-per-share-as-a-method-to-measure-performance",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-62CCFB535555",
+    "label": "OpenStax 결산조정 개념",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/4-1-explain-the-concepts-and-guidelines-affecting-adjusting-entries",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-67BE6807A947",
+    "label": "MIT 15.401 Portfolio Theory",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/portfolio-theory",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-680EE8C2168A",
+    "label": "MIT 15.401 Fixed-Income Securities 강의·PDF",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/fixed-income-securities",
+    "status": "ready",
+    "linkedElements": 4,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-6934FF07F63C",
+    "label": "OpenStax 재고 챕터 요약",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/10-summary",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-698CD3D5750B",
+    "label": "CME Using Treasury Futures to Replace Swap Exposure PDF",
+    "kind": "pdf",
+    "locator": "https://www.cmegroup.com/content/dam/cmegroup/education/files/using-treasury-futures-to-replace-swap-exposure.pdf",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-713E8AB48F9C",
+    "label": "MIT 15.401 Options 강의·PDF",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/options",
+    "status": "ready",
+    "linkedElements": 5,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-803667D572A0",
+    "label": "OpenStax 재고평가방법",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/10-1-describe-and-demonstrate-the-basic-inventory-valuation-methods-and-their-cost-flow-assumptions",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-8B7DC4E0C382",
+    "label": "MIT 15.401 Forward and Futures 강의·PDF",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/forward-and-futures-contracts",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-913A9C08A42B",
+    "label": "뉴욕연은 Repo·Reverse Repo 설명",
+    "kind": "url",
+    "locator": "https://www.newyorkfed.org/markets/domestic-market-operations/monetary-policy-implementation/repo-reverse-repo-agreements",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-A4F332D4BB71",
+    "label": "OpenStax 장기부채·사채 가격",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/13-1-explain-the-pricing-of-long-term-liabilities",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-A7FBC57EB2A3",
+    "label": "MIT 15.401 Risk and Return",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/risk-and-return",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-A89AF8711B91",
+    "label": "OpenStax 결산조정 예제",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/4-2-discuss-the-adjustment-process-and-illustrate-common-types-of-adjusting-entries",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-B0FF9A398E7A",
+    "label": "OpenStax 재무비율 핵심용어",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-finance/pages/6-key-terms",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-B31C7C9EF047",
+    "label": "Damodaran 위험·수익률 문제",
+    "kind": "url",
+    "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/problems/riskprac.htm",
+    "status": "ready",
+    "linkedElements": 3,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-B76A5EABEB19",
+    "label": "OpenStax 재고관리·재고회전율",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/10-5-examine-the-efficiency-of-inventory-management-using-financial-ratios",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-BAA032EFD549",
+    "label": "MIT 15.433 Investments 강의노트",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-433-investments-spring-2003/pages/lecture-notes/",
+    "status": "ready",
+    "linkedElements": 6,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-C59C2755F58D",
+    "label": "CME Treasury Hedging and Risk Management",
+    "kind": "url",
+    "locator": "https://www.cmegroup.com/education/courses/introduction-to-treasuries/treasuries-hedging-and-risk-management.hideSubnav.html.educationIframe.html?hideAddThisExt=y&hideFooter=y&hideHeader=y&hideRightRail=y",
+    "status": "ready",
+    "linkedElements": 4,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-C921008DAA75",
+    "label": "OpenStax Principles of Finance",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-finance/pages/15-summary",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-CDAC783F1207",
+    "label": "OpenStax 매출채권·충당금 핵심용어",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/9-key-terms",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-D122CAFA3670",
+    "label": "OpenStax 사채 분개",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/13-3-prepare-journal-entries-to-reflect-the-life-cycle-of-bonds",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-D34C097E8D2A",
+    "label": "OpenStax 재무제표 연결",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-financial-accounting/pages/2-1-describe-the-income-statement-statement-of-owners-equity-balance-sheet-and-statement-of-cash-flows-and-how-they-interrelate",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-D79B50DC3B63",
+    "label": "뉴욕연은 Tri-Party Repo Mechanics PDF",
+    "kind": "pdf",
+    "locator": "https://www.newyorkfed.org/medialibrary/media/research/epr/2012/1210cope.pdf",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-D7CBBBF0C4EC",
+    "label": "OpenStax 시장가치비율",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-finance/pages/6-5-market-value-ratios",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-DB4E466206AC",
+    "label": "MIT 15.401 PV·채권·주식 문제와 해설",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/resources/mit15_401f08_problem_sets/",
+    "status": "ready",
+    "linkedElements": 3,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-E4BF2C38691D",
+    "label": "CFA 성과측정 PDF",
+    "kind": "pdf",
+    "locator": "https://rpc.cfainstitute.org/-/media/documents/code/gips/measures-risk-adjusted-return.pdf",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-E6F274EB7B58",
+    "label": "CFA Investment Risk and Performance 사례 PDF",
+    "kind": "pdf",
+    "locator": "https://rpc.cfainstitute.org/-/media/documents/code/gips/case-study-risk-adjusted-performance-measures.pdf",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-EAE80B7A9942",
+    "label": "CFA Institute Risk-Adjusted Performance Measures",
+    "kind": "url",
+    "locator": "https://rpc.cfainstitute.org/topics/performance-attribution/risk-adjusted-performance",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-EC2FE86E9CF0",
+    "label": "MIT 15.433 커리큘럼—Credit Market",
+    "kind": "url",
+    "locator": "https://ocw.mit.edu/courses/15-433-investments-spring-2003/pages/calendar/",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-ED00561DACBB",
+    "label": "OpenStax Interest Rate and Default Risk",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-finance/pages/10-4-risks-of-interest-rates-and-default",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-F05F3CF2E684",
+    "label": "OpenStax Interest Rate Risk",
+    "kind": "url",
+    "locator": "https://openstax.org/books/principles-finance/pages/20-4-interest-rate-risk",
+    "status": "ready",
+    "linkedElements": 2,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-F10923DAC45A",
+    "label": "OpenStax Principles of Finance 무료 전체 PDF",
+    "kind": "pdf",
+    "locator": "https://assets.openstax.org/oscms-prodcms/media/documents/PrinciplesofFinance-WEB.pdf",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  },
+  {
+    "id": "URL-FA7DF68E0611",
+    "label": "CME Repo Exposure Hedging PDF",
+    "kind": "pdf",
+    "locator": "https://www.cmegroup.com/content/dam/cmegroup/education/files/hedging-repo-exposure-in-the-treasury-basis-web.pdf",
+    "status": "ready",
+    "linkedElements": 1,
+    "createdAt": "packaged-v5"
+  }
+]
