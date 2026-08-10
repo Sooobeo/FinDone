@@ -1,6 +1,7 @@
 package com.findone.app.ui
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class MarkdownTextTest {
@@ -135,33 +136,21 @@ class MarkdownTextTest {
     }
 
     @Test
-    fun `converts inline formulas to code styled text without latex drawables`() {
-        val input = "before \$x^2 + y_1\$ and \$\$\\frac{a}{b}\$\$ after"
+    fun `normalizes and bounds very long invalid latex fallback text`() {
+        assertEquals("[invalid formula]", normalizedLatexFallbackText(" \r\n\t "))
+        assertEquals("alpha beta", normalizedLatexFallbackText("  alpha\n\tbeta  "))
+        assertEquals("😀😀😀…", normalizedLatexFallbackText("😀".repeat(10), maxCodePoints = 4))
 
-        assertEquals(
-            "before `x^2 + y_1` and `\\frac{a}{b}` after",
-            deviceSafeMarkdown(input),
-        )
+        val longFallback = normalizedLatexFallbackText("x".repeat(10_000))
+        assertEquals(512, longFallback.codePointCount(0, longFallback.length))
+        assertTrue(longFallback.endsWith("…"))
     }
 
     @Test
-    fun `converts delimiter only formulas to ordinary fenced code blocks`() {
-        val input = "관계식\r\n\$\$\r\nx = \\frac{a}{b}\r\n\$\$\r\n설명"
-
-        assertEquals(
-            "관계식\r\n````text\r\nx = \\frac{a}{b}\r\n````\r\n설명",
-            deviceSafeMarkdown(input),
-        )
-    }
-
-    @Test
-    fun `device safe conversion preserves formulas inside existing code`() {
-        val dollar = '$'
-        val input = "`${dollar}inline${dollar}`\n```text\n${dollar}${dollar}block${dollar}${dollar}\n```\n${dollar}live${dollar}"
-
-        assertEquals(
-            "`${dollar}inline${dollar}`\n```text\n${dollar}${dollar}block${dollar}${dollar}\n```\n`live`",
-            deviceSafeMarkdown(input),
-        )
+    fun `caps invalid latex fallback intrinsic width to twenty em`() {
+        assertEquals(40, boundedLatexFallbackWidthPx(39.2f, textSizePx = 16f))
+        assertEquals(320, boundedLatexFallbackWidthPx(10_000f, textSizePx = 16f))
+        assertEquals(320, boundedLatexFallbackWidthPx(Float.POSITIVE_INFINITY, textSizePx = 16f))
+        assertEquals(1, boundedLatexFallbackWidthPx(0f, textSizePx = 16f))
     }
 }

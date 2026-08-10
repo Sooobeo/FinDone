@@ -45,7 +45,6 @@ class JLatexCorpusRegressionTest {
                         val sourceId = "content:${column.table}.${column.markdownColumn}:${rows.getString(1)}"
                         val markdown = rows.getString(2).orEmpty()
                         requireNoCodeFallback(sourceId, markdown)
-                        requireNoRuntimeLatex(sourceId, markdown)
                         cases += extractMath(sourceId, markdown)
                     }
                 }
@@ -73,7 +72,6 @@ class JLatexCorpusRegressionTest {
                     if (field == "formula" || field == "substitution") {
                         requireNoCodeFallback(sourceId, markdown)
                     }
-                    requireNoRuntimeLatex(sourceId, markdown)
                     addAll(extractMath(sourceId, markdown))
                 }
                 question.audit.operations.forEachIndexed { operationIndex, operation ->
@@ -81,7 +79,6 @@ class JLatexCorpusRegressionTest {
                     val sourceId =
                         "quiz:$elementId:d$difficulty:audit-operation-${operationIndex + 1}"
                     requireNoCodeFallback(sourceId, markdown)
-                    requireNoRuntimeLatex(sourceId, markdown)
                     addAll(
                         extractMath(
                             sourceId,
@@ -129,13 +126,6 @@ class JLatexCorpusRegressionTest {
     private fun requireNoCodeFallback(sourceId: String, markdown: String) {
         require('`' !in markdown) {
             "Formula-shaped content fell back to a Markdown code span in $sourceId: $markdown"
-        }
-    }
-
-    private fun requireNoRuntimeLatex(sourceId: String, markdown: String) {
-        val safeMarkdown = deviceSafeMarkdown(markdown)
-        require(MATH_DELIMITER !in safeMarkdown) {
-            "Device-safe rendering left an active LaTeX delimiter in $sourceId: $safeMarkdown"
         }
     }
 
