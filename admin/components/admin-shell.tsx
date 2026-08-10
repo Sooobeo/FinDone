@@ -15,7 +15,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { getBrowserSupabase } from "@/lib/supabase/browser";
@@ -39,14 +39,12 @@ interface AdminShellProps {
 
 export function AdminShell({ children, mode, email }: AdminShellProps) {
   const pathname = usePathname();
-  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const activeItem = navItems.find((item) => pathname.startsWith(item.href));
 
   async function signOut() {
     await getBrowserSupabase()?.auth.signOut();
-    router.replace("/login");
-    router.refresh();
+    window.location.replace("/login");
   }
 
   return (
