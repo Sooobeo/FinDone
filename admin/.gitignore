@@ -5,3 +5,4 @@ node_modules/
 .env.*.local
 coverage/
 *.tsbuildinfo
+.env.example
