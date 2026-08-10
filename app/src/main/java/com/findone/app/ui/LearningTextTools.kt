@@ -234,11 +234,13 @@ private val MATH_PAYLOAD = Regex("""(?s)\$\$(.+?)\$\$""")
 private val TEX_UPRIGHT = Regex("""\\mathrm\{([^{}]+)\}""")
 private val TEX_TEXT_OR_OPERATOR = Regex("""\\(?:text|operatorname)\{[^{}]*\}""")
 private val TEX_COMMAND = Regex("""\\[A-Za-z]+""")
+// Android's ICU regex engine treats an unescaped closing brace as a syntax error even when the
+// desktop JDK accepts it. Keep both literal TeX braces escaped so this file can initialize on-device.
 private val IDENTIFIER = Regex(
-    """(?<![A-Za-z0-9])([A-Za-z][A-Za-z0-9]*)(?:_(?:\{([^{}]+)}|([A-Za-z0-9]+)))?(?![A-Za-z0-9])""",
+    """(?<![A-Za-z0-9])([A-Za-z][A-Za-z0-9]*)(?:_(?:\{([^{}]+)\}|([A-Za-z0-9]+)))?(?![A-Za-z0-9])""",
 )
 private val GREEK_IDENTIFIER = Regex(
-    """([αβγδμρσλΔΣΠ])(?:\s*_\s*(?:\{([^{}]+)}|([A-Za-z0-9]+)))?""",
+    """([αβγδμρσλΔΣΠ])(?:\s*_\s*(?:\{([^{}]+)\}|([A-Za-z0-9]+)))?""",
 )
 private val BOLD_TERM = Regex("""\*\*([^*\n]+)\*\*""")
 private val TITLE_ACRONYM = Regex("""(?<![A-Za-z0-9])[A-Z][A-Z0-9]{1,9}(?![A-Za-z0-9])""")
@@ -253,8 +255,8 @@ private val SPLIT_DEPRECIATION_AMORTIZATION = Regex(
         "$DOUBLE_DOLLAR_PATTERN\\s*A\\s*$DOUBLE_DOLLAR_PATTERN",
 )
 private val SPLIT_EXIT_MULTIPLE = Regex(
-    "$DOUBLE_DOLLAR_PATTERN\\s*\\\\mathrm\\{Exit}\\s*$DOUBLE_DOLLAR_PATTERN\\s*" +
-        "$DOUBLE_DOLLAR_PATTERN\\s*\\\\mathrm\\{Multiple}\\s*$DOUBLE_DOLLAR_PATTERN",
+    "$DOUBLE_DOLLAR_PATTERN\\s*\\\\mathrm\\{Exit\\}\\s*$DOUBLE_DOLLAR_PATTERN\\s*" +
+        "$DOUBLE_DOLLAR_PATTERN\\s*\\\\mathrm\\{Multiple\\}\\s*$DOUBLE_DOLLAR_PATTERN",
 )
 private val IGNORED_IDENTIFIERS = setOf(
     "max", "min", "ln", "log", "exp", "text", "mathrm", "operatorname",
