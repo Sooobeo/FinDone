@@ -16,8 +16,12 @@ import com.findone.app.data.BookmarkRecord
 import com.findone.app.data.ConceptNote
 import com.findone.app.data.ContentRepository
 import com.findone.app.data.ElementProgress
+import com.findone.app.data.GlossaryTermState
+import com.findone.app.data.LearningTextAnnotation
 import com.findone.app.data.StudyStats
+import com.findone.app.data.TextAnnotationStyle
 import com.findone.app.data.UserRepository
+import com.findone.app.data.buildLearningTextAnchor
 import com.findone.app.model.ContentElement
 import com.findone.app.model.ContentManifest
 import com.findone.app.model.Domain
@@ -40,11 +44,47 @@ import java.util.Random
 import kotlin.math.ceil
 import kotlin.math.floor
 
-enum class MainTab { HOME, STUDY, QUIZ, RECORDS }
+enum class MainTab { HOME, STUDY, QUIZ, RECORDS, GLOSSARY }
 
 private const val QUIZ_DOMAIN_IDS_STATE = "quizDomainIds"
 private const val QUIZ_DOMAIN_ID_STATE = "quizDomainId"
 private const val QUIZ_TRACK_STATE = "quizTrack"
+private const val NAVIGATION_HISTORY_STATE = "navigationHistory"
+private const val STUDY_DOMAIN_STATE = "studyDomainId"
+private const val STUDY_QUERY_STATE = "studyQuery"
+private const val MAX_NAVIGATION_HISTORY = 32
+private const val ELEMENT_ROUTE_PREFIX = "ELEMENT:"
+
+private fun MainTab.routeKey(): String = name
+
+private fun isRestorableRoute(route: String, validElementIds: Set<String>? = null): Boolean {
+    if (MainTab.entries.any { tab -> tab.routeKey() == route }) return true
+    if (!route.startsWith(ELEMENT_ROUTE_PREFIX)) return false
+    val elementId = route.removePrefix(ELEMENT_ROUTE_PREFIX)
+    return elementId.isNotBlank() && (validElementIds == null || elementId in validElementIds)
+}
+
+internal fun normalizeNavigationHistory(
+    restoredRoutes: Collection<String>?,
+    validElementIds: Set<String>? = null,
+): List<String> {
+    val normalized = mutableListOf<String>()
+    restoredRoutes.orEmpty().forEach { route ->
+        if (isRestorableRoute(route, validElementIds) && normalized.lastOrNull() != route) {
+            normalized += route
+        }
+    }
+    return normalized.takeLast(MAX_NAVIGATION_HISTORY)
+}
+
+internal fun navigationHistoryAfterQuizExitTo(
+    history: List<String>,
+    destination: MainTab,
+): List<String> = if (destination == MainTab.HOME) {
+    emptyList()
+} else {
+    history.dropLastWhile { it == destination.routeKey() }
+}
 
 internal fun normalizeQuizDomainSelection(
     availableDomainIds: Collection<String>,
@@ -125,9 +165,9 @@ class AppViewModel(
         private set
     var selectedElementId by mutableStateOf(savedStateHandle.get<String>("elementId"))
         private set
-    var studyDomainId by mutableStateOf<String?>(null)
+    var studyDomainId by mutableStateOf(savedStateHandle.get<String>(STUDY_DOMAIN_STATE))
         private set
-    var studyQuery by mutableStateOf("")
+    var studyQuery by mutableStateOf(savedStateHandle.get<String>(STUDY_QUERY_STATE).orEmpty())
         private set
     var studyResults by mutableStateOf<List<ContentElement>>(emptyList())
         private set
@@ -157,6 +197,12 @@ class AppViewModel(
         private set
     var conceptNoteError by mutableStateOf<String?>(null)
         private set
+    var textAnnotations by mutableStateOf<List<LearningTextAnnotation>>(emptyList())
+        private set
+    var textAnnotationError by mutableStateOf<String?>(null)
+        private set
+    var glossaryTermStates by mutableStateOf<Map<String, GlossaryTermState>>(emptyMap())
+        private set
     var recordDomainId by mutableStateOf(savedStateHandle.get<String>("recordDomainId"))
         private set
     var recordElementId by mutableStateOf(savedStateHandle.get<String>("recordElementId"))
@@ -173,6 +219,9 @@ class AppViewModel(
         private set
     var autoBookmarkWrong by mutableStateOf(userRepository.setting("auto_bookmark_wrong", "false").toBoolean())
         private set
+    private var navigationHistory by mutableStateOf(
+        normalizeNavigationHistory(savedStateHandle.get<ArrayList<String>>(NAVIGATION_HISTORY_STATE))
+    )
 
     init {
         var repository: ContentRepository? = null
@@ -191,7 +240,16 @@ class AppViewModel(
         domains = loadedDomains
         allElements = loadedElements
         contentManifest = loadedManifest
-        studyResults = loadedElements
+        studyDomainId = studyDomainId?.takeIf { id -> domains.any { it.id == id } }
+        if (studyDomainId == null) savedStateHandle.remove<String>(STUDY_DOMAIN_STATE)
+        selectedElementId = selectedElementId?.takeIf { id -> allElements.any { it.id == id } }
+        if (selectedElementId == null) savedStateHandle.remove<String>("elementId")
+        navigationHistory = normalizeNavigationHistory(
+            restoredRoutes = navigationHistory,
+            validElementIds = allElements.mapTo(hashSetOf()) { it.id },
+        )
+        persistNavigationHistory()
+        updateStudyResults()
         val availableDomainIds = domains.map { it.id }
         quizDomainId = quizDomainId?.takeIf { it in availableDomainIds }
         quizDomainIds = normalizeQuizDomainSelection(
@@ -207,7 +265,9 @@ class AppViewModel(
             }
         }
         refreshUserData()
+        refreshGlossaryTermStates()
         refreshConceptNotes()
+        refreshTextAnnotations()
         savedStateHandle.get<String>("quizSession")?.let { saved ->
             runCatching { restoreQuizSession(saved) }
                 .onSuccess { quizSession = it }
@@ -218,25 +278,100 @@ class AppViewModel(
     val selectedElement: ContentElement?
         get() = selectedElementId?.let { id -> allElements.firstOrNull { it.id == id } }
 
+    val canNavigateBack: Boolean
+        get() = quizSession != null || selectedElementId != null ||
+            currentTab != MainTab.HOME || navigationHistory.isNotEmpty()
+
     fun selectTab(tab: MainTab) {
-        currentTab = tab
-        savedStateHandle["tab"] = tab.name
-        if (tab != MainTab.STUDY) closeElement()
+        val targetRoute = tab.routeKey()
+        if (currentRouteKey() != targetRoute) pushCurrentRoute()
+        applyRoute(targetRoute)
     }
 
     fun openElement(elementId: String) {
+        if (allElements.none { it.id == elementId }) return
+        if (selectedElementId != elementId) pushCurrentRoute()
         selectedElementId = elementId
         savedStateHandle["elementId"] = elementId
         currentTab = MainTab.STUDY
         savedStateHandle["tab"] = MainTab.STUDY.name
         refreshConceptNotes()
+        refreshTextAnnotations()
     }
 
     fun closeElement() {
+        if (selectedElementId != null) navigateBack() else clearElementState()
+    }
+
+    fun navigateBack(): Boolean {
+        if (quizSession != null) return false
+        while (navigationHistory.isNotEmpty()) {
+            val previous = navigationHistory.last()
+            navigationHistory = navigationHistory.dropLast(1)
+            if (applyRoute(previous)) {
+                persistNavigationHistory()
+                return true
+            }
+        }
+        persistNavigationHistory()
+        if (selectedElementId != null) {
+            clearElementState()
+            applyRoute(MainTab.STUDY.routeKey())
+            return true
+        }
+        if (currentTab != MainTab.HOME) {
+            applyRoute(MainTab.HOME.routeKey())
+            return true
+        }
+        return false
+    }
+
+    private fun clearElementState() {
         selectedElementId = null
         savedStateHandle.remove<String>("elementId")
         conceptNotes = emptyList()
         conceptNoteError = null
+        textAnnotations = emptyList()
+        textAnnotationError = null
+    }
+
+    private fun currentRouteKey(): String = when {
+        selectedElementId != null -> "$ELEMENT_ROUTE_PREFIX$selectedElementId"
+        else -> currentTab.routeKey()
+    }
+
+    private fun pushCurrentRoute() {
+        val route = currentRouteKey()
+        if (!isRestorableRoute(route) || navigationHistory.lastOrNull() == route) return
+        navigationHistory = (navigationHistory + route).takeLast(MAX_NAVIGATION_HISTORY)
+        persistNavigationHistory()
+    }
+
+    private fun persistNavigationHistory() {
+        if (navigationHistory.isEmpty()) savedStateHandle.remove<ArrayList<String>>(NAVIGATION_HISTORY_STATE)
+        else savedStateHandle[NAVIGATION_HISTORY_STATE] = ArrayList(navigationHistory)
+    }
+
+    private fun applyRoute(route: String): Boolean {
+        if (route.startsWith(ELEMENT_ROUTE_PREFIX)) {
+            val elementId = route.removePrefix(ELEMENT_ROUTE_PREFIX)
+            if (allElements.any { it.id == elementId }) {
+                currentTab = MainTab.STUDY
+                selectedElementId = elementId
+                savedStateHandle["tab"] = MainTab.STUDY.name
+                savedStateHandle["elementId"] = elementId
+                refreshConceptNotes()
+                refreshTextAnnotations()
+                return true
+            }
+            return false
+        }
+
+        val tab = MainTab.entries.firstOrNull { it.routeKey() == route } ?: return false
+        clearElementState()
+        currentTab = tab
+        savedStateHandle["tab"] = tab.name
+        return true
     }
 
     fun addConceptNote(title: String, body: String): Boolean {
@@ -302,13 +437,99 @@ class AppViewModel(
         conceptNoteError = null
     }
 
+    fun addTextAnnotation(
+        sectionKey: String,
+        sourceText: String,
+        startOffset: Int,
+        endOffset: Int,
+        style: TextAnnotationStyle,
+        comment: String? = null,
+    ): Boolean {
+        val elementId = selectedElement?.id ?: return false
+        return runCatching {
+            val anchor = buildLearningTextAnchor(sectionKey, sourceText, startOffset, endOffset)
+            userRepository.addTextAnnotation(elementId, anchor, style, comment)
+            userRepository.textAnnotations(elementId)
+        }.fold(
+            onSuccess = { refreshed ->
+                textAnnotations = refreshed
+                textAnnotationError = null
+                true
+            },
+            onFailure = { error ->
+                textAnnotationError = error.message ?: "텍스트 표시를 저장하지 못했습니다."
+                false
+            },
+        )
+    }
+
+    fun setTextAnnotationComment(annotationId: Long, comment: String?): Boolean {
+        val elementId = selectedElement?.id ?: return false
+        return runCatching {
+            check(userRepository.setTextAnnotationComment(annotationId, elementId, comment)) {
+                "수정할 코멘트를 찾지 못했습니다."
+            }
+            userRepository.textAnnotations(elementId)
+        }.fold(
+            onSuccess = { refreshed ->
+                textAnnotations = refreshed
+                textAnnotationError = null
+                true
+            },
+            onFailure = { error ->
+                textAnnotationError = error.message ?: "코멘트를 저장하지 못했습니다."
+                false
+            },
+        )
+    }
+
+    fun deleteTextAnnotation(annotationId: Long): Boolean {
+        val elementId = selectedElement?.id ?: return false
+        return runCatching {
+            check(userRepository.deleteTextAnnotation(annotationId, elementId)) {
+                "삭제할 텍스트 표시를 찾지 못했습니다."
+            }
+            userRepository.textAnnotations(elementId)
+        }.fold(
+            onSuccess = { refreshed ->
+                textAnnotations = refreshed
+                textAnnotationError = null
+                true
+            },
+            onFailure = { error ->
+                textAnnotationError = error.message ?: "텍스트 표시를 삭제하지 못했습니다."
+                false
+            },
+        )
+    }
+
+    fun clearTextAnnotationError() {
+        textAnnotationError = null
+    }
+
+    fun setGlossaryTermChecked(termId: String, checked: Boolean) {
+        runCatching { userRepository.setGlossaryTermChecked(termId, checked) }
+            .onSuccess { state -> glossaryTermStates = glossaryTermStates + (termId to state) }
+            .onFailure { quizMessage = it.message ?: "용어 학습 상태를 저장하지 못했습니다." }
+    }
+
+    fun setGlossaryTermBookmarked(termId: String, bookmarked: Boolean) {
+        runCatching { userRepository.setGlossaryTermBookmarked(termId, bookmarked) }
+            .onSuccess { state -> glossaryTermStates = glossaryTermStates + (termId to state) }
+            .onFailure { quizMessage = it.message ?: "용어 북마크를 저장하지 못했습니다." }
+    }
+
     fun setStudyDomain(domainId: String?) {
         studyDomainId = domainId
+        if (domainId == null) savedStateHandle.remove<String>(STUDY_DOMAIN_STATE)
+        else savedStateHandle[STUDY_DOMAIN_STATE] = domainId
         updateStudyResults()
     }
 
     fun updateStudyQuery(query: String) {
         studyQuery = query
+        if (query.isBlank()) savedStateHandle.remove<String>(STUDY_QUERY_STATE)
+        else savedStateHandle[STUDY_QUERY_STATE] = query
         updateStudyResults()
     }
 
@@ -449,6 +670,7 @@ class AppViewModel(
             quizMessage = "이 문제 유형을 현재 콘텐츠 버전에서 재생할 수 없습니다."
             return
         }
+        pushCurrentRoute()
         quizSession = QuizSessionState(
             track = QuizTrack.BOOKMARK,
             questions = listOf(question),
@@ -504,6 +726,7 @@ class AppViewModel(
                 quizMessage = "북마크가 요소별 25% 제한을 만족하기에 부족합니다. 개별 북마크 복습을 사용하세요."
                 return
             }
+            pushCurrentRoute()
             quizSession = QuizSessionState(
                 track = track,
                 questions = selected.map { it.first },
@@ -612,6 +835,7 @@ class AppViewModel(
                 presentations += weakTarget?.presentation ?: track.presentation()
             }
         }
+        pushCurrentRoute()
         quizSession = QuizSessionState(track, questions, presentations)
         currentTab = MainTab.QUIZ
         savedStateHandle["tab"] = MainTab.QUIZ.name
@@ -692,6 +916,19 @@ class AppViewModel(
     }
 
     fun leaveQuiz() {
+        clearQuizSession()
+        navigateBack()
+    }
+
+    fun leaveQuizTo(tab: MainTab) {
+        clearQuizSession()
+        val targetRoute = tab.routeKey()
+        navigationHistory = navigationHistoryAfterQuizExitTo(navigationHistory, tab)
+        persistNavigationHistory()
+        applyRoute(targetRoute)
+    }
+
+    private fun clearQuizSession() {
         quizSession = null
         savedStateHandle.remove<String>("quizSession")
     }
@@ -740,7 +977,9 @@ class AppViewModel(
 
     fun reloadUserData() {
         refreshUserData()
+        refreshGlossaryTermStates()
         refreshConceptNotes()
+        refreshTextAnnotations()
     }
 
     private fun refreshConceptNotes() {
@@ -759,6 +998,30 @@ class AppViewModel(
                 conceptNotes = emptyList()
                 conceptNoteError = it.message ?: "개인 메모를 불러오지 못했습니다."
             }
+    }
+
+    private fun refreshTextAnnotations() {
+        val elementId = selectedElement?.id
+        if (elementId == null) {
+            textAnnotations = emptyList()
+            textAnnotationError = null
+            return
+        }
+        runCatching { userRepository.textAnnotations(elementId) }
+            .onSuccess {
+                textAnnotations = it
+                textAnnotationError = null
+            }
+            .onFailure {
+                textAnnotations = emptyList()
+                textAnnotationError = it.message ?: "텍스트 표시를 불러오지 못했습니다."
+            }
+    }
+
+    private fun refreshGlossaryTermStates() {
+        runCatching { userRepository.glossaryTermStates() }
+            .onSuccess { states -> glossaryTermStates = states.associateBy { it.termId } }
+            .onFailure { glossaryTermStates = emptyMap() }
     }
 
     private fun refreshUserData(refreshAllBookmarks: Boolean = true) {

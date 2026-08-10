@@ -140,19 +140,21 @@ Get-Content -Raw -Encoding UTF8 (Join-Path $releaseDir.FullName 'release-manifes
 - [ ] 의도적으로 틀린 답을 제출해 오답 이력과 미해결 오답 큐가 갱신되는지 확인했다.
 - [ ] 문항을 북마크하고 앱을 완전히 종료·재실행한 뒤 동일 snapshot이 남는지 확인했다.
 - [ ] 진도·정답률·설정이 재실행 후 유지된다.
+- [ ] 학습 본문 구절에 형광펜·밑줄·코멘트를 만들고, 앱 재실행 후 같은 위치에 다시 표시된다.
+- [ ] 용어집의 대단원 전환, 학습 완료 체크, 별 북마크와 북마크 전용 보기가 동작한다.
 - [ ] 수동 백업 export와 import가 비행기 모드에서 동작하고 무결성 오류가 없는지 확인했다.
 - [ ] `adb shell dumpsys package com.findone.app` 출력에도 `android.permission.INTERNET`가 없다.
 - [ ] crash, ANR, 데이터 유실이 없고 기기 모델·Android version·시험 일시를 기록했다.
 
 ## 8. 동일 서명 upgrade 시험
 
-- [ ] 기존 버전에서 확인용 오답, 북마크, 설정과 snapshot을 만들고 개수를 기록했다.
+- [ ] 기존 버전에서 확인용 오답, 문제 북마크, 설정, snapshot, 개인 메모, 본문 주석과 용어 상태를 만들고 개수를 기록했다.
 - [ ] 앱 안에서 수동 사용자 백업을 export하고 앱 전용 저장소 밖에 복사했다.
 - [ ] 백업 파일의 SHA-256과 생성 시각을 별도로 기록했다.
 - [ ] 더 높은 `versionCode`를 동일한 key alias와 키 저장소로 서명했다.
 - [ ] 새 APK의 인증서 fingerprint가 기존 릴리스와 같은지 확인했다.
 - [ ] 기존 앱을 제거하거나 데이터를 지우지 않고 새 APK를 설치했다. ADB를 쓸 경우 `adb install -r <APK>`를 사용한다.
-- [ ] 시작 후 오답, 북마크, 설정, 진도, 저장된 snapshot과 통계가 그대로 남아 있다.
+- [ ] 시작 후 오답, 북마크, 설정, 진도, 저장된 snapshot, 개인 메모, 본문 주석, 용어 상태와 통계가 그대로 남아 있다.
 - [ ] 새 콘텐츠 DB version과 검색 결과는 의도한 버전으로 바뀌었다.
 - [ ] 비행기 모드 smoke test를 다시 통과했다.
 
@@ -164,7 +166,7 @@ Get-Content -Raw -Encoding UTF8 (Join-Path $releaseDir.FullName 'release-manifes
 - [ ] 앱 삭제나 기기 교체 전에 항상 앱의 명시적 export 기능으로 백업했다.
 - [ ] export 파일을 앱 전용 저장소 밖으로 복사하고 SHA-256을 기록했다.
 - [ ] import는 현재 사용자 데이터를 교체하므로, 복원 시험 전에 현재 상태도 별도로 export했다.
-- [ ] 복원 후 시도 수, 오답, 북마크, 설정, 진도와 snapshot을 표본 대조했다.
+- [ ] 복원 후 시도 수, 오답, 북마크, 설정, 진도, snapshot, 개인 메모, 본문 주석과 용어 상태를 표본 대조했다.
 - [ ] 백업 JSON의 SHA-256 envelope는 우발적 손상 감지용이며 암호화나 제3자 변조 방지 서명이 아님을 이해했다.
 - [ ] 백업 파일에 학습 이력이 평문으로 들어갈 수 있으므로 접근이 통제된 위치에 보관하고 불필요한 복사본을 정리했다.
 

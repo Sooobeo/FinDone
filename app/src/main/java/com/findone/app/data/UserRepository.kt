@@ -109,6 +109,42 @@ data class ConceptNote(
     val updatedAt: Long,
 )
 
+/**
+ * A resilient pointer into one rendered learning section.
+ *
+ * Offsets make the common case cheap. The exact quote and surrounding context let the UI
+ * re-anchor a mark after small content edits, while [sourceHash] tells it whether the original
+ * source is still byte-for-byte identical.
+ */
+data class LearningTextAnchor(
+    val sectionKey: String,
+    val selectedText: String,
+    val prefixContext: String,
+    val suffixContext: String,
+    val startOffset: Int,
+    val endOffset: Int,
+    val sourceHash: String? = null,
+)
+
+enum class TextAnnotationStyle { HIGHLIGHT, UNDERLINE }
+
+data class LearningTextAnnotation(
+    val id: Long,
+    val elementId: String,
+    val anchor: LearningTextAnchor,
+    val style: TextAnnotationStyle,
+    val comment: String?,
+    val createdAt: Long,
+    val updatedAt: Long,
+)
+
+data class GlossaryTermState(
+    val termId: String,
+    val checked: Boolean,
+    val bookmarked: Boolean,
+    val updatedAt: Long,
+)
+
 class UserRepository(context: Context) {
     private val databaseContext = context.applicationContext
     private val helper: UserDatabase
@@ -433,6 +469,266 @@ class UserRepository(context: Context) {
         ) == 1
     }
 
+    fun textAnnotations(elementId: String): List<LearningTextAnnotation> = buildList {
+        val validatedElementId = requireConceptNoteElementId(elementId)
+        helper.readableDatabase.rawQuery(
+            """SELECT id, element_id, section_key, selected_text, prefix_context, suffix_context,
+                      start_offset, end_offset, source_hash, style, comment, created_at, updated_at
+               FROM text_annotations
+               WHERE element_id = ?
+               ORDER BY section_key ASC, start_offset ASC, end_offset ASC, id ASC""".trimIndent(),
+            arrayOf(validatedElementId),
+        ).use { cursor ->
+            while (cursor.moveToNext()) {
+                add(
+                    LearningTextAnnotation(
+                        id = cursor.getLong(0),
+                        elementId = cursor.getString(1),
+                        anchor = LearningTextAnchor(
+                            sectionKey = cursor.getString(2),
+                            selectedText = cursor.getString(3),
+                            prefixContext = cursor.getString(4),
+                            suffixContext = cursor.getString(5),
+                            startOffset = cursor.getInt(6),
+                            endOffset = cursor.getInt(7),
+                            sourceHash = if (cursor.isNull(8)) null else cursor.getString(8),
+                        ),
+                        style = TextAnnotationStyle.valueOf(cursor.getString(9)),
+                        comment = if (cursor.isNull(10)) null else cursor.getString(10),
+                        createdAt = cursor.getLong(11),
+                        updatedAt = cursor.getLong(12),
+                    )
+                )
+            }
+        }
+    }
+
+    fun addTextAnnotation(
+        elementId: String,
+        anchor: LearningTextAnchor,
+        style: TextAnnotationStyle,
+        comment: String? = null,
+    ): LearningTextAnnotation {
+        val draft = normalizeTextAnnotationDraft(elementId, anchor, style, comment)
+        val now = System.currentTimeMillis()
+        val db = helper.writableDatabase
+        return db.inTransaction {
+            require(rowCount(db, "text_annotations") < MAX_TEXT_ANNOTATIONS) {
+                "텍스트 표시가 전체 허용량을 초과했습니다. 오래된 표시를 삭제한 뒤 다시 시도하세요."
+            }
+            val elementCount = db.rawQuery(
+                "SELECT COUNT(*) FROM text_annotations WHERE element_id = ?",
+                arrayOf(draft.elementId),
+            ).use { cursor ->
+                check(cursor.moveToFirst())
+                cursor.getInt(0)
+            }
+            require(elementCount < MAX_TEXT_ANNOTATIONS_PER_ELEMENT) {
+                "이 학습요소의 텍스트 표시가 허용량을 초과했습니다."
+            }
+            requireTextAnnotationTextBudget(
+                storedTextAnnotationBytes(db) + textAnnotationUtf8Bytes(draft.anchor, draft.comment)
+            )
+            val id = db.insertOrThrow("text_annotations", null, draft.asContentValues(now, now))
+            draft.toRecord(id, now, now)
+        }
+    }
+
+    fun updateTextAnnotation(
+        id: Long,
+        elementId: String,
+        anchor: LearningTextAnchor,
+        style: TextAnnotationStyle,
+        comment: String?,
+    ): Boolean {
+        require(id > 0) { "텍스트 표시 ID가 올바르지 않습니다." }
+        val draft = normalizeTextAnnotationDraft(elementId, anchor, style, comment)
+        val db = helper.writableDatabase
+        return db.inTransaction {
+            val previous = annotationTextAndUpdatedAt(db, id, draft.elementId)
+                ?: return@inTransaction false
+            requireTextAnnotationTextBudget(
+                storedTextAnnotationBytes(db) - previous.first +
+                    textAnnotationUtf8Bytes(draft.anchor, draft.comment)
+            )
+            val updatedAt = monotonicTimestamp(previous.second)
+            db.update(
+                "text_annotations",
+                draft.asContentValues(createdAt = null, updatedAt = updatedAt),
+                "id = ? AND element_id = ?",
+                arrayOf(id.toString(), draft.elementId),
+            ) == 1
+        }
+    }
+
+    fun setTextAnnotationStyle(
+        id: Long,
+        elementId: String,
+        style: TextAnnotationStyle,
+    ): Boolean {
+        require(id > 0) { "텍스트 표시 ID가 올바르지 않습니다." }
+        val validatedElementId = requireConceptNoteElementId(elementId)
+        val db = helper.writableDatabase
+        return db.inTransaction {
+            val previousUpdatedAt = db.rawQuery(
+                "SELECT updated_at FROM text_annotations WHERE id = ? AND element_id = ?",
+                arrayOf(id.toString(), validatedElementId),
+            ).use { cursor -> if (cursor.moveToFirst()) cursor.getLong(0) else null }
+                ?: return@inTransaction false
+            db.update(
+                "text_annotations",
+                ContentValues().apply {
+                    put("style", style.name)
+                    put("updated_at", monotonicTimestamp(previousUpdatedAt))
+                },
+                "id = ? AND element_id = ?",
+                arrayOf(id.toString(), validatedElementId),
+            ) == 1
+        }
+    }
+
+    /** Adds, replaces, or removes the comment attached to an existing highlight/underline. */
+    fun setTextAnnotationComment(id: Long, elementId: String, comment: String?): Boolean {
+        require(id > 0) { "텍스트 표시 ID가 올바르지 않습니다." }
+        val validatedElementId = requireConceptNoteElementId(elementId)
+        val normalizedComment = normalizeAnnotationComment(comment)
+        val db = helper.writableDatabase
+        return db.inTransaction {
+            val previous = db.rawQuery(
+                "SELECT comment, updated_at FROM text_annotations WHERE id = ? AND element_id = ?",
+                arrayOf(id.toString(), validatedElementId),
+            ).use { cursor ->
+                if (!cursor.moveToFirst()) null else (
+                    (if (cursor.isNull(0)) null else cursor.getString(0)) to cursor.getLong(1)
+                )
+            } ?: return@inTransaction false
+            val previousCommentBytes = previous.first?.toByteArray(Charsets.UTF_8)?.size?.toLong() ?: 0L
+            val nextCommentBytes = normalizedComment?.toByteArray(Charsets.UTF_8)?.size?.toLong() ?: 0L
+            requireTextAnnotationTextBudget(
+                storedTextAnnotationBytes(db) - previousCommentBytes + nextCommentBytes
+            )
+            db.update(
+                "text_annotations",
+                ContentValues().apply {
+                    if (normalizedComment == null) putNull("comment") else put("comment", normalizedComment)
+                    put("updated_at", monotonicTimestamp(previous.second))
+                },
+                "id = ? AND element_id = ?",
+                arrayOf(id.toString(), validatedElementId),
+            ) == 1
+        }
+    }
+
+    fun deleteTextAnnotation(id: Long, elementId: String): Boolean {
+        require(id > 0) { "텍스트 표시 ID가 올바르지 않습니다." }
+        val validatedElementId = requireConceptNoteElementId(elementId)
+        return helper.writableDatabase.delete(
+            "text_annotations",
+            "id = ? AND element_id = ?",
+            arrayOf(id.toString(), validatedElementId),
+        ) == 1
+    }
+
+    fun glossaryTermStates(bookmarkedOnly: Boolean = false): List<GlossaryTermState> = buildList {
+        val where = if (bookmarkedOnly) " WHERE bookmarked = 1" else ""
+        helper.readableDatabase.rawQuery(
+            "SELECT term_id, checked, bookmarked, updated_at FROM glossary_term_state$where " +
+                "ORDER BY updated_at DESC, term_id ASC",
+            null,
+        ).use { cursor ->
+            while (cursor.moveToNext()) {
+                add(
+                    GlossaryTermState(
+                        termId = cursor.getString(0),
+                        checked = cursor.getInt(1) == 1,
+                        bookmarked = cursor.getInt(2) == 1,
+                        updatedAt = cursor.getLong(3),
+                    )
+                )
+            }
+        }
+    }
+
+    fun glossaryTermState(termId: String): GlossaryTermState? {
+        val validatedTermId = requireGlossaryTermId(termId)
+        return helper.readableDatabase.rawQuery(
+            "SELECT checked, bookmarked, updated_at FROM glossary_term_state WHERE term_id = ?",
+            arrayOf(validatedTermId),
+        ).use { cursor ->
+            if (!cursor.moveToFirst()) null else GlossaryTermState(
+                termId = validatedTermId,
+                checked = cursor.getInt(0) == 1,
+                bookmarked = cursor.getInt(1) == 1,
+                updatedAt = cursor.getLong(2),
+            )
+        }
+    }
+
+    fun setGlossaryTermState(termId: String, checked: Boolean, bookmarked: Boolean): GlossaryTermState =
+        mutateGlossaryTermState(termId, checked = checked, bookmarked = bookmarked)
+
+    fun setGlossaryTermChecked(termId: String, checked: Boolean): GlossaryTermState =
+        mutateGlossaryTermState(termId, checked = checked, bookmarked = null)
+
+    fun setGlossaryTermBookmarked(termId: String, bookmarked: Boolean): GlossaryTermState =
+        mutateGlossaryTermState(termId, checked = null, bookmarked = bookmarked)
+
+    fun deleteGlossaryTermState(termId: String): Boolean {
+        val validatedTermId = requireGlossaryTermId(termId)
+        return helper.writableDatabase.delete(
+            "glossary_term_state",
+            "term_id = ?",
+            arrayOf(validatedTermId),
+        ) == 1
+    }
+
+    private fun mutateGlossaryTermState(
+        termId: String,
+        checked: Boolean?,
+        bookmarked: Boolean?,
+    ): GlossaryTermState {
+        require(checked != null || bookmarked != null)
+        val validatedTermId = requireGlossaryTermId(termId)
+        val db = helper.writableDatabase
+        return db.inTransaction {
+            val previous = db.rawQuery(
+                "SELECT checked, bookmarked, updated_at FROM glossary_term_state WHERE term_id = ?",
+                arrayOf(validatedTermId),
+            ).use { cursor ->
+                if (!cursor.moveToFirst()) null else GlossaryTermState(
+                    termId = validatedTermId,
+                    checked = cursor.getInt(0) == 1,
+                    bookmarked = cursor.getInt(1) == 1,
+                    updatedAt = cursor.getLong(2),
+                )
+            }
+            if (previous == null) {
+                require(rowCount(db, "glossary_term_state") < MAX_GLOSSARY_TERM_STATES) {
+                    "용어 학습 상태가 허용량을 초과했습니다."
+                }
+            }
+            val result = GlossaryTermState(
+                termId = validatedTermId,
+                checked = checked ?: previous?.checked ?: false,
+                bookmarked = bookmarked ?: previous?.bookmarked ?: false,
+                updatedAt = monotonicTimestamp(previous?.updatedAt ?: -1L),
+            )
+            val rowId = db.insertWithOnConflict(
+                "glossary_term_state",
+                null,
+                ContentValues().apply {
+                    put("term_id", result.termId)
+                    put("checked", if (result.checked) 1 else 0)
+                    put("bookmarked", if (result.bookmarked) 1 else 0)
+                    put("updated_at", result.updatedAt)
+                },
+                SQLiteDatabase.CONFLICT_REPLACE,
+            )
+            check(rowId != -1L) { "용어 학습 상태를 저장하지 못했습니다." }
+            result
+        }
+    }
+
     /** Latest retained wrong attempt per learning element, newest first. */
     fun recentWrong(limit: Int = MAX_RECENT_WRONG_ROWS): List<AttemptRecord> =
         recentWrongForScope(null, limit)
@@ -537,7 +833,7 @@ class UserRepository(context: Context) {
         val db = helper.writableDatabase
         db.beginTransaction()
         try {
-            // Personal notes are authored content, so resetting quiz history deliberately preserves them.
+            // Authored notes/text annotations and curated glossary state survive a quiz-history reset.
             listOf("attempts", "bookmarks", "wrong_queue", "element_progress").forEach { db.delete(it, null, null) }
             db.setTransactionSuccessful()
         } finally {
@@ -553,6 +849,7 @@ class UserRepository(context: Context) {
             maintainBoundedUserHistory(db)
             requireBackupRowCounts(backupRowCounts(db))
             requireConceptNoteTextBudget(storedConceptNoteTextBytes(db))
+            requireTextAnnotationTextBudget(storedTextAnnotationBytes(db))
             JSONObject().apply {
                 put("schemaVersion", USER_DB_VERSION)
                 put("exportedAt", System.currentTimeMillis())
@@ -561,6 +858,8 @@ class UserRepository(context: Context) {
                 put("wrongQueue", tableAsJson(db, "wrong_queue"))
                 put("elementProgress", tableAsJson(db, "element_progress"))
                 put("conceptNotes", tableAsJson(db, "concept_notes"))
+                put("textAnnotations", tableAsJson(db, "text_annotations"))
+                put("glossaryTermStates", tableAsJson(db, "glossary_term_state"))
                 put("settings", tableAsJson(db, "settings"))
             }
         }
@@ -583,22 +882,28 @@ class UserRepository(context: Context) {
         val envelope = JSONObject(envelopeBytes.toString(Charsets.UTF_8))
         val format = envelope.getString("format")
         require(
-            format == BACKUP_FORMAT || format == SCHEMA_3_BACKUP_FORMAT ||
+            format == BACKUP_FORMAT || format == SCHEMA_4_BACKUP_FORMAT ||
+                format == SCHEMA_3_BACKUP_FORMAT ||
                 format == SCHEMA_2_BACKUP_FORMAT || format == LEGACY_BACKUP_FORMAT
         ) { "지원하지 않는 백업 형식입니다." }
         val backupContainsConceptNotes = backupFormatIncludesConceptNotes(format)
+        val backupContainsTextAnnotations = backupFormatIncludesTextAnnotations(format)
         val payloadText = envelope.getString("payload")
         val actualHash = sha256(payloadText.toByteArray(Charsets.UTF_8))
         require(actualHash == envelope.getString("sha256")) { "백업 파일의 무결성 검증에 실패했습니다." }
         val rawPayload = JSONObject(payloadText)
         val payload = when {
             format == BACKUP_FORMAT && rawPayload.getInt("schemaVersion") == USER_DB_VERSION -> rawPayload
+            format == SCHEMA_4_BACKUP_FORMAT && rawPayload.getInt("schemaVersion") == 4 ->
+                migrateSchema4Backup(rawPayload)
             format == SCHEMA_3_BACKUP_FORMAT && rawPayload.getInt("schemaVersion") == 3 ->
-                migrateSchema3Backup(rawPayload)
+                migrateSchema4Backup(migrateSchema3Backup(rawPayload))
             format == SCHEMA_2_BACKUP_FORMAT && rawPayload.getInt("schemaVersion") == 2 ->
-                migrateSchema3Backup(migrateSchema2Backup(rawPayload))
+                migrateSchema4Backup(migrateSchema3Backup(migrateSchema2Backup(rawPayload)))
             format == LEGACY_BACKUP_FORMAT && rawPayload.getInt("schemaVersion") == 1 ->
-                migrateSchema3Backup(migrateSchema2Backup(migrateLegacyBackup(rawPayload)))
+                migrateSchema4Backup(
+                    migrateSchema3Backup(migrateSchema2Backup(migrateLegacyBackup(rawPayload)))
+                )
             else -> throw IllegalArgumentException("지원하지 않는 사용자 DB 버전입니다.")
         }
 
@@ -607,6 +912,8 @@ class UserRepository(context: Context) {
         val wrongQueue = payload.getJSONArray("wrongQueue")
         val elementProgress = payload.getJSONArray("elementProgress")
         val conceptNotes = payload.getJSONArray("conceptNotes")
+        val textAnnotations = payload.getJSONArray("textAnnotations")
+        val glossaryTermStates = payload.getJSONArray("glossaryTermStates")
         val settings = payload.getJSONArray("settings")
         requireBackupRowCounts(
             BackupRowCounts(
@@ -616,6 +923,8 @@ class UserRepository(context: Context) {
                 elementProgress = elementProgress.length(),
                 settings = settings.length(),
                 conceptNotes = conceptNotes.length(),
+                textAnnotations = textAnnotations.length(),
+                glossaryTermStates = glossaryTermStates.length(),
             )
         )
 
@@ -624,6 +933,8 @@ class UserRepository(context: Context) {
         try {
             val conceptNoteCountsByElement = mutableMapOf<String, Int>()
             var importedConceptNoteTextBytes = 0L
+            val annotationCountsByElement = mutableMapOf<String, Int>()
+            var importedAnnotationTextBytes = 0L
             val mappings = buildList {
                 add(Triple("attempts", attempts, ATTEMPT_COLUMNS))
                 add(Triple("bookmarks", bookmarks, BOOKMARK_COLUMNS))
@@ -633,6 +944,12 @@ class UserRepository(context: Context) {
                 // erase notes authored after the backup format was created.
                 if (backupContainsConceptNotes) {
                     add(Triple("concept_notes", conceptNotes, CONCEPT_NOTE_COLUMNS))
+                }
+                // Backups before schema 5 could not contain these records. Restoring one must not
+                // silently erase annotations or glossary state created later.
+                if (backupContainsTextAnnotations) {
+                    add(Triple("text_annotations", textAnnotations, TEXT_ANNOTATION_COLUMNS))
+                    add(Triple("glossary_term_state", glossaryTermStates, GLOSSARY_TERM_STATE_COLUMNS))
                 }
                 add(Triple("settings", settings, SETTING_COLUMNS))
             }
@@ -657,6 +974,21 @@ class UserRepository(context: Context) {
                         )
                         requireConceptNoteTextBudget(importedConceptNoteTextBytes)
                     }
+                    if (table == "text_annotations") {
+                        val elementId = row.getString("element_id")
+                        val count = annotationCountsByElement.getOrDefault(elementId, 0) + 1
+                        require(count <= MAX_TEXT_ANNOTATIONS_PER_ELEMENT) {
+                            "$elementId 텍스트 표시가 학습요소별 허용량을 초과했습니다."
+                        }
+                        annotationCountsByElement[elementId] = count
+                        importedAnnotationTextBytes += listOf(
+                            row.getString("selected_text"),
+                            row.getString("prefix_context"),
+                            row.getString("suffix_context"),
+                            if (row.isNull("comment")) "" else row.getString("comment"),
+                        ).sumOf { it.toByteArray(Charsets.UTF_8).size.toLong() }
+                        requireTextAnnotationTextBudget(importedAnnotationTextBytes)
+                    }
                     val values = ContentValues()
                     row.keys().forEach { key ->
                         // Never trust a serialized FK merely because the target ID exists. Rebuild
@@ -679,6 +1011,7 @@ class UserRepository(context: Context) {
             maintainBoundedUserHistory(db)
             requireBackupRowCounts(backupRowCounts(db))
             requireConceptNoteTextBudget(storedConceptNoteTextBytes(db))
+            requireTextAnnotationTextBudget(storedTextAnnotationBytes(db))
             db.setTransactionSuccessful()
         } finally {
             db.endTransaction()
@@ -811,6 +1144,14 @@ class UserRepository(context: Context) {
     /** Adds the schema-4 personal-note collection while retaining every schema-3 row unchanged. */
     private fun migrateSchema3Backup(payload: JSONObject): JSONObject {
         payload.put("conceptNotes", JSONArray())
+        payload.put("schemaVersion", 4)
+        return payload
+    }
+
+    /** Adds schema-5 collections while retaining every schema-4 row unchanged. */
+    private fun migrateSchema4Backup(payload: JSONObject): JSONObject {
+        payload.put("textAnnotations", JSONArray())
+        payload.put("glossaryTermStates", JSONArray())
         payload.put("schemaVersion", USER_DB_VERSION)
         return payload
     }
@@ -879,6 +1220,47 @@ class UserRepository(context: Context) {
                 val createdAt = row.requiredLong("created_at", 0)
                 val updatedAt = row.requiredLong("updated_at", createdAt)
                 require(updatedAt >= createdAt) { "메모 수정 시간이 생성 시간보다 빠릅니다." }
+            }
+            "text_annotations" -> {
+                row.requiredLong("id", 1)
+                val elementId = row.requireElementId()
+                val sourceHash = if (row.isNull("source_hash")) null else
+                    row.requiredText("source_hash", 64)
+                val comment = if (row.isNull("comment")) null else
+                    row.requiredText("comment", TEXT_ANNOTATION_COMMENT_MAX_LENGTH)
+                normalizeTextAnnotationDraft(
+                    elementId = elementId,
+                    anchor = LearningTextAnchor(
+                        sectionKey = row.requiredText("section_key", TEXT_ANNOTATION_SECTION_KEY_MAX_LENGTH),
+                        selectedText = row.requiredText(
+                            "selected_text",
+                            TEXT_ANNOTATION_SELECTED_TEXT_MAX_LENGTH,
+                        ),
+                        prefixContext = row.requiredText(
+                            "prefix_context",
+                            TEXT_ANNOTATION_CONTEXT_MAX_LENGTH,
+                            allowBlank = true,
+                        ),
+                        suffixContext = row.requiredText(
+                            "suffix_context",
+                            TEXT_ANNOTATION_CONTEXT_MAX_LENGTH,
+                            allowBlank = true,
+                        ),
+                        startOffset = row.requiredInt("start_offset", 0),
+                        endOffset = row.requiredInt("end_offset", 1),
+                        sourceHash = sourceHash,
+                    ),
+                    style = TextAnnotationStyle.valueOf(row.requiredText("style", 32)),
+                    comment = comment,
+                )
+                val createdAt = row.requiredLong("created_at", 0)
+                row.requiredLong("updated_at", createdAt)
+            }
+            "glossary_term_state" -> {
+                requireGlossaryTermId(row.requiredText("term_id", GLOSSARY_TERM_ID_MAX_LENGTH))
+                require(row.requiredInt("checked", 0) in 0..1) { "checked 값이 올바르지 않습니다." }
+                require(row.requiredInt("bookmarked", 0) in 0..1) { "bookmarked 값이 올바르지 않습니다." }
+                row.requiredLong("updated_at", 0)
             }
             "settings" -> {
                 row.requiredText("key", 100)
@@ -1050,6 +1432,8 @@ internal data class BackupRowCounts(
     val elementProgress: Int,
     val settings: Int,
     val conceptNotes: Int = 0,
+    val textAnnotations: Int = 0,
+    val glossaryTermStates: Int = 0,
 )
 
 /** The exact same bounded row policy is applied before export and before import. */
@@ -1060,6 +1444,8 @@ internal fun requireBackupRowCounts(counts: BackupRowCounts) {
     require(counts.elementProgress <= MAX_PROGRESS_ROWS) { "진도 행이 허용량을 넘습니다." }
     require(counts.settings <= MAX_SETTINGS) { "설정 행이 허용량을 넘습니다." }
     require(counts.conceptNotes <= MAX_CONCEPT_NOTES) { "개인 메모가 허용량을 넘습니다." }
+    require(counts.textAnnotations <= MAX_TEXT_ANNOTATIONS) { "텍스트 표시가 허용량을 초과했습니다." }
+    require(counts.glossaryTermStates <= MAX_GLOSSARY_TERM_STATES) { "용어 학습 상태가 허용량을 초과했습니다." }
 }
 
 /** Conservatively merges schema-1 rows whose session-specific IDs now share one template ID. */
@@ -1086,7 +1472,10 @@ internal fun requireConceptNoteElementId(elementId: String): String = elementId.
     require(ELEMENT_ID_PATTERN.matches(it)) { "학습요소 ID 형식이 올바르지 않습니다." }
 }
 
-internal fun backupFormatIncludesConceptNotes(format: String): Boolean = format == BACKUP_FORMAT
+internal fun backupFormatIncludesConceptNotes(format: String): Boolean =
+    format == BACKUP_FORMAT || format == SCHEMA_4_BACKUP_FORMAT
+
+internal fun backupFormatIncludesTextAnnotations(format: String): Boolean = format == BACKUP_FORMAT
 
 internal fun conceptNoteUtf8Bytes(title: String, body: String): Long =
     title.toByteArray(Charsets.UTF_8).size.toLong() + body.toByteArray(Charsets.UTF_8).size.toLong()
@@ -1119,6 +1508,157 @@ internal fun normalizeConceptNoteDraft(
         body = normalizedBody,
     )
 }
+
+internal data class NormalizedTextAnnotationDraft(
+    val elementId: String,
+    val anchor: LearningTextAnchor,
+    val style: TextAnnotationStyle,
+    val comment: String?,
+)
+
+/** Builds the complete quote/context anchor from the exact plain text presented for selection. */
+fun buildLearningTextAnchor(
+    sectionKey: String,
+    sourceText: String,
+    startOffset: Int,
+    endOffset: Int,
+    contextCharacters: Int = TEXT_ANNOTATION_CONTEXT_MAX_LENGTH,
+): LearningTextAnchor {
+    require(contextCharacters in 0..TEXT_ANNOTATION_CONTEXT_MAX_LENGTH) {
+        "문맥 길이가 허용 범위를 벗어났습니다."
+    }
+    require(startOffset in 0 until endOffset && endOffset <= sourceText.length) {
+        "텍스트 선택 범위가 원문 범위를 벗어났습니다."
+    }
+    return normalizeLearningTextAnchor(
+        LearningTextAnchor(
+            sectionKey = sectionKey,
+            selectedText = sourceText.substring(startOffset, endOffset),
+            prefixContext = sourceText.substring(maxOf(0, startOffset - contextCharacters), startOffset),
+            suffixContext = sourceText.substring(endOffset, minOf(sourceText.length, endOffset + contextCharacters)),
+            startOffset = startOffset,
+            endOffset = endOffset,
+            sourceHash = sha256Hex(sourceText.toByteArray(Charsets.UTF_8)),
+        )
+    )
+}
+
+internal fun normalizeTextAnnotationDraft(
+    elementId: String,
+    anchor: LearningTextAnchor,
+    style: TextAnnotationStyle,
+    comment: String?,
+): NormalizedTextAnnotationDraft = NormalizedTextAnnotationDraft(
+    elementId = requireConceptNoteElementId(elementId),
+    anchor = normalizeLearningTextAnchor(anchor),
+    style = style,
+    comment = normalizeAnnotationComment(comment),
+)
+
+internal fun normalizeLearningTextAnchor(anchor: LearningTextAnchor): LearningTextAnchor {
+    val sectionKey = anchor.sectionKey.trim()
+    require(sectionKey.isNotEmpty() && sectionKey.length <= TEXT_ANNOTATION_SECTION_KEY_MAX_LENGTH) {
+        "텍스트 표시 섹션 키가 올바르지 않습니다."
+    }
+    require(sectionKey.none(Char::isISOControl)) { "텍스트 표시 섹션 키에 제어 문자를 사용할 수 없습니다." }
+    require(anchor.selectedText.isNotBlank() &&
+        anchor.selectedText.length <= TEXT_ANNOTATION_SELECTED_TEXT_MAX_LENGTH
+    ) { "선택한 구절의 길이가 올바르지 않습니다." }
+    require(anchor.prefixContext.length <= TEXT_ANNOTATION_CONTEXT_MAX_LENGTH &&
+        anchor.suffixContext.length <= TEXT_ANNOTATION_CONTEXT_MAX_LENGTH
+    ) { "텍스트 표시의 앞뒤 문맥이 너무 깁니다." }
+    require(anchor.startOffset >= 0 && anchor.endOffset > anchor.startOffset &&
+        anchor.endOffset <= TEXT_ANNOTATION_OFFSET_MAX
+    ) { "텍스트 표시 위치가 올바르지 않습니다." }
+    val sourceHash = anchor.sourceHash?.trim()?.lowercase()?.also { hash ->
+        require(SHA256_PATTERN.matches(hash)) { "텍스트 원문 해시가 올바르지 않습니다." }
+    }
+    return anchor.copy(sectionKey = sectionKey, sourceHash = sourceHash)
+}
+
+internal fun normalizeAnnotationComment(comment: String?): String? {
+    val normalized = comment?.trim()?.takeIf(String::isNotEmpty)
+    require(normalized == null || normalized.length <= TEXT_ANNOTATION_COMMENT_MAX_LENGTH) {
+        "코멘트는 ${TEXT_ANNOTATION_COMMENT_MAX_LENGTH}자 이하여야 합니다."
+    }
+    return normalized
+}
+
+internal fun requireGlossaryTermId(termId: String): String {
+    val normalized = termId.trim()
+    require(normalized.isNotEmpty() && normalized.length <= GLOSSARY_TERM_ID_MAX_LENGTH) {
+        "용어 안정 키가 올바르지 않습니다."
+    }
+    require(normalized.none(Char::isISOControl)) { "용어 안정 키에 제어 문자를 사용할 수 없습니다." }
+    return normalized
+}
+
+private fun NormalizedTextAnnotationDraft.asContentValues(
+    createdAt: Long?,
+    updatedAt: Long,
+): ContentValues = ContentValues().apply {
+    put("element_id", elementId)
+    put("section_key", anchor.sectionKey)
+    put("selected_text", anchor.selectedText)
+    put("prefix_context", anchor.prefixContext)
+    put("suffix_context", anchor.suffixContext)
+    put("start_offset", anchor.startOffset)
+    put("end_offset", anchor.endOffset)
+    if (anchor.sourceHash == null) putNull("source_hash") else put("source_hash", anchor.sourceHash)
+    put("style", style.name)
+    if (comment == null) putNull("comment") else put("comment", comment)
+    if (createdAt != null) put("created_at", createdAt)
+    put("updated_at", updatedAt)
+}
+
+private fun NormalizedTextAnnotationDraft.toRecord(
+    id: Long,
+    createdAt: Long,
+    updatedAt: Long,
+): LearningTextAnnotation = LearningTextAnnotation(
+    id = id,
+    elementId = elementId,
+    anchor = anchor,
+    style = style,
+    comment = comment,
+    createdAt = createdAt,
+    updatedAt = updatedAt,
+)
+
+private fun textAnnotationUtf8Bytes(anchor: LearningTextAnchor, comment: String?): Long =
+    listOf(anchor.selectedText, anchor.prefixContext, anchor.suffixContext, comment.orEmpty())
+        .sumOf { it.toByteArray(Charsets.UTF_8).size.toLong() }
+
+internal fun requireTextAnnotationTextBudget(byteCount: Long) {
+    require(byteCount in 0..MAX_TEXT_ANNOTATION_TEXT_BYTES) {
+        "텍스트 표시와 코멘트가 전체 ${MAX_TEXT_ANNOTATION_TEXT_BYTES / (1024 * 1024)}MB 허용량을 초과했습니다."
+    }
+}
+
+private fun annotationTextAndUpdatedAt(
+    db: SQLiteDatabase,
+    id: Long,
+    elementId: String,
+): Pair<Long, Long>? = db.rawQuery(
+    """SELECT selected_text, prefix_context, suffix_context, comment, updated_at
+       FROM text_annotations WHERE id = ? AND element_id = ?""".trimIndent(),
+    arrayOf(id.toString(), elementId),
+).use { cursor ->
+    if (!cursor.moveToFirst()) null else {
+        val byteCount = (0..3).sumOf { index ->
+            if (cursor.isNull(index)) 0L else cursor.getString(index).toByteArray(Charsets.UTF_8).size.toLong()
+        }
+        byteCount to cursor.getLong(4)
+    }
+}
+
+private fun monotonicTimestamp(previous: Long): Long = when {
+    previous == Long.MAX_VALUE -> Long.MAX_VALUE
+    else -> maxOf(System.currentTimeMillis(), previous + 1)
+}
+
+private fun sha256Hex(bytes: ByteArray): String = MessageDigest.getInstance("SHA-256")
+    .digest(bytes).joinToString("") { "%02x".format(it) }
 
 private fun JSONObject.requiredText(key: String, maxLength: Int, allowBlank: Boolean = false): String {
     val value = get(key)
@@ -1230,6 +1770,20 @@ private fun storedConceptNoteTextBytes(db: SQLiteDatabase): Long = db.rawQuery(
     cursor.getLong(0).also { require(it >= 0) { "개인 메모 용량이 올바르지 않습니다." } }
 }
 
+private fun storedTextAnnotationBytes(db: SQLiteDatabase): Long = db.rawQuery(
+    """SELECT COALESCE(
+           SUM(length(CAST(selected_text AS BLOB)) +
+               length(CAST(prefix_context AS BLOB)) +
+               length(CAST(suffix_context AS BLOB)) +
+               length(CAST(COALESCE(comment, '') AS BLOB))),
+           0
+       ) FROM text_annotations""".trimIndent(),
+    null,
+).use { cursor ->
+    check(cursor.moveToFirst()) { "텍스트 표시 저장 용량을 읽지 못했습니다." }
+    cursor.getLong(0).also { require(it >= 0) { "텍스트 표시 저장 용량이 올바르지 않습니다." } }
+}
+
 private fun requireTableRowsAtMost(
     db: SQLiteDatabase,
     table: String,
@@ -1262,6 +1816,8 @@ private fun backupRowCounts(db: SQLiteDatabase): BackupRowCounts = BackupRowCoun
     elementProgress = rowCount(db, "element_progress"),
     settings = rowCount(db, "settings"),
     conceptNotes = rowCount(db, "concept_notes"),
+    textAnnotations = rowCount(db, "text_annotations"),
+    glossaryTermStates = rowCount(db, "glossary_term_state"),
 )
 
 /**
@@ -1473,6 +2029,52 @@ private fun createSchema4(db: SQLiteDatabase) {
     schema4MigrationStatements().forEach(db::execSQL)
 }
 
+internal fun schema5MigrationStatements(): List<String> = listOf(
+    """CREATE TABLE IF NOT EXISTS text_annotations(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        element_id TEXT NOT NULL,
+        section_key TEXT NOT NULL
+            CHECK(length(trim(section_key)) BETWEEN 1 AND $TEXT_ANNOTATION_SECTION_KEY_MAX_LENGTH),
+        selected_text TEXT NOT NULL
+            CHECK(length(trim(selected_text)) BETWEEN 1 AND $TEXT_ANNOTATION_SELECTED_TEXT_MAX_LENGTH),
+        prefix_context TEXT NOT NULL DEFAULT ''
+            CHECK(length(prefix_context) <= $TEXT_ANNOTATION_CONTEXT_MAX_LENGTH),
+        suffix_context TEXT NOT NULL DEFAULT ''
+            CHECK(length(suffix_context) <= $TEXT_ANNOTATION_CONTEXT_MAX_LENGTH),
+        start_offset INTEGER NOT NULL CHECK(start_offset >= 0),
+        end_offset INTEGER NOT NULL
+            CHECK(end_offset > start_offset AND end_offset <= $TEXT_ANNOTATION_OFFSET_MAX),
+        source_hash TEXT CHECK(source_hash IS NULL OR (
+            length(source_hash) = 64 AND source_hash NOT GLOB '*[^0-9a-f]*'
+        )),
+        style TEXT NOT NULL CHECK(style IN ('HIGHLIGHT','UNDERLINE')),
+        comment TEXT CHECK(comment IS NULL OR (
+            length(trim(comment)) BETWEEN 1 AND $TEXT_ANNOTATION_COMMENT_MAX_LENGTH
+        )),
+        created_at INTEGER NOT NULL CHECK(created_at >= 0),
+        updated_at INTEGER NOT NULL CHECK(updated_at >= created_at)
+    )""".trimIndent(),
+    """CREATE INDEX IF NOT EXISTS text_annotations_element_anchor_idx
+       ON text_annotations(element_id, section_key, start_offset, end_offset, id)""".trimIndent(),
+    """CREATE INDEX IF NOT EXISTS text_annotations_comment_idx
+       ON text_annotations(element_id, section_key, start_offset, id)
+       WHERE comment IS NOT NULL""".trimIndent(),
+    """CREATE TABLE IF NOT EXISTS glossary_term_state(
+        term_id TEXT PRIMARY KEY
+            CHECK(length(trim(term_id)) BETWEEN 1 AND $GLOSSARY_TERM_ID_MAX_LENGTH),
+        checked INTEGER NOT NULL DEFAULT 0 CHECK(checked IN (0,1)),
+        bookmarked INTEGER NOT NULL DEFAULT 0 CHECK(bookmarked IN (0,1)),
+        updated_at INTEGER NOT NULL CHECK(updated_at >= 0)
+    )""".trimIndent(),
+    """CREATE INDEX IF NOT EXISTS glossary_term_state_bookmarked_idx
+       ON glossary_term_state(updated_at DESC, term_id ASC)
+       WHERE bookmarked = 1""".trimIndent(),
+)
+
+private fun createSchema5(db: SQLiteDatabase) {
+    schema5MigrationStatements().forEach(db::execSQL)
+}
+
 private class UserDatabase(context: Context) : SQLiteOpenHelper(
     context,
     USER_DB_NAME,
@@ -1543,12 +2145,14 @@ private class UserDatabase(context: Context) : SQLiteOpenHelper(
         db.execSQL("CREATE TABLE settings(key TEXT PRIMARY KEY, value TEXT NOT NULL)")
         createSchema3Indexes(db)
         createSchema4(db)
+        createSchema5(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if (oldVersion < 2) migrateToSchema2(db)
         if (oldVersion < 3) migrateToSchema3(db)
         if (oldVersion < 4) createSchema4(db)
+        if (oldVersion < 5) createSchema5(db)
     }
 
     private fun migrateToSchema2(db: SQLiteDatabase) {
@@ -1720,9 +2324,10 @@ private class UserDatabase(context: Context) : SQLiteOpenHelper(
     }
 }
 
-private const val USER_DB_VERSION = 4
+private const val USER_DB_VERSION = 5
 private const val USER_DB_NAME = "user.sqlite3"
-private const val BACKUP_FORMAT = "findone-user-backup-v5"
+private const val BACKUP_FORMAT = "findone-user-backup-v6"
+private const val SCHEMA_4_BACKUP_FORMAT = "findone-user-backup-v5"
 private const val SCHEMA_3_BACKUP_FORMAT = "findone-user-backup-v4"
 private const val SCHEMA_2_BACKUP_FORMAT = "findone-user-backup-v3"
 private const val LEGACY_BACKUP_FORMAT = "findone-user-backup-v2"
@@ -1737,6 +2342,16 @@ private const val MAX_CONCEPT_NOTES_PER_ELEMENT = 100
 internal const val MAX_CONCEPT_NOTE_TEXT_BYTES = 3L * 1024 * 1024
 internal const val CONCEPT_NOTE_TITLE_MAX_LENGTH = 120
 internal const val CONCEPT_NOTE_BODY_MAX_LENGTH = 20_000
+private const val MAX_TEXT_ANNOTATIONS = 10_000
+private const val MAX_TEXT_ANNOTATIONS_PER_ELEMENT = 500
+internal const val MAX_TEXT_ANNOTATION_TEXT_BYTES = 5L * 1024 * 1024
+internal const val TEXT_ANNOTATION_SECTION_KEY_MAX_LENGTH = 120
+internal const val TEXT_ANNOTATION_SELECTED_TEXT_MAX_LENGTH = 4_096
+internal const val TEXT_ANNOTATION_CONTEXT_MAX_LENGTH = 256
+internal const val TEXT_ANNOTATION_COMMENT_MAX_LENGTH = 20_000
+internal const val TEXT_ANNOTATION_OFFSET_MAX = 2_000_000
+private const val MAX_GLOSSARY_TERM_STATES = 20_000
+internal const val GLOSSARY_TERM_ID_MAX_LENGTH = 200
 private const val MAX_RECENT_ATTEMPTS_PER_ELEMENT = 20
 private const val MAX_RECENT_ATTEMPTS_TOTAL = 2_000
 private const val MAX_RECENT_WRONG_ROWS = 135
@@ -1744,7 +2359,8 @@ private const val MAX_RECENT_BOOKMARK_ROWS = 100
 private const val MAX_AUTO_BOOKMARKS_PER_ELEMENT = 10
 private const val MAX_RESOLVED_WRONG_QUEUE_ROWS = 135
 private val USER_DATA_TABLES = setOf(
-    "attempts", "bookmarks", "wrong_queue", "element_progress", "concept_notes", "settings",
+    "attempts", "bookmarks", "wrong_queue", "element_progress", "concept_notes", "text_annotations",
+    "glossary_term_state", "settings",
 )
 private val USER_KEYED_TABLES = setOf("element_progress" to "element_id", "settings" to "key")
 private val ATTEMPT_COLUMNS = setOf(
@@ -1764,4 +2380,10 @@ private val SCHEMA_2_WRONG_QUEUE_COLUMNS = WRONG_QUEUE_COLUMNS - "last_attempt_i
 private val LEGACY_WRONG_QUEUE_COLUMNS = SCHEMA_2_WRONG_QUEUE_COLUMNS - setOf("mode", "presentation")
 private val PROGRESS_COLUMNS = setOf("element_id", "attempts", "correct", "current_streak", "last_attempt_at")
 private val CONCEPT_NOTE_COLUMNS = setOf("id", "element_id", "title", "body", "created_at", "updated_at")
+private val TEXT_ANNOTATION_COLUMNS = setOf(
+    "id", "element_id", "section_key", "selected_text", "prefix_context", "suffix_context",
+    "start_offset", "end_offset", "source_hash", "style", "comment", "created_at", "updated_at",
+)
+private val GLOSSARY_TERM_STATE_COLUMNS = setOf("term_id", "checked", "bookmarked", "updated_at")
 private val SETTING_COLUMNS = setOf("key", "value")
+private val SHA256_PATTERN = Regex("^[0-9a-f]{64}$")

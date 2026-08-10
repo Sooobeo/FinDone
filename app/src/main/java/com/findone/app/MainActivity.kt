@@ -119,15 +119,19 @@ import com.findone.app.quiz.QuizMode
 import com.findone.app.quiz.QuizPresentation
 import com.findone.app.quiz.QuizQuestion
 import com.findone.app.ui.BrandHeader
+import com.findone.app.ui.AnnotatableMarkdown
 import com.findone.app.ui.ConceptNotesSection
 import com.findone.app.ui.DomainBadge
+import com.findone.app.ui.GlossaryScreen
 import com.findone.app.ui.MarkdownText
 import com.findone.app.ui.OfflineBanner
 import com.findone.app.ui.PageHeader
 import com.findone.app.ui.SectionTitle
 import com.findone.app.ui.StatCard
 import com.findone.app.ui.LandingScreen
+import com.findone.app.ui.LearningAnnotationManager
 import com.findone.app.ui.domainAccent
+import com.findone.app.ui.formulaVariables
 import com.findone.app.ui.learningElementSummary
 import com.findone.app.ui.safeMathMarkdown
 import com.findone.app.ui.theme.FinDoneTheme
@@ -207,10 +211,10 @@ private fun FinDoneApp(vm: AppViewModel) {
         }
     }
 
-    BackHandler(enabled = vm.selectedElement != null || vm.quizSession != null) {
+    BackHandler(enabled = vm.canNavigateBack) {
         when {
-            vm.selectedElement != null -> vm.closeElement()
             vm.quizSession != null -> confirmLeaveQuiz = true
+            else -> vm.navigateBack()
         }
     }
 
@@ -251,6 +255,7 @@ private fun FinDoneApp(vm: AppViewModel) {
                 vm.currentTab == MainTab.STUDY && vm.selectedElement != null -> ElementDetailScreen(vm)
                 vm.currentTab == MainTab.STUDY -> StudyScreen(vm)
                 vm.currentTab == MainTab.QUIZ -> QuizSetupScreen(vm)
+                vm.currentTab == MainTab.GLOSSARY -> GlossaryScreen(vm, onBack = { vm.navigateBack() })
                 else -> RecordsScreen(
                     vm = vm,
                     exportBackup = { exportLauncher.launch("FinDone-backup-${backupDate()}.json") },
@@ -377,6 +382,33 @@ private fun HomeScreen(vm: AppViewModel) {
                 StatCard("정답률", "${vm.stats.accuracyPercent}%", Icons.Outlined.CheckCircle, Modifier.weight(1f))
                 StatCard("남은 오답", "${vm.stats.wrongUnresolved}", Icons.Outlined.RestartAlt, Modifier.weight(1f), MaterialTheme.colorScheme.error)
                 StatCard("북마크", "${vm.stats.bookmarked}", Icons.Outlined.Bookmark, Modifier.weight(1f), MaterialTheme.colorScheme.tertiary)
+            }
+        }
+        item {
+            OutlinedCard(
+                onClick = { vm.selectTab(MainTab.GLOSSARY) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(18.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        Icons.Outlined.AutoStories,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                    Spacer(Modifier.width(12.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text("Glossary · 금융 용어집", fontWeight = FontWeight.Bold)
+                        Text(
+                            "대단원별 용어를 확인하고 학습 완료·북마크를 표시하세요.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Icon(Icons.Outlined.ChevronRight, contentDescription = "용어집 열기")
+                }
             }
         }
         item { SectionTitle("분야별 진도", "총 7개 분야 · 135개 요소") }
@@ -539,6 +571,30 @@ private fun ElementDetailScreen(vm: AppViewModel) {
             Spacer(Modifier.height(8.dp))
             Text(element.id, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
             Text(element.title, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(8.dp))
+            Text(
+                "본문을 길게 눌러 형광펜·밑줄·코멘트를 남기세요. 같은 표시를 다시 선택하면 삭제할 수 있습니다.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        vm.textAnnotationError?.let { error ->
+            item(key = "annotation-error-${element.id}") {
+                OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(14.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            error,
+                            modifier = Modifier.weight(1f),
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                        TextButton(onClick = vm::clearTextAnnotationError) { Text("닫기") }
+                    }
+                }
+            }
         }
         item {
             Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)) {
@@ -548,7 +604,9 @@ private fun ElementDetailScreen(vm: AppViewModel) {
                         Spacer(Modifier.width(8.dp))
                         Text("핵심 개념", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
                     }
-                    MarkdownText(
+                    LearningAnnotationText(
+                        vm = vm,
+                        sectionKey = "definition",
                         markdown = element.definitionMarkdown,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -557,19 +615,29 @@ private fun ElementDetailScreen(vm: AppViewModel) {
             }
         }
         item {
-            LearningMarkdownCard("직관과 실무 연결", element.intuitionMarkdown)
+            LearningMarkdownCard(vm, "intuition", "직관과 실무 연결", element.intuitionMarkdown)
         }
         item {
             LearningMarkdownCard(
-                "공식·가정",
-                "${element.formulaMarkdown}\n\n${element.assumptionsMarkdown}",
+                vm = vm,
+                sectionKey = "formula",
+                title = "공식·가정",
+                markdown = "${element.formulaMarkdown}\n\n${element.assumptionsMarkdown}",
             )
         }
+        item { FormulaVariablesCard(vm, element) }
         item {
-            LearningMarkdownCard("적용 문제와 상세 범위", element.learningNotesMarkdown)
+            LearningMarkdownCard(vm, "learning_notes", "적용 문제와 상세 범위", element.learningNotesMarkdown)
         }
         item {
-            LearningMarkdownCard("학습 체크리스트", element.checklistMarkdown)
+            LearningMarkdownCard(vm, "checklist", "학습 체크리스트", element.checklistMarkdown)
+        }
+        item(key = "saved-annotations-${element.id}") {
+            LearningAnnotationManager(
+                annotations = vm.textAnnotations,
+                onSetComment = vm::setTextAnnotationComment,
+                onDelete = vm::deleteTextAnnotation,
+            )
         }
         item(key = "concept-notes-${element.id}") {
             ConceptNotesSection(
@@ -1056,12 +1124,89 @@ private fun QuizSessionScreen(vm: AppViewModel, requestLeave: () -> Unit) {
 }
 
 @Composable
-private fun LearningMarkdownCard(title: String, markdown: String) {
+private fun LearningMarkdownCard(
+    vm: AppViewModel,
+    sectionKey: String,
+    title: String,
+    markdown: String,
+) {
     if (markdown.isBlank()) return
     OutlinedCard(modifier = Modifier.fillMaxWidth()) {
         Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-            MarkdownText(markdown = markdown, style = MaterialTheme.typography.bodyMedium)
+            LearningAnnotationText(
+                vm = vm,
+                sectionKey = sectionKey,
+                markdown = markdown,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+    }
+}
+
+@Composable
+private fun LearningAnnotationText(
+    vm: AppViewModel,
+    sectionKey: String,
+    markdown: String,
+    style: androidx.compose.ui.text.TextStyle,
+    color: androidx.compose.ui.graphics.Color,
+) {
+    AnnotatableMarkdown(
+        sectionKey = sectionKey,
+        markdown = markdown,
+        annotations = vm.textAnnotations,
+        style = style,
+        color = color,
+        onAdd = { action, comment ->
+            vm.addTextAnnotation(
+                sectionKey = sectionKey,
+                sourceText = action.sourceText,
+                startOffset = action.startOffset,
+                endOffset = action.endOffset,
+                style = action.style,
+                comment = comment,
+            )
+        },
+        onSetComment = { annotationId, comment ->
+            vm.setTextAnnotationComment(annotationId, comment)
+        },
+        onDelete = { annotationId -> vm.deleteTextAnnotation(annotationId) },
+    )
+}
+
+@Composable
+private fun FormulaVariablesCard(vm: AppViewModel, element: ContentElement) {
+    val variables = remember(element.id, element.formulaMarkdown) { formulaVariables(element) }
+    if (variables.isEmpty()) return
+    val variableMarkdown = remember(variables) {
+        variables.joinToString("\n\n") { variable ->
+            "- `${variable.symbol}` — ${variable.meaning}"
+        }
+    }
+    OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(18.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Text(
+                "식의 변수·항목 의미",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                "위 식에 등장하는 모든 기호를 같은 기간·통화·단위 기준으로 맞춰 읽으세요.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            LearningAnnotationText(
+                vm = vm,
+                sectionKey = "formula_variables",
+                markdown = variableMarkdown,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
         }
     }
 }
@@ -1342,8 +1487,8 @@ private fun QuizResultScreen(vm: AppViewModel) {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(Modifier.height(24.dp))
-        Button(onClick = { vm.leaveQuiz(); vm.selectTab(MainTab.QUIZ) }, modifier = Modifier.fillMaxWidth()) { Text("새 퀴즈 만들기") }
-        TextButton(onClick = { vm.leaveQuiz(); vm.selectTab(MainTab.HOME) }) { Text("오늘 화면으로") }
+        Button(onClick = { vm.leaveQuizTo(MainTab.QUIZ) }, modifier = Modifier.fillMaxWidth()) { Text("새 퀴즈 만들기") }
+        TextButton(onClick = { vm.leaveQuizTo(MainTab.HOME) }) { Text("오늘 화면으로") }
     }
 }
 
@@ -1520,7 +1665,7 @@ private fun DataSettingsCard(
         OutlinedCard {
             Column(Modifier.padding(17.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text("수동 백업", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                Text("OneDrive SDK나 자동 동기화 없이, 사용자가 선택한 위치로 무결성 해시가 포함된 JSON을 내보냅니다.")
+                Text("오답·북마크·진도·개인 메모·본문 주석·용어 상태를 무결성 해시가 포함된 JSON으로 내보냅니다.")
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     OutlinedButton(onClick = importBackup, modifier = Modifier.weight(1f)) {
                         Icon(Icons.Outlined.Upload, contentDescription = null)
@@ -1558,7 +1703,7 @@ private fun DataSettingsCard(
             Column(Modifier.padding(17.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("앱 정보", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Text("FinDone ${BuildConfig.VERSION_NAME} · 개인 Android 사이드로드")
-                Text("콘텐츠 DB v${vm.contentManifest?.contentDbVersion ?: "-"} · 사용자 DB schema 4")
+                Text("콘텐츠 DB v${vm.contentManifest?.contentDbVersion ?: "-"} · 사용자 DB schema 5")
                 Text("특정 학회 공식 기출이 아닌 자체 제작 문제입니다. 실시간 투자정보나 투자 조언을 제공하지 않습니다.", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 HorizontalDivider()
                 Row(verticalAlignment = Alignment.CenterVertically) {

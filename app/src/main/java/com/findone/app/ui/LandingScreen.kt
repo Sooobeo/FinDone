@@ -83,7 +83,7 @@ fun LandingScreen(onContinue: () -> Unit) {
                                 style = MaterialTheme.typography.labelLarge,
                             )
                             Text(
-                                text = "v${BuildConfig.VERSION_NAME} (versionCode ${BuildConfig.VERSION_CODE})",
+                                text = "ver ${BuildConfig.VERSION_CODE} : \"${BuildConfig.RELEASE_SUMMARY}\"",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                             )
