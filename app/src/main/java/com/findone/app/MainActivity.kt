@@ -1,6 +1,8 @@
 package com.findone.app
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.SystemClock
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
@@ -8,6 +10,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -144,7 +147,24 @@ import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashStartedAt = SystemClock.uptimeMillis()
+        val isFreshLauncherStart = savedInstanceState == null &&
+            intent?.action == Intent.ACTION_MAIN &&
+            intent?.hasCategory(Intent.CATEGORY_LAUNCHER) == true
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+        if (isFreshLauncherStart) {
+            splashScreen.setKeepOnScreenCondition {
+                SystemClock.uptimeMillis() - splashStartedAt < SPLASH_MIN_DURATION_MS
+            }
+            splashScreen.setOnExitAnimationListener { provider ->
+                provider.view.animate()
+                    .alpha(0f)
+                    .setDuration(SPLASH_EXIT_FADE_MS)
+                    .withEndAction(provider::remove)
+                    .start()
+            }
+        }
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT),
             navigationBarStyle = SystemBarStyle.auto(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT),
@@ -918,6 +938,9 @@ private fun QuizDomainPicker(
         }
     }
 }
+
+private const val SPLASH_MIN_DURATION_MS = 550L
+private const val SPLASH_EXIT_FADE_MS = 160L
 
 @Composable
 private fun LearningModePicker(

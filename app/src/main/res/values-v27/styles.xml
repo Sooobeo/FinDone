@@ -1,16 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.FinDone" parent="android:style/Theme.Material.NoActionBar">
-        <item name="android:fontFamily">sans</item>
-        <item name="android:windowActionModeOverlay">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
-
     <style name="Theme.FinDone.Starting" parent="Theme.SplashScreen">
         <item name="isLightTheme">false</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
         <item name="windowSplashScreenBackground">@color/findone_splash_background</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_findone</item>
         <item name="windowSplashScreenAnimationDuration">300</item>
