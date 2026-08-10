@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.Star
@@ -81,98 +82,114 @@ fun GlossaryScreen(
     val selectedDomain = vm.domains.firstOrNull { it.id == selectedCategory }
     val checkedCount = visibleTerms.count { termStates[it.id]?.checked == true }
     val bookmarkedCount = allTerms.count { termStates[it.id]?.bookmarked == true }
+    val glossaryListState = rememberLazyListState()
 
-    LazyColumn(
-        modifier = modifier.widthIn(max = 860.dp).fillMaxSize(),
-        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 32.dp),
+    LaunchedEffect(selectedCategory) {
+        glossaryListState.scrollToItem(0)
+    }
+
+    Column(
+        modifier = modifier
+            .widthIn(max = 860.dp)
+            .fillMaxSize()
+            .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 20.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.Top,
-            ) {
-                if (onBack != null) {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            Icons.AutoMirrored.Outlined.ArrowBack,
-                            contentDescription = "이전 페이지로",
-                        )
-                    }
-                    Spacer(Modifier.width(4.dp))
-                }
-                PageHeader(
-                    eyebrow = "GLOSSARY",
-                    title = "금융 용어집",
-                    description = "대단원을 선택해 소주제별 용어를 익히고, 다시 볼 용어에는 별을 표시하세요.",
-                    modifier = Modifier.weight(1f),
-                )
-            }
-        }
-
-        item {
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                item(key = BOOKMARKED_CATEGORY) {
-                    FilterChip(
-                        selected = selectedCategory == BOOKMARKED_CATEGORY,
-                        onClick = { selectedCategory = BOOKMARKED_CATEGORY },
-                        leadingIcon = {
-                            Icon(
-                                if (selectedCategory == BOOKMARKED_CATEGORY) {
-                                    Icons.Filled.Star
-                                } else {
-                                    Icons.Outlined.StarBorder
-                                },
-                                contentDescription = null,
-                                modifier = Modifier.size(18.dp),
-                            )
-                        },
-                        label = { Text("북마크 $bookmarkedCount") },
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.Top,
+        ) {
+            if (onBack != null) {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        Icons.AutoMirrored.Outlined.ArrowBack,
+                        contentDescription = "이전 페이지로",
                     )
                 }
-                items(vm.domains, key = { it.id }) { domain ->
-                    FilterChip(
-                        selected = selectedCategory == domain.id,
-                        onClick = { selectedCategory = domain.id },
-                        label = { Text("${domain.id} · ${domain.name}") },
-                    )
-                }
+                Spacer(Modifier.width(4.dp))
             }
-        }
-
-        item {
-            val scopeName = if (selectedCategory == BOOKMARKED_CATEGORY) {
-                "북마크한 용어"
-            } else {
-                listOfNotNull(selectedDomain?.id, selectedDomain?.name).joinToString(" · ")
-            }
-            SectionTitle(
-                title = scopeName.ifBlank { "용어" },
-                trailing = "$checkedCount / ${visibleTerms.size} 학습",
+            PageHeader(
+                eyebrow = "GLOSSARY",
+                title = "금융 용어집",
+                description = "대단원을 선택해 소주제별 용어를 익히고, 다시 볼 용어에는 별을 표시하세요.",
+                modifier = Modifier.weight(1f),
             )
         }
 
-        if (groupedTerms.isEmpty()) {
-            item {
-                EmptyGlossaryState(
-                    bookmarked = selectedCategory == BOOKMARKED_CATEGORY,
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            item(key = BOOKMARKED_CATEGORY) {
+                FilterChip(
+                    selected = selectedCategory == BOOKMARKED_CATEGORY,
+                    onClick = { selectedCategory = BOOKMARKED_CATEGORY },
+                    leadingIcon = {
+                        Icon(
+                            if (selectedCategory == BOOKMARKED_CATEGORY) {
+                                Icons.Filled.Star
+                            } else {
+                                Icons.Outlined.StarBorder
+                            },
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
+                    },
+                    label = { Text("북마크 $bookmarkedCount") },
                 )
             }
-        } else {
-            items(
-                items = groupedTerms,
-                key = { terms -> terms.first().elementId },
-            ) { terms ->
-                val first = terms.first()
-                val domainName = vm.domains.firstOrNull { it.id == first.domainId }?.name
-                GlossaryElementCard(
-                    domainName = domainName,
-                    terms = terms,
-                    isChecked = { term -> termStates[term.id]?.checked == true },
-                    isBookmarked = { term -> termStates[term.id]?.bookmarked == true },
-                    onCheckedChange = vm::setGlossaryTermChecked,
-                    onBookmarkedChange = vm::setGlossaryTermBookmarked,
+            items(vm.domains, key = { it.id }) { domain ->
+                FilterChip(
+                    selected = selectedCategory == domain.id,
+                    onClick = { selectedCategory = domain.id },
+                    label = { Text("${domain.id} · ${domain.name}") },
                 )
+            }
+        }
+
+        val scopeName = if (selectedCategory == BOOKMARKED_CATEGORY) {
+            "북마크한 용어"
+        } else {
+            listOfNotNull(selectedDomain?.id, selectedDomain?.name).joinToString(" · ")
+        }
+        SectionTitle(
+            title = scopeName.ifBlank { "용어" },
+            trailing = "$checkedCount / ${visibleTerms.size} 학습",
+        )
+
+        OutlinedCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+        ) {
+            if (groupedTerms.isEmpty()) {
+                EmptyGlossaryState(
+                    bookmarked = selectedCategory == BOOKMARKED_CATEGORY,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    state = glossaryListState,
+                    contentPadding = PaddingValues(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    items(
+                        items = groupedTerms,
+                        key = { terms -> terms.first().elementId },
+                    ) { terms ->
+                        val first = terms.first()
+                        val domainName = vm.domains.firstOrNull { it.id == first.domainId }?.name
+                        GlossaryElementCard(
+                            domainName = domainName,
+                            terms = terms,
+                            isChecked = { term -> termStates[term.id]?.checked == true },
+                            isBookmarked = { term -> termStates[term.id]?.bookmarked == true },
+                            onCheckedChange = vm::setGlossaryTermChecked,
+                            onBookmarkedChange = vm::setGlossaryTermBookmarked,
+                        )
+                    }
+                }
             }
         }
     }
@@ -290,11 +307,14 @@ private fun GlossaryTermRow(
 }
 
 @Composable
-private fun EmptyGlossaryState(bookmarked: Boolean) {
+private fun EmptyGlossaryState(
+    bookmarked: Boolean,
+    modifier: Modifier = Modifier,
+) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 42.dp, horizontal = 20.dp),
+        modifier = modifier.fillMaxWidth().padding(vertical = 42.dp, horizontal = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
     ) {
         Icon(
             Icons.Outlined.StarBorder,

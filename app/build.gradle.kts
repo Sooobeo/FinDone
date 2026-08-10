@@ -8,7 +8,7 @@ plugins {
 // exact Git commit. Ordinary/manual builds keep the declared application version.
 val declaredVersionCode = 2
 val declaredVersionName = "0.3.0"
-val declaredReleaseSummary = "학습 주석·용어집·화면 복원 개선"
+val declaredReleaseSummary = "용어집 고정 스크롤 박스 개선"
 val appVersionCode = providers.gradleProperty("findone.versionCode").orNull?.let { value ->
     value.toIntOrNull()?.takeIf { it in 1..2_100_000_000 }
         ?: throw GradleException("findone.versionCode must be an integer from 1 to 2100000000")
