@@ -15,7 +15,6 @@ release.properties
 secrets.properties
 .env
 .env.*
-!admin/.env.example
 *.apk
 *.aab
 *.idsig
