@@ -286,22 +286,22 @@ private fun markdownAccessibilityText(markdown: String): String {
 
 private fun speakLatex(latex: String): String {
     var spoken = latex.trim()
-    val fraction = Regex("""\\frac\{([^{}]+)}\{([^{}]+)}""")
+    val fraction = Regex("""\\frac\{([^{}]+)\}\{([^{}]+)\}""")
     repeat(3) {
         spoken = fraction.replace(spoken) { match ->
             "(${match.groupValues[1]}) 나누기 (${match.groupValues[2]})"
         }
     }
-    spoken = Regex("""\\(?:text|mathrm|operatorname)\{([^{}]*)}""").replace(spoken) { match ->
+    spoken = Regex("""\\(?:text|mathrm|operatorname)\{([^{}]*)\}""").replace(spoken) { match ->
         match.groupValues[1]
     }
-    spoken = Regex("""\\sqrt\{([^{}]+)}""").replace(spoken) { match ->
+    spoken = Regex("""\\sqrt\{([^{}]+)\}""").replace(spoken) { match ->
         "제곱근 (${match.groupValues[1]})"
     }
-    spoken = Regex("""\^\{([^{}]+)}""").replace(spoken) { match ->
+    spoken = Regex("""\^\{([^{}]+)\}""").replace(spoken) { match ->
         " 의 ${match.groupValues[1]} 승 "
     }
-    spoken = Regex("""_\{([^{}]+)}""").replace(spoken) { match ->
+    spoken = Regex("""_\{([^{}]+)\}""").replace(spoken) { match ->
         " 아래첨자 ${match.groupValues[1]} "
     }
     spoken = Regex("""\^([A-Za-z0-9]+)""").replace(spoken) { match ->

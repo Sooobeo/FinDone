@@ -20,6 +20,16 @@ class MarkdownTextTest {
     }
 
     @Test
+    fun `plain text fallback speaks braced latex without regex failures`() {
+        assertEquals(
+            "(a) 나누기 (b) 더하기 제곱근 (x) 의 2 승 아래첨자 i 값",
+            markdownPlainTextFallback(
+                "\$\$\\frac{a}{b} + \\sqrt{x}^{2}_{i} \\mathrm{값}\$\$",
+            ),
+        )
+    }
+
+    @Test
     fun `normalizes standard inline math and preserves native inline math`() {
         val input = "before \$x^2 + y_1\$ and \$\$\\frac{a}{b}\$\$ after"
 

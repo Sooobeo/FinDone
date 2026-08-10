@@ -618,7 +618,7 @@ private val MIXED_SYMBOL_ATOM = Regex(
         "[A-Za-zαβγδμρσλΔΣΠ∑∂][A-Za-z0-9_αβγδμρσλΔΣΠ∑∂]*|" +
         "[0-9]+(?:\\.[0-9]+)?%?)(?![A-Za-z0-9_])",
 )
-private val LATEX_UPRIGHT_GROUP = Regex("""\\mathrm\{([^{}]*)}""")
+private val LATEX_UPRIGHT_GROUP = Regex("""\\mathrm\{([^{}]*)\}""")
 private val LATEX_NAMED_SYMBOL = Regex(
     """\\(?:alpha|beta|gamma|delta|mu|rho|sigma|lambda|Delta|times|div|approx|le|ge|pm|partial|sum|prod)""",
 )
@@ -627,7 +627,7 @@ private val SEMANTIC_BREAK_PREDECESSORS = setOf(
     '(', ',', '[', '{',
 )
 private val REPEATED_TEX_SCRIPT = Regex(
-    """(?:_(?:\{[^{}]*}|[A-Za-z0-9])){2}|(?:\^(?:\{[^{}]*}|[A-Za-z0-9])){2}""",
+    """(?:_(?:\{[^{}]*\}|[A-Za-z0-9])){2}|(?:\^(?:\{[^{}]*\}|[A-Za-z0-9])){2}""",
 )
 private val KNOWN_SYMBOLIC_REWRITES = listOf(
     "(V_PD_P)/(V_FD_F)" to "(V_P×D_P)/(V_F×D_F)",
