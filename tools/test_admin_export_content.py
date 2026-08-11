@@ -32,7 +32,7 @@ class AdminContentExportTest(unittest.TestCase):
         self.assertEqual("ACC-01", fixture[0]["elementId"])
         self.assertEqual("calculation", fixture[0]["mode"])
         self.assertEqual("published", fixture[0]["status"])
-        self.assertEqual("packaged-v5", fixture[0]["updatedAt"])
+        self.assertEqual("packaged-v6", fixture[0]["updatedAt"])
 
         source_fixture = exporter.build_frontend_sources_fixture(snapshot)
         self.assertEqual(174, len(source_fixture))
@@ -63,7 +63,7 @@ class AdminContentExportTest(unittest.TestCase):
                 learning_rows = list(csv.DictReader(stream))
             self.assertEqual(135, len(learning_rows))
             self.assertEqual("회계·재무제표", learning_rows[0]["domain_name"])
-            self.assertIn("왜 중요한가", learning_rows[0]["intuition_markdown"])
+            self.assertIn("회사의 재산", learning_rows[0]["intuition_markdown"])
             self.assertIn("$$", learning_rows[0]["formula_markdown"])
 
 

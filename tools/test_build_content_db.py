@@ -33,14 +33,25 @@ class FormulaMarkdownGeneratorTest(unittest.TestCase):
             generator.formula_clause_markdown("현금 = 부채 + 자본"),
         )
 
-    def test_long_sum_uses_multiple_delimiter_only_blocks(self) -> None:
+    def test_long_sum_stays_in_one_delimiter_only_block(self) -> None:
         source = "X=1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19"
         rendered = generator.formula_clause_markdown(source)
 
-        self.assertGreaterEqual(rendered.count("$$\n"), 2)
+        self.assertEqual(1, rendered.count("$$\n"))
+        self.assertTrue(rendered.startswith("$$\n"))
+        self.assertTrue(rendered.endswith("\n$$"))
         for line in rendered.splitlines():
             if "$$" in line:
                 self.assertEqual("$$", line)
+
+    def test_reviewed_learning_copy_covers_every_element(self) -> None:
+        _, elements, _, _ = generator.parse_spec(generator.DEFAULT_SPEC)
+        copy = generator.load_learning_copy(
+            expected_element_ids=(element.element_id for element in elements)
+        )
+
+        self.assertEqual(135, len(copy))
+        self.assertTrue(all(len(item.uses) >= 2 for item in copy.values()))
 
     def test_repeated_same_base_scripts_are_rejected(self) -> None:
         self.assertIsNone(generator.latex_expression("NBV_at_sale"))

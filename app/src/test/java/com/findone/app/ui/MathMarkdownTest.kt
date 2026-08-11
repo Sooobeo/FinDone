@@ -133,13 +133,14 @@ class MathMarkdownTest {
     }
 
     @Test
-    fun `long formulas use delimiter only block math while short formulas stay inline`() {
+    fun `long formulas stay in one fitted block while short formulas stay inline`() {
         val longFormula = "X=1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19"
         val rendered = safeMathMarkdown(longFormula)
 
         assertTrue(rendered.startsWith("\$\$\n"))
-        assertTrue(rendered.count { it == '$' } >= 8)
-        assertTrue(rendered.contains("\n\$\$\n\n\$\$\n+"))
+        assertTrue(rendered.endsWith("\n\$\$"))
+        assertEquals(4, rendered.count { it == '$' })
+        assertTrue(!rendered.contains("\n\$\$\n\n\$\$\n"))
         assertEquals("\$\$x+1\$\$", safeMathMarkdown("x+1"))
     }
 

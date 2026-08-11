@@ -71,7 +71,8 @@ export async function POST(request: Request) {
     formulaPatch: {
       expression_markdown: element.formulaExpression,
       assumptions_markdown: element.formulaAssumptions,
-      notes_markdown: element.formulaNotes,
+      // Keep the app projection and the concept checklist field in sync.
+      notes_markdown: element.checklist,
     },
   }));
 

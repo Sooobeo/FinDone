@@ -29,15 +29,15 @@ interface ConceptDatabaseProps {
 }
 
 const fieldLabels: Partial<Record<keyof ConceptElement, string>> = {
-  definition: "정의",
-  intuition: "직관 설명",
-  elementScopeNotes: "요소 적용 범위",
-  scopeNotes: "상세 학습 설명",
-  coreRelation: "핵심 관계",
-  formulaExpression: "수식",
-  formulaAssumptions: "적용 가정",
-  formulaNotes: "수식 설명",
-  checklist: "체크리스트",
+  definition: "한 문장 정의",
+  intuition: "쉽게 이해하기",
+  elementScopeNotes: "원본 요소 범위·생성 메모",
+  scopeNotes: "적용 유형",
+  coreRelation: "원본 핵심 관계",
+  formulaExpression: "핵심 공식",
+  formulaAssumptions: "공식 적용 조건",
+  formulaNotes: "공식 보조 설명",
+  checklist: "실무에서 쓰이는 경우",
   sourceLabel: "출처명",
   sourceLocator: "출처 URL·위치",
   specSectionLocator: "원본 명세 위치",
@@ -379,7 +379,7 @@ export function ConceptDatabase({ initialElements, readOnly, viewerMode = false 
                   className={editorTab === tab ? "editor-tab active" : "editor-tab"}
                   onClick={() => setEditorTab(tab)}
                 >
-                  {tab === "concept" ? "개념 설명" : tab === "formula" ? "수식·체크" : "출처"}
+                  {tab === "concept" ? "학습 설명" : tab === "formula" ? "공식·실무" : "출처"}
                 </button>
               ))}
             </div>
@@ -387,22 +387,86 @@ export function ConceptDatabase({ initialElements, readOnly, viewerMode = false 
             <div className="editor-body">
               {editorTab === "concept" ? (
                 <>
-                  <EditorField label="핵심 관계" field="coreRelation" value={draft.coreRelation} onChange={updateField} readOnly={readOnly} />
-                  <EditorField label="정의" field="definition" value={draft.definition} onChange={updateField} tall readOnly={readOnly} />
-                  <EditorField label="직관 설명" field="intuition" value={draft.intuition} onChange={updateField} tall readOnly={readOnly} />
-                  <EditorField label="요소 적용 범위" field="elementScopeNotes" value={draft.elementScopeNotes} onChange={updateField} tall readOnly={readOnly} />
-                  <EditorField label="상세 학습 설명" field="scopeNotes" value={draft.scopeNotes} onChange={updateField} tall readOnly={readOnly} />
+                  <EditorField
+                    label="한 문장 정의"
+                    hint="공식을 반복하지 말고, 이 개념이 무엇인지 한 문장으로 설명합니다."
+                    field="definition"
+                    value={draft.definition}
+                    onChange={updateField}
+                    tall
+                    readOnly={readOnly}
+                  />
+                  <EditorField
+                    label="쉽게 이해하기"
+                    hint="숫자나 실제 상황을 이용해 처음 보는 사람도 방향을 이해할 수 있게 설명합니다."
+                    field="intuition"
+                    value={draft.intuition}
+                    onChange={updateField}
+                    tall
+                    readOnly={readOnly}
+                  />
+                  <EditorField
+                    label="적용 유형 · Markdown"
+                    hint="### 제목 하나가 앱에서 하나의 토글이 됩니다. 공식은 이 영역에 다시 넣지 않습니다."
+                    field="scopeNotes"
+                    value={draft.scopeNotes}
+                    onChange={updateField}
+                    tall
+                    readOnly={readOnly}
+                  />
+                  <EditorField
+                    label="원본 핵심 관계"
+                    hint="콘텐츠 생성·검증에 쓰는 원본 관계입니다. 앱에는 아래 공식 필드가 표시됩니다."
+                    field="coreRelation"
+                    value={draft.coreRelation}
+                    onChange={updateField}
+                    readOnly={readOnly}
+                  />
+                  <EditorField
+                    label="원본 요소 범위·생성 메모"
+                    hint="문항 생성과 원본 추적용 메모이며 학습 화면에는 직접 표시되지 않습니다."
+                    field="elementScopeNotes"
+                    value={draft.elementScopeNotes}
+                    onChange={updateField}
+                    tall
+                    readOnly={readOnly}
+                  />
                 </>
               ) : null}
               {editorTab === "formula" ? (
                 <>
-                  <EditorField label="수식 · Markdown/LaTeX" field="formulaExpression" value={draft.formulaExpression} onChange={updateField} tall mono readOnly={readOnly} />
-                  <EditorField label="적용 가정" field="formulaAssumptions" value={draft.formulaAssumptions} onChange={updateField} tall readOnly={readOnly} />
-                  <EditorField label="수식 설명" field="formulaNotes" value={draft.formulaNotes} onChange={updateField} tall readOnly={readOnly} />
-                  <EditorField label="학습 체크리스트" field="checklist" value={draft.checklist} onChange={updateField} tall readOnly={readOnly} />
+                  <EditorField
+                    label="핵심 공식 · Markdown/LaTeX"
+                    hint="학습 화면에서 공식이 표시되는 유일한 영역입니다. 긴 식도 임의로 여러 식으로 쪼개지 않습니다."
+                    field="formulaExpression"
+                    value={draft.formulaExpression}
+                    onChange={updateField}
+                    tall
+                    mono
+                    readOnly={readOnly}
+                  />
+                  <EditorField
+                    label="공식 적용 조건"
+                    hint="공식 카드 안의 ‘적용 조건’ 토글에서 표시됩니다."
+                    field="formulaAssumptions"
+                    value={draft.formulaAssumptions}
+                    onChange={updateField}
+                    tall
+                    readOnly={readOnly}
+                  />
+                  <EditorField
+                    label="실무에서 쓰이는 경우"
+                    hint="구체적인 업무 장면을 Markdown 목록으로 최소 2개 작성합니다."
+                    field="checklist"
+                    value={draft.checklist}
+                    onChange={updateField}
+                    tall
+                    readOnly={readOnly}
+                  />
                   <div className="render-preview">
-                    <span>앱 미리보기</span>
-                    <p>{textPreview(draft.formulaExpression, 220)}</p>
+                    <span>앱 학습 화면 순서</span>
+                    <p>한 문장 정의 → 쉽게 이해하기 → 핵심 공식 → 변수·항목 뜻 → 적용 유형 → 실무에서 쓰이는 경우</p>
+                    <p><strong>공식 미리보기:</strong> {textPreview(draft.formulaExpression, 180)}</p>
                   </div>
                 </>
               ) : null}
@@ -459,6 +523,7 @@ export function ConceptDatabase({ initialElements, readOnly, viewerMode = false 
 
 interface EditorFieldProps {
   label: string;
+  hint?: string;
   field: keyof ConceptElement;
   value: string;
   onChange: (field: keyof ConceptElement, value: string) => void;
@@ -467,10 +532,11 @@ interface EditorFieldProps {
   readOnly?: boolean;
 }
 
-function EditorField({ label, field, value, onChange, tall, mono, readOnly }: EditorFieldProps) {
+function EditorField({ label, hint, field, value, onChange, tall, mono, readOnly }: EditorFieldProps) {
   return (
     <label className="editor-field">
       <span>{label}</span>
+      {hint ? <small>{hint}</small> : null}
       <textarea
         className={`${tall ? "textarea-tall" : ""} ${mono ? "textarea-mono" : ""}`}
         value={value}

@@ -24,9 +24,10 @@ from typing import Iterable, Sequence
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SPEC = ROOT / "finance_interview_app_final_spec.md"
 DEFAULT_ASSET_DIR = ROOT / "app" / "src" / "main" / "assets"
+LEARNING_COPY_DIR = ROOT / "content" / "learning-copy"
 
 SCHEMA_VERSION = 1
-CONTENT_DB_VERSION = 5
+CONTENT_DB_VERSION = 6
 DOMAIN_ORDER = ("ACC", "CF", "INV", "FI", "DER", "EQV", "IBT")
 EXPECTED_DOMAIN_COUNTS = {
     "ACC": 12,
@@ -196,6 +197,67 @@ class ElementDraft:
     scope_notes: str
     source_ids: tuple[str, ...]
     spec_section_locator: str
+
+
+@dataclass(frozen=True)
+class LearningCopy:
+    definition: str
+    intuition: str
+    uses: tuple[str, ...]
+
+
+def load_learning_copy(
+    directory: Path = LEARNING_COPY_DIR,
+    expected_element_ids: Iterable[str] | None = None,
+) -> dict[str, LearningCopy]:
+    """Load the reviewed, learner-facing copy kept separately from generator notes."""
+    result: dict[str, LearningCopy] = {}
+    files = sorted(directory.glob("*.json"))
+    if not files:
+        raise ValueError(f"No learning-copy JSON files found in {directory}")
+
+    for path in files:
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as error:
+            raise ValueError(f"Could not read learning copy: {path}") from error
+        if not isinstance(payload, dict):
+            raise ValueError(f"Learning-copy file must contain an object: {path}")
+        for element_id, raw_copy in payload.items():
+            if element_id in result:
+                raise ValueError(f"Duplicate learning copy for {element_id}")
+            if not isinstance(raw_copy, dict):
+                raise ValueError(f"Learning copy for {element_id} must be an object")
+            definition = raw_copy.get("definition")
+            intuition = raw_copy.get("intuition")
+            uses = raw_copy.get("uses")
+            if not isinstance(definition, str) or len(definition.strip()) < 36:
+                raise ValueError(f"{element_id} needs a complete definition of at least 36 characters")
+            if not isinstance(intuition, str) or len(intuition.strip()) < 72:
+                raise ValueError(f"{element_id} needs a concrete intuition of at least 72 characters")
+            if (
+                not isinstance(uses, list)
+                or len(uses) < 2
+                or any(not isinstance(item, str) or len(item.strip()) < 20 for item in uses)
+            ):
+                raise ValueError(f"{element_id} needs at least two concrete practical uses")
+            result[element_id] = LearningCopy(
+                definition=definition.strip(),
+                intuition=intuition.strip(),
+                uses=tuple(item.strip() for item in uses),
+            )
+
+    if expected_element_ids is not None:
+        expected = set(expected_element_ids)
+        actual = set(result)
+        missing = sorted(expected - actual)
+        unexpected = sorted(actual - expected)
+        if missing or unexpected:
+            raise ValueError(
+                "Learning-copy coverage differs from the canonical elements: "
+                f"missing={missing[:3]}, unexpected={unexpected[:3]}"
+            )
+    return result
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -843,54 +905,15 @@ def latex_render_weight(latex: str) -> int:
 
 
 def semantic_formula_lines(source: str) -> list[str]:
-    """Split a long top-level sum at operator boundaries without inventing TeX layout syntax."""
-    stack: list[str] = []
-    pairs = {")": "(", "]": "[", "}": "{"}
-    breakpoints: list[int] = []
-    for index, character in enumerate(source):
-        if character in "([{":
-            stack.append(character)
-        elif character in pairs:
-            if stack and stack[-1] == pairs[character]:
-                stack.pop()
-        elif (
-            character in "+-−–—×*"
-            and not stack
-            and index > 0
-            and source[index - 1] not in "=<>≈≤≥^_+-−–—×÷*/(,[{"
-        ):
-            breakpoints.append(index)
-    if not breakpoints:
-        return [source]
-
-    parts = [source[: breakpoints[0]]]
-    parts.extend(source[start:end] for start, end in zip(breakpoints, breakpoints[1:]))
-    parts.append(source[breakpoints[-1] :])
-    lines: list[str] = []
-    current = ""
-    for part in parts:
-        candidate = current + part
-        candidate_latex = latex_expression(candidate)
-        candidate_weight = latex_render_weight(candidate_latex) if candidate_latex else len(candidate)
-        if current and candidate_weight > MAX_BLOCK_LINE_WEIGHT:
-            lines.append(current.strip())
-            current = part
-        else:
-            current = candidate
-    if current.strip():
-        lines.append(current.strip())
-    return lines if len(lines) > 1 else [source]
+    """Keep one semantic equation intact; the Android renderer fits block math to its canvas."""
+    return [source]
 
 
 def math_markdown(source: str, latex: str) -> str:
-    """Choose inline/block layout from transformed TeX and split long sums semantically."""
+    """Choose inline/block layout without breaking an equation at arbitrary operators."""
     if latex_render_weight(latex) <= MAX_INLINE_MATH_WEIGHT:
         return f"$${latex}$$"
-    blocks: list[str] = []
-    for line_source in semantic_formula_lines(source.strip()):
-        line_latex = latex_expression(line_source) or latex
-        blocks.append(f"$$\n{line_latex}\n$$")
-    return "\n\n".join(blocks)
+    return f"$$\n{latex}\n$$"
 
 
 def is_readable_label(value: str) -> bool:
@@ -1015,9 +1038,7 @@ def segmented_formula_markdown(value: str, explicit_segments: Sequence[str]) -> 
 
 def formula_to_markdown(value: str, formula_segments: Sequence[str] = ()) -> str:
     """Render every complete clause as LaTeX or preserve that complete clause as code."""
-    return "### 핵심 식과 관계\n\n" + formula_items_markdown(
-        value, formula_segments=formula_segments
-    )
+    return formula_items_markdown(value, formula_segments=formula_segments)
 
 
 def formula_clause_markdown(value: str, explicit_segments: Sequence[str] = ()) -> str:
@@ -1121,95 +1142,107 @@ def element_formula_items_markdown(element: ElementDraft, indent: str = "") -> s
 
 
 def element_formula_to_markdown(element: ElementDraft) -> str:
-    return "### 핵심 식과 관계\n\n" + element_formula_items_markdown(element)
+    return element_formula_items_markdown(element)
 
 
 def assumption_markdown(element: ElementDraft) -> str:
-    keywords = ("가정", "조건", "단 ", "기준", "기간", "단위")
-    selected = []
+    keywords = ("가정", "조건", "기준", "제외", "포함", "동일")
+    selected: list[str] = []
     for raw_line in element.scope_notes.splitlines():
         safe_line = learning_safe_line(raw_line)
         if not safe_line:
             continue
         cleaned = re.sub(r"^[•-]\s*", "", safe_line)
-        if cleaned and any(keyword in cleaned for keyword in keywords):
-            selected.append(cleaned)
-        if len(selected) == 6:
+        if cleaned.startswith(("개념·수식", "파라미터", "정답", "해설식", "출제 범위")):
+            continue
+        if cleaned.startswith("유형 "):
+            quote_end = max(cleaned.rfind("”"), cleaned.rfind("\""))
+            cleaned = cleaned[quote_end + 1 :].strip() if quote_end >= 0 else ""
+        condition_match = re.search(r"(?:^|[.。]\s*)(단[, ]\s*.+)$", cleaned)
+        explicit_condition = condition_match is not None
+        if condition_match is not None:
+            cleaned = condition_match.group(1).strip()
+        if (
+            cleaned
+            and COMPARISON_RE.search(cleaned) is None
+            and (explicit_condition or any(keyword in cleaned for keyword in keywords))
+        ):
+            selected.append(cleaned.rstrip(".。") + ".")
+        if len(selected) == 4:
             break
-    if not selected:
-        selected = [
-            "식에 넣는 값의 기간·통화·단위가 서로 같은지 확인합니다.",
-            "명목/실질, 세전/세후, 기업가치/지분가치 기준을 섞지 않습니다.",
-        ]
-    return "### 적용 전 가정\n\n" + "\n".join(f"- {item}" for item in selected)
+    for fallback in DOMAIN_CHECKLIST[element.domain_id]:
+        sentence = fallback.rstrip(".。") + "."
+        if sentence not in selected:
+            selected.append(sentence)
+        if len(selected) >= 2:
+            break
+    return "\n".join(f"- {item}" for item in selected)
 
 
-def concept_definition_markdown(element: ElementDraft) -> str:
-    return (
-        "### 한 문장 정의\n\n"
-        f"**{element.title}**의 핵심은 다음 관계를 정확히 이해하고 설명하는 것입니다.\n\n"
-        "**핵심 관계**\n\n"
-        f"{element_formula_items_markdown(element)}"
-    )
+def concept_definition_markdown(copy: LearningCopy) -> str:
+    return copy.definition
 
 
-def concept_intuition_markdown(element: ElementDraft) -> str:
-    safe_scope_lines = [
-        safe_line
-        for line in element.scope_notes.splitlines()
-        if (safe_line := learning_safe_line(line))
-    ]
-    application = next(
-        (
-            re.sub(
-                r"^(유형\s*[A-Z가-힣0-9]*\s*[—-]\s*|출제 범위:\s*)",
-                "",
-                re.sub(r"^[•-]\s*", "", line.strip()),
-            ).strip()
-            for line in safe_scope_lines
-            if line.strip()
-            and "개념·수식" not in line
-        ),
-        f"{element.title}의 정의와 핵심 관계를 실제 금융 자료에 적용하는 상황",
-    )
-    return (
-        "### 왜 중요한가\n\n"
-        f"{DOMAIN_INTUITION[element.domain_id]}\n\n"
-        f"**{element.title}에서 확인할 장면:** {application}\n\n"
-        "### 이 개념을 읽는 순서\n\n"
-        "1. 무엇을 측정하는지 정의합니다.\n"
-        "2. 식의 각 항목과 단위를 확인합니다.\n"
-        "3. 입력값이 변할 때 결과의 방향을 설명합니다.\n"
-        f"4. **{element.title}**을 실제 재무자료나 거래 상황에 적용할 때 생길 예외를 확인합니다.\n\n"
-        "**핵심 관계**\n\n"
-        f"{element_formula_items_markdown(element)}"
-    )
+def concept_intuition_markdown(copy: LearningCopy) -> str:
+    return copy.intuition
+
+
+def _application_section_body(element: ElementDraft, label: str, value: str) -> str:
+    body = value.strip()
+    if not body or contains_authoring_marker(body) or "같은 생성 데이터" in body:
+        return (
+            f"{label}에서는 {element.title}의 입력값과 기준을 먼저 확인한 뒤, "
+            "계산 또는 판단 결과가 무엇을 뜻하는지 한 문장으로 설명합니다."
+        )
+    return body
+
+
+def _type_sections(element: ElementDraft, line: str) -> list[tuple[str, str]]:
+    """Extract learner-facing type labels while dropping generator parameters and answers."""
+    candidate = re.sub(r"^[•-]\s*", "", line.strip())
+    if not candidate.startswith("유형 "):
+        return []
+    heading_part, separator, body = candidate.partition(":")
+    if not separator:
+        body = ""
+    parts = re.split(r"\s*/\s*(?=유형\s+)", heading_part)
+    sections: list[tuple[str, str]] = []
+    for part in parts:
+        match = re.match(r"유형\s+([^—–-]+?)\s*[—–-]\s*(.+)$", part.strip())
+        if match is None:
+            continue
+        type_name, label = (item.strip() for item in match.groups())
+        title = f"유형 {type_name} · {label}"
+        sections.append((title, _application_section_body(element, label, body)))
+    return sections
 
 
 def learning_notes_markdown(element: ElementDraft) -> str:
-    learning_lines = []
-    for line in element.scope_notes.splitlines():
-        safe_line = learning_safe_line(line)
-        if safe_line:
-            learning_lines.append(safe_line)
-    return (
-        "**핵심 관계**\n\n"
-        f"{element_formula_items_markdown(element)}\n\n"
-        + scope_to_markdown("\n".join(learning_lines))
-    )
+    sections: list[tuple[str, str]] = []
+    for raw_line in element.scope_notes.splitlines():
+        safe_line = learning_safe_line(raw_line)
+        if not safe_line:
+            continue
+        sections.extend(_type_sections(element, safe_line))
+        candidate = re.sub(r"^[•-]\s*", "", safe_line.strip())
+        if candidate.startswith("출제 범위:"):
+            body = candidate.split(":", 1)[1].strip()
+            sections.append(
+                ("기본 적용", _application_section_body(element, "기본 적용", body))
+            )
+
+    if not sections:
+        sections.append(
+            (
+                "기본 적용",
+                f"{element.title}의 입력값과 기준을 확인하고, 계산 또는 판단 결과를 실제 상황의 언어로 해석합니다.",
+            )
+        )
+    return "\n\n".join(f"### {title}\n\n{body}" for title, body in sections)
 
 
-def checklist_markdown(element: ElementDraft) -> str:
-    domain_items = DOMAIN_CHECKLIST[element.domain_id]
-    return (
-        f"- **{element.title}**을 한 문장으로 정의한다\n"
-        + "- **핵심 관계의 각 항목과 방향을 설명한다**\n"
-        + element_formula_items_markdown(element, indent="  ")
-        + "\n"
-        + "\n".join(f"- {item}" for item in domain_items)
-        + "\n- 공식의 결과를 숫자뿐 아니라 한 문장으로 해석한다"
-        + "\n- 흔한 기준 불일치나 이중계산 가능성을 마지막에 점검한다"
-    )
+def practical_uses_markdown(copy: LearningCopy) -> str:
+    return "\n".join(f"- {item}" for item in copy.uses)
 
 
 def markdown_links(value: str) -> list[tuple[str, str]]:
@@ -1627,8 +1660,12 @@ def validate_formula_rendering(elements: Sequence[ElementDraft]) -> None:
 
     long_formula = "X=1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19"
     rendered_long_formula = formula_clause_markdown(long_formula)
-    if rendered_long_formula.count("$$\n") < 2 or "\n$$" not in rendered_long_formula:
-        raise ValueError("Long formula was not split into delimiter-only semantic blocks")
+    if (
+        rendered_long_formula.count("$$\n") != 1
+        or not rendered_long_formula.startswith("$$\n")
+        or not rendered_long_formula.endswith("\n$$")
+    ):
+        raise ValueError("Long formula was not kept in one delimiter-only block")
     if formula_items_markdown(long_formula) != rendered_long_formula:
         raise ValueError("Long formula block delimiter was prefixed as a list item")
     if formula_items_markdown("X=1") != "- $$X=1$$":
@@ -1878,6 +1915,7 @@ def build_database(
     domains: Sequence[DomainDraft],
     elements: Sequence[ElementDraft],
     sources: dict[str, SourceDraft],
+    learning_copy: dict[str, LearningCopy],
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     file_descriptor, temporary_name = tempfile.mkstemp(
@@ -1945,16 +1983,17 @@ def build_database(
                 key=lambda element: (domain_display_order[element.domain_id], element.number),
             )
             for display_order, element in enumerate(ordered_elements):
+                copy = learning_copy[element.element_id]
                 primary_source = sources[element.source_ids[0]]
                 source_ids_json = json.dumps(
                     element.source_ids, ensure_ascii=False, separators=(",", ":")
                 )
-                definition_markdown = concept_definition_markdown(element)
-                intuition_markdown = concept_intuition_markdown(element)
+                definition_markdown = concept_definition_markdown(copy)
+                intuition_markdown = concept_intuition_markdown(copy)
                 learning_notes = learning_notes_markdown(element)
                 formula_markdown = element_formula_to_markdown(element)
                 assumptions_markdown = assumption_markdown(element)
-                checklist = checklist_markdown(element)
+                practical_uses = practical_uses_markdown(copy)
                 database.execute(
                     """
                     INSERT INTO elements(
@@ -2007,7 +2046,7 @@ def build_database(
                         element.title,
                         formula_markdown,
                         assumptions_markdown,
-                        checklist,
+                        practical_uses,
                         source_ids_json,
                     ),
                 )
@@ -2031,7 +2070,7 @@ def build_database(
                         learning_notes,
                         formula_markdown,
                         assumptions_markdown,
-                        checklist,
+                        practical_uses,
                     )
                 )
                 database.execute(
@@ -2113,23 +2152,26 @@ def validate_database(path: Path) -> dict[str, int]:
             raise ValueError(
                 f"Domain element counts differ: {actual_domain_counts}"
             )
-        thin_cards = database.execute(
+        malformed_learning_structure = database.execute(
             """SELECT e.element_id FROM elements e
                JOIN concept_cards c ON c.element_id = e.element_id
                JOIN formula_cards f ON f.element_id = e.element_id
-               WHERE c.definition = e.core_relation
-                   OR c.intuition NOT LIKE '%왜 중요한가%'
-                   OR c.scope_notes NOT LIKE '%핵심 관계%'
-                   OR c.scope_notes LIKE '### 적용·연습 범위%'
-                   OR f.expression NOT LIKE '%핵심 식과 관계%'
-                   OR f.notes NOT LIKE '%핵심 관계%'
-                   OR f.notes LIKE '### 학습 체크리스트%'"""
+               WHERE length(trim(c.definition)) < 36
+                   OR length(trim(c.intuition)) < 72
+                   OR c.intuition LIKE '%이 개념을 읽는 순서%'
+                   OR c.scope_notes NOT LIKE '### %'
+                   OR f.expression LIKE '### %'
+                   OR f.assumptions LIKE '### %'
+                   OR f.notes NOT LIKE '- %'"""
         ).fetchall()
-        if thin_cards:
-            raise ValueError(f"Learning cards are not expanded Markdown: {thin_cards[:3]}")
+        if malformed_learning_structure:
+            raise ValueError(
+                "Learning cards do not follow the six-part learner structure: "
+                f"{malformed_learning_structure[:3]}"
+            )
         visible_field_names = (
             "definition", "intuition", "learning_scope",
-            "formula", "assumptions", "checklist",
+            "formula", "assumptions", "practical_uses",
         )
         visible_rows = database.execute(
             """SELECT e.element_id, c.definition, c.intuition, c.scope_notes,
@@ -2148,7 +2190,10 @@ def validate_database(path: Path) -> dict[str, int]:
         oversized_inline_math: list[tuple[str, str, int]] = []
         visible_code_spans: list[tuple[str, str, str]] = []
         merged_product_math: list[tuple[str, str, str]] = []
-        redundant_outer_headings: list[tuple[str, str]] = []
+        misplaced_headings: list[tuple[str, str]] = []
+        formula_duplications: list[tuple[str, str]] = []
+        weak_application_sections: list[str] = []
+        weak_practical_uses: list[str] = []
         distinct_visible_values = {field: set() for field in visible_field_names}
         for row in visible_rows:
             element_id = row[0]
@@ -2179,14 +2224,21 @@ def validate_database(path: Path) -> dict[str, int]:
                 for code_match in MARKDOWN_CODE_SPAN_RE.finditer(value):
                     code_body = code_match.group("body")
                     visible_code_spans.append((element_id, field_name, code_body[:80]))
-                if (
-                    field_name == "learning_scope"
-                    and value.lstrip().startswith("### 적용·연습 범위")
-                ) or (
-                    field_name == "checklist"
-                    and value.lstrip().startswith("### 학습 체크리스트")
-                ):
-                    redundant_outer_headings.append((element_id, field_name))
+                if field_name == "learning_scope":
+                    if not value.lstrip().startswith("### "):
+                        misplaced_headings.append((element_id, field_name))
+                    if len(re.findall(r"(?m)^###\s+\S", value)) < 1:
+                        weak_application_sections.append(element_id)
+                elif value.lstrip().startswith("### "):
+                    misplaced_headings.append((element_id, field_name))
+                if field_name in {
+                    "definition", "intuition", "learning_scope", "practical_uses"
+                } and "$$" in value:
+                    formula_duplications.append((element_id, field_name))
+                if field_name == "practical_uses" and len(
+                    re.findall(r"(?m)^-\s+\S", value)
+                ) < 2:
+                    weak_practical_uses.append(element_id)
                 distinct_visible_values[field_name].add(value)
                 leaked_marker = next(
                     (
@@ -2233,16 +2285,31 @@ def validate_database(path: Path) -> dict[str, int]:
                 "Implicit products were merged into upright identifiers: "
                 f"{merged_product_math[:3]}"
             )
-        if redundant_outer_headings:
-            raise ValueError(f"Redundant learning-card headings remain: {redundant_outer_headings[:3]}")
+        if misplaced_headings:
+            raise ValueError(f"Learning-card headings are misplaced: {misplaced_headings[:3]}")
+        if formula_duplications:
+            raise ValueError(
+                "A formula is repeated outside the dedicated formula card: "
+                f"{formula_duplications[:3]}"
+            )
+        if weak_application_sections:
+            raise ValueError(
+                "Application content is not segmented into toggle sections: "
+                f"{weak_application_sections[:3]}"
+            )
+        if weak_practical_uses:
+            raise ValueError(
+                "Practical-use content needs at least two list items: "
+                f"{weak_practical_uses[:3]}"
+            )
 
         uniqueness_floors = {
             "definition": 135,
             "intuition": 135,
             "learning_scope": 135,
             "formula": 135,
-            "assumptions": 25,
-            "checklist": 135,
+            "assumptions": 7,
+            "practical_uses": 135,
         }
         uniqueness_counts = {
             field: len(values) for field, values in distinct_visible_values.items()
@@ -2270,34 +2337,6 @@ def validate_database(path: Path) -> dict[str, int]:
             raise ValueError(
                 "Formula cards contain code-span formula fallbacks: "
                 f"{formula_code_fallbacks[:3]}"
-            )
-        relation_card_rows = database.execute(
-            """SELECT e.element_id, f.expression, c.definition, c.intuition,
-                      c.scope_notes, f.notes
-               FROM elements e
-               JOIN concept_cards c USING(element_id)
-               JOIN formula_cards f USING(element_id)"""
-        ).fetchall()
-        relation_rendering_mismatches = []
-        for element_id, expression, definition, intuition, learning_scope, checklist in relation_card_rows:
-            rendered_relation = expression.split("\n\n", 1)[-1]
-            normalized_relation = "\n".join(
-                line.strip() for line in rendered_relation.splitlines()
-            )
-            normalized_checklist = "\n".join(
-                line.strip() for line in checklist.splitlines()
-            )
-            if (
-                rendered_relation not in definition
-                or rendered_relation not in intuition
-                or rendered_relation not in learning_scope
-                or normalized_relation not in normalized_checklist
-            ):
-                relation_rendering_mismatches.append(element_id)
-        if relation_rendering_mismatches:
-            raise ValueError(
-                "Core relations are not rendered safely in every learning card: "
-                f"{relation_rendering_mismatches[:3]}"
             )
         latex_card_count = sum("$$" in expression for _, expression in formula_rows)
         if latex_card_count != 135:
@@ -2412,6 +2451,9 @@ def parse_spec(spec_path: Path) -> tuple[
 
 def build(spec_path: Path, asset_dir: Path) -> dict[str, object]:
     domains, elements, sources, spec_sha256 = parse_spec(spec_path)
+    learning_copy = load_learning_copy(
+        expected_element_ids=(element.element_id for element in elements)
+    )
     database_path = asset_dir / "content.sqlite3"
     manifest_path = asset_dir / "content-manifest.json"
     build_database(
@@ -2421,6 +2463,7 @@ def build(spec_path: Path, asset_dir: Path) -> dict[str, object]:
         domains,
         elements,
         sources,
+        learning_copy,
     )
     row_counts = validate_database(database_path)
     return write_manifest(

@@ -1,7 +1,7 @@
 export const packagedContentInfo = {
-  version: 5,
-  byteSize: 2_211_840,
-  sha256: "26bdc94c193ee9e559ff763275e98f64a46a95f7e244c9c085995c60add084df",
+  version: 6,
+  byteSize: 921_600,
+  sha256: "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198",
   elementCount: 135,
   domainCount: 7,
   sourceCount: 174,

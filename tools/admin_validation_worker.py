@@ -34,7 +34,7 @@ from tools.admin_import_supabase import SupabaseImportError, normalize_supabase_
 VALIDATOR_NAME = "findone-content-validator"
 # This is the validator contract queued by the current Admin workflow route.
 # A mismatched run is failed instead of being stamped with misleading metadata.
-VALIDATOR_VERSION = "admin-v1"
+VALIDATOR_VERSION = "admin-v2"
 CLAIM_RPC = "claim_ingestion_job"
 COMPLETE_RPC = "complete_content_validation_job"
 FAIL_RPC = "fail_ingestion_job"
@@ -801,6 +801,41 @@ def _validate_concept(collector: _Collector, snapshot: Mapping[str, Any]) -> str
     _validate_glossary_terms(collector, glossary_terms)
     for name, value in markdown_values.items():
         _validate_markdown(collector, f"snapshot.{name}", value)
+    definition = markdown_values["definition_markdown"]
+    intuition = markdown_values["intuition_markdown"]
+    learning_notes = markdown_values["learning_notes_markdown"]
+    practical_uses = markdown_values["checklist_markdown"]
+    collector.check(
+        isinstance(definition, str) and len(definition.strip()) >= 36 and "$$" not in definition,
+        code="learning_definition_quality",
+        field_path="snapshot.definition_markdown",
+        message="definition must be a complete formula-free sentence of at least 36 characters",
+    )
+    collector.check(
+        isinstance(intuition, str)
+        and len(intuition.strip()) >= 72
+        and "$$" not in intuition
+        and "이 개념을 읽는 순서" not in intuition,
+        code="learning_intuition_quality",
+        field_path="snapshot.intuition_markdown",
+        message="intuition must explain this element concretely without generic reading-order copy or formulas",
+    )
+    collector.check(
+        isinstance(learning_notes, str)
+        and re.search(r"(?m)^###\s+\S", learning_notes) is not None
+        and "$$" not in learning_notes,
+        code="learning_application_sections",
+        field_path="snapshot.learning_notes_markdown",
+        message="application notes must use ### toggle headings and must not repeat the formula",
+    )
+    collector.check(
+        isinstance(practical_uses, str)
+        and len(re.findall(r"(?m)^\s*-\s+\S", practical_uses)) >= 2
+        and "$$" not in practical_uses,
+        code="learning_practical_uses",
+        field_path="snapshot.checklist_markdown",
+        message="practical uses must contain at least two concrete formula-free list items",
+    )
     return entity_id
 
 
@@ -867,6 +902,22 @@ def _validate_formula(collector: _Collector, snapshot: Mapping[str, Any]) -> str
     _require_bool(collector, snapshot, "is_primary")
     for name, value in markdown_values.items():
         _validate_markdown(collector, f"snapshot.{name}", value)
+    expression = markdown_values["expression_markdown"]
+    notes = markdown_values["notes_markdown"]
+    collector.check(
+        isinstance(expression, str) and "$$" in expression and not expression.lstrip().startswith("### "),
+        code="formula_dedicated_card",
+        field_path="snapshot.expression_markdown",
+        message="the dedicated formula field must contain rendered LaTeX without a redundant outer heading",
+    )
+    collector.check(
+        isinstance(notes, str)
+        and len(re.findall(r"(?m)^\s*-\s+\S", notes)) >= 2
+        and "$$" not in notes,
+        code="formula_practical_uses_projection",
+        field_path="snapshot.notes_markdown",
+        message="formula notes must mirror the app's practical-use list without repeating the formula",
+    )
     return entity_id
 
 

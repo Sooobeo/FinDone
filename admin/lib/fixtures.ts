@@ -108,7 +108,7 @@ export const validationIssues: ValidationIssue[] = [
 
 export const releaseItems: ReleaseItem[] = [
   {
-    version: "content-v5",
+    version: `content-v${packagedContentInfo.version}`,
     status: "published",
     changes: conceptElements.length,
     elements: conceptElements.length,
@@ -118,7 +118,7 @@ export const releaseItems: ReleaseItem[] = [
     author: "패키지 가져오기",
   },
   {
-    version: "content-v6-draft",
+    version: `content-v${packagedContentInfo.version + 1}-draft`,
     status: "draft",
     changes: 0,
     elements: conceptElements.length,

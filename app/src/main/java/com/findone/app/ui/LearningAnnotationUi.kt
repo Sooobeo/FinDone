@@ -299,11 +299,12 @@ private fun com.findone.app.data.TextAnnotationStyle.displayName(): String = whe
 }
 
 private fun String.sectionName(): String = when (this) {
-    "definition" -> "핵심 개념"
-    "intuition" -> "직관·실무"
-    "formula" -> "공식·가정"
-    "formula_variables" -> "변수 설명"
-    "learning_notes" -> "상세 범위"
-    "checklist" -> "체크리스트"
-    else -> this
+    "definition" -> "한 문장 정의"
+    "intuition" -> "쉽게 이해하기"
+    "formula" -> "핵심 공식"
+    "formula_assumptions" -> "공식 적용 조건"
+    "formula_variables" -> "변수·항목 뜻"
+    "learning_notes" -> "적용 유형"
+    "checklist" -> "실무 사용 사례"
+    else -> if (startsWith("learning_notes_")) "적용 유형" else this
 }

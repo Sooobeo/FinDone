@@ -31,7 +31,7 @@ const fieldNames: Record<string, string> = {
   definition_markdown: "정의",
   intuition_markdown: "직관 설명",
   learning_notes_markdown: "상세 학습 설명",
-  checklist_markdown: "체크리스트",
+  checklist_markdown: "실무 사용 사례",
   expression_markdown: "수식",
   assumptions_markdown: "수식 가정",
   notes_markdown: "수식 설명",

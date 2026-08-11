@@ -124,6 +124,22 @@ class LearningTextToolsTest {
     }
 
     @Test
+    fun `every packaged variable symbol can render as latex`() {
+        val fallbacks = loadPackagedFormulaElements().flatMap { element ->
+            formulaVariables(element).mapNotNull { variable ->
+                val rendered = safeMathMarkdown(variable.symbol)
+                if ("\$\$" in rendered && '`' !in rendered) null
+                else "${element.id}:${variable.symbol} -> $rendered"
+            }
+        }
+
+        assertTrue(
+            "Formula-variable symbols fell back to code or plain text:\n${fallbacks.joinToString("\n")}",
+            fallbacks.isEmpty(),
+        )
+    }
+
+    @Test
     fun `filters functions operators prose and units from formula variables`() {
         val symbols = formulaVariables(
             element(

@@ -8,7 +8,7 @@ plugins {
 // exact Git commit. Ordinary/manual builds keep the declared application version.
 val declaredVersionCode = 2
 val declaredVersionName = "0.3.0"
-val declaredReleaseSummary = "시작 화면·용어집 스크롤 개선"
+val declaredReleaseSummary = "학습 설명·공식·적용 유형 UI 개편"
 val contentReleaseEndpoint = (
     providers.gradleProperty("findone.contentReleaseEndpoint").orNull
         ?: System.getenv("FINDONE_CONTENT_RELEASE_ENDPOINT")

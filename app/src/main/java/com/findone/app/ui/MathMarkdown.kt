@@ -149,9 +149,7 @@ private fun hasUnsafeTopLevelPunctuation(value: String): Boolean {
 private fun latexMarkdown(value: String): String {
     val latex = toLatex(value)
     if (latexRenderWeight(latex) <= MAX_INLINE_MATH_WEIGHT) return "\$\$$latex\$\$"
-    return semanticFormulaLines(value).joinToString("\n\n") { lineSource ->
-        "\$\$\n${toLatex(lineSource)}\n\$\$"
-    }
+    return "\$\$\n$latex\n\$\$"
 }
 
 /** Estimate visible width from transformed TeX instead of counting unrelated source characters. */
@@ -161,47 +159,6 @@ private fun latexRenderWeight(latex: String): Int {
         .replace("\\%", "%")
         .replace("\\&", "&")
     return visible.count { character -> !character.isWhitespace() && character !in "{}" }
-}
-
-/** Split a long top-level sum at semantic operator boundaries into independent block spans. */
-private fun semanticFormulaLines(source: String): List<String> {
-    val stack = ArrayDeque<Char>()
-    val breakpoints = mutableListOf<Int>()
-    source.forEachIndexed { index, character ->
-        when (character) {
-            '(', '[', '{' -> stack.addLast(character)
-            ')' -> if (stack.lastOrNull() == '(') stack.removeLast()
-            ']' -> if (stack.lastOrNull() == '[') stack.removeLast()
-            '}' -> if (stack.lastOrNull() == '{') stack.removeLast()
-            '+', '-', '−', '–', '—', '×', '*' -> if (
-                stack.isEmpty() &&
-                index > 0 &&
-                source[index - 1] !in SEMANTIC_BREAK_PREDECESSORS
-            ) {
-                breakpoints += index
-            }
-        }
-    }
-    if (breakpoints.isEmpty()) return listOf(source)
-
-    val parts = buildList {
-        add(source.substring(0, breakpoints.first()))
-        breakpoints.zipWithNext().forEach { (start, end) -> add(source.substring(start, end)) }
-        add(source.substring(breakpoints.last()))
-    }
-    val lines = mutableListOf<String>()
-    var current = ""
-    parts.forEach { part ->
-        val candidate = current + part
-        if (current.isNotEmpty() && latexRenderWeight(toLatex(candidate)) > MAX_BLOCK_LINE_WEIGHT) {
-            lines += current.trim()
-            current = part
-        } else {
-            current = candidate
-        }
-    }
-    current.trim().takeIf(String::isNotEmpty)?.let(lines::add)
-    return if (lines.size > 1) lines else listOf(source)
 }
 
 private fun toLatex(value: String): String {
@@ -607,7 +564,6 @@ private val ROOT_BASE_TOKEN = Regex(
 private const val SINGLE_DOLLAR = "\$"
 private const val DOUBLE_DOLLAR = "\$\$"
 private const val MAX_INLINE_MATH_WEIGHT = 40
-private const val MAX_BLOCK_LINE_WEIGHT = 40
 private val TERMINAL_PUNCTUATION = setOf('.', '!', '?', '。')
 private val LATEX_FUNCTIONS = setOf("max", "min", "ln", "log")
 private val LABEL_PUNCTUATION = setOf('_', '-', '–', '—', '/', '&', '(', ')', '.', ',')
@@ -621,10 +577,6 @@ private val MIXED_SYMBOL_ATOM = Regex(
 private val LATEX_UPRIGHT_GROUP = Regex("""\\mathrm\{([^{}]*)\}""")
 private val LATEX_NAMED_SYMBOL = Regex(
     """\\(?:alpha|beta|gamma|delta|mu|rho|sigma|lambda|Delta|times|div|approx|le|ge|pm|partial|sum|prod)""",
-)
-private val SEMANTIC_BREAK_PREDECESSORS = setOf(
-    '=', '<', '>', '≈', '≤', '≥', '^', '_', '+', '-', '−', '–', '—', '×', '÷', '*', '/',
-    '(', ',', '[', '{',
 )
 private val REPEATED_TEX_SCRIPT = Regex(
     """(?:_(?:\{[^{}]*\}|[A-Za-z0-9])){2}|(?:\^(?:\{[^{}]*\}|[A-Za-z0-9])){2}""",

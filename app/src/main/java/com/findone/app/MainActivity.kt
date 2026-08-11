@@ -12,6 +12,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.selection.toggleable
@@ -136,6 +137,7 @@ import com.findone.app.ui.LearningAnnotationManager
 import com.findone.app.ui.domainAccent
 import com.findone.app.ui.formulaVariables
 import com.findone.app.ui.learningElementSummary
+import com.findone.app.ui.learningSections
 import com.findone.app.ui.safeMathMarkdown
 import com.findone.app.ui.theme.FinDoneTheme
 import kotlinx.coroutines.launch
@@ -622,7 +624,7 @@ private fun ElementDetailScreen(vm: AppViewModel) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Outlined.AutoStories, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimaryContainer)
                         Spacer(Modifier.width(8.dp))
-                        Text("핵심 개념", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                        Text("한 문장 정의", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
                     }
                     LearningAnnotationText(
                         vm = vm,
@@ -635,22 +637,13 @@ private fun ElementDetailScreen(vm: AppViewModel) {
             }
         }
         item {
-            LearningMarkdownCard(vm, "intuition", "직관과 실무 연결", element.intuitionMarkdown)
+            LearningMarkdownCard(vm, "intuition", "쉽게 이해하기", element.intuitionMarkdown)
         }
-        item {
-            LearningMarkdownCard(
-                vm = vm,
-                sectionKey = "formula",
-                title = "공식·가정",
-                markdown = "${element.formulaMarkdown}\n\n${element.assumptionsMarkdown}",
-            )
-        }
+        item { FormulaCard(vm, element) }
         item { FormulaVariablesCard(vm, element) }
+        item { ApplicationTypesCard(vm, element) }
         item {
-            LearningMarkdownCard(vm, "learning_notes", "적용 문제와 상세 범위", element.learningNotesMarkdown)
-        }
-        item {
-            LearningMarkdownCard(vm, "checklist", "학습 체크리스트", element.checklistMarkdown)
+            LearningMarkdownCard(vm, "checklist", "실무에서 쓰이는 경우", element.checklistMarkdown)
         }
         item(key = "saved-annotations-${element.id}") {
             LearningAnnotationManager(
@@ -1169,6 +1162,109 @@ private fun LearningMarkdownCard(
 }
 
 @Composable
+private fun FormulaCard(vm: AppViewModel, element: ContentElement) {
+    if (element.formulaMarkdown.isBlank()) return
+    var assumptionsExpanded by rememberSaveable(element.id) { mutableStateOf(false) }
+    OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(18.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Text("핵심 공식", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            LearningAnnotationText(
+                vm = vm,
+                sectionKey = "formula",
+                markdown = element.formulaMarkdown,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            if (element.assumptionsMarkdown.isNotBlank()) {
+                HorizontalDivider()
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { assumptionsExpanded = !assumptionsExpanded }
+                        .padding(vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        "적용 조건",
+                        modifier = Modifier.weight(1f),
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Icon(
+                        if (assumptionsExpanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
+                        contentDescription = if (assumptionsExpanded) "적용 조건 접기" else "적용 조건 펼치기",
+                    )
+                }
+                if (assumptionsExpanded) {
+                    LearningAnnotationText(
+                        vm = vm,
+                        sectionKey = "formula_assumptions",
+                        markdown = element.assumptionsMarkdown,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ApplicationTypesCard(vm: AppViewModel, element: ContentElement) {
+    val sections = remember(element.id, element.learningNotesMarkdown) {
+        learningSections(element.learningNotesMarkdown)
+    }
+    if (sections.isEmpty()) return
+    var expandedIndex by rememberSaveable(element.id) { mutableStateOf(0) }
+    OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(horizontal = 18.dp, vertical = 14.dp)) {
+            Text("적용 유형", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(
+                "유형을 눌러 문제에서 무엇을 판단해야 하는지 확인하세요.",
+                modifier = Modifier.padding(top = 4.dp, bottom = 8.dp),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            sections.forEachIndexed { index, section ->
+                if (index > 0) HorizontalDivider()
+                val expanded = expandedIndex == index
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { expandedIndex = if (expanded) -1 else index }
+                        .padding(vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        section.title,
+                        modifier = Modifier.weight(1f),
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Icon(
+                        if (expanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
+                        contentDescription = if (expanded) "${section.title} 접기" else "${section.title} 펼치기",
+                    )
+                }
+                if (expanded) {
+                    LearningAnnotationText(
+                        vm = vm,
+                        sectionKey = "learning_notes_$index",
+                        markdown = section.markdown,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Spacer(Modifier.height(12.dp))
+                }
+            }
+        }
+    }
+}
+
+@Composable
 private fun LearningAnnotationText(
     vm: AppViewModel,
     sectionKey: String,
@@ -1205,7 +1301,7 @@ private fun FormulaVariablesCard(vm: AppViewModel, element: ContentElement) {
     if (variables.isEmpty()) return
     val variableMarkdown = remember(variables) {
         variables.joinToString("\n\n") { variable ->
-            "- `${variable.symbol}` — ${variable.meaning}"
+            "- ${safeMathMarkdown(variable.symbol)} — ${variable.meaning}"
         }
     }
     OutlinedCard(modifier = Modifier.fillMaxWidth()) {
@@ -1214,12 +1310,12 @@ private fun FormulaVariablesCard(vm: AppViewModel, element: ContentElement) {
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             Text(
-                "식의 변수·항목 의미",
+                "변수·항목 뜻",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
             )
             Text(
-                "위 식에 등장하는 모든 기호를 같은 기간·통화·단위 기준으로 맞춰 읽으세요.",
+                "기호 자체보다 무엇을 측정하는 값인지 먼저 확인하세요.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

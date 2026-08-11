@@ -26,13 +26,13 @@ function conceptPlaceholder(
     mode: "concept",
     coreRelation,
     definition,
-    intuition: "복잡한 개념을 이해하기 쉬운 말로 풀어 쓰는 영역입니다.",
-    elementScopeNotes: "이 학습요소가 다루는 범위와 다루지 않는 범위를 구분합니다.",
-    scopeNotes: "앱의 학습 화면에 표시될 상세 설명과 예시가 들어갑니다.",
-    formulaExpression: "수식이 필요한 요소에는 Markdown/LaTeX 표현이 들어갑니다.",
-    formulaAssumptions: "수식을 적용할 수 있는 조건과 가정을 함께 기록합니다.",
-    formulaNotes: "변수의 의미와 계산 순서를 설명하는 영역입니다.",
-    checklist: "학습 후 확인해야 할 핵심 포인트를 목록으로 관리합니다.",
+    intuition: "구체적인 상황을 통해 개념을 쉽게 이해하도록 설명하는 영역입니다.",
+    elementScopeNotes: "문항 생성과 원본 추적에 쓰이는 관리용 범위 메모입니다.",
+    scopeNotes: "앱에서 유형별 토글로 표시될 적용 장면과 문제 유형을 관리합니다.",
+    formulaExpression: "앱에서 한 번만 표시되는 Markdown/LaTeX 핵심 공식입니다.",
+    formulaAssumptions: "공식 카드 안의 토글로 표시될 적용 조건입니다.",
+    formulaNotes: "공식과 관련된 내부 보조 설명을 관리하는 영역입니다.",
+    checklist: "이 개념이 실제 업무에서 쓰이는 구체적인 경우를 목록으로 관리합니다.",
     sourceLabel: "근거 자료의 표시 이름이 들어갑니다.",
     sourceLocator: "문서 페이지·절 또는 공개 URL 위치를 기록합니다.",
     specSectionLocator: "원본 명세에서 대응하는 위치를 기록합니다.",
@@ -47,7 +47,7 @@ function conceptPlaceholder(
 export const viewerConceptElements: ConceptElement[] = [
   conceptPlaceholder(1, "기본 식별 정보", "요소 ID와 분야로 학습 단위를 구분합니다.", "표의 ID, 분야, 표시 순서와 문제 유형이 이 영역에 들어갑니다."),
   conceptPlaceholder(2, "학습 설명", "제목·정의·직관·상세 설명을 한 요소로 묶습니다.", "사용자가 앱에서 읽는 핵심 관계와 학습 본문의 구성 방식을 설명합니다.", { status: "approved" }),
-  conceptPlaceholder(3, "수식과 체크리스트", "수식·가정·변수 설명을 함께 관리합니다.", "계산형 요소의 표현과 학습 후 확인할 체크리스트가 들어갑니다.", { mode: "calculation", status: "reviewed" }),
+  conceptPlaceholder(3, "공식과 실무 사례", "핵심 공식·적용 조건·변수 설명을 함께 관리합니다.", "계산형 요소의 표현과 실제 업무에서 쓰이는 경우가 들어갑니다.", { mode: "calculation", status: "reviewed" }),
   conceptPlaceholder(4, "근거와 품질 상태", "출처 위치와 revision 상태를 연결합니다.", "근거 자료, 자동 검증 이슈와 승인·배포 상태를 확인하는 영역입니다.", { status: "draft", issueCount: 1 }),
 ];
 
@@ -132,11 +132,11 @@ const reviewRevision = {
   changeReason: "검토자가 변경 이유와 자동 검증 근거를 확인하는 위치입니다.",
   previousSnapshot: {
     definition_markdown: "이전 revision의 필드 값이 표시됩니다.",
-    checklist_markdown: "변경 전 체크리스트가 표시됩니다.",
+    checklist_markdown: "변경 전 실무 사용 사례가 표시됩니다.",
   },
   snapshot: {
     definition_markdown: "검토할 revision의 수정된 필드 값이 표시됩니다.",
-    checklist_markdown: "변경 후 체크리스트가 표시됩니다.",
+    checklist_markdown: "변경 후 실무 사용 사례가 표시됩니다.",
   },
 };
 
