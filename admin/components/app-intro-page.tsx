@@ -6,6 +6,7 @@ import {
   ClipboardCheck,
   Home,
   ListChecks,
+  PanelsTopLeft,
 } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -17,13 +18,19 @@ const icons = {
   study: BookOpenText,
   quiz: ListChecks,
   records: ClipboardCheck,
+  admin: PanelsTopLeft,
 } as const;
 
-const screenImages: Record<Exclude<IntroSlug, "overview">, string> = {
+const appScreenImages = {
   today: "/app-intro/today.svg",
   study: "/app-intro/study.svg",
   quiz: "/app-intro/quiz.svg",
   records: "/app-intro/records.svg",
+} as const;
+
+const screenImages: Record<Exclude<IntroSlug, "overview">, string> = {
+  ...appScreenImages,
+  admin: "/app-intro/admin.svg",
 };
 
 function introHref(slug: IntroSlug) {
@@ -86,11 +93,14 @@ function AppVisual({ slug, title }: { slug: IntroSlug; title: string }) {
   if (slug === "overview") {
     return (
       <div className="intro-screen-collage" role="img" aria-label="FinDone 앱의 오늘, 학습, 퀴즈, 기록 화면 미리보기">
-        {(Object.entries(screenImages) as [Exclude<IntroSlug, "overview">, string][]).map(([key, src]) => (
+        {(Object.entries(appScreenImages) as [keyof typeof appScreenImages, string][]).map(([key, src]) => (
           <img key={key} src={src} alt="" />
         ))}
       </div>
     );
+  }
+  if (slug === "admin") {
+    return <img className="intro-admin-image" src={screenImages[slug]} alt={`${title} 관리 및 앱 업데이트 흐름`} />;
   }
   return <img className="intro-phone-image" src={screenImages[slug]} alt={`${title} 앱 화면 미리보기`} />;
 }

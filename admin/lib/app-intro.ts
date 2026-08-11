@@ -3,7 +3,7 @@ import "server-only";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
-export const introSlugs = ["overview", "today", "study", "quiz", "records"] as const;
+export const introSlugs = ["overview", "today", "study", "quiz", "records", "admin"] as const;
 export type IntroSlug = (typeof introSlugs)[number];
 
 export interface IntroSection {

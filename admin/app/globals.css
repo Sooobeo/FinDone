@@ -97,6 +97,34 @@ p {
   min-height: 100vh;
 }
 
+/* Admin surfaces use restrained corners; circles and functional tracks keep their shape. */
+:is(.admin-frame, .login-page, .centered-page) * {
+  border-radius: 3px !important;
+}
+
+:is(.admin-frame, .login-page, .centered-page) :is(
+  .admin-avatar,
+  .validation-score,
+  .status-dot,
+  .dirty-indicator
+),
+.admin-frame .connection-live > span,
+.admin-frame .connection-demo > span,
+.admin-frame .workflow-list li > span,
+.admin-frame .editor-validation p span,
+.admin-frame .source-state i,
+.admin-frame .toggle-label button i,
+.admin-frame .release-status i,
+.admin-frame .release-checks p > span,
+.admin-frame .workflow-badge i {
+  border-radius: 50% !important;
+}
+
+.admin-frame :is(.progress-track, .readiness-track, .toggle-label button),
+.admin-frame :is(.progress-track, .readiness-track) span {
+  border-radius: 99px !important;
+}
+
 .sidebar {
   position: fixed;
   z-index: 30;
@@ -1232,7 +1260,9 @@ p {
 .intro-page-links { margin-top: auto; padding-top: 38px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .intro-page-links a { display: inline-flex; align-items: center; gap: 7px; color: var(--teal-700); font-size: 11px; font-weight: 750; }
 .intro-visual-panel { min-height: 700px; padding: clamp(28px, 4vw, 54px); display: grid; place-items: center; overflow: hidden; background: radial-gradient(circle at 72% 18%, rgb(255 255 255 / 0.8), transparent 29%), linear-gradient(145deg, #e1efeb, #c8dfd9); }
+.intro-visual-admin { place-items: start center; }
 .intro-phone-image { width: min(320px, 100%); height: auto; display: block; filter: drop-shadow(0 24px 28px rgb(18 63 60 / 0.22)); }
+.intro-admin-image { position: sticky; top: 108px; width: min(520px, 100%); height: auto; display: block; filter: drop-shadow(0 24px 28px rgb(18 63 60 / 0.2)); }
 .intro-screen-collage { width: min(500px, 100%); min-height: 590px; position: relative; }
 .intro-screen-collage img { position: absolute; width: 47%; height: auto; filter: drop-shadow(0 18px 22px rgb(18 63 60 / 0.2)); }
 .intro-screen-collage img:nth-child(1) { top: 0; left: 0; transform: rotate(-4deg); }
@@ -2019,6 +2049,7 @@ p {
   .intro-nav a { min-width: max-content; padding-inline: 15px; }
   .intro-content { grid-template-columns: 1fr; }
   .intro-visual-panel { min-height: 620px; }
+  .intro-admin-image { position: static; }
   .sidebar { width: 220px; }
   .workspace { margin-left: 220px; }
   .main-content { padding: 22px; }
@@ -2155,6 +2186,7 @@ p {
   .intro-summary { margin-bottom: 27px; font-size: 13px; }
   .intro-visual-panel { min-height: 470px; }
   .intro-phone-image { width: min(260px, 88%); }
+  .intro-admin-image { width: min(430px, 96%); }
   .intro-screen-collage { min-height: 400px; }
 }
 
