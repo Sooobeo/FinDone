@@ -2,15 +2,15 @@ import type { Metadata } from "next";
 import { getAdminContext } from "@/lib/auth";
 import { getAdminCapabilities, getConceptElements } from "@/lib/data";
 import { ConceptDatabase } from "@/components/concept-database";
+import { ViewerContentGuide } from "@/components/viewer-content-guide";
+import { viewerGuides } from "@/lib/viewer-guides";
 
 export const metadata: Metadata = { title: "개념 DB" };
 
 export default async function ConceptsPage() {
-  const [elements, context, capabilities] = await Promise.all([
-    getConceptElements(),
-    getAdminContext(),
-    getAdminCapabilities(),
-  ]);
+  const context = await getAdminContext();
+  if (context.role === "viewer") return <ViewerContentGuide guide={viewerGuides.concepts} />;
+  const [elements, capabilities] = await Promise.all([getConceptElements(), getAdminCapabilities()]);
   return (
     <ConceptDatabase
       initialElements={elements}

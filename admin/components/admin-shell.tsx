@@ -152,8 +152,8 @@ export function AdminShell({ children, mode, email, role }: AdminShellProps) {
             <span className="demo-banner-icon" aria-hidden="true">{viewer ? "V" : "D"}</span>
             {viewer ? (
               <p>
-                <strong>Viewer 계정으로 접속했습니다.</strong>
-                모든 화면은 조회 전용이며 편집·업로드·검수·배포 작업은 사용할 수 없습니다.
+                <strong>Viewer 안내 모드로 접속했습니다.</strong>
+                실제 콘텐츠 값은 숨기고 각 관리 화면에 어떤 정보가 들어가는지만 설명합니다.
               </p>
             ) : (
               <p>

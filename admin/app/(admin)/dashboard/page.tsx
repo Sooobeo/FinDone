@@ -10,12 +10,17 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
+import { ViewerContentGuide } from "@/components/viewer-content-guide";
+import { getAdminContext } from "@/lib/auth";
 import { getConceptElements, getSources } from "@/lib/data";
 import { packagedContentInfo } from "@/lib/packaged-info";
+import { viewerGuides } from "@/lib/viewer-guides";
 
 export const metadata: Metadata = { title: "대시보드" };
 
 export default async function DashboardPage() {
+  const context = await getAdminContext();
+  if (context.role === "viewer") return <ViewerContentGuide guide={viewerGuides.dashboard} />;
   const [elements, sources] = await Promise.all([getConceptElements(), getSources()]);
   const domainCounts = Array.from(
     elements.reduce((map, element) => {
