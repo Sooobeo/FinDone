@@ -17,7 +17,7 @@ export default async function LoginPage() {
         <div className="login-brand-content">
           <div className="login-brand-lockup login-brand-lockup-centered">
             <span className="login-brand-icon" aria-hidden="true">
-              <img src="/brand/findone-admin-icon.svg" alt="" />
+              <img src="/brand/findone-app-icon.svg" alt="" />
             </span>
             <span>
               <strong>FinDone</strong>

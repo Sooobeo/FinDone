@@ -55,7 +55,7 @@ export function AdminShell({ children, mode, email, role }: AdminShellProps) {
       <aside className={`sidebar ${mobileOpen ? "sidebar-open" : ""}`} aria-label="관리 메뉴">
         <div className="sidebar-brand">
           <Link href="/dashboard" className="brand-link" onClick={() => setMobileOpen(false)}>
-            <span className="brand-mark" aria-hidden="true">F</span>
+            <img className="brand-mark" src="/brand/findone-app-icon.svg" alt="" aria-hidden="true" />
             <span>
               <strong>FinDone</strong>
               <small>{viewer ? "CONTENT VIEWER" : "CONTENT ADMIN"}</small>

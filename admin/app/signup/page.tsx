@@ -14,7 +14,7 @@ export default async function SignupPage() {
       <section className="login-brand-panel" aria-label="FinDone Viewer 소개">
         <div className="login-brand-lockup login-brand-lockup-centered">
           <span className="login-brand-icon" aria-hidden="true">
-            <img src="/brand/findone-admin-icon.svg" alt="" />
+            <img src="/brand/findone-app-icon.svg" alt="" />
           </span>
           <span>
             <strong>FinDone</strong>
