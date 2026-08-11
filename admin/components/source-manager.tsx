@@ -1,13 +1,16 @@
 "use client";
 
 import {
+  AlertTriangle,
   ArrowUpRight,
+  CheckCircle2,
   ChevronDown,
   File,
   FileSpreadsheet,
   FileText,
   Globe2,
   Link2,
+  LoaderCircle,
   Plus,
   Search,
   UploadCloud,
@@ -22,6 +25,13 @@ import {
   UNASSIGNED_SOURCE_DOMAIN,
 } from "@/lib/source-filter";
 import { SOURCE_STATUS_LABELS } from "@/lib/status";
+import {
+  classifySourceFiles,
+  SOURCE_FILE_ACCEPT,
+  SOURCE_FILE_SUPPORT_LABEL,
+  sourceFileRejectionSummary,
+  sourceMimeType,
+} from "@/lib/source-files";
 import { parsePublicSourceUrl } from "@/lib/source-url";
 import { getBrowserSupabase } from "@/lib/supabase/browser";
 import type { SourceItem } from "@/lib/types";
@@ -31,25 +41,17 @@ interface StagedFile {
   file: File;
 }
 
-const MAX_SOURCE_BYTES = 100 * 1024 * 1024;
-const SOURCE_MIME_BY_EXTENSION: Record<string, string> = {
-  pdf: "application/pdf",
-  docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  csv: "text/csv",
-  md: "text/markdown",
-  txt: "text/plain",
-};
-
-function sourceMimeType(file: File): string | null {
-  const extension = file.name.toLocaleLowerCase("en-US").split(".").pop() ?? "";
-  return SOURCE_MIME_BY_EXTENSION[extension] ?? null;
+interface FileFeedback {
+  tone: "success" | "warning" | "error" | "progress" | "info";
+  title: string;
+  detail: string;
 }
 
 export function SourceManager({ initialSources, readOnly, viewerMode = false }: { initialSources: SourceItem[]; readOnly: boolean; viewerMode?: boolean }) {
   const [sources, setSources] = useState(initialSources);
   const [staged, setStaged] = useState<StagedFile[]>([]);
   const [dragActive, setDragActive] = useState(false);
+  const [fileFeedback, setFileFeedback] = useState<FileFeedback | null>(null);
   const [url, setUrl] = useState("");
   const [query, setQuery] = useState("");
   const [kind, setKind] = useState("all");
@@ -68,17 +70,41 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
   }, [sources, query, kind, domainId]);
 
   function stageFiles(files: FileList | File[]) {
-    if (readOnly) return;
+    if (readOnly || submitting) return;
     const candidates = Array.from(files);
-    const accepted = candidates.filter((file) => sourceMimeType(file) && file.size > 0 && file.size <= MAX_SOURCE_BYTES);
-    const rejectedCount = candidates.length - accepted.length;
+    const { accepted, rejected } = classifySourceFiles(candidates);
     const incoming = accepted.map((file) => ({ id: crypto.randomUUID(), file }));
+    const totalStaged = staged.length + incoming.length;
     setStaged((current) => [...current, ...incoming]);
-    setMessage(
-      rejectedCount
-        ? `${incoming.length}개를 추가하고 ${rejectedCount}개를 제외했습니다. 지원 형식과 100MB 한도를 확인하세요.`
-        : `${incoming.length}개 파일을 업로드 대기열에 추가했습니다.`,
-    );
+    if (incoming.length && rejected.length) {
+      setFileFeedback({
+        tone: "warning",
+        title: `${incoming.length}개 추가 · 현재 대기열 ${totalStaged}개`,
+        detail: `${sourceFileRejectionSummary(rejected)} · 아직 서버에는 저장되지 않았습니다.`,
+      });
+    } else if (incoming.length) {
+      setFileFeedback({
+        tone: "success",
+        title: `${incoming.length}개 추가 · 현재 대기열 ${totalStaged}개`,
+        detail: "아직 서버 저장 전입니다. 아래 파일명을 확인한 뒤 업로드 버튼을 눌러 주세요.",
+      });
+    } else {
+      setFileFeedback({
+        tone: "error",
+        title: "대기열에 추가된 파일이 없습니다.",
+        detail: rejected.length ? sourceFileRejectionSummary(rejected) : "파일을 다시 끌어다 놓거나 탐색기에서 선택해 주세요.",
+      });
+    }
+  }
+
+  function removeStagedFile(id: string) {
+    const remaining = staged.filter((item) => item.id !== id);
+    setStaged(remaining);
+    setFileFeedback({
+      tone: "info",
+      title: remaining.length ? `현재 업로드 대기열 ${remaining.length}개` : "업로드 대기열을 비웠습니다.",
+      detail: remaining.length ? "남은 파일은 아직 서버 저장 전입니다." : "서버에 저장된 파일은 없습니다.",
+    });
   }
 
   function onDrop(event: DragEvent<HTMLDivElement>) {
@@ -138,18 +164,30 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
   async function submitStaged() {
     if (!staged.length) return;
     if (readOnly) {
-      setMessage("데모에서는 파일을 서버로 전송하지 않습니다. Supabase 연결 후 업로드할 수 있습니다.");
+      setFileFeedback({ tone: "info", title: "Viewer 화면에서는 파일을 전송하지 않습니다.", detail: "Owner 계정으로 로그인하면 업로드할 수 있습니다." });
       return;
     }
     const supabase = getBrowserSupabase();
-    if (!supabase) return setMessage("Supabase 연결을 확인해 주세요.");
+    if (!supabase) {
+      setFileFeedback({ tone: "error", title: "서버에 연결하지 못했습니다.", detail: "Supabase 연결 상태를 확인한 뒤 다시 시도해 주세요." });
+      return;
+    }
     const { data: auth } = await supabase.auth.getUser();
-    if (!auth.user) return setMessage("다시 로그인한 뒤 업로드해 주세요.");
+    if (!auth.user) {
+      setFileFeedback({ tone: "error", title: "로그인 상태를 확인할 수 없습니다.", detail: "다시 로그인한 뒤 업로드해 주세요." });
+      return;
+    }
 
+    const queued = [...staged];
     setSubmitting(true);
+    setMessage("");
     const uploaded: SourceItem[] = [];
-    for (const [itemIndex, item] of staged.entries()) {
-      setMessage(`${item.file.name} 업로드 중…`);
+    for (const [itemIndex, item] of queued.entries()) {
+      setFileFeedback({
+        tone: "progress",
+        title: `${itemIndex + 1}/${queued.length} · ${item.file.name} 업로드 중`,
+        detail: "창을 닫지 말고 잠시 기다려 주세요.",
+      });
       const sourceId = `file-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
       const versionId = crypto.randomUUID();
       const safeName = item.file.name.replace(/[^a-zA-Z0-9._-]/g, "_") || "upload";
@@ -157,34 +195,42 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
       const mimeType = sourceMimeType(item.file);
       if (!mimeType) {
         setSubmitting(false);
-        setStaged(staged.slice(itemIndex));
-        return setMessage(`${item.file.name}은 지원하지 않는 파일 형식입니다.`);
+        setStaged(queued.slice(itemIndex));
+        if (uploaded.length) setSources((current) => [...uploaded, ...current]);
+        setFileFeedback({ tone: "error", title: `${item.file.name} 업로드 실패`, detail: `지원하지 않는 형식입니다. 앞의 ${uploaded.length}개는 서버 저장을 완료했습니다.` });
+        return;
       }
-      const digest = await sha256(item.file);
-      const { error: uploadError } = await supabase.storage
-        .from("source-private")
-        .upload(objectPath, item.file, { contentType: mimeType, upsert: false });
-      if (uploadError) {
-        setSubmitting(false);
-        setStaged(staged.slice(itemIndex));
-        return setMessage(`${item.file.name} 업로드 실패: ${uploadError.message}`);
-      }
+      try {
+        const digest = await sha256(item.file);
+        const { error: uploadError } = await supabase.storage
+          .from("source-private")
+          .upload(objectPath, item.file, { contentType: mimeType, upsert: false });
+        if (uploadError) throw new Error(uploadError.message);
 
-      const { error: metadataError } = await supabase.rpc("register_file_source", {
-        p_source_id: sourceId,
-        p_source_version_id: versionId,
-        p_label: item.file.name,
-        p_object_path: objectPath,
-        p_original_filename: item.file.name,
-        p_mime_type: mimeType,
-        p_byte_size: item.file.size,
-        p_sha256: digest,
-      });
-      if (metadataError) {
-        await supabase.storage.from("source-private").remove([objectPath]);
+        const { error: metadataError } = await supabase.rpc("register_file_source", {
+          p_source_id: sourceId,
+          p_source_version_id: versionId,
+          p_label: item.file.name,
+          p_object_path: objectPath,
+          p_original_filename: item.file.name,
+          p_mime_type: mimeType,
+          p_byte_size: item.file.size,
+          p_sha256: digest,
+        });
+        if (metadataError) {
+          await supabase.storage.from("source-private").remove([objectPath]);
+          throw new Error(metadataError.message);
+        }
+      } catch (error) {
         setSubmitting(false);
-        setStaged(staged.slice(itemIndex));
-        return setMessage(`${item.file.name} 메타데이터 저장 실패: ${metadataError.message}`);
+        setStaged(queued.slice(itemIndex));
+        if (uploaded.length) setSources((current) => [...uploaded, ...current]);
+        setFileFeedback({
+          tone: "error",
+          title: `${item.file.name} 업로드 실패`,
+          detail: `${error instanceof Error ? error.message : "알 수 없는 오류"}${uploaded.length ? ` · 앞의 ${uploaded.length}개는 서버 저장 완료` : ""}`,
+        });
+        return;
       }
       uploaded.push({
         id: sourceId,
@@ -201,7 +247,11 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
     setSources((current) => [...uploaded, ...current]);
     setStaged([]);
     setSubmitting(false);
-    setMessage(`${uploaded.length}개 파일을 안전하게 업로드했습니다.`);
+    setFileFeedback({
+      tone: "success",
+      title: `${uploaded.length}개 파일의 서버 저장을 완료했습니다.`,
+      detail: "아래 등록된 원본 목록 맨 위에서 처리 상태를 확인할 수 있습니다.",
+    });
   }
 
   return (
@@ -221,35 +271,44 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
         <article className="panel upload-panel">
           <div className="panel-heading compact-heading">
             <div><p className="eyebrow">FILES</p><h2>파일 가져오기</h2></div>
-            <span className="file-support">PDF · DOCX · XLSX · CSV · MD</span>
+            <span className="file-support">{SOURCE_FILE_SUPPORT_LABEL}</span>
           </div>
-          <input ref={inputRef} className="visually-hidden" type="file" accept=".pdf,.docx,.xlsx,.csv,.md,.txt" multiple onChange={onFileInput} disabled={readOnly} />
+          <input ref={inputRef} className="visually-hidden" type="file" accept={SOURCE_FILE_ACCEPT} multiple onChange={onFileInput} disabled={readOnly || submitting} />
           <div
-            className={`drop-zone ${dragActive ? "drop-zone-active" : ""}`}
-            onDragEnter={(event) => { event.preventDefault(); setDragActive(true); }}
+            className={`drop-zone ${dragActive ? "drop-zone-active" : ""} ${staged.length ? "drop-zone-has-files" : ""} ${submitting ? "drop-zone-disabled" : ""}`}
+            data-testid="source-drop-zone"
+            aria-label="원본 파일 드롭 영역"
+            onDragEnter={(event) => { event.preventDefault(); if (!readOnly && !submitting) setDragActive(true); }}
             onDragOver={(event) => event.preventDefault()}
             onDragLeave={(event) => { if (event.currentTarget === event.target) setDragActive(false); }}
             onDrop={onDrop}
           >
-            <span className="drop-icon"><UploadCloud size={25} /></span>
-            <strong>여기에 원본 파일을 놓으세요</strong>
-            <p>또는 컴퓨터에서 직접 선택할 수 있습니다.</p>
-            <button className="button button-secondary" type="button" onClick={() => inputRef.current?.click()} disabled={readOnly}>
-              파일 탐색기 열기
+            <span className="drop-icon">{staged.length && !dragActive ? <CheckCircle2 size={25} /> : <UploadCloud size={25} />}</span>
+            <strong>{dragActive ? "지금 여기에 놓으세요" : staged.length ? `${staged.length}개 파일이 업로드 대기 중입니다` : "여기에 원본 파일을 놓으세요"}</strong>
+            <p>{dragActive ? "놓는 즉시 아래 대기열에서 파일명을 확인할 수 있습니다." : staged.length ? "아직 서버 저장 전입니다. 아래 목록과 업로드 버튼을 확인하세요." : "또는 컴퓨터에서 직접 선택할 수 있습니다."}</p>
+            <button className="button button-secondary" type="button" onClick={() => inputRef.current?.click()} disabled={readOnly || submitting}>
+              {staged.length ? "파일 더 추가" : "파일 탐색기 열기"}
             </button>
           </div>
 
+          {fileFeedback ? (
+            <div className={`file-feedback file-feedback-${fileFeedback.tone}`} role={fileFeedback.tone === "error" ? "alert" : "status"} aria-live="polite">
+              {fileFeedback.tone === "progress" ? <LoaderCircle size={18} /> : fileFeedback.tone === "error" || fileFeedback.tone === "warning" ? <AlertTriangle size={18} /> : <CheckCircle2 size={18} />}
+              <div><strong>{fileFeedback.title}</strong><p>{fileFeedback.detail}</p></div>
+            </div>
+          ) : null}
+
           {staged.length ? (
             <div className="staged-files">
-              <div className="staged-heading"><strong>업로드 대기 {staged.length}개</strong><button type="button" onClick={() => setStaged([])}>전체 지우기</button></div>
+              <div className="staged-heading"><strong>서버 저장 전 · {staged.length}개</strong><button type="button" onClick={() => { setStaged([]); setFileFeedback({ tone: "info", title: "업로드 대기열을 비웠습니다.", detail: "서버에 저장된 파일은 없습니다." }); }} disabled={submitting}>전체 지우기</button></div>
               {staged.map((item) => (
                 <div className="staged-file" key={item.id}>
                   <File size={17} />
-                  <div><strong>{item.file.name}</strong><small>{formatBytes(item.file.size)}</small></div>
-                  <button type="button" onClick={() => setStaged((current) => current.filter((file) => file.id !== item.id))} aria-label={`${item.file.name} 제거`}><X size={15} /></button>
+                  <div><strong>{item.file.name}</strong><small>{formatBytes(item.file.size)} · 업로드 대기</small></div>
+                  <button type="button" onClick={() => removeStagedFile(item.id)} aria-label={`${item.file.name} 제거`} disabled={submitting}><X size={15} /></button>
                 </div>
               ))}
-              <button className="button button-primary staged-submit" type="button" onClick={submitStaged} disabled={submitting}>{submitting ? "업로드 중…" : "선택 파일 업로드"}</button>
+              <button className="button button-primary staged-submit" type="button" onClick={submitStaged} disabled={submitting}>{submitting ? "서버에 저장 중…" : `${staged.length}개 파일 서버에 저장`}</button>
             </div>
           ) : null}
         </article>
