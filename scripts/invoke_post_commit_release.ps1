@@ -521,6 +521,37 @@ if ($LASTEXITCODE -ne 0 -or $resolvedCommit -notmatch '^[0-9a-f]{40}$') {
     throw "The post-commit release target is not a valid commit: $Commit"
 }
 
+# A normal development commit must not fail merely because its generated
+# concept-question bank is still awaiting independent review. Read the exact
+# committed manifest before loading credentials, allocating a versionCode, or
+# creating a release worktree. The Gradle release gate remains the final
+# defense; this early gate keeps post-commit automation aligned with it.
+$manifestObjectName = "${resolvedCommit}:app/src/main/assets/content-manifest.json"
+$committedManifestLines = @(& $gitExecutable -C $repoRoot show $manifestObjectName 2>$null)
+$manifestReadExitCode = $LASTEXITCODE
+if ($manifestReadExitCode -ne 0 -or $committedManifestLines.Count -eq 0) {
+    throw "The committed content manifest could not be read: $manifestObjectName"
+}
+try {
+    $committedContentManifest = ($committedManifestLines -join [Environment]::NewLine) | ConvertFrom-Json
+} catch {
+    throw "The committed content manifest is not valid JSON: $manifestObjectName"
+}
+if ($committedContentManifest.PSObject.Properties.Name -notcontains 'conceptQuestionReleaseStatus') {
+    throw 'The committed content manifest does not declare conceptQuestionReleaseStatus.'
+}
+$conceptQuestionReleaseStatus = [string]$committedContentManifest.conceptQuestionReleaseStatus
+if (@('bootstrap_not_reviewed', 'candidate', 'release_ready') -cnotcontains $conceptQuestionReleaseStatus) {
+    throw "The committed concept question release status is invalid: $conceptQuestionReleaseStatus"
+}
+if ($conceptQuestionReleaseStatus -cne 'release_ready') {
+    Write-Host (
+        "FinDone commit $($resolvedCommit.Substring(0, 10)) completed; " +
+        "automatic release skipped because the concept question bank is '$conceptQuestionReleaseStatus'."
+    )
+    exit 0
+}
+
 $gitCommonText = (& $gitExecutable -C $repoRoot rev-parse --git-common-dir 2>&1).ToString().Trim()
 if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($gitCommonText)) {
     throw 'Unable to locate the repository Git metadata directory.'

@@ -6,17 +6,18 @@
 
 1. 작은 수정은 작은 테스트로 먼저 검증한다.
 2. 동일한 커밋에 전체 릴리스 빌드를 중복 실행하지 않는다.
-3. 커밋하면 `post-commit` 훅이 전체 릴리스를 실행한다는 사실을 고려한다.
+3. `post-commit` 훅은 문항 은행이 `release_ready`인 커밋에서만 전체 릴리스를 실행한다.
 4. 이미 Gradle 또는 릴리스 프로세스가 실행 중이면 새 빌드를 시작하지 않는다.
 5. 정상 캐시는 유지하고, 안전성이 확인된 산출물과 임시 파일만 정리한다.
 6. 릴리스 자동화나 서명 관련 파일은 일반 앱 코드와 같은 방식으로 즉흥 수정하지 않는다.
 
 ## 현재 자동 릴리스 흐름
 
-커밋이 완료되면 `.githooks/post-commit`이 동기 방식으로 다음 작업을 실행한다.
+커밋이 완료되면 `.githooks/post-commit`이 먼저 커밋된 콘텐츠 manifest를 확인한다. `bootstrap_not_reviewed` 또는 `candidate`이면 릴리스를 보류하고 정상 종료한다. `release_ready`이면 동기 방식으로 다음 작업을 실행한다.
 
 ```text
 완료된 HEAD SHA 확인
+→ 커밋된 문항 은행 상태가 release_ready인지 확인
 → 저장소 전용 Git 환경변수 제거
 → 임시 detached worktree 생성
 → main worktree의 sdk.dir만 임시 worktree에 전달

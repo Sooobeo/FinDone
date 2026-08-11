@@ -1,22 +1,24 @@
 # 로컬 커밋별 릴리스 자동화
 
-이 자동화는 Git 커밋이 끝난 직후 그 커밋의 **정확한 스냅샷**으로 개인 서명 APK를 만듭니다. 현재 작업 폴더의 미커밋 파일은 APK에 들어가지 않습니다. 공개 저장소에는 서명키나 비밀번호가 저장되지 않습니다.
+이 자동화는 Git 커밋이 끝난 직후 그 커밋의 **정확한 스냅샷**을 확인하고, 개념 문항 은행이 `release_ready`인 커밋만 개인 서명 APK로 만듭니다. `bootstrap_not_reviewed` 또는 `candidate` 커밋은 정상 완료하되 자동 릴리스만 보류합니다. 현재 작업 폴더의 미커밋 파일은 APK에 들어가지 않습니다. 공개 저장소에는 서명키나 비밀번호가 저장되지 않습니다.
 
 ## 동작 방식
 
 1. `.githooks/post-commit`이 방금 생성된 40자리 커밋 SHA를 전달합니다.
-2. `scripts/invoke_post_commit_release.ps1`이 임시 detached worktree에 그 SHA만 체크아웃합니다.
-3. 현재 PC의 `local.properties`에서는 `sdk.dir` 한 줄만 임시 worktree로 복사합니다.
-4. Windows DPAPI 암호문을 현재 Windows 사용자 권한의 `SecureString`으로 복호화합니다.
-5. 서명 비밀번호가 전혀 없는 환경에서 정확한 커밋의 Gradle·플러그인·테스트를 실행해 unsigned APK를 만듭니다.
-6. setup에서 SHA-256을 고정한 활성 clone의 로컬 래퍼가 SDK `zipalign`을 실행한 뒤, 비밀번호 환경 변수를 `apksigner` 실행 순간에만 만들고 즉시 제거합니다.
-7. 서명, 정렬, APK checksum, 인터넷 권한과 콘텐츠 release endpoint 주입을 다시 검증합니다.
-8. 검증된 릴리스를 `dist/findone-*`에 원자적으로 게시하고 최신 두 개만 남깁니다.
-9. 선택한 mirror가 있으면 완성된 폴더를 복사·재검증한 뒤 그곳도 최신 두 개만 남깁니다.
+2. `scripts/invoke_post_commit_release.ps1`이 커밋된 `content-manifest.json`의 `conceptQuestionReleaseStatus`를 확인합니다.
+3. 상태가 `release_ready`가 아니면 커밋은 성공 상태로 끝내고 릴리스만 보류합니다.
+4. 상태가 `release_ready`이면 임시 detached worktree에 그 SHA만 체크아웃합니다.
+5. 현재 PC의 `local.properties`에서는 `sdk.dir` 한 줄만 임시 worktree로 복사합니다.
+6. Windows DPAPI 암호문을 현재 Windows 사용자 권한의 `SecureString`으로 복호화합니다.
+7. 서명 비밀번호가 전혀 없는 환경에서 정확한 커밋의 Gradle·플러그인·테스트를 실행해 unsigned APK를 만듭니다.
+8. setup에서 SHA-256을 고정한 활성 clone의 로컬 래퍼가 SDK `zipalign`을 실행한 뒤, 비밀번호 환경 변수를 `apksigner` 실행 순간에만 만들고 즉시 제거합니다.
+9. 서명, 정렬, APK checksum, 인터넷 권한과 콘텐츠 release endpoint 주입을 다시 검증합니다.
+10. 검증된 릴리스를 `dist/findone-*`에 원자적으로 게시하고 최신 두 개만 남깁니다.
+11. 선택한 mirror가 있으면 완성된 폴더를 복사·재검증한 뒤 그곳도 최신 두 개만 남깁니다.
 
 앱은 APK를 스스로 설치하지 않으며 OneDrive API·로그인·동기화도 사용하지 않습니다. 다만 콘텐츠는 설정된 HTTPS stable endpoint를 실행 때 확인해 새 버전만 검증 후 교체합니다. 앱 코드/UI APK는 이전처럼 OneDrive에서 직접 열어 Android 시스템 설치 화면으로 업데이트합니다.
 
-훅은 동기식입니다. 따라서 `git commit` 명령은 릴리스 빌드가 끝날 때까지 수 분 걸릴 수 있습니다. 빌드가 실패해도 이미 만들어진 Git 커밋은 사라지지 않으며, 오류가 콘솔에 표시됩니다.
+`release_ready` 커밋의 훅은 동기식입니다. 따라서 해당 `git commit` 명령은 릴리스 빌드가 끝날 때까지 수 분 걸릴 수 있습니다. 미검토·후보 커밋은 상태 확인 후 즉시 정상 종료합니다. 릴리스 빌드가 실패해도 이미 만들어진 Git 커밋은 사라지지 않으며, 오류가 콘솔에 표시됩니다.
 
 임시 worktree 정리는 `core.longpaths=true`로 실행합니다. Git metadata가 먼저 없어졌거나 Android 산출물 경로가 Windows 기본 길이를 넘겨 디렉터리가 남으면, 안전 검사를 다시 거친 worktree root를 같은 임시 볼륨의 짧은 이름으로 옮긴 뒤 정리합니다. junction·symlink·mount point는 재귀 삭제하지 않습니다. 이 정리는 best-effort이며, 정리 오류나 진단 메시지가 원래 build/state 결과를 덮어쓰지 않습니다.
 

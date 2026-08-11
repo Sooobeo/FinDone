@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# Every configured clone builds the commit that just completed. The hook is
-# intentionally synchronous: serialization and a detached worktree prevent a
-# later working-tree edit or a second commit from contaminating this release.
+# Every configured clone examines the commit that just completed. Only a
+# release-ready concept question bank starts the synchronous detached-worktree
+# release; bootstrap/candidate commits finish normally without publishing.
 repo_root=$(git rev-parse --show-toplevel) || exit 1
 commit=$(git rev-parse --verify HEAD) || exit 1
 
