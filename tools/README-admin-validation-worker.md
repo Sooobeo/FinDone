@@ -17,10 +17,9 @@
 다음 기능은 이 Validation Worker가 의도적으로 claim하지 않는다.
 
 - `url_fetch`, redirect/DNS 처리와 `file_extract`, OCR은 별도의 [Source Ingestion Worker](README-admin-source-worker.md)가 담당
-- `release_build`와 `release_validation`
+- 근거 기반 구조화 생성과 자동 수정은 [Content Generation Worker](README-admin-content-generation-worker.md)가 담당
+- `release_build`와 `release_validation`은 [Release Worker](README-admin-release-worker.md)가 담당
 - `content.sqlite3` 또는 `user.sqlite` 수정
-
-특히 release build는 승인 snapshot을 기존 SQLite 스키마에 안전하게 투영하는 계약이 확정된 뒤 별도 worker로 구현해야 한다. 현재 validation worker는 release job을 claim하지 않는다.
 
 ## 사전 조건
 

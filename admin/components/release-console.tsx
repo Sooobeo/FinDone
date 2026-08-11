@@ -6,14 +6,14 @@ import {
   Database,
   Download,
   Fingerprint,
+  LoaderCircle,
   Package,
   RefreshCw,
-  Rocket,
   ShieldCheck,
   Trash2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { PageHeader } from "@/components/page-header";
 import {
   formatWorkflowDate,
@@ -26,7 +26,7 @@ import type { ReleaseWorkspace } from "@/lib/data";
 import { packagedContentInfo } from "@/lib/packaged-info";
 import type { AdminCapabilities } from "@/lib/types";
 
-type ReleaseAction = "create" | "validate" | "activate" | "withdraw";
+type ReleaseAction = "withdraw";
 
 export function ReleaseConsole({
   workspace,
@@ -42,10 +42,6 @@ export function ReleaseConsole({
   const router = useRouter();
   const [selectedId, setSelectedId] = useState(workspace.releases[0]?.releaseId ?? "");
   const [withdrawNote, setWithdrawNote] = useState("");
-  const [newVersionName, setNewVersionName] = useState("");
-  const [newReleaseNotes, setNewReleaseNotes] = useState("");
-  const [minimumAppVersion, setMinimumAppVersion] = useState("1");
-  const createRequestKey = useRef<string | null>(null);
   const [submitting, setSubmitting] = useState<ReleaseAction | null>(null);
   const [message, setMessage] = useState("");
   const selected = workspace.releases.find((release) => release.releaseId === selectedId)
@@ -77,17 +73,11 @@ export function ReleaseConsole({
   }, [router, workspace.jobs]);
 
   async function runAction(action: ReleaseAction) {
-    if (action !== "create" && !selected) return;
+    if (!selected) return;
     if (action === "withdraw" && !withdrawNote.trim()) {
       setMessage("철회 사유를 입력해 주세요.");
       return;
     }
-    const minimumVersion = Number(minimumAppVersion);
-    if (action === "create" && (!Number.isInteger(minimumVersion) || minimumVersion < 1)) {
-      setMessage("최소 앱 버전은 1 이상의 정수여야 합니다.");
-      return;
-    }
-    if (action === "create" && !createRequestKey.current) createRequestKey.current = crypto.randomUUID();
     setSubmitting(action);
     setMessage("");
     try {
@@ -98,10 +88,6 @@ export function ReleaseConsole({
           releaseId: selected?.releaseId,
           action,
           note: withdrawNote,
-          versionName: newVersionName,
-          releaseNotes: newReleaseNotes,
-          minimumAppVersion: minimumVersion,
-          requestKey: action === "create" ? createRequestKey.current : undefined,
         }),
       });
       const result = await response.json().catch(() => ({})) as {
@@ -113,20 +99,11 @@ export function ReleaseConsole({
         setMessage(result.error ?? "릴리스 작업을 처리하지 못했습니다. 같은 요청으로 다시 시도할 수 있습니다.");
         return;
       }
-      setMessage(
-        result.message
-          ?? (action === "activate" ? "stable 채널을 활성화했습니다." : "릴리스 상태를 갱신했습니다."),
-      );
-      if (action === "create") {
-        if (result.releaseId) setSelectedId(result.releaseId);
-        createRequestKey.current = null;
-        setNewVersionName("");
-        setNewReleaseNotes("");
-      }
+      setMessage(result.message ?? "릴리스 상태를 갱신했습니다.");
       if (action === "withdraw") setWithdrawNote("");
       router.refresh();
     } catch {
-      setMessage("네트워크 응답을 확인하지 못했습니다. 같은 요청 키로 안전하게 다시 시도할 수 있습니다.");
+      setMessage("네트워크 응답을 확인하지 못했습니다. 릴리스 상태를 확인한 뒤 다시 시도해 주세요.");
     } finally {
       setSubmitting(null);
     }
@@ -136,8 +113,8 @@ export function ReleaseConsole({
     <div className="page-stack">
       <PageHeader
         eyebrow="RELEASE CENTER"
-        title="앱 반영"
-        description={viewerMode ? "Owner 화면과 같은 생성·상태·이력 배치에서 릴리스 DB의 구성과 앱 전달 흐름을 설명합니다. 실제 버전과 파일 값은 표시하지 않습니다." : "릴리스를 한 번 생성하면 SQLite 빌드, 검증, stable 공개까지 자동 진행됩니다. 앱은 다음 실행 때 검증된 DB를 받고 오프라인에서는 기존 DB를 계속 씁니다."}
+        title="릴리스 이력"
+        description={viewerMode ? "최종 승인 뒤 자동으로 생성되는 앱 DB의 상태·검증·전달 이력을 설명합니다." : "최종 검토에서 승인한 배치의 클린 SQLite 빌드, 검증, stable 공개 상태를 조회합니다. 이 화면에서 별도 릴리스 생성 단계는 필요하지 않습니다."}
         actions={
           <div className="workflow-header-actions">
             <span className="role-pill">{roleLabel(capabilities.role)}</span>
@@ -149,61 +126,6 @@ export function ReleaseConsole({
         <section className="workflow-baseline panel">
           <span className="large-state-icon state-success"><Package size={25} /></span>
           <div><p className="eyebrow">READ-ONLY PACKAGED BASELINE</p><h2>content-v{packagedContentInfo.version} · {packagedContentInfo.elementCount}개 요소 · {(packagedContentInfo.byteSize / 1024 / 1024).toFixed(1)} MB</h2><p>현재 APK에 실제 포함된 기준 DB입니다. Supabase 릴리스 이력과 Worker 작업은 연결 전이므로 비어 있습니다.</p></div>
-        </section>
-      ) : null}
-
-      {!demo ? (
-        <section className="panel release-creation-panel">
-          <div className="panel-heading compact-heading">
-            <div>
-              <p className="eyebrow">FREEZE APPROVED CHANGES</p>
-              <h2>새 콘텐츠 릴리스</h2>
-            </div>
-            <span className="panel-kicker">승인본 원자적 고정</span>
-          </div>
-          <div className="release-create-grid">
-            <label>
-              버전명 <small>비우면 자동 생성</small>
-              <input
-                value={newVersionName}
-                onChange={(event) => setNewVersionName(event.target.value)}
-                maxLength={80}
-                placeholder="예: content-v6"
-                disabled={!capabilities.canRelease || Boolean(submitting)}
-              />
-            </label>
-            <label>
-              최소 앱 versionCode
-              <input
-                type="number"
-                min={1}
-                step={1}
-                value={minimumAppVersion}
-                onChange={(event) => setMinimumAppVersion(event.target.value)}
-                disabled={!capabilities.canRelease || Boolean(submitting)}
-              />
-            </label>
-            <label className="release-notes-field">
-              개선 내용
-              <textarea
-                value={newReleaseNotes}
-                onChange={(event) => setNewReleaseNotes(event.target.value)}
-                maxLength={4000}
-                rows={2}
-                placeholder="이번 반영 내용을 적어 두세요."
-                disabled={!capabilities.canRelease || Boolean(submitting)}
-              />
-            </label>
-            <button
-              className="button button-primary"
-              type="button"
-              onClick={() => runAction("create")}
-              disabled={!capabilities.canRelease || Boolean(submitting)}
-            >
-              <Rocket size={16} />{submitting === "create" ? "생성 중…" : "승인본으로 릴리스 생성"}
-            </button>
-          </div>
-          <p className="release-create-help"><ShieldCheck size={15} />{viewerMode ? "승인 revision 고정, Worker 빌드·검증과 stable 공개 규칙을 설명하는 영역입니다." : "최신 승인 revision을 고정한 뒤 Worker가 135개 요소를 빌드·검증하고, 통과한 릴리스만 stable에 자동 공개합니다."}</p>
         </section>
       ) : null}
 
@@ -232,8 +154,9 @@ export function ReleaseConsole({
                 <div className="queued-job-callout compact-job-callout"><RefreshCw className={activeBuildJob.status === "running" ? "spin" : ""} size={17} /><div><strong>{activeBuildJob.status === "queued" ? "자동 반영 Worker 대기 중" : `SQLite 빌드 중 · ${activeBuildJob.progressPercent}%`}</strong><p>완료되면 검증과 stable 공개가 자동으로 이어집니다.</p></div></div>
               ) : null}
               {selected.status !== "withdrawn" && capabilities.canRelease ? (
-                <div className="withdraw-row"><input value={withdrawNote} onChange={(event) => setWithdrawNote(event.target.value)} placeholder="철회 사유" aria-label="릴리스 철회 사유" /><button className="button button-ghost-danger" type="button" onClick={() => runAction("withdraw")} disabled={Boolean(submitting)}><Trash2 size={15} />{submitting === "withdraw" ? "철회 중…" : "철회"}</button></div>
+                <div className="withdraw-row"><input value={withdrawNote} onChange={(event) => setWithdrawNote(event.target.value)} placeholder="철회 사유" aria-label="릴리스 철회 사유" /><button className="button button-ghost-danger" type="button" onClick={() => runAction("withdraw")} disabled={Boolean(submitting)}>{submitting === "withdraw" ? <LoaderCircle className="spin" size={15} /> : <Trash2 size={15} />}{submitting === "withdraw" ? "철회 중…" : "철회"}</button></div>
               ) : null}
+              {submitting === "withdraw" ? <div className="generation-action-progress" role="status"><span>릴리스 철회 상태를 저장하는 중</span><div className="is-indeterminate" role="progressbar" aria-label="릴리스 철회 진행" aria-valuetext="처리 중"><i /></div></div> : null}
             </>
           ) : <div className="workflow-empty-inline">실제 Supabase 릴리스가 생성되면 상태와 작업이 표시됩니다.</div>}
         </article>
@@ -242,7 +165,7 @@ export function ReleaseConsole({
       <section className="release-flow panel">
         <div className="panel-heading"><div><p className="eyebrow">SAFE DELIVERY</p><h2>승인본 전달 흐름</h2></div><span className="panel-kicker">user.sqlite3 보존</span></div>
         <div className="release-flow-steps">
-          <div><span><Check size={20} /></span><strong>승인 revision 고정</strong><p>요청 키로 원자적·중복 없는 생성</p></div><ChevronRight size={20} />
+          <div><span><Check size={20} /></span><strong>최종 검토 승인</strong><p>생성 배치 revision만 원자적으로 고정</p></div><ChevronRight size={20} />
           <div><span><Database size={20} /></span><strong>Worker DB 생성</strong><p>queued/running/succeeded 상태 구분</p></div><ChevronRight size={20} />
           <div><span><ShieldCheck size={20} /></span><strong>자동 검증</strong><p>{viewerMode ? "해시·스키마·포함 요소 확인" : "해시·스키마·135개 요소 확인"}</p></div><ChevronRight size={20} />
           <div><span><Download size={20} /></span><strong>자동 앱 반영</strong><p>stable 공개 후 앱이 안전하게 교체</p></div>

@@ -4,7 +4,7 @@ import { getAdminContext } from "@/lib/auth";
 import { getAdminCapabilities, getReviewWorkspace } from "@/lib/data";
 import { viewerCapabilities, viewerReviewWorkspace } from "@/lib/viewer-placeholders";
 
-export const metadata: Metadata = { title: "승인 검토" };
+export const metadata: Metadata = { title: "앱 DB 최종 검토" };
 
 export default async function ReviewPage() {
   const context = await getAdminContext();

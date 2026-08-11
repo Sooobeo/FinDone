@@ -157,6 +157,8 @@ export interface SourceItem {
   candidateCount?: number;
   topCandidateElementId?: string;
   topCandidateScore?: number;
+  versionCount?: number;
+  catalogOnly?: boolean;
 }
 
 export interface SourceDomain {
@@ -197,4 +199,72 @@ export interface ReleaseItem {
   checksum: string;
   createdAt: string;
   author: string;
+}
+
+export type ContentGenerationStatus =
+  | "queued"
+  | "running"
+  | "ready_for_review"
+  | "no_changes"
+  | "rejected"
+  | "releasing"
+  | "released"
+  | "failed";
+
+export interface ContentGenerationBatch {
+  batchId: string;
+  requestKey: string;
+  status: ContentGenerationStatus;
+  modelName: string;
+  promptVersion: string;
+  baselineContentVersion: number;
+  releaseNotes: string;
+  minimumAppVersion: number;
+  progressPercent: number;
+  processingStage: string;
+  attemptCount: number;
+  maxAttempts: number;
+  itemCount: number;
+  changedElementCount: number;
+  evidenceCount: number;
+  autoRepairCount: number;
+  sourceCount: number;
+  modelRunCount: number;
+  statistics: Record<string, unknown>;
+  errorMessage: string | null;
+  releaseId: string | null;
+  releaseStatus: ReleaseStatus | null;
+  releaseContentVersion: number | null;
+  releaseVersionName: string | null;
+  createdAt: string;
+  completedAt: string | null;
+}
+
+export interface ContentGenerationItem {
+  generationItemId: string;
+  batchId: string;
+  elementId: string;
+  entityType: "element" | "concept" | "formula";
+  entityKey: string;
+  baselineSnapshot: Record<string, unknown>;
+  generatedSnapshot: Record<string, unknown>;
+  changedFields: string[];
+  changeSummary: string;
+  confidence: number;
+  riskLevel: "low" | "medium" | "high";
+  validationSummary: Record<string, unknown>;
+  revisionId: string | null;
+}
+
+export interface ContentGenerationEvidence {
+  generationEvidenceId: string;
+  generationItemId: string;
+  fieldPath: string;
+  sourceFragmentId: string;
+  supportRole: "primary" | "corroborating" | "context";
+  rationale: string;
+  sourceLabel: string;
+  sourceLocator: string;
+  fragmentLocator: Record<string, unknown>;
+  contentExcerpt: string;
 }

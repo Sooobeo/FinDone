@@ -55,11 +55,13 @@ class AdminReleaseWorkerTest(unittest.TestCase):
             )
 
             self.assertEqual(6, manifest["contentDbVersion"])
+            self.assertEqual("clean-rebuild", manifest["buildMode"])
             self.assertEqual(worker.sha256_file(database_path), manifest["sha256"])
             self.assertEqual(worker.canonical_json_bytes(manifest), manifest_path.read_bytes())
             validation = worker.validate_release_database(database_path, manifest)
             self.assertEqual("passed", validation.status)
             with closing(sqlite3.connect(database_path)) as database:
+                self.assertEqual(0, database.execute("PRAGMA freelist_count").fetchone()[0])
                 self.assertEqual(
                     changed_definition,
                     database.execute(

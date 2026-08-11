@@ -6,6 +6,9 @@ import { getServerSupabase } from "@/lib/supabase/server";
 import { runtimeMode } from "@/lib/supabase/config";
 import type {
   AdminCapabilities,
+  ContentGenerationBatch,
+  ContentGenerationEvidence,
+  ContentGenerationItem,
   ConceptElement,
   DistractorItem,
   ReleaseRecord,
@@ -47,6 +50,20 @@ function object(row: Row, key: string): Record<string, unknown> {
     : {};
 }
 
+function relation(value: unknown): Row {
+  const candidate = Array.isArray(value) ? value[0] : value;
+  return candidate && typeof candidate === "object" && !Array.isArray(candidate)
+    ? candidate as Row
+    : {};
+}
+
+function nullableNumber(row: Row, key: string): number | null {
+  const value = row[key];
+  if (value === null || value === undefined || value === "") return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
 export interface ValidationWorkspace {
   revisions: WorkflowRevision[];
   runs: ValidationRunRecord[];
@@ -55,8 +72,10 @@ export interface ValidationWorkspace {
 }
 
 export interface ReviewWorkspace {
-  revisions: WorkflowRevision[];
-  runs: ValidationRunRecord[];
+  batches: ContentGenerationBatch[];
+  items: ContentGenerationItem[];
+  evidence: ContentGenerationEvidence[];
+  jobs: WorkflowJob[];
 }
 
 export interface ReleaseWorkspace {
@@ -187,6 +206,8 @@ export async function getSources(): Promise<SourceItem[]> {
         .filter((domain): domain is SourceDomain => Boolean(domain))
         .sort((left, right) => left.displayOrder - right.displayOrder || left.name.localeCompare(right.name, "ko-KR")),
       createdAt: text(row, "created_at") || "—",
+      versionCount: number(row, "version_count"),
+      catalogOnly: number(row, "version_count") === 0,
     };
     return mergeSourceStatus(source, row as SourceStatusRow);
   });
@@ -274,53 +295,54 @@ export async function getValidationWorkspace(): Promise<ValidationWorkspace> {
 
 export async function getReviewWorkspace(): Promise<ReviewWorkspace> {
   const supabase = await getServerSupabase();
-  if (!supabase) return { revisions: [], runs: [] };
+  if (!supabase) return { batches: [], items: [], evidence: [], jobs: [] };
 
-  const { data: statusRows, error: statusError } = await supabase
-    .from("content_revision_status")
+  const { data: batchRows, error: batchError } = await supabase
+    .from("content_generation_overview")
     .select("*")
-    .eq("state", "reviewed")
-    .order("state_changed_at", { ascending: true })
-    .limit(100);
-  if (statusError) throw new Error(`검토 대기 목록을 불러오지 못했습니다: ${statusError.message}`);
-  const baseRevisions = ((statusRows ?? []) as Row[]).map(mapRevision);
-  if (!baseRevisions.length) return { revisions: [], runs: [] };
+    .order("created_at", { ascending: false })
+    .limit(30);
+  if (batchError) throw new Error(`콘텐츠 생성 배치를 불러오지 못했습니다: ${batchError.message}`);
+  const batches = ((batchRows ?? []) as Row[]).map(mapGenerationBatch);
+  const batchIds = batches.map((batch) => batch.batchId);
+  if (!batchIds.length) return { batches, items: [], evidence: [], jobs: [] };
 
-  const entityKeys = [...new Set(baseRevisions.map((revision) => revision.entityKey))];
-  const revisionIds = baseRevisions.map((revision) => revision.revisionId);
-  const [{ data: snapshotRows, error: snapshotError }, { data: runRows, error: runError }] = await Promise.all([
-    supabase
-      .from("content_revisions")
-      .select("revision_id,entity_type,entity_key,revision_number,snapshot")
-      .in("entity_key", entityKeys)
-      .order("revision_number", { ascending: true })
-      .limit(500),
-    supabase
-      .from("validation_runs")
+  const { data: itemRows, error: itemError } = await supabase
+    .from("content_generation_items")
+    .select("*")
+    .in("batch_id", batchIds)
+    .order("element_id", { ascending: true })
+    .limit(1500);
+  if (itemError) throw new Error(`생성 후보를 불러오지 못했습니다: ${itemError.message}`);
+  const items = ((itemRows ?? []) as Row[]).map(mapGenerationItem);
+  const itemIds = items.map((item) => item.generationItemId);
+
+  let evidence: ContentGenerationEvidence[] = [];
+  if (itemIds.length) {
+    const { data: evidenceRows, error: evidenceError } = await supabase
+      .from("content_generation_evidence")
+      .select("generation_evidence_id,generation_item_id,field_path,source_fragment_id,support_role,rationale,source_fragments(locator,content_text,source_versions(source_id,sources(label,locator)))")
+      .in("generation_item_id", itemIds)
+      .order("created_at", { ascending: true })
+      .limit(6000);
+    if (evidenceError) throw new Error(`생성 근거를 불러오지 못했습니다: ${evidenceError.message}`);
+    evidence = ((evidenceRows ?? []) as Row[]).map(mapGenerationEvidence);
+  }
+
+  const releaseIds = batches
+    .map((batch) => batch.releaseId)
+    .filter((releaseId): releaseId is string => Boolean(releaseId));
+  let jobs: WorkflowJob[] = [];
+  if (releaseIds.length) {
+    const { data: jobRows, error: jobError } = await supabase
+      .from("ingestion_jobs")
       .select("*")
-      .in("revision_id", revisionIds)
-      .order("created_at", { ascending: false }),
-  ]);
-  if (snapshotError) throw new Error(`revision 내용을 불러오지 못했습니다: ${snapshotError.message}`);
-  if (runError) throw new Error(`검증 근거를 불러오지 못했습니다: ${runError.message}`);
-  const snapshots = (snapshotRows ?? []) as Row[];
-  const revisions = baseRevisions.map((revision) => {
-    const sameEntity = snapshots
-      .filter(
-        (row) =>
-          text(row, "entity_type") === revision.entityType &&
-          text(row, "entity_key") === revision.entityKey,
-      )
-      .sort((left, right) => number(left, "revision_number") - number(right, "revision_number"));
-    const currentIndex = sameEntity.findIndex((row) => text(row, "revision_id") === revision.revisionId);
-    return {
-      ...revision,
-      snapshot: currentIndex >= 0 ? object(sameEntity[currentIndex], "snapshot") : {},
-      previousSnapshot: currentIndex > 0 ? object(sameEntity[currentIndex - 1], "snapshot") : {},
-    };
-  });
-
-  return { revisions, runs: ((runRows ?? []) as Row[]).map(mapValidationRun) };
+      .in("release_id", releaseIds)
+      .order("created_at", { ascending: false });
+    if (jobError) throw new Error(`릴리스 작업 상태를 불러오지 못했습니다: ${jobError.message}`);
+    jobs = ((jobRows ?? []) as Row[]).map(mapWorkflowJob);
+  }
+  return { batches, items, evidence, jobs };
 }
 
 export async function getReleaseWorkspace(): Promise<ReleaseWorkspace> {
@@ -355,6 +377,77 @@ export async function getReleaseWorkspace(): Promise<ReleaseWorkspace> {
     releases,
     runs: ((runRows ?? []) as Row[]).map(mapValidationRun),
     jobs: ((jobRows ?? []) as Row[]).map(mapWorkflowJob),
+  };
+}
+
+function mapGenerationBatch(row: Row): ContentGenerationBatch {
+  const releaseStatus = nullableText(row, "release_status");
+  return {
+    batchId: text(row, "batch_id"),
+    requestKey: text(row, "request_key"),
+    status: text(row, "status") as ContentGenerationBatch["status"],
+    modelName: text(row, "model_name"),
+    promptVersion: text(row, "prompt_version"),
+    baselineContentVersion: number(row, "baseline_content_version"),
+    releaseNotes: text(row, "release_notes"),
+    minimumAppVersion: number(row, "minimum_app_version", 1),
+    progressPercent: number(row, "progress_percent"),
+    processingStage: text(row, "processing_stage"),
+    attemptCount: number(row, "attempt_count"),
+    maxAttempts: number(row, "max_attempts", 3),
+    itemCount: number(row, "persisted_item_count", number(row, "item_count")),
+    changedElementCount: number(row, "persisted_changed_element_count", number(row, "changed_element_count")),
+    evidenceCount: number(row, "persisted_evidence_count", number(row, "evidence_count")),
+    autoRepairCount: number(row, "auto_repair_count"),
+    sourceCount: number(row, "source_count"),
+    modelRunCount: number(row, "model_run_count"),
+    statistics: object(row, "statistics"),
+    errorMessage: nullableText(row, "error_message"),
+    releaseId: nullableText(row, "release_id"),
+    releaseStatus: releaseStatus as ContentGenerationBatch["releaseStatus"],
+    releaseContentVersion: nullableNumber(row, "release_content_version"),
+    releaseVersionName: nullableText(row, "release_version_name"),
+    createdAt: text(row, "created_at"),
+    completedAt: nullableText(row, "completed_at"),
+  };
+}
+
+function mapGenerationItem(row: Row): ContentGenerationItem {
+  const changedFields = Array.isArray(row.changed_fields)
+    ? row.changed_fields.filter((value): value is string => typeof value === "string")
+    : [];
+  return {
+    generationItemId: text(row, "generation_item_id"),
+    batchId: text(row, "batch_id"),
+    elementId: text(row, "element_id"),
+    entityType: text(row, "entity_type") as ContentGenerationItem["entityType"],
+    entityKey: text(row, "entity_key"),
+    baselineSnapshot: object(row, "baseline_snapshot"),
+    generatedSnapshot: object(row, "generated_snapshot"),
+    changedFields,
+    changeSummary: text(row, "change_summary"),
+    confidence: number(row, "confidence"),
+    riskLevel: text(row, "risk_level") as ContentGenerationItem["riskLevel"],
+    validationSummary: object(row, "validation_summary"),
+    revisionId: nullableText(row, "revision_id"),
+  };
+}
+
+function mapGenerationEvidence(row: Row): ContentGenerationEvidence {
+  const fragment = relation(row.source_fragments);
+  const version = relation(fragment.source_versions);
+  const source = relation(version.sources);
+  return {
+    generationEvidenceId: text(row, "generation_evidence_id"),
+    generationItemId: text(row, "generation_item_id"),
+    fieldPath: text(row, "field_path"),
+    sourceFragmentId: text(row, "source_fragment_id"),
+    supportRole: text(row, "support_role") as ContentGenerationEvidence["supportRole"],
+    rationale: text(row, "rationale"),
+    sourceLabel: text(source, "label") || text(version, "source_id"),
+    sourceLocator: text(source, "locator"),
+    fragmentLocator: object(fragment, "locator"),
+    contentExcerpt: text(fragment, "content_text").slice(0, 4000),
   };
 }
 

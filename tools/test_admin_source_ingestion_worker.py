@@ -292,6 +292,8 @@ class FakeSourceClient:
 
     def rpc(self, name: str, payload: dict[str, Any]) -> Any:
         self.rpc_calls.append((name, payload))
+        if name == worker.QUEUE_CATALOG_RPC:
+            return {"queuedCount": payload["p_limit"], "queued": []}
         if name == worker.CLAIM_RPC:
             if self.claimed:
                 return None
@@ -423,6 +425,28 @@ class FakeURLSourceClient(FakeSourceClient):
 
 
 class SourceWorkerTests(unittest.TestCase):
+    def test_worker_queues_initial_catalog_urls_once_before_claiming(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            source_path = Path(directory) / "input.txt"
+            source_path.write_text(
+                "순현재가치 NPV는 미래 현금흐름을 할인율로 현재가치화한다.",
+                encoding="utf-8",
+            )
+            client = FakeSourceClient(source_path)
+            ingestion = worker.SourceIngestionWorker(
+                client,
+                "source-catalog-test",
+                auto_queue_catalog=4,
+            )
+            self.assertIsNotNone(ingestion.process_one())
+            self.assertIsNone(ingestion.process_one())
+
+        queue_calls = [payload for name, payload in client.rpc_calls if name == worker.QUEUE_CATALOG_RPC]
+        self.assertEqual(1, len(queue_calls))
+        self.assertEqual(4, queue_calls[0]["p_limit"])
+        self.assertFalse(queue_calls[0]["p_refresh"])
+        self.assertEqual(worker.QUEUE_CATALOG_RPC, client.rpc_calls[0][0])
+
     def test_worker_streams_extracts_matches_and_completes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             source_path = Path(directory) / "input.txt"

@@ -50,3 +50,4 @@ jobs:
           python tools/admin_source_ingestion_worker.py
           --worker-id "github:${{ github.run_id }}:${{ github.run_attempt }}"
           --max-jobs 4
+          --auto-queue-catalog 4

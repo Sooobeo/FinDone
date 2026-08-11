@@ -50,6 +50,7 @@ from tools.admin_import_supabase import normalize_supabase_url, resolve_supabase
 
 
 SOURCE_BUCKET = "source-private"
+QUEUE_CATALOG_RPC = "queue_catalog_url_sources"
 CLAIM_RPC = "claim_source_ingestion_job"
 PROGRESS_RPC = "update_source_ingestion_progress"
 COMPLETE_RPC = "complete_source_ingestion_job"
@@ -1349,7 +1350,7 @@ class SupabaseSourceClient:
         return result
 
     def rpc(self, name: str, payload: Mapping[str, Any]) -> Any:
-        if name not in {CLAIM_RPC, PROGRESS_RPC, COMPLETE_RPC, FAIL_RPC}:
+        if name not in {QUEUE_CATALOG_RPC, CLAIM_RPC, PROGRESS_RPC, COMPLETE_RPC, FAIL_RPC}:
             raise SourceWorkerError("Unsupported source worker RPC")
         body = json.dumps(payload, ensure_ascii=False, separators=(",", ":"), allow_nan=False).encode("utf-8")
         if len(body) > 20 * 1024 * 1024:
@@ -1512,14 +1513,25 @@ def _rpc_object(value: Any, label: str) -> dict[str, Any] | None:
 
 
 class SourceIngestionWorker:
-    def __init__(self, client: SupabaseSourceClient, worker_id: str, *, max_source_bytes: int = MAX_SOURCE_BYTES) -> None:
+    def __init__(
+        self,
+        client: SupabaseSourceClient,
+        worker_id: str,
+        *,
+        max_source_bytes: int = MAX_SOURCE_BYTES,
+        auto_queue_catalog: int = 0,
+    ) -> None:
         if WORKER_ID_RE.fullmatch(worker_id) is None:
             raise SourceWorkerError("worker id is invalid")
         if max_source_bytes < 1024 or max_source_bytes > 10 * 1024 * 1024 * 1024:
             raise SourceWorkerError("max source bytes is outside the safe supported range")
+        if auto_queue_catalog < 0 or auto_queue_catalog > 100:
+            raise SourceWorkerError("auto queue catalog count must be between 0 and 100")
         self.client = client
         self.worker_id = worker_id
         self.max_source_bytes = max_source_bytes
+        self.auto_queue_catalog = auto_queue_catalog
+        self._catalog_queue_attempted = False
         self._last_progress = 0
         self._last_stage = ""
         self._last_progress_at = 0.0
@@ -1628,6 +1640,23 @@ class SourceIngestionWorker:
         return _bounded_result(result)
 
     def process_one(self) -> WorkerOutcome | None:
+        if self.auto_queue_catalog and not self._catalog_queue_attempted:
+            self._catalog_queue_attempted = True
+            queued = _rpc_object(
+                self.client.rpc(
+                    QUEUE_CATALOG_RPC,
+                    {
+                        "p_source_ids": None,
+                        "p_limit": self.auto_queue_catalog,
+                        "p_refresh": False,
+                    },
+                ),
+                "queue catalog sources",
+            )
+            if queued is not None:
+                queued_count = queued.get("queuedCount", 0)
+                if type(queued_count) is not int or not 0 <= queued_count <= self.auto_queue_catalog:
+                    raise SourceWorkerError("catalog queue RPC returned an invalid count")
         claimed = _rpc_object(
             self.client.rpc(CLAIM_RPC, {"p_worker_id": self.worker_id}),
             "claim source ingestion",
@@ -1890,6 +1919,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--timeout", type=float, default=90.0)
     parser.add_argument("--max-jobs", type=int, default=4)
     parser.add_argument(
+        "--auto-queue-catalog",
+        type=int,
+        default=int(os.environ.get("ADMIN_SOURCE_WORKER_AUTO_QUEUE_CATALOG", "4")),
+    )
+    parser.add_argument(
         "--max-source-mib",
         type=int,
         default=int(os.environ.get("ADMIN_SOURCE_WORKER_MAX_MIB", str(MAX_SOURCE_BYTES // (1024 * 1024)))),
@@ -1903,6 +1937,8 @@ def main(argv: Iterable[str] | None = None) -> int:
         raise SourceWorkerError("--max-jobs must be between 1 and 20")
     if args.max_source_mib < 1 or args.max_source_mib > 10 * 1024:
         raise SourceWorkerError("--max-source-mib must be between 1 and 10240")
+    if args.auto_queue_catalog < 0 or args.auto_queue_catalog > 100:
+        raise SourceWorkerError("--auto-queue-catalog must be between 0 and 100")
     client = SupabaseSourceClient(
         base_url=resolve_supabase_url(),
         secret_key=os.environ.get("SUPABASE_SECRET_KEY", ""),
@@ -1912,6 +1948,7 @@ def main(argv: Iterable[str] | None = None) -> int:
         client,
         args.worker_id,
         max_source_bytes=args.max_source_mib * 1024 * 1024,
+        auto_queue_catalog=args.auto_queue_catalog,
     )
     outcomes: list[dict[str, Any]] = []
     for _ in range(args.max_jobs):

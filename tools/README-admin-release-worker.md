@@ -5,8 +5,8 @@
 ## 처리 흐름
 
 1. `release_build` 작업을 원자적으로 claim합니다.
-2. 현재 `stable` DB를 기준으로 사용하고, 아직 stable 릴리스가 없으면 APK 내장 DB v6를 사용합니다.
-3. 릴리스에 고정된 분야·요소·개념·수식 revision을 투영하고 FTS를 다시 만듭니다.
+2. 현재 `stable` DB를 canonical baseline으로 읽고, 아직 stable 릴리스가 없으면 APK 내장 DB v6를 사용합니다.
+3. 새 SQLite schema를 빈 파일에 만들고 canonical row만 다시 적재한 뒤, 해당 릴리스에 고정된 분야·요소·개념·수식 revision을 투영하고 FTS를 재생성합니다. 기존 파일의 freelist·편집 이력·임시 페이지는 복사하지 않습니다.
 4. 7개 분야·135개 요소, row count, 빈 필드, FK, SQLite integrity와 SHA-256을 검증합니다.
 5. private `release-bundles/<release-id>/`에 DB와 manifest를 올리고 `release_validation`을 자동 생성합니다.
 6. 검증 작업을 이어서 claim해 내려받은 산출물을 독립적으로 다시 검사합니다.

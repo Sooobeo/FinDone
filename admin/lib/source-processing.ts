@@ -25,6 +25,7 @@ export interface SourceStatusPresentation {
 
 export interface SourceStatusRow {
   source_id?: unknown;
+  version_count?: unknown;
   latest_parse_status?: unknown;
   latest_job_id?: unknown;
   latest_job_status?: unknown;
@@ -46,6 +47,13 @@ export function parseSourceStatus(value: unknown): SourceItem["status"] {
 }
 
 export function sourceStatusPresentation(source: SourceItem): SourceStatusPresentation {
+  if (source.catalogOnly) {
+    return {
+      label: "원문 수집 전",
+      detail: "기존 앱 DB의 공개 출처 주소 · Worker 자동 수집 대상",
+      loading: false,
+    };
+  }
   if (source.status === "failed" || source.jobStatus === "failed") {
     return {
       label: "처리 실패",
@@ -98,8 +106,11 @@ export function mergeSourceStatus(source: SourceItem, row: SourceStatusRow): Sou
   };
   const stringOrUndefined = (value: unknown) => typeof value === "string" && value ? value : undefined;
   const jobStatus = stringOrUndefined(row.latest_job_status);
+  const versionCount = numberOrUndefined(row.version_count);
   return {
     ...source,
+    versionCount: versionCount ?? source.versionCount,
+    catalogOnly: versionCount === undefined ? source.catalogOnly : versionCount === 0,
     linkedElements: numberOrUndefined(row.linked_element_count) ?? source.linkedElements,
     status: parseSourceStatus(row.latest_parse_status),
     jobId: stringOrUndefined(row.latest_job_id),

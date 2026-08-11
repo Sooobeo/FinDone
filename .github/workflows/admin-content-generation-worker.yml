@@ -1,0 +1,51 @@
+name: Admin Content Generation Worker
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findone-admin-content-generation-worker
+  cancel-in-progress: false
+
+jobs:
+  generate-review-candidates:
+    if: github.event_name == 'workflow_dispatch' || vars.ADMIN_CONTENT_GENERATION_WORKER_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Check required worker configuration
+        shell: bash
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_CONTENT_MODEL: ${{ vars.OPENAI_CONTENT_MODEL }}
+        run: |
+          test -n "$SUPABASE_URL" || { echo "SUPABASE_URL secret is missing"; exit 1; }
+          test -n "$SUPABASE_SECRET_KEY" || { echo "SUPABASE_SECRET_KEY secret is missing"; exit 1; }
+          test -n "$OPENAI_API_KEY" || { echo "OPENAI_API_KEY secret is missing"; exit 1; }
+          test -n "$OPENAI_CONTENT_MODEL" || { echo "OPENAI_CONTENT_MODEL variable is missing"; exit 1; }
+
+      - name: Generate, validate, and auto-repair review candidates
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_CONTENT_MODEL: ${{ vars.OPENAI_CONTENT_MODEL }}
+        run: >-
+          python tools/admin_content_generation_worker.py
+          --worker-id "github:${{ github.run_id }}:${{ github.run_attempt }}"
+          --max-batches 1
+          --max-elements 135
+          --auto-enqueue-sources 50

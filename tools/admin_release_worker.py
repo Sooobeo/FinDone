@@ -14,7 +14,6 @@ import hashlib
 import json
 import os
 import re
-import shutil
 import socket
 import sqlite3
 import ssl
@@ -65,6 +64,106 @@ VERIFIED_TABLES = (
     "element_sources",
     "knowledge_fts",
 )
+COPY_TABLE_COLUMNS: dict[str, tuple[str, ...]] = {
+    "metadata": ("key", "value"),
+    "domains": (
+        "domain_id", "name", "description", "element_count", "display_order", "color_token",
+    ),
+    "sources": ("source_id", "label", "locator", "source_type", "notes"),
+    "elements": (
+        "element_id", "domain_id", "element_number", "title", "mode", "core_relation",
+        "scope_notes", "source_label", "source_locator", "spec_section_locator", "display_order",
+    ),
+    "concept_cards": (
+        "concept_id", "element_id", "title", "definition", "intuition", "scope_notes", "source_ids_json",
+    ),
+    "formula_cards": (
+        "formula_id", "element_id", "title", "expression", "assumptions", "notes", "source_ids_json",
+    ),
+    "element_sources": ("element_id", "source_id", "ordinal"),
+}
+
+APP_SCHEMA_SQL = """
+PRAGMA foreign_keys = ON;
+PRAGMA page_size = 4096;
+
+CREATE TABLE metadata (
+    key TEXT PRIMARY KEY NOT NULL,
+    value TEXT NOT NULL
+) WITHOUT ROWID;
+
+CREATE TABLE domains (
+    domain_id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    element_count INTEGER NOT NULL CHECK (element_count > 0),
+    display_order INTEGER NOT NULL UNIQUE,
+    color_token TEXT NOT NULL
+) WITHOUT ROWID;
+
+CREATE TABLE sources (
+    source_id TEXT PRIMARY KEY NOT NULL,
+    label TEXT NOT NULL,
+    locator TEXT NOT NULL,
+    source_type TEXT NOT NULL,
+    notes TEXT NOT NULL
+) WITHOUT ROWID;
+
+CREATE TABLE elements (
+    element_id TEXT PRIMARY KEY NOT NULL,
+    domain_id TEXT NOT NULL REFERENCES domains(domain_id),
+    element_number INTEGER NOT NULL CHECK (element_number > 0),
+    title TEXT NOT NULL,
+    mode TEXT NOT NULL,
+    core_relation TEXT NOT NULL,
+    scope_notes TEXT NOT NULL,
+    source_label TEXT NOT NULL,
+    source_locator TEXT NOT NULL,
+    spec_section_locator TEXT NOT NULL,
+    display_order INTEGER NOT NULL,
+    UNIQUE (domain_id, element_number)
+);
+
+CREATE TABLE concept_cards (
+    concept_id TEXT PRIMARY KEY NOT NULL,
+    element_id TEXT NOT NULL UNIQUE REFERENCES elements(element_id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    definition TEXT NOT NULL,
+    intuition TEXT NOT NULL,
+    scope_notes TEXT NOT NULL,
+    source_ids_json TEXT NOT NULL
+) WITHOUT ROWID;
+
+CREATE TABLE formula_cards (
+    formula_id TEXT PRIMARY KEY NOT NULL,
+    element_id TEXT NOT NULL UNIQUE REFERENCES elements(element_id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    expression TEXT NOT NULL,
+    assumptions TEXT NOT NULL,
+    notes TEXT NOT NULL,
+    source_ids_json TEXT NOT NULL
+) WITHOUT ROWID;
+
+CREATE TABLE element_sources (
+    element_id TEXT NOT NULL REFERENCES elements(element_id) ON DELETE CASCADE,
+    source_id TEXT NOT NULL REFERENCES sources(source_id),
+    ordinal INTEGER NOT NULL,
+    PRIMARY KEY (element_id, source_id)
+) WITHOUT ROWID;
+
+CREATE INDEX elements_domain_order_idx ON elements(domain_id, display_order);
+CREATE INDEX element_sources_source_idx ON element_sources(source_id, element_id);
+
+CREATE VIRTUAL TABLE knowledge_fts USING fts5(
+    element_id UNINDEXED,
+    domain_id UNINDEXED,
+    title,
+    normalized_text,
+    source_label,
+    locator_text,
+    tokenize = 'unicode61 remove_diacritics 2'
+);
+"""
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 WORKER_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 MAX_JSON_BYTES = 8 * 1024 * 1024
@@ -213,6 +312,7 @@ class SupabaseReleaseClient:
         filters: Mapping[str, str] | None = None,
         order: str | None = None,
         limit: int | None = None,
+        max_bytes: int = MAX_JSON_BYTES,
     ) -> list[dict[str, Any]]:
         query: dict[str, str] = {"select": ",".join(columns)}
         query.update(filters or {})
@@ -220,7 +320,11 @@ class SupabaseReleaseClient:
             query["order"] = order
         if limit is not None:
             query["limit"] = str(limit)
-        raw = self._request("GET", f"/rest/v1/{table}?{urllib.parse.urlencode(query)}")
+        raw = self._request(
+            "GET",
+            f"/rest/v1/{table}?{urllib.parse.urlencode(query)}",
+            max_bytes=max_bytes,
+        )
         try:
             value = json.loads(raw.decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError) as error:
@@ -291,6 +395,36 @@ def _verify_base_database(path: Path) -> None:
             raise ReleaseWorkerError("base SQLite is missing a required table")
     finally:
         database.close()
+
+
+def _create_clean_database(base_path: Path, output_path: Path) -> None:
+    """Copy canonical rows into a newly-created app schema, excluding DB history."""
+
+    if output_path.exists():
+        raise ReleaseWorkerError("clean release output already exists")
+    source = sqlite3.connect(f"file:{base_path.as_posix()}?mode=ro", uri=True)
+    output = sqlite3.connect(output_path)
+    try:
+        output.executescript(APP_SCHEMA_SQL)
+        output.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
+        output.execute("PRAGMA application_id = 1179534414")
+        for table, columns in COPY_TABLE_COLUMNS.items():
+            names = ",".join(f'"{column}"' for column in columns)
+            placeholders = ",".join("?" for _ in columns)
+            rows = source.execute(f'SELECT {names} FROM "{table}"').fetchall()
+            output.executemany(
+                f'INSERT INTO "{table}" ({names}) VALUES ({placeholders})',
+                rows,
+            )
+        output.commit()
+        if output.execute("PRAGMA foreign_key_check").fetchall():
+            raise ReleaseWorkerError("clean baseline foreign-key projection failed")
+    except Exception:
+        output.rollback()
+        raise
+    finally:
+        output.close()
+        source.close()
 
 
 def _update_exact(database: sqlite3.Connection, sql: str, values: Sequence[Any], label: str) -> None:
@@ -505,7 +639,7 @@ def build_release_bundle(
         raise ReleaseWorkerError("release version metadata is unsupported")
     release_id = _uuid(release.get("release_id"), "release_id")
     output_database.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(base_database, output_database)
+    _create_clean_database(base_database, output_database)
 
     release_identity = [
         {
@@ -567,6 +701,7 @@ def build_release_bundle(
         "sourceSha256": source_sha,
         "rowCounts": row_counts,
         "domainElementCounts": EXPECTED_DOMAIN_COUNTS,
+        "buildMode": "clean-rebuild",
     }
     validation = validate_release_database(output_database, manifest)
     if validation.status != "passed":

@@ -4,7 +4,7 @@ import { getAdminContext } from "@/lib/auth";
 import { getAdminCapabilities, getReleaseWorkspace } from "@/lib/data";
 import { viewerCapabilities, viewerReleaseWorkspace } from "@/lib/viewer-placeholders";
 
-export const metadata: Metadata = { title: "앱 반영" };
+export const metadata: Metadata = { title: "릴리스 이력" };
 
 export default async function ReleasesPage() {
   const context = await getAdminContext();

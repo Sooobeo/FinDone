@@ -12,6 +12,7 @@ import {
   Link2,
   LoaderCircle,
   Plus,
+  RefreshCw,
   Search,
   UploadCloud,
   X,
@@ -73,6 +74,7 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
   const [submittingTask, setSubmittingTask] = useState<"file" | "url" | null>(null);
   const [statusRefreshing, setStatusRefreshing] = useState(false);
   const [statusRefreshError, setStatusRefreshError] = useState("");
+  const [catalogSubmitting, setCatalogSubmitting] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const domainOptions = useMemo(() => sourceDomainOptions(sources), [sources]);
@@ -107,6 +109,7 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
           .from("source_catalog_overview")
           .select([
             "source_id",
+            "version_count",
             "latest_parse_status",
             "latest_job_id",
             "latest_job_status",
@@ -259,6 +262,29 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
     } finally {
       setSubmitting(false);
       setSubmittingTask(null);
+    }
+  }
+
+  async function queueCatalogSources() {
+    if (readOnly || catalogSubmitting) return;
+    setCatalogSubmitting(true);
+    setMessage("");
+    try {
+      const response = await fetch("/api/workflow/generation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "queue_catalog", refresh: false }),
+      });
+      const result = await response.json().catch(() => ({})) as { error?: string; message?: string; queuedCount?: number };
+      if (!response.ok) {
+        setMessage(result.error ?? "기존 웹 출처를 수집 대기열에 넣지 못했습니다.");
+        return;
+      }
+      setMessage(`${result.message ?? "기존 웹 출처 수집을 등록했습니다."} 완료된 원본은 콘텐츠 생성 Worker가 자동으로 이어서 처리합니다.`);
+    } catch {
+      setMessage("기존 웹 출처 수집 요청의 네트워크 응답을 확인하지 못했습니다.");
+    } finally {
+      setCatalogSubmitting(false);
     }
   }
 
@@ -536,6 +562,21 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
             <div><span>2</span><p><strong>안전한 수집</strong>내부 주소와 위험한 redirect는 차단합니다.</p></div>
             <div><span>3</span><p><strong>근거 연결</strong>추출한 구절을 요소별 출처로 연결합니다.</p></div>
           </div>
+          {!viewerMode ? (
+            <div className="catalog-source-action">
+              <div><strong>기존 앱 DB의 웹 출처도 자동 수집</strong><p>Worker가 순서대로 자동 수집합니다. 기다리지 않고 최대 50건을 지금 등록할 때만 버튼을 사용하세요.</p></div>
+              <button className="button button-secondary" type="button" onClick={queueCatalogSources} disabled={readOnly || catalogSubmitting || submitting}>
+                {catalogSubmitting ? <LoaderCircle className="spin" size={16} /> : <RefreshCw size={16} />}
+                {catalogSubmitting ? "수집 요청 등록 중…" : "지금 최대 50건 수집 시작"}
+              </button>
+              {catalogSubmitting ? (
+                <div className="generation-action-progress catalog-action-progress" role="status">
+                  <span>기존 출처를 중복 확인하고 대기열에 넣는 중</span>
+                  <div className="is-indeterminate" role="progressbar" aria-label="기존 웹 출처 수집 등록 진행" aria-valuetext="처리 중"><i /></div>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </article>
       </section> : null}
 

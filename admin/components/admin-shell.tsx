@@ -2,16 +2,14 @@
 
 import {
   BookOpenText,
-  CheckCircle2,
   Database,
   FileArchive,
-  FileCheck2,
   FileSearch,
   LayoutDashboard,
   LogOut,
   Menu,
-  MessageSquareWarning,
   Settings,
+  Sparkles,
   X,
 } from "lucide-react";
 import Link from "next/link";
@@ -26,10 +24,8 @@ const navItems = [
   { href: "/dashboard", label: "대시보드", icon: LayoutDashboard },
   { href: "/concepts", label: "개념 DB", icon: Database },
   { href: "/sources", label: "원본 자료", icon: FileSearch },
-  { href: "/distractors", label: "오답 후보", icon: MessageSquareWarning },
-  { href: "/validation", label: "자동 검증", icon: CheckCircle2 },
-  { href: "/review", label: "승인 검토", icon: FileCheck2 },
-  { href: "/releases", label: "앱 반영", icon: FileArchive },
+  { href: "/review", label: "앱 DB 최종 검토", icon: Sparkles },
+  { href: "/releases", label: "릴리스 이력", icon: FileArchive },
 ] as const;
 
 interface AdminShellProps {

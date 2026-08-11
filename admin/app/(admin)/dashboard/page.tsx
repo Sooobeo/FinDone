@@ -11,18 +11,18 @@ import {
 import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
 import { getAdminContext } from "@/lib/auth";
-import { getConceptElements, getSources } from "@/lib/data";
+import { getConceptElements, getReviewWorkspace, getSources } from "@/lib/data";
 import { packagedContentInfo } from "@/lib/packaged-info";
-import { viewerConceptElements, viewerSources } from "@/lib/viewer-placeholders";
+import { viewerConceptElements, viewerReviewWorkspace, viewerSources } from "@/lib/viewer-placeholders";
 
 export const metadata: Metadata = { title: "대시보드" };
 
 export default async function DashboardPage() {
   const context = await getAdminContext();
   const viewer = context.role === "viewer";
-  const [elements, sources] = viewer
-    ? [viewerConceptElements, viewerSources]
-    : await Promise.all([getConceptElements(), getSources()]);
+  const [elements, sources, reviewWorkspace] = viewer
+    ? [viewerConceptElements, viewerSources, viewerReviewWorkspace]
+    : await Promise.all([getConceptElements(), getSources(), getReviewWorkspace()]);
   const domainCounts = viewer
     ? [
         { id: "FIELD-1", name: "분야 ID와 표시 이름", count: 100 },
@@ -43,6 +43,7 @@ export default async function DashboardPage() {
       );
   const maxDomainCount = Math.max(...domainCounts.map((domain) => domain.count), 1);
   const issueCount = elements.reduce((sum, element) => sum + element.issueCount, 0);
+  const finalReviewCount = reviewWorkspace.batches.filter((batch) => batch.status === "ready_for_review").length;
 
   return (
     <div className="page-stack">
@@ -81,10 +82,10 @@ export default async function DashboardPage() {
         </article>
         <article className="metric-card">
           <div className="metric-icon icon-coral"><CircleAlert size={20} /></div>
-          <div className="metric-label">확인할 항목</div>
-          <div className="metric-value">{viewer ? "이슈 수" : issueCount}<small>{viewer ? "" : "건"}</small></div>
-          <p>{viewer ? "검토가 필요한 오류·경고의 총개수" : "현재 패키지 기준 자동 검증 결과"}</p>
-          <Link className="metric-link" href="/validation">검증 화면 보기 <ArrowRight size={14} /></Link>
+          <div className="metric-label">최종 검토 대기</div>
+          <div className="metric-value">{viewer ? "배치 수" : finalReviewCount}<small>{viewer ? "" : "건"}</small></div>
+          <p>{viewer ? "자동 생성·검증을 끝낸 앱 DB 후보 수" : issueCount ? `기존 편집 이슈 ${issueCount}건 · 자동 배치는 별도 검증` : "근거·형식 자동 검증을 통과한 배치"}</p>
+          <Link className="metric-link" href="/review">최종 검토 보기 <ArrowRight size={14} /></Link>
         </article>
       </section>
 
@@ -116,26 +117,22 @@ export default async function DashboardPage() {
           <div className="panel-heading">
             <div>
               <p className="eyebrow">NEXT STEPS</p>
-              <h2>Admin 도입 순서</h2>
+              <h2>자동 앱 DB 반영 순서</h2>
             </div>
             <Sparkles size={19} className="subtle-icon" />
           </div>
           <ol className="workflow-list">
             <li className="workflow-complete">
               <span>1</span>
-              <div><strong>현재 DB 가져오기</strong><p>{viewer ? "학습요소와 원본 근거를 준비하는 단계" : `${elements.length}개 요소와 ${sources.length}개 출처 준비`}</p></div>
+              <div><strong>기존 앱 DB 기준점</strong><p>{viewer ? "학습요소와 원본 근거를 준비하는 단계" : `${elements.length}개 요소와 ${sources.length}개 출처 준비`}</p></div>
             </li>
             <li className="workflow-current">
               <span>2</span>
-              <div><strong>개념·수식 정돈</strong><p>스프레드시트 화면에서 설명과 근거 검수</p></div>
+              <div><strong>원본 자동 가공·콘텐츠 생성</strong><p>fragment 추출, 근거 연결, 구조화 생성과 자동 수정</p></div>
             </li>
             <li>
               <span>3</span>
-              <div><strong>오답 후보 정리</strong><p>요소별 선택지와 틀린 이유 승인</p></div>
-            </li>
-            <li>
-              <span>4</span>
-              <div><strong>앱 DB로 반영</strong><p>승인본만 SQLite 릴리스로 생성</p></div>
+              <div><strong>최종 검토 후 자동 릴리스</strong><p>승인 한 번으로 클린 SQLite 검증·stable 공개</p></div>
             </li>
           </ol>
         </article>
