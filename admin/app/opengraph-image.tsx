@@ -27,20 +27,12 @@ export default function OpenGraphImage() {
             viewBox="0 0 64 64"
             width={156}
           >
-            <rect
-              fill="#f7f9f8"
-              height="56"
-              rx="16"
+            <path
+              d="M20 4H44C52.8366 4 60 11.1634 60 20V44C60 52.8366 52.8366 60 44 60H9C6.23858 60 4 57.7614 4 55V20C4 11.1634 11.1634 4 20 4Z"
+              fill="#f7fbfa"
               stroke="#cbd8d5"
-              width="56"
-              x="4"
-              y="4"
             />
-            <g fill="#246b65">
-              <rect height="38" rx="3.5" width="7" x="18" y="13" />
-              <path d="M25 15.5C32.5 11.5 42.5 11.8 50 16.2C49.2 24.8 40.5 29.2 25 27.6V15.5Z" />
-              <path d="M25 33.6C31.5 30.5 39.5 30.8 45 34.1C43.8 41.2 36.5 44.8 25 42.3V33.6Z" />
-            </g>
+            <path d="M17 14H48V22H29V29H44V37H29V50H17V14Z" fill="#174e4a" />
           </svg>
           <div
             style={{

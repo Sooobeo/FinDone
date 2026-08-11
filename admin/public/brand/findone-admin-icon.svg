@@ -1,0 +1,9 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>FinDone Content Admin icon</title>
+  <path
+    d="M20 4H44C52.8366 4 60 11.1634 60 20V44C60 52.8366 52.8366 60 44 60H9C6.23858 60 4 57.7614 4 55V20C4 11.1634 11.1634 4 20 4Z"
+    fill="#F7FBFA"
+    stroke="#CBD8D5"
+  />
+  <path d="M17 14H48V22H29V29H44V37H29V50H17V14Z" fill="#174E4A"/>
+</svg>

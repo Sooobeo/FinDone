@@ -10,8 +10,9 @@ export const metadata: Metadata = {
   },
   description: "FinDone 학습 콘텐츠 제작·검수·배포 관리자",
   icons: {
-    icon: [{ url: "/brand/findone-app-icon.svg", type: "image/svg+xml" }],
-    shortcut: "/brand/findone-app-icon.svg",
+    icon: [{ url: "/brand/findone-admin-icon.svg", type: "image/svg+xml" }],
+    shortcut: "/brand/findone-admin-icon.svg",
+    apple: "/brand/findone-admin-icon.svg",
   },
   openGraph: {
     type: "website",
