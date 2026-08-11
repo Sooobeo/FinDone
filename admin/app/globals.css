@@ -1210,7 +1210,6 @@ p {
 .intro-brand span { display: flex; flex-direction: column; line-height: 1.05; }
 .intro-brand strong { color: var(--teal-950); font-size: 18px; letter-spacing: -0.03em; }
 .intro-brand small { margin-top: 5px; color: var(--teal-700); font-size: 8px; font-weight: 800; letter-spacing: 0.15em; }
-.intro-login-link { min-height: 36px; padding-inline: 14px; }
 .intro-shell { width: min(1280px, 100%); min-height: calc(100vh - 76px); margin: 0 auto; padding: clamp(28px, 4vw, 56px); display: grid; grid-template-columns: 174px minmax(0, 1fr); gap: clamp(28px, 4vw, 56px); }
 .intro-nav { align-self: start; position: sticky; top: 30px; display: grid; gap: 7px; }
 .intro-nav > p { margin: 0 0 9px 12px; color: #8d9b96; font-size: 9px; font-weight: 800; letter-spacing: 0.14em; }
@@ -1219,7 +1218,7 @@ p {
 .intro-nav a.active { color: white; background: var(--teal-900); box-shadow: 0 8px 22px rgb(18 63 60 / 0.15); }
 .intro-content { min-width: 0; display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(340px, 0.8fr); overflow: hidden; background: white; border: 1px solid var(--line); border-radius: 26px; box-shadow: 0 18px 60px rgb(18 63 60 / 0.08); }
 .intro-copy-panel { min-width: 0; padding: clamp(34px, 5vw, 68px); display: flex; flex-direction: column; }
-.intro-copy-panel > h1 { max-width: 650px; margin: 10px 0 16px; color: #18322d; font-size: clamp(34px, 4vw, 54px); line-height: 1.08; letter-spacing: -0.055em; word-break: keep-all; }
+.intro-copy-panel > h1 { max-width: 650px; margin: 6px 0 15px; color: #18322d; font-size: clamp(28px, 2.6vw, 36px); line-height: 1.14; letter-spacing: -0.04em; word-break: keep-all; }
 .intro-summary { max-width: 620px; margin-bottom: 34px; color: #566a64; font-size: 15px; line-height: 1.75; word-break: keep-all; }
 .intro-markdown { max-width: 650px; }
 .intro-markdown h2 { margin: 30px 0 9px; color: #234039; font-size: 17px; letter-spacing: -0.025em; }
@@ -2107,7 +2106,7 @@ p {
   .intro-header { height: 66px; padding-inline: 18px; }
   .intro-shell { min-height: calc(100vh - 66px); padding: 22px 15px 36px; gap: 18px; }
   .intro-copy-panel { padding: 36px 25px; }
-  .intro-copy-panel > h1 { font-size: 34px; }
+  .intro-copy-panel > h1 { font-size: 28px; }
   .intro-visual-panel { min-height: 560px; padding: 34px 22px; }
   .intro-screen-collage { min-height: 520px; }
 }
@@ -2150,10 +2149,9 @@ p {
   .withdraw-row .button { width: 100%; }
   .login-card { padding: 26px 21px; }
   .intro-brand small { display: none; }
-  .intro-login-link { min-height: 34px; }
   .intro-nav a { min-height: 39px; }
   .intro-copy-panel { padding: 31px 21px; }
-  .intro-copy-panel > h1 { font-size: 30px; }
+  .intro-copy-panel > h1 { font-size: 25px; }
   .intro-summary { margin-bottom: 27px; font-size: 13px; }
   .intro-visual-panel { min-height: 470px; }
   .intro-phone-image { width: min(260px, 88%); }

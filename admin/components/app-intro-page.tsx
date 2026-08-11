@@ -104,12 +104,9 @@ export async function AppIntroPage({ slug }: { slug: IntroSlug }) {
   return (
     <main className="intro-page">
       <header className="intro-header">
-        <Link className="intro-brand" href="/about">
+        <Link className="intro-brand" href="/login" aria-label="로그인 페이지로 돌아가기">
           <img src="/brand/findone-app-icon.svg" alt="" />
           <span><strong>FinDone</strong><small>APP GUIDE</small></span>
-        </Link>
-        <Link className="button button-secondary intro-login-link" href="/login">
-          로그인 <ArrowRight size={15} />
         </Link>
       </header>
 
