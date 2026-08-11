@@ -8,6 +8,7 @@ import type {
   ConceptElement,
   DistractorItem,
   ReleaseRecord,
+  SourceDomain,
   SourceItem,
   ValidationIssueRecord,
   ValidationRunRecord,
@@ -127,13 +128,42 @@ export async function getSources(): Promise<SourceItem[]> {
     return (await import("@/lib/fixtures")).sourceItems;
   }
 
-  const { data, error } = await supabase
-    .from("source_catalog_overview")
-    .select("*")
-    .order("created_at", { ascending: false });
-  if (error) throw new Error(`출처 목록을 불러오지 못했습니다: ${error.message}`);
+  const [sourceResult, linkResult, elementResult, domainResult] = await Promise.all([
+    supabase.from("source_catalog_overview").select("*").order("created_at", { ascending: false }),
+    supabase.from("element_sources").select("source_id,element_id"),
+    supabase.from("elements").select("element_id,domain_id"),
+    supabase.from("domains").select("domain_id,name,display_order"),
+  ]);
+  const firstError = sourceResult.error ?? linkResult.error ?? elementResult.error ?? domainResult.error;
+  if (firstError) throw new Error(`출처 목록을 불러오지 못했습니다: ${firstError.message}`);
 
-  return ((data ?? []) as Row[]).map((row) => {
+  const domainsById = new Map<string, SourceDomain>();
+  for (const row of (domainResult.data ?? []) as Row[]) {
+    const id = text(row, "domain_id");
+    if (!id) continue;
+    domainsById.set(id, {
+      id,
+      name: text(row, "name") || id,
+      displayOrder: number(row, "display_order", Number.MAX_SAFE_INTEGER),
+    });
+  }
+
+  const domainByElement = new Map<string, string>();
+  for (const row of (elementResult.data ?? []) as Row[]) {
+    domainByElement.set(text(row, "element_id"), text(row, "domain_id"));
+  }
+
+  const domainIdsBySource = new Map<string, Set<string>>();
+  for (const row of (linkResult.data ?? []) as Row[]) {
+    const sourceId = text(row, "source_id");
+    const domainId = domainByElement.get(text(row, "element_id"));
+    if (!sourceId || !domainId) continue;
+    const sourceDomains = domainIdsBySource.get(sourceId) ?? new Set<string>();
+    sourceDomains.add(domainId);
+    domainIdsBySource.set(sourceId, sourceDomains);
+  }
+
+  return ((sourceResult.data ?? []) as Row[]).map((row) => {
     const sourceType = text(row, "kind", "source_type").toLocaleLowerCase("en-US");
     const locator = text(row, "locator");
     const kind: SourceItem["kind"] = sourceType.includes("pdf")
@@ -152,6 +182,10 @@ export async function getSources(): Promise<SourceItem[]> {
       locator,
       status: parseSourceStatus(text(row, "latest_parse_status")),
       linkedElements: number(row, "linked_element_count"),
+      domains: [...(domainIdsBySource.get(text(row, "source_id")) ?? [])]
+        .map((domainId) => domainsById.get(domainId))
+        .filter((domain): domain is SourceDomain => Boolean(domain))
+        .sort((left, right) => left.displayOrder - right.displayOrder || left.name.localeCompare(right.name, "ko-KR")),
       createdAt: text(row, "created_at") || "—",
     };
   });

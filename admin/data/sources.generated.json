@@ -6,6 +6,7 @@
     "locator": "https://developers.openai.com/api/docs/models/text-embedding-3-small",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -15,6 +16,7 @@
     "locator": "https://developers.openai.com/api/docs/guides/tools-file-search",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -24,6 +26,7 @@
     "locator": "https://developers.openai.com/api/docs/models/gpt-5.6-luna",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -33,6 +36,7 @@
     "locator": "https://developers.openai.com/api/docs/pricing",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -42,6 +46,7 @@
     "locator": "https://www.yes24.com/product/goods/129395371",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -51,6 +56,7 @@
     "locator": "https://www.yes24.com/product/goods/170343919",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -60,6 +66,7 @@
     "locator": "https://www.yes24.com/Product/Goods/117498625",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -69,6 +76,7 @@
     "locator": "https://m.yes24.com/goods/detail/124315764",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -78,6 +86,18 @@
     "locator": "https://www.pearson.com/en-us/subject-catalog/p/options-futures-and-other-derivatives/P200000005938/9780136939917",
     "status": "ready",
     "linkedElements": 7,
+    "domains": [
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      },
+      {
+        "id": "DER",
+        "name": "파생상품",
+        "displayOrder": 4
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -87,6 +107,7 @@
     "locator": "https://www.yes24.com/product/goods/124832392",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -96,6 +117,7 @@
     "locator": "https://www.yes24.com/product/goods/111384498",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -105,6 +127,7 @@
     "locator": "https://books.wiley.com/series/wiley-valuation-7e/",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -114,6 +137,13 @@
     "locator": "https://onlinelibrary.wiley.com/doi/book/10.1002/9781119835622",
     "status": "ready",
     "linkedElements": 4,
+    "domains": [
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -123,6 +153,7 @@
     "locator": "https://uat.store.wiley.com/en-us/investment-banking-valuation-lbos-m-a-and-ipos-%28book-valuation-models%29-3rd-edition-p-9781119867883",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -132,6 +163,7 @@
     "locator": "https://www.yes24.com/Product/Goods/107667515",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -141,6 +173,7 @@
     "locator": "https://www.mheducation.com/highered/product/Investments-Bodie.html",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -150,6 +183,7 @@
     "locator": "https://www.mheducation.com/highered/product/Real-Estate-Finance-and-Investments-Brueggeman.html",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -159,6 +193,7 @@
     "locator": "https://www.cfainstitute.org/programs/cfa-program/cfa-program-level-i-sample-questions",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -168,6 +203,13 @@
     "locator": "https://www.cmegroup.com/education/files/a-traders-guide-to-futures.pdf",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "DER",
+        "name": "파생상품",
+        "displayOrder": 4
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -177,6 +219,7 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/Inv2ed.htm",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -186,6 +229,7 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/cfprset.htm",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -195,6 +239,7 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/cflect.htm",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -204,6 +249,7 @@
     "locator": "https://pages.stern.nyu.edu/adamodar/New_Home_Page/problems/Acqprob.htm",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -213,6 +259,13 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/eqprob.html",
     "status": "ready",
     "linkedElements": 3,
+    "domains": [
+      {
+        "id": "CF",
+        "name": "기업재무",
+        "displayOrder": 1
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -222,6 +275,7 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/eqexam.htm",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -231,6 +285,7 @@
     "locator": "https://ocw.mit.edu/courses/15-501-introduction-to-financial-and-managerial-accounting-spring-2004/pages/assignments/",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -240,6 +295,13 @@
     "locator": "https://ocw.mit.edu/courses/15-501-introduction-to-financial-and-managerial-accounting-spring-2004/pages/exams/",
     "status": "ready",
     "linkedElements": 7,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -249,6 +311,7 @@
     "locator": "https://ocw.mit.edu/courses/15-501-introduction-to-financial-and-managerial-accounting-spring-2004/pages/lecture-notes/",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -258,6 +321,13 @@
     "locator": "https://ocw.mit.edu/courses/15-514-financial-and-managerial-accounting-summer-2003/19734bb3c6872e3d0934f40febb2ec21_samplemidterm.pdf",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -267,6 +337,13 @@
     "locator": "https://ocw.mit.edu/courses/15-514-financial-and-managerial-accounting-summer-2003/c8d4748deabadc72a8fac83de99d6878_samplesolutions.pdf",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -276,6 +353,7 @@
     "locator": "https://ocw.mit.edu/courses/15-402-finance-theory-ii-spring-2003/pages/exams/",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -285,6 +363,7 @@
     "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/problem-sets/",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -294,6 +373,13 @@
     "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/exams/",
     "status": "ready",
     "linkedElements": 5,
+    "domains": [
+      {
+        "id": "CF",
+        "name": "기업재무",
+        "displayOrder": 1
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -303,6 +389,7 @@
     "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/resources/problem-solving-notes/",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -312,6 +399,7 @@
     "locator": "https://ocw.mit.edu/courses/15-433-investments-spring-2003/pages/assignments/",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -321,6 +409,7 @@
     "locator": "https://ocw.mit.edu/courses/15-433-investments-spring-2003/pages/exams/",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -330,6 +419,7 @@
     "locator": "https://ocw.mit.edu/courses/11-431j-real-estate-finance-and-investment-fall-2006/pages/assignments/",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -339,6 +429,7 @@
     "locator": "https://ocw.mit.edu/courses/11-431j-real-estate-finance-and-investment-fall-2006/pages/exams/",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -348,6 +439,7 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/preface",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -357,6 +449,7 @@
     "locator": "https://openstax.org/books/principles-of-finance-2e/pages/preface",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -366,6 +459,13 @@
     "locator": "https://oyc.yale.edu/economics/econ-252-11/lecture-17",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "DER",
+        "name": "파생상품",
+        "displayOrder": 4
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -375,6 +475,13 @@
     "locator": "https://www.bis.org/basel_framework/",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -384,6 +491,13 @@
     "locator": "https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/evaluating-quality-financial-reports",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -393,6 +507,13 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/pdfiles/papers/commodity.pdf",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -402,6 +523,13 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/pdfiles/eqnotes/valuationtodolist.pdf",
     "status": "ready",
     "linkedElements": 3,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -411,6 +539,13 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/pdfiles/DSV2/Ch17.pdf",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -420,6 +555,13 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/valuationtools.html",
     "status": "ready",
     "linkedElements": 14,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -429,6 +571,13 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/valuation/val.htm",
     "status": "ready",
     "linkedElements": 3,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -438,6 +587,13 @@
     "locator": "https://opendart.fss.or.kr/guide/main.do?apiGrpCd=DE003",
     "status": "ready",
     "linkedElements": 7,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -447,6 +603,13 @@
     "locator": "https://www.eia.gov/opendata/documentation.php",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -456,6 +619,13 @@
     "locator": "https://www.fdic.gov/analysis/quarterly-banking-profile/qbp/",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -465,6 +635,13 @@
     "locator": "https://www.federalreserve.gov/publications/files/2026-03-UGBHCPR.pdf",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -474,6 +651,13 @@
     "locator": "https://www.ifrs.org/issued-standards/list-of-standards/ias-19-employee-benefits/",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -483,6 +667,13 @@
     "locator": "https://www.ifrs.org/issued-standards/list-of-standards/ifrs-15-revenue-from-contracts-with-customers/",
     "status": "ready",
     "linkedElements": 4,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -492,6 +683,13 @@
     "locator": "https://www.ifrs.org/issued-standards/list-of-standards/ifrs-16-leases/",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -501,6 +699,13 @@
     "locator": "https://www.ifrs.org/issued-standards/list-of-standards/ifrs-17-insurance-contracts/",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -510,6 +715,13 @@
     "locator": "https://www.ifrs.org/issued-standards/list-of-standards/ifrs-2-share-based-payment/",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -519,6 +731,13 @@
     "locator": "https://www.ifrs.org/issued-standards/list-of-standards/ifrs-9-financial-instruments/",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -528,6 +747,13 @@
     "locator": "https://content.naic.org/sites/default/files/2025-annual-property-and-casualty-and-title-insurance-industries-analysis-report.pdf",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -537,6 +763,13 @@
     "locator": "https://content.naic.org/insurance-topics/risk-based-capital",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -546,6 +779,13 @@
     "locator": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
     "status": "ready",
     "linkedElements": 8,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -555,6 +795,13 @@
     "locator": "https://www.sec.gov/about/divisions-offices/division-corporation-finance/financial-reporting-manual",
     "status": "ready",
     "linkedElements": 9,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -564,6 +811,13 @@
     "locator": "https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures",
     "status": "ready",
     "linkedElements": 4,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -573,6 +827,13 @@
     "locator": "https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/oil-gas-rules",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -582,6 +843,13 @@
     "locator": "https://www.sec.gov/rules-regulations/staff-guidance/staff-accounting-bulletins/staff-accounting-bulletin-no-107",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -591,6 +859,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1196674",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -600,6 +869,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -609,6 +879,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -618,6 +889,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -627,6 +899,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -636,6 +909,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -645,6 +919,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -654,6 +929,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -663,6 +939,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -672,6 +949,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -681,6 +959,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -690,6 +969,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -699,6 +979,7 @@
     "locator": "https://www.bok.or.kr/portal/bbs/B0000217/view.do?menuNo=200144&nttId=10088718",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -708,6 +989,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -717,6 +999,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -726,6 +1009,7 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1057221",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -735,6 +1019,7 @@
     "locator": "https://main.krxverse.co.kr/_contents/ACA/02/02010201/03.pdf",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -744,6 +1029,7 @@
     "locator": "https://main.krxverse.co.kr/_contents/ACA/02/02010201/04.pdf",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -753,6 +1039,13 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1367578",
     "status": "ready",
     "linkedElements": 9,
+    "domains": [
+      {
+        "id": "DER",
+        "name": "파생상품",
+        "displayOrder": 4
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -762,6 +1055,23 @@
     "locator": "https://www.kocw.net/home/search/kemView.do?kemId=1484248",
     "status": "ready",
     "linkedElements": 14,
+    "domains": [
+      {
+        "id": "CF",
+        "name": "기업재무",
+        "displayOrder": 1
+      },
+      {
+        "id": "INV",
+        "name": "투자·포트폴리오",
+        "displayOrder": 2
+      },
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -771,6 +1081,18 @@
     "locator": "https://ocw.mit.edu/courses/15-501-introduction-to-financial-and-managerial-accounting-spring-2004/pages/assignments/",
     "status": "ready",
     "linkedElements": 9,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      },
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -780,6 +1102,13 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/problems/Acqprob.htm",
     "status": "ready",
     "linkedElements": 3,
+    "domains": [
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -789,6 +1118,13 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/pdfiles/AcqValn.pdf",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -798,6 +1134,13 @@
     "locator": "https://breakingintowallstreet.com/biws/homepage/",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -807,6 +1150,23 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/cfprset.htm",
     "status": "ready",
     "linkedElements": 9,
+    "domains": [
+      {
+        "id": "CF",
+        "name": "기업재무",
+        "displayOrder": 1
+      },
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      },
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -816,6 +1176,23 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/problems/dcfprob.htm",
     "status": "ready",
     "linkedElements": 19,
+    "domains": [
+      {
+        "id": "CF",
+        "name": "기업재무",
+        "displayOrder": 1
+      },
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      },
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -825,6 +1202,13 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/valquestions/valquestions.htm",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -834,6 +1218,13 @@
     "locator": "https://www.federalreserve.gov/economy-at-a-glance-policy-rate.htm",
     "status": "ready",
     "linkedElements": 3,
+    "domains": [
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -843,6 +1234,13 @@
     "locator": "https://www.federalreserveeducation.org/resources/lessons/lesson--ap-macro-monetary-policy-lecture-guide.pdf",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -852,6 +1250,13 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/invfables/ipo.htm",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -861,6 +1266,33 @@
     "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/problem-sets/",
     "status": "ready",
     "linkedElements": 6,
+    "domains": [
+      {
+        "id": "INV",
+        "name": "투자·포트폴리오",
+        "displayOrder": 2
+      },
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      },
+      {
+        "id": "DER",
+        "name": "파생상품",
+        "displayOrder": 4
+      },
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      },
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -870,6 +1302,28 @@
     "locator": "https://ocw.mit.edu/courses/15-433-investments-spring-2003/pages/assignments/",
     "status": "ready",
     "linkedElements": 9,
+    "domains": [
+      {
+        "id": "INV",
+        "name": "투자·포트폴리오",
+        "displayOrder": 2
+      },
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      },
+      {
+        "id": "DER",
+        "name": "파생상품",
+        "displayOrder": 4
+      },
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -879,6 +1333,13 @@
     "locator": "https://ocw.mit.edu/courses/11-431j-real-estate-finance-and-investment-fall-2006/pages/assignments/",
     "status": "ready",
     "linkedElements": 5,
+    "domains": [
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -888,6 +1349,13 @@
     "locator": "https://ocw.mit.edu/courses/11-431j-real-estate-finance-and-investment-fall-2006/pages/exams/",
     "status": "ready",
     "linkedElements": 4,
+    "domains": [
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -897,6 +1365,18 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/problems/relval.htm",
     "status": "ready",
     "linkedElements": 10,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      },
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -906,6 +1386,13 @@
     "locator": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins-17",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -915,6 +1402,13 @@
     "locator": "https://www.investor.gov/sites/default/files/ipo-investorbulletin_0.pdf",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -924,6 +1418,18 @@
     "locator": "https://yig.yonsei.ac.kr/research",
     "status": "ready",
     "linkedElements": 9,
+    "domains": [
+      {
+        "id": "EQV",
+        "name": "주식 리서치·기업가치평가",
+        "displayOrder": 5
+      },
+      {
+        "id": "IBT",
+        "name": "IB·시장·대체투자 실무",
+        "displayOrder": 6
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -933,6 +1439,7 @@
     "locator": "https://www.cfainstitute.org/about/governance/policies/terms-conditions",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -942,6 +1449,7 @@
     "locator": "https://www.cmegroup.com/tools-information/cme-website-terms-of-use.html",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -951,6 +1459,7 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/guide.html",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -960,6 +1469,7 @@
     "locator": "https://opendart.fss.or.kr/intro/main.do",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -969,6 +1479,7 @@
     "locator": "https://www.federalreserveeducation.org/terms-of-service",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -978,6 +1489,7 @@
     "locator": "https://www.federalreserve.gov/disclaimer.htm",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -987,6 +1499,7 @@
     "locator": "https://www.kocw.net/home/copyright/intro.do",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -996,6 +1509,7 @@
     "locator": "https://ocw.mit.edu/pages/privacy-and-terms-of-use/",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1005,6 +1519,7 @@
     "locator": "https://www.newyorkfed.org/privacy/termsofuse.html",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1014,6 +1529,7 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/preface",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1023,6 +1539,7 @@
     "locator": "https://openstax.org/books/principles-of-finance-2e/pages/preface",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1032,6 +1549,7 @@
     "locator": "https://data.sec.gov/",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1041,6 +1559,7 @@
     "locator": "https://www.copyright.gov/title17/92chap1.html",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1050,6 +1569,7 @@
     "locator": "https://yflyonsei.com/join",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1059,6 +1579,7 @@
     "locator": "https://yig.yonsei.ac.kr/",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1068,6 +1589,7 @@
     "locator": "https://yflyonsei.com/uploads/%EB%B0%95%EC%84%9C%ED%98%84/Recruiting%203.PNG",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1077,6 +1599,7 @@
     "locator": "https://yflyonsei.com/uploads/%EB%B0%95%EC%84%9C%ED%98%84/Study%201.PNG",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1086,6 +1609,7 @@
     "locator": "https://yflyonsei.com/uploads/%EB%B0%95%EC%84%9C%ED%98%84/Study%202.PNG",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1095,6 +1619,7 @@
     "locator": "https://yflyonsei.com/teamactivities",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1104,6 +1629,7 @@
     "locator": "https://yig.yonsei.ac.kr/recruiting",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1113,6 +1639,7 @@
     "locator": "https://yig.yonsei.ac.kr/research",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1122,6 +1649,7 @@
     "locator": "finance_interview_app_final_spec.md",
     "status": "ready",
     "linkedElements": 0,
+    "domains": [],
     "createdAt": "packaged-v6"
   },
   {
@@ -1131,6 +1659,13 @@
     "locator": "https://openstax.org/books/principles-finance/pages/15-3-the-capital-asset-pricing-model-capm",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "INV",
+        "name": "투자·포트폴리오",
+        "displayOrder": 2
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1140,6 +1675,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/4-3-record-and-post-the-common-types-of-adjusting-entries",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1149,6 +1691,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/16-3-prepare-the-statement-of-cash-flows-using-the-indirect-method",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1158,6 +1707,13 @@
     "locator": "https://www.cmegroup.com/trading/interest-rates/files/Calculating_the_Dollar_Value_of_a_Basis_Point_Final_Dec_4.pdf",
     "status": "ready",
     "linkedElements": 3,
+    "domains": [
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1167,6 +1723,13 @@
     "locator": "https://www.stern.nyu.edu/~adamodar/pdfiles/pvsol.pdf",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "CF",
+        "name": "기업재무",
+        "displayOrder": 1
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1176,6 +1739,18 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/problems/invret.htm",
     "status": "ready",
     "linkedElements": 4,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      },
+      {
+        "id": "CF",
+        "name": "기업재무",
+        "displayOrder": 1
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1185,6 +1760,13 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/problems/pvpr.htm",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "CF",
+        "name": "기업재무",
+        "displayOrder": 1
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1194,6 +1776,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/3-3-define-and-describe-the-initial-steps-in-the-accounting-cycle",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1203,6 +1792,13 @@
     "locator": "https://www.finra.org/investors/insights/spread-word-what-you-need-know-about-bond-spreads",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1212,6 +1808,13 @@
     "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/the-capm-and-apt",
     "status": "ready",
     "linkedElements": 3,
+    "domains": [
+      {
+        "id": "INV",
+        "name": "투자·포트폴리오",
+        "displayOrder": 2
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1221,6 +1824,13 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/pdfiles/valpr.pdf",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "CF",
+        "name": "기업재무",
+        "displayOrder": 1
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1230,6 +1840,13 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/cfprob0.html",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "CF",
+        "name": "기업재무",
+        "displayOrder": 1
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1239,6 +1856,13 @@
     "locator": "https://ocw.mit.edu/courses/15-501-introduction-to-financial-and-managerial-accounting-spring-2004/resources/ps4_sol/",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1248,6 +1872,13 @@
     "locator": "https://openstax.org/books/principles-finance/pages/10-2-bond-valuation",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1257,6 +1888,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/11-3-explain-and-apply-depreciation-methods-to-allocate-capitalized-costs",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1266,6 +1904,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/12-1-identify-and-describe-current-liabilities",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1275,6 +1920,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/14-5-discuss-the-applicability-of-earnings-per-share-as-a-method-to-measure-performance",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1284,6 +1936,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/4-1-explain-the-concepts-and-guidelines-affecting-adjusting-entries",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1293,6 +1952,13 @@
     "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/portfolio-theory",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "INV",
+        "name": "투자·포트폴리오",
+        "displayOrder": 2
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1302,6 +1968,13 @@
     "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/fixed-income-securities",
     "status": "ready",
     "linkedElements": 4,
+    "domains": [
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1311,6 +1984,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/10-summary",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1320,6 +2000,13 @@
     "locator": "https://www.cmegroup.com/content/dam/cmegroup/education/files/using-treasury-futures-to-replace-swap-exposure.pdf",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1329,6 +2016,13 @@
     "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/options",
     "status": "ready",
     "linkedElements": 5,
+    "domains": [
+      {
+        "id": "DER",
+        "name": "파생상품",
+        "displayOrder": 4
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1338,6 +2032,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/10-1-describe-and-demonstrate-the-basic-inventory-valuation-methods-and-their-cost-flow-assumptions",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1347,6 +2048,13 @@
     "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/forward-and-futures-contracts",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "DER",
+        "name": "파생상품",
+        "displayOrder": 4
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1356,6 +2064,13 @@
     "locator": "https://www.newyorkfed.org/markets/domestic-market-operations/monetary-policy-implementation/repo-reverse-repo-agreements",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1365,6 +2080,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/13-1-explain-the-pricing-of-long-term-liabilities",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1374,6 +2096,13 @@
     "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/risk-and-return",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "INV",
+        "name": "투자·포트폴리오",
+        "displayOrder": 2
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1383,6 +2112,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/4-2-discuss-the-adjustment-process-and-illustrate-common-types-of-adjusting-entries",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1392,6 +2128,13 @@
     "locator": "https://openstax.org/books/principles-finance/pages/6-key-terms",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1401,6 +2144,13 @@
     "locator": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/problems/riskprac.htm",
     "status": "ready",
     "linkedElements": 3,
+    "domains": [
+      {
+        "id": "CF",
+        "name": "기업재무",
+        "displayOrder": 1
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1410,6 +2160,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/10-5-examine-the-efficiency-of-inventory-management-using-financial-ratios",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1419,6 +2176,23 @@
     "locator": "https://ocw.mit.edu/courses/15-433-investments-spring-2003/pages/lecture-notes/",
     "status": "ready",
     "linkedElements": 6,
+    "domains": [
+      {
+        "id": "INV",
+        "name": "투자·포트폴리오",
+        "displayOrder": 2
+      },
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      },
+      {
+        "id": "DER",
+        "name": "파생상품",
+        "displayOrder": 4
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1428,6 +2202,13 @@
     "locator": "https://www.cmegroup.com/education/courses/introduction-to-treasuries/treasuries-hedging-and-risk-management.hideSubnav.html.educationIframe.html?hideAddThisExt=y&hideFooter=y&hideHeader=y&hideRightRail=y",
     "status": "ready",
     "linkedElements": 4,
+    "domains": [
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1437,6 +2218,13 @@
     "locator": "https://openstax.org/books/principles-finance/pages/15-summary",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "INV",
+        "name": "투자·포트폴리오",
+        "displayOrder": 2
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1446,6 +2234,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/9-key-terms",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1455,6 +2250,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/13-3-prepare-journal-entries-to-reflect-the-life-cycle-of-bonds",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1464,6 +2266,13 @@
     "locator": "https://openstax.org/books/principles-financial-accounting/pages/2-1-describe-the-income-statement-statement-of-owners-equity-balance-sheet-and-statement-of-cash-flows-and-how-they-interrelate",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1473,6 +2282,13 @@
     "locator": "https://www.newyorkfed.org/medialibrary/media/research/epr/2012/1210cope.pdf",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1482,6 +2298,13 @@
     "locator": "https://openstax.org/books/principles-finance/pages/6-5-market-value-ratios",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1491,6 +2314,13 @@
     "locator": "https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/resources/mit15_401f08_problem_sets/",
     "status": "ready",
     "linkedElements": 3,
+    "domains": [
+      {
+        "id": "CF",
+        "name": "기업재무",
+        "displayOrder": 1
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1500,6 +2330,13 @@
     "locator": "https://rpc.cfainstitute.org/-/media/documents/code/gips/measures-risk-adjusted-return.pdf",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "INV",
+        "name": "투자·포트폴리오",
+        "displayOrder": 2
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1509,6 +2346,13 @@
     "locator": "https://rpc.cfainstitute.org/-/media/documents/code/gips/case-study-risk-adjusted-performance-measures.pdf",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "INV",
+        "name": "투자·포트폴리오",
+        "displayOrder": 2
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1518,6 +2362,13 @@
     "locator": "https://rpc.cfainstitute.org/topics/performance-attribution/risk-adjusted-performance",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "INV",
+        "name": "투자·포트폴리오",
+        "displayOrder": 2
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1527,6 +2378,13 @@
     "locator": "https://ocw.mit.edu/courses/15-433-investments-spring-2003/pages/calendar/",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1536,6 +2394,13 @@
     "locator": "https://openstax.org/books/principles-finance/pages/10-4-risks-of-interest-rates-and-default",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1545,6 +2410,13 @@
     "locator": "https://openstax.org/books/principles-finance/pages/20-4-interest-rate-risk",
     "status": "ready",
     "linkedElements": 2,
+    "domains": [
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1554,6 +2426,13 @@
     "locator": "https://assets.openstax.org/oscms-prodcms/media/documents/PrinciplesofFinance-WEB.pdf",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "ACC",
+        "name": "회계·재무제표",
+        "displayOrder": 0
+      }
+    ],
     "createdAt": "packaged-v6"
   },
   {
@@ -1563,6 +2442,13 @@
     "locator": "https://www.cmegroup.com/content/dam/cmegroup/education/files/hedging-repo-exposure-in-the-treasury-basis-web.pdf",
     "status": "ready",
     "linkedElements": 1,
+    "domains": [
+      {
+        "id": "FI",
+        "name": "채권·금리",
+        "displayOrder": 3
+      }
+    ],
     "createdAt": "packaged-v6"
   }
 ]

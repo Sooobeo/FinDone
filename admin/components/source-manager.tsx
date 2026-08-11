@@ -15,6 +15,12 @@ import {
 } from "lucide-react";
 import { ChangeEvent, DragEvent, FormEvent, useMemo, useRef, useState } from "react";
 import { PageHeader } from "@/components/page-header";
+import {
+  ALL_SOURCE_DOMAINS,
+  filterSources,
+  sourceDomainOptions,
+  UNASSIGNED_SOURCE_DOMAIN,
+} from "@/lib/source-filter";
 import { SOURCE_STATUS_LABELS } from "@/lib/status";
 import { parsePublicSourceUrl } from "@/lib/source-url";
 import { getBrowserSupabase } from "@/lib/supabase/browser";
@@ -47,17 +53,19 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
   const [url, setUrl] = useState("");
   const [query, setQuery] = useState("");
   const [kind, setKind] = useState("all");
+  const [domainId, setDomainId] = useState(ALL_SOURCE_DOMAINS);
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const domainOptions = useMemo(() => sourceDomainOptions(sources), [sources]);
+  const unassignedSourceCount = useMemo(
+    () => sources.filter((source) => source.domains.length === 0).length,
+    [sources],
+  );
   const filtered = useMemo(() => {
-    const normalized = query.trim().toLocaleLowerCase("ko-KR");
-    return sources.filter((source) => {
-      if (kind !== "all" && source.kind !== kind) return false;
-      return !normalized || `${source.id} ${source.label} ${source.locator}`.toLocaleLowerCase("ko-KR").includes(normalized);
-    });
-  }, [sources, query, kind]);
+    return filterSources(sources, { query, kind, domainId });
+  }, [sources, query, kind, domainId]);
 
   function stageFiles(files: FileList | File[]) {
     if (readOnly) return;
@@ -101,6 +109,7 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
       locator: parsed.toString(),
       status: "processing",
       linkedElements: 0,
+      domains: [],
       createdAt: readOnly ? "데모 미저장" : "등록 대기",
     };
     if (readOnly) {
@@ -184,6 +193,7 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
         locator: objectPath,
         status: "processing",
         linkedElements: 0,
+        domains: [],
         size: formatBytes(item.file.size),
         createdAt: "방금 등록",
       });
@@ -276,6 +286,38 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
             <label className="select-wrap"><span className="visually-hidden">파일 종류</span><select value={kind} onChange={(event) => setKind(event.target.value)}><option value="all">모든 유형</option><option value="pdf">PDF</option><option value="spreadsheet">스프레드시트</option><option value="document">문서</option><option value="url">URL</option></select><ChevronDown size={14} /></label>
           </div>
         </div>
+        <div className="source-domain-filter" role="group" aria-label="원본 자료 단원 필터">
+          <span className="source-domain-filter-label">단원</span>
+          <button
+            className={`source-domain-toggle ${domainId === ALL_SOURCE_DOMAINS ? "active" : ""}`}
+            type="button"
+            aria-pressed={domainId === ALL_SOURCE_DOMAINS}
+            onClick={() => setDomainId(ALL_SOURCE_DOMAINS)}
+          >
+            <span>전체보기</span><small>{sources.length}</small>
+          </button>
+          {domainOptions.map((domain) => (
+            <button
+              className={`source-domain-toggle ${domainId === domain.id ? "active" : ""}`}
+              type="button"
+              aria-pressed={domainId === domain.id}
+              onClick={() => setDomainId(domain.id)}
+              key={domain.id}
+            >
+              <span>{domain.name}</span><small>{domain.sourceCount}</small>
+            </button>
+          ))}
+          {unassignedSourceCount ? (
+            <button
+              className={`source-domain-toggle source-domain-unassigned ${domainId === UNASSIGNED_SOURCE_DOMAIN ? "active" : ""}`}
+              type="button"
+              aria-pressed={domainId === UNASSIGNED_SOURCE_DOMAIN}
+              onClick={() => setDomainId(UNASSIGNED_SOURCE_DOMAIN)}
+            >
+              <span>단원 미연결</span><small>{unassignedSourceCount}</small>
+            </button>
+          ) : null}
+        </div>
         {message ? <div className="table-notice" role="status">{message}</div> : null}
         <div className="source-list">
           {filtered.slice(0, 80).map((source) => (
@@ -287,6 +329,7 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
               {source.locator.startsWith("http") ? <a className="icon-button" href={source.locator} target="_blank" rel="noreferrer" aria-label={`${source.label} 열기`}><ArrowUpRight size={17} /></a> : <span className="icon-button-placeholder" />}
             </article>
           ))}
+          {!filtered.length ? <div className="source-empty">선택한 조건에 해당하는 원본 자료가 없습니다.</div> : null}
         </div>
         {filtered.length > 80 ? <p className="list-limit-note">검색 성능을 위해 첫 80건을 표시 중입니다. 검색어로 범위를 좁혀 주세요.</p> : null}
       </section>

@@ -52,10 +52,10 @@ export const viewerConceptElements: ConceptElement[] = [
 ];
 
 export const viewerSources: SourceItem[] = [
-  { id: "SOURCE-FIELD-01", label: "자료 식별 정보", kind: "document", locator: "자료 ID, 표시 이름과 파일 유형이 표시되는 위치", status: "ready", linkedElements: 0, createdAt: "등록 시각은 표시하지 않음" },
-  { id: "SOURCE-FIELD-02", label: "원본 위치", kind: "pdf", locator: "비공개 저장 경로 또는 공개 URL의 형식을 설명", status: "processing", linkedElements: 0, createdAt: "등록 시각은 표시하지 않음" },
-  { id: "SOURCE-FIELD-03", label: "처리 상태", kind: "spreadsheet", locator: "처리 중·검토 필요·사용 준비 상태가 표시되는 위치", status: "needs_review", linkedElements: 0, createdAt: "등록 시각은 표시하지 않음" },
-  { id: "SOURCE-FIELD-04", label: "콘텐츠 연결", kind: "url", locator: "근거가 연결되는 학습요소와 인용 위치를 설명", status: "ready", linkedElements: 0, createdAt: "등록 시각은 표시하지 않음" },
+  { id: "SOURCE-FIELD-01", label: "자료 식별 정보", kind: "document", locator: "자료 ID, 표시 이름과 파일 유형이 표시되는 위치", status: "ready", linkedElements: 0, domains: [{ id: "FIELD-A", name: "단원 분류 예시", displayOrder: 1 }], createdAt: "등록 시각은 표시하지 않음" },
+  { id: "SOURCE-FIELD-02", label: "원본 위치", kind: "pdf", locator: "비공개 저장 경로 또는 공개 URL의 형식을 설명", status: "processing", linkedElements: 0, domains: [{ id: "FIELD-A", name: "단원 분류 예시", displayOrder: 1 }], createdAt: "등록 시각은 표시하지 않음" },
+  { id: "SOURCE-FIELD-03", label: "처리 상태", kind: "spreadsheet", locator: "처리 중·검토 필요·사용 준비 상태가 표시되는 위치", status: "needs_review", linkedElements: 0, domains: [{ id: "FIELD-B", name: "공통 자료 예시", displayOrder: 2 }], createdAt: "등록 시각은 표시하지 않음" },
+  { id: "SOURCE-FIELD-04", label: "콘텐츠 연결", kind: "url", locator: "근거가 연결되는 학습요소와 인용 위치를 설명", status: "ready", linkedElements: 0, domains: [], createdAt: "등록 시각은 표시하지 않음" },
 ];
 
 export const viewerDistractors: DistractorItem[] = [

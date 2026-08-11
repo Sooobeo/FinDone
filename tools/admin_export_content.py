@@ -324,8 +324,14 @@ def write_frontend_fixture(snapshot: dict[str, Any], output_path: Path) -> None:
 def build_frontend_sources_fixture(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
     tables = snapshot["tables"]
     linked_counts: dict[str, int] = {}
+    domain_by_id = {row["domain_id"]: row for row in tables["domains"]}
+    domain_by_element = {row["element_id"]: row["domain_id"] for row in tables["elements"]}
+    domain_ids_by_source: dict[str, set[str]] = {}
     for row in tables["element_sources"]:
         linked_counts[row["source_id"]] = linked_counts.get(row["source_id"], 0) + 1
+        domain_ids_by_source.setdefault(row["source_id"], set()).add(
+            domain_by_element[row["element_id"]]
+        )
     content_version = snapshot["content"]["contentDbVersion"]
 
     def kind(source_type: str) -> str:
@@ -343,6 +349,17 @@ def build_frontend_sources_fixture(snapshot: dict[str, Any]) -> list[dict[str, A
             "locator": source["locator"],
             "status": "ready",
             "linkedElements": linked_counts.get(source["source_id"], 0),
+            "domains": [
+                {
+                    "id": domain_id,
+                    "name": domain_by_id[domain_id]["name"],
+                    "displayOrder": domain_by_id[domain_id]["display_order"],
+                }
+                for domain_id in sorted(
+                    domain_ids_by_source.get(source["source_id"], set()),
+                    key=lambda item: (domain_by_id[item]["display_order"], item),
+                )
+            ],
             "createdAt": f"packaged-v{content_version}",
         }
         for source in tables["sources"]

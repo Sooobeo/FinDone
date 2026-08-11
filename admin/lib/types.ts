@@ -145,8 +145,15 @@ export interface SourceItem {
   locator: string;
   status: "ready" | "processing" | "needs_review" | "failed";
   linkedElements: number;
+  domains: SourceDomain[];
   size?: string;
   createdAt: string;
+}
+
+export interface SourceDomain {
+  id: string;
+  name: string;
+  displayOrder: number;
 }
 
 export interface DistractorItem {

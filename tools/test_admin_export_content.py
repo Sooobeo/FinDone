@@ -38,6 +38,16 @@ class AdminContentExportTest(unittest.TestCase):
         self.assertEqual(174, len(source_fixture))
         self.assertTrue(all(row["status"] == "ready" for row in source_fixture))
         self.assertEqual(309, sum(row["linkedElements"] for row in source_fixture))
+        self.assertEqual(
+            {"ACC", "CF", "DER", "EQV", "FI", "IBT", "INV"},
+            {domain["id"] for row in source_fixture for domain in row["domains"]},
+        )
+        source_by_id = {row["id"]: row for row in source_fixture}
+        self.assertEqual(
+            ["ACC", "EQV"],
+            [domain["id"] for domain in source_by_id["R-ACC"]["domains"]],
+        )
+        self.assertTrue(any(not row["domains"] for row in source_fixture))
 
     def test_json_and_csv_outputs_are_deterministic_and_spreadsheet_safe(self) -> None:
         snapshot = exporter.build_export()
