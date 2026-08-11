@@ -30,6 +30,8 @@
 10. `202608100010_validation_worker_rpc.sql`: validation worker의 claim·완료·실패·lease 복구 RPC
 11. `202608100011_release_worker_rpc.sql`: SQLite release build·검증 완료와 자동 stable 공개 RPC
 12. `202608110001_viewer_signup.sql`: viewer 자동 가입과 owner-only write 권한
+13. `202608110002_viewer_catalog_only.sql`: viewer에게 실제 DB 행 대신 카탈로그 설명만 노출
+14. `202608110003_resumable_source_uploads.sql`: 원본의 100 MiB 개별 제한 제거와 대용량 등록 RPC
 
 ## 로컬 실행
 
@@ -137,7 +139,9 @@ URL/파일 공통으로 `sources`를 만들고, 실제 fetch/upload마다 증가
 
 DB trigger는 자격증명 포함 URL, 로컬 host, IP literal을 거부한다. 실제 fetch worker는 이 검사에 더해 매 DNS 해석과 redirect hop마다 loopback/private/link-local/reserved IP를 다시 차단해야 한다. DNS rebinding 방어가 없는 worker는 실행하면 안 된다.
 
-브라우저 업로드는 Storage에 직접 보낸 후 `source_files` metadata를 기록한다. `source-private` object path의 첫 segment는 반드시 로그인 사용자 UUID여야 한다.
+브라우저 업로드는 Storage의 TUS endpoint에 6 MiB 청크로 직접 보내며 네트워크 오류 시 같은 대기열 항목의 중단 지점부터 재개한다. 파일 전체를 메모리에 올리지 않도록 SHA-256도 청크 단위로 계산한 후 `source_files` metadata를 기록한다. `source-private` object path의 첫 segment는 반드시 로그인 사용자 UUID여야 한다.
+
+`source-private.file_size_limit`은 `null`로 두어 Dashboard의 **Global file size limit**을 그대로 따른다. Admin에는 별도의 100 MiB 제한을 두지 않으며, hosted 프로젝트에서 허용할 최대 크기는 Storage Settings에서 관리한다.
 
 브라우저는 Storage 업로드가 끝난 뒤 `register_file_source`를 호출한다. RPC는 object 존재와 사용자 UUID prefix를 확인하고 source/version/file/job metadata를 한 트랜잭션으로 만든다. URL은 `register_url_source`가 source/version/job을 함께 만든다. 정규 테이블 직접 insert 권한은 브라우저에 주지 않는다.
 

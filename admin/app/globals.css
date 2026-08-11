@@ -983,6 +983,9 @@ p {
 .file-feedback > div { min-width: 0; }
 .file-feedback strong { display: block; color: #35443f; font-size: 9px; }
 .file-feedback p { margin: 2px 0 0; color: inherit; font-size: 8px; line-height: 1.45; }
+.file-feedback-body { flex: 1; }
+.source-upload-progress { height: 5px; margin-top: 8px; overflow: hidden; background: rgb(255 255 255 / 70%); border: 1px solid currentColor; border-radius: 2px; opacity: 0.82; }
+.source-upload-progress > span { display: block; height: 100%; background: currentColor; transition: width 180ms ease; }
 .file-feedback-success { color: #39705f; background: var(--green-soft); border-color: #bddccd; }
 .file-feedback-warning { color: #755c29; background: var(--amber-soft); border-color: #ead49d; }
 .file-feedback-error { color: #8c4545; background: var(--red-soft); border-color: #e4bdbd; }

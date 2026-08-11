@@ -32,8 +32,14 @@ import {
   sourceFileRejectionSummary,
   sourceMimeType,
 } from "@/lib/source-files";
+import {
+  sha256FileInChunks,
+  sourceUploadErrorMessage,
+  uploadSourceFileResumable,
+} from "@/lib/source-upload";
 import { parsePublicSourceUrl } from "@/lib/source-url";
 import { getBrowserSupabase } from "@/lib/supabase/browser";
+import { supabaseUrl } from "@/lib/supabase/config";
 import type { SourceItem } from "@/lib/types";
 
 interface StagedFile {
@@ -45,6 +51,7 @@ interface FileFeedback {
   tone: "success" | "warning" | "error" | "progress" | "info";
   title: string;
   detail: string;
+  progress?: number;
 }
 
 export function SourceManager({ initialSources, readOnly, viewerMode = false }: { initialSources: SourceItem[]; readOnly: boolean; viewerMode?: boolean }) {
@@ -185,11 +192,12 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
     for (const [itemIndex, item] of queued.entries()) {
       setFileFeedback({
         tone: "progress",
-        title: `${itemIndex + 1}/${queued.length} · ${item.file.name} 업로드 중`,
-        detail: "창을 닫지 말고 잠시 기다려 주세요.",
+        title: `${itemIndex + 1}/${queued.length} · ${item.file.name}`,
+        detail: "업로드를 준비하고 있습니다.",
+        progress: 0,
       });
-      const sourceId = `file-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
-      const versionId = crypto.randomUUID();
+      const sourceId = `file-${item.id}`;
+      const versionId = item.id;
       const safeName = item.file.name.replace(/[^a-zA-Z0-9._-]/g, "_") || "upload";
       const objectPath = `${auth.user.id}/sources/${sourceId}/${versionId}/${safeName}`;
       const mimeType = sourceMimeType(item.file);
@@ -201,11 +209,54 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
         return;
       }
       try {
-        const digest = await sha256(item.file);
-        const { error: uploadError } = await supabase.storage
-          .from("source-private")
-          .upload(objectPath, item.file, { contentType: mimeType, upsert: false });
-        if (uploadError) throw new Error(uploadError.message);
+        const digest = await sha256FileInChunks(item.file, (bytesHashed, bytesTotal) => {
+          const progress = percent(bytesHashed, bytesTotal);
+          setFileFeedback({
+            tone: "progress",
+            title: `${itemIndex + 1}/${queued.length} · ${item.file.name}`,
+            detail: `1/2 · 무결성 확인 ${Math.round(progress)}% · ${formatBytes(bytesHashed)} / ${formatBytes(bytesTotal)}`,
+            progress,
+          });
+        });
+
+        let bytesUploaded = 0;
+        await uploadSourceFileResumable({
+          file: item.file,
+          bucketName: "source-private",
+          objectPath,
+          contentType: mimeType,
+          projectUrl: supabaseUrl,
+          getAccessToken: async () => {
+            const { data } = await supabase.auth.getSession();
+            return data.session?.access_token ?? null;
+          },
+          onResume: () => {
+            setFileFeedback({
+              tone: "progress",
+              title: `${itemIndex + 1}/${queued.length} · ${item.file.name}`,
+              detail: "중단된 업로드를 찾았습니다. 저장된 지점부터 이어서 준비 중입니다.",
+              progress: percent(bytesUploaded, item.file.size),
+            });
+          },
+          onRetry: (attempt) => {
+            setFileFeedback({
+              tone: "progress",
+              title: `${itemIndex + 1}/${queued.length} · 연결 재시도 중`,
+              detail: `네트워크 연결을 자동으로 다시 시도하고 있습니다 (${attempt}/5). 완료된 청크부터 이어집니다.`,
+              progress: percent(bytesUploaded, item.file.size),
+            });
+          },
+          onProgress: (uploadedBytes, bytesTotal) => {
+            bytesUploaded = uploadedBytes;
+            const progress = percent(uploadedBytes, bytesTotal);
+            setFileFeedback({
+              tone: "progress",
+              title: `${itemIndex + 1}/${queued.length} · ${item.file.name}`,
+              detail: `2/2 · 서버 전송 ${Math.round(progress)}% · ${formatBytes(uploadedBytes)} / ${formatBytes(bytesTotal)}`,
+              progress,
+            });
+          },
+        });
 
         const { error: metadataError } = await supabase.rpc("register_file_source", {
           p_source_id: sourceId,
@@ -228,7 +279,7 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
         setFileFeedback({
           tone: "error",
           title: `${item.file.name} 업로드 실패`,
-          detail: `${error instanceof Error ? error.message : "알 수 없는 오류"}${uploaded.length ? ` · 앞의 ${uploaded.length}개는 서버 저장 완료` : ""}`,
+          detail: `${sourceUploadErrorMessage(error)}${uploaded.length ? ` · 앞의 ${uploaded.length}개는 서버 저장 완료` : ""}`,
         });
         return;
       }
@@ -250,7 +301,7 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
     setFileFeedback({
       tone: "success",
       title: `${uploaded.length}개 파일의 서버 저장을 완료했습니다.`,
-      detail: "아래 등록된 원본 목록 맨 위에서 처리 상태를 확인할 수 있습니다.",
+      detail: "아래 등록된 원본 목록 맨 위에서 처리 상태를 확인할 수 있습니다. 대용량 파일은 6MB 단위로 안전하게 전송되었습니다.",
     });
   }
 
@@ -285,7 +336,7 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
           >
             <span className="drop-icon">{staged.length && !dragActive ? <CheckCircle2 size={25} /> : <UploadCloud size={25} />}</span>
             <strong>{dragActive ? "지금 여기에 놓으세요" : staged.length ? `${staged.length}개 파일이 업로드 대기 중입니다` : "여기에 원본 파일을 놓으세요"}</strong>
-            <p>{dragActive ? "놓는 즉시 아래 대기열에서 파일명을 확인할 수 있습니다." : staged.length ? "아직 서버 저장 전입니다. 아래 목록과 업로드 버튼을 확인하세요." : "또는 컴퓨터에서 직접 선택할 수 있습니다."}</p>
+            <p>{dragActive ? "놓는 즉시 아래 대기열에서 파일명을 확인할 수 있습니다." : staged.length ? "아직 서버 저장 전입니다. 아래 목록과 업로드 버튼을 확인하세요." : "파일 크기는 Supabase 설정을 따르며 대용량 파일은 중단 지점부터 이어 올립니다."}</p>
             <button className="button button-secondary" type="button" onClick={() => inputRef.current?.click()} disabled={readOnly || submitting}>
               {staged.length ? "파일 더 추가" : "파일 탐색기 열기"}
             </button>
@@ -294,7 +345,21 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
           {fileFeedback ? (
             <div className={`file-feedback file-feedback-${fileFeedback.tone}`} role={fileFeedback.tone === "error" ? "alert" : "status"} aria-live="polite">
               {fileFeedback.tone === "progress" ? <LoaderCircle size={18} /> : fileFeedback.tone === "error" || fileFeedback.tone === "warning" ? <AlertTriangle size={18} /> : <CheckCircle2 size={18} />}
-              <div><strong>{fileFeedback.title}</strong><p>{fileFeedback.detail}</p></div>
+              <div className="file-feedback-body">
+                <strong>{fileFeedback.title}</strong><p>{fileFeedback.detail}</p>
+                {fileFeedback.progress !== undefined ? (
+                  <div
+                    className="source-upload-progress"
+                    role="progressbar"
+                    aria-label="파일 업로드 진행률"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={Math.round(fileFeedback.progress)}
+                  >
+                    <span style={{ width: `${fileFeedback.progress}%` }} />
+                  </div>
+                ) : null}
+              </div>
             </div>
           ) : null}
 
@@ -308,7 +373,7 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
                   <button type="button" onClick={() => removeStagedFile(item.id)} aria-label={`${item.file.name} 제거`} disabled={submitting}><X size={15} /></button>
                 </div>
               ))}
-              <button className="button button-primary staged-submit" type="button" onClick={submitStaged} disabled={submitting}>{submitting ? "서버에 저장 중…" : `${staged.length}개 파일 서버에 저장`}</button>
+              <button className="button button-primary staged-submit" type="button" onClick={submitStaged} disabled={submitting}>{submitting ? fileFeedback?.progress !== undefined ? `${Math.round(fileFeedback.progress)}% 저장 중…` : "서버에 저장 중…" : `${staged.length}개 파일 서버에 저장`}</button>
             </div>
           ) : null}
         </article>
@@ -399,11 +464,11 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
 function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+  if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+  return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
 }
 
-async function sha256(file: File): Promise<string> {
-  const buffer = await file.arrayBuffer();
-  const digest = await crypto.subtle.digest("SHA-256", buffer);
-  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+function percent(current: number, total: number): number {
+  if (!total) return 0;
+  return Math.min(100, Math.max(0, (current / total) * 100));
 }

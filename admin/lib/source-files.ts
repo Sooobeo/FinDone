@@ -1,4 +1,3 @@
-export const MAX_SOURCE_BYTES = 100 * 1024 * 1024;
 export const SOURCE_FILE_ACCEPT = ".pdf,.docx,.xlsx,.csv,.md,.txt";
 export const SOURCE_FILE_SUPPORT_LABEL = "PDF · DOCX · XLSX · CSV · MD · TXT";
 
@@ -16,7 +15,7 @@ export interface SourceFileDescriptor {
   size: number;
 }
 
-export type SourceFileRejectionReason = "unsupported" | "empty" | "too_large";
+export type SourceFileRejectionReason = "unsupported" | "empty";
 
 export interface RejectedSourceFile<T extends SourceFileDescriptor> {
   file: T;
@@ -40,9 +39,7 @@ export function classifySourceFiles<T extends SourceFileDescriptor>(files: reado
       ? "unsupported"
       : file.size <= 0
         ? "empty"
-        : file.size > MAX_SOURCE_BYTES
-          ? "too_large"
-          : null;
+        : null;
     if (reason) rejected.push({ file, reason });
     else accepted.push(file);
   }
@@ -55,7 +52,6 @@ export function sourceFileRejectionSummary(rejected: RejectedSourceFile<SourceFi
   return [
     ["지원하지 않는 형식", count("unsupported")],
     ["빈 파일", count("empty")],
-    ["100MB 초과", count("too_large")],
   ]
     .filter(([, value]) => Number(value) > 0)
     .map(([label, value]) => `${label} ${value}개`)

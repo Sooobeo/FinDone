@@ -33,7 +33,6 @@ file_size_limit = "50MiB"
 
 [storage.buckets.source-private]
 public = false
-file_size_limit = "100MiB"
 allowed_mime_types = [
   "application/pdf",
   "application/json",

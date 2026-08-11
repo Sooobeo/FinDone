@@ -1,7 +1,7 @@
 begin;
 
 create extension if not exists pgtap with schema extensions;
-select plan(45);
+select plan(47);
 
 select has_table('public', 'admin_users', 'admin allowlist exists');
 select has_table('public', 'domains', 'domains exists');
@@ -65,6 +65,18 @@ select is(
     (select count(*) from storage.buckets where id in ('source-private', 'exports-private', 'release-bundles') and public),
     0::bigint,
     'no FinDone storage bucket is public'
+);
+select ok(
+    (select file_size_limit is null from storage.buckets where id = 'source-private'),
+    'source bucket inherits the project global file size limit'
+);
+select ok(
+    position(
+        '104857600' in pg_get_functiondef(
+            'public.register_file_source(text,uuid,text,text,text,text,bigint,text)'::regprocedure
+        )
+    ) = 0,
+    'source registration RPC has no legacy 100 MiB cap'
 );
 
 insert into public.content_revisions (
