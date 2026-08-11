@@ -489,12 +489,12 @@ begin
         raise exception using errcode = 'P0002', message = 'source version not found';
     end if;
     if job_row.job_kind = 'url_fetch' then
-        if not case
+        if not (case
                when jsonb_typeof(p_extraction_metadata -> 'sourceByteSize') = 'number'
                     and (p_extraction_metadata ->> 'sourceByteSize') ~ '^[0-9]{1,11}$'
                then (p_extraction_metadata ->> 'sourceByteSize')::bigint between 1 and 10737418240
                else false
-           end
+           end)
            or coalesce(p_extraction_metadata ->> 'sourceSha256', '') !~ '^[0-9a-f]{64}$'
            or nullif(btrim(p_extraction_metadata ->> 'snapshotObjectPath'), '') is null
            or octet_length(p_extraction_metadata ->> 'snapshotObjectPath') > 1024
