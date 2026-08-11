@@ -14,7 +14,7 @@ SUPABASE_SECRET_KEY=
 
 직접 `npm run dev`로 데모를 열 때만 `NEXT_PUBLIC_FINDONE_ADMIN_DEMO=1`을 설정합니다. 데모는 production 빌드에서 항상 차단되며, 이 값과 Supabase 연결값을 동시에 설정해도 구성 오류로 차단됩니다.
 
-관리자 계정은 Supabase Dashboard에서만 생성하며 회원가입 화면은 제공하지 않습니다.
+`/signup`에서 이메일 회원가입을 제공하며 새 계정은 DB trigger에 의해 항상 `viewer`로만 생성됩니다. Viewer는 모든 화면을 조회할 수 있지만 편집·업로드·검수·배포 권한은 없습니다. 유일한 `owner`만 전체 작업을 수행합니다.
 
 ## 콘텐츠 편집 방식
 

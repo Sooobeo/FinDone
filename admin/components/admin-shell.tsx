@@ -20,6 +20,7 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 import { getBrowserSupabase } from "@/lib/supabase/browser";
 import type { RuntimeMode } from "@/lib/supabase/config";
+import type { AdminRole } from "@/lib/types";
 
 const navItems = [
   { href: "/dashboard", label: "대시보드", icon: LayoutDashboard },
@@ -35,12 +36,14 @@ interface AdminShellProps {
   children: ReactNode;
   mode: RuntimeMode;
   email?: string;
+  role: AdminRole | null;
 }
 
-export function AdminShell({ children, mode, email }: AdminShellProps) {
+export function AdminShell({ children, mode, email, role }: AdminShellProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const activeItem = navItems.find((item) => pathname.startsWith(item.href));
+  const viewer = role === "viewer";
 
   async function signOut() {
     await getBrowserSupabase()?.auth.signOut();
@@ -55,7 +58,7 @@ export function AdminShell({ children, mode, email }: AdminShellProps) {
             <span className="brand-mark" aria-hidden="true">F</span>
             <span>
               <strong>FinDone</strong>
-              <small>CONTENT ADMIN</small>
+              <small>{viewer ? "CONTENT VIEWER" : "CONTENT ADMIN"}</small>
             </span>
           </Link>
           <button
@@ -77,7 +80,7 @@ export function AdminShell({ children, mode, email }: AdminShellProps) {
         </div>
 
         <nav className="sidebar-nav">
-          <p className="nav-label">관리</p>
+          <p className="nav-label">{viewer ? "조회" : "관리"}</p>
           {navItems.map(({ href, label, icon: Icon }) => {
             const active = pathname.startsWith(href);
             return (
@@ -100,7 +103,7 @@ export function AdminShell({ children, mode, email }: AdminShellProps) {
             {(email?.[0] ?? "관").toUpperCase()}
           </div>
           <div className="admin-identity">
-            <strong>{mode === "demo" ? "데모 관리자" : "관리자"}</strong>
+            <strong>{mode === "demo" ? "데모" : viewer ? "Viewer" : "Owner"}</strong>
             <small>{email ?? "읽기 전용 미리보기"}</small>
           </div>
           <button className="icon-button dark-icon-button" type="button" onClick={signOut} aria-label="로그아웃">
@@ -134,7 +137,9 @@ export function AdminShell({ children, mode, email }: AdminShellProps) {
           <div className="topbar-meta">
             <span className={mode === "supabase" ? "connection-live" : "connection-demo"}>
               <span aria-hidden="true" />
-              {mode === "supabase" ? "Supabase 연결됨" : "데모 · 읽기 전용"}
+              {mode === "supabase"
+                ? viewer ? "Viewer · 읽기 전용" : "Owner · 전체 권한"
+                : "데모 · 읽기 전용"}
             </span>
             <button className="icon-button" type="button" aria-label="설정" disabled>
               <Settings size={18} />
@@ -142,13 +147,20 @@ export function AdminShell({ children, mode, email }: AdminShellProps) {
           </div>
         </header>
 
-        {mode === "demo" ? (
+        {mode === "demo" || viewer ? (
           <div className="demo-banner" role="status">
-            <span className="demo-banner-icon" aria-hidden="true">D</span>
-            <p>
-              <strong>현재 앱의 실제 콘텐츠를 읽기 전용으로 표시하고 있습니다.</strong>
-              Supabase 환경변수를 연결하면 편집·업로드·승인이 활성화됩니다.
-            </p>
+            <span className="demo-banner-icon" aria-hidden="true">{viewer ? "V" : "D"}</span>
+            {viewer ? (
+              <p>
+                <strong>Viewer 계정으로 접속했습니다.</strong>
+                모든 화면은 조회 전용이며 편집·업로드·검수·배포 작업은 사용할 수 없습니다.
+              </p>
+            ) : (
+              <p>
+                <strong>현재 앱의 실제 콘텐츠를 읽기 전용으로 표시하고 있습니다.</strong>
+                Supabase 환경변수를 연결하면 편집·업로드·승인이 활성화됩니다.
+              </p>
+            )}
           </div>
         ) : null}
 

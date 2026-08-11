@@ -10,7 +10,7 @@ export async function PUT(
   { params }: { params: Promise<{ elementId: string }> },
 ) {
   const [context, capabilities] = await Promise.all([getAdminContext(), getAdminCapabilities()]);
-  if (context.mode !== "supabase" || !context.user || !context.isAdmin || !capabilities.canEdit) {
+  if (context.mode !== "supabase" || !context.user || !context.hasAccess || !capabilities.canEdit) {
     return NextResponse.json({ error: "콘텐츠 편집 권한이 필요합니다." }, { status: 403 });
   }
 

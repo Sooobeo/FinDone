@@ -1,9 +1,8 @@
 -- TEMPLATE ONLY. Do not put an email address, password, access token, or service key here.
--- Run this from the trusted SQL editor only after creating the user through
--- Supabase Dashboard/Studio > Authentication > Users.
+-- New accounts are viewer by default. Run this only for the single trusted owner
+-- after creating the account through Supabase Auth.
 --
 -- insert into public.admin_users (user_id, role, display_name)
 -- values ('00000000-0000-0000-0000-000000000000'::uuid, 'owner', 'FinDone owner')
 -- on conflict (user_id) do update
 -- set role = 'owner', is_active = true;
-

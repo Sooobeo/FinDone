@@ -8,7 +8,7 @@ export type ContentStatus =
 
 export type Difficulty = "기초" | "보통" | "심화";
 
-export type AdminRole = "owner" | "editor" | "reviewer" | "releaser";
+export type AdminRole = "owner" | "viewer";
 
 export interface AdminCapabilities {
   role: AdminRole | null;

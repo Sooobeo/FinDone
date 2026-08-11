@@ -5,7 +5,7 @@ enabled = true
 port = 54321
 schemas = ["public", "graphql_public"]
 extra_search_path = ["public", "extensions"]
-max_rows = 2000
+max_rows = 1000
 
 [db]
 port = 54322
@@ -29,7 +29,7 @@ pop3_port = 54326
 
 [storage]
 enabled = true
-file_size_limit = "100MiB"
+file_size_limit = "50MiB"
 
 [storage.buckets.source-private]
 public = false
@@ -76,26 +76,35 @@ allowed_mime_types = [
 
 [auth]
 enabled = true
-site_url = "http://localhost:3000"
-additional_redirect_urls = ["http://127.0.0.1:3000/**"]
+site_url = "https://ffinddone.vercel.app"
+additional_redirect_urls = [
+  "https://ffinddone.vercel.app/**",
+  "https://ffinddone-sooobeo1.vercel.app/",
+  "https://ffinddone-sooobeo1.vercel.app/**",
+  "https://ffinddone-*-sooobeo1.vercel.app",
+  "https://ffinddone-*-sooobeo1.vercel.app/**",
+  "http://localhost:3000/**",
+  "http://127.0.0.1:3000/**",
+]
 jwt_expiry = 3600
-enable_signup = false
+enable_signup = true
 enable_anonymous_sign_ins = false
 enable_manual_linking = false
 
 [auth.email]
-enable_signup = false
+enable_signup = true
 double_confirm_changes = true
 enable_confirmations = true
-secure_password_change = true
+secure_password_change = false
 max_frequency = "1m"
+otp_length = 8
 
 [auth.sms]
 enable_signup = false
 enable_confirmations = false
 
 [auth.mfa]
-max_enrolled_factors = 4
+max_enrolled_factors = 10
 
 [auth.mfa.totp]
 enroll_enabled = true

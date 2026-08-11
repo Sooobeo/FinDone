@@ -19,7 +19,7 @@ function isConceptElement(value: unknown): value is ConceptElement {
 
 export async function POST(request: Request) {
   const [context, capabilities] = await Promise.all([getAdminContext(), getAdminCapabilities()]);
-  if (context.mode !== "supabase" || !context.user || !context.isAdmin || !capabilities.canEdit) {
+  if (context.mode !== "supabase" || !context.user || !context.hasAccess || !capabilities.canEdit) {
     return NextResponse.json({ error: "콘텐츠 편집 권한이 필요합니다." }, { status: 403 });
   }
   const contentLength = Number(request.headers.get("content-length") ?? 0);

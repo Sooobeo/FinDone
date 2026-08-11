@@ -54,9 +54,7 @@ export function JobStatusBadge({ status }: { status: WorkflowJob["status"] }) {
 
 export function roleLabel(role: string | null) {
   if (role === "owner") return "Owner";
-  if (role === "editor") return "Editor";
-  if (role === "reviewer") return "Reviewer";
-  if (role === "releaser") return "Releaser";
+  if (role === "viewer") return "Viewer · 읽기 전용";
   return "읽기 전용";
 }
 

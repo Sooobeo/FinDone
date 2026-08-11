@@ -4,7 +4,7 @@
 
 ## 구현된 범위
 
-- 사전 생성된 Auth 사용자만 허용하는 `admin_users` allowlist
+- 회원가입 계정을 자동으로 읽기 전용 `viewer`로 등록하는 `admin_users` 멤버십
 - 분야·요소·개념 설명·수식·변수 설명·개념형 오답 후보
 - URL/파일 출처, 출처 버전, 비공개 Storage 파일, 근거 위치
 - 모든 개념 변경의 자동 immutable revision과 상태 이력
@@ -29,6 +29,7 @@
 9. `202608100009_worker_boundaries.sql`: 출처·릴리스 RPC, worker write 경계와 최신 read view
 10. `202608100010_validation_worker_rpc.sql`: validation worker의 claim·완료·실패·lease 복구 RPC
 11. `202608100011_release_worker_rpc.sql`: SQLite release build·검증 완료와 자동 stable 공개 RPC
+12. `202608110001_viewer_signup.sql`: viewer 자동 가입과 owner-only write 권한
 
 ## 로컬 실행
 
@@ -40,12 +41,12 @@ supabase db reset --local
 supabase test db
 ```
 
-`config.toml`은 로컬 신규 가입, 이메일 가입과 anonymous sign-in을 모두 끈다. 비밀값은 들어 있지 않다. OAuth나 외부 작업자 secret을 추가할 때도 파일에 직접 쓰지 말고 `env(...)`만 사용한다.
+`config.toml`은 로컬 이메일 가입을 허용하고 anonymous sign-in은 끈다. 새 Auth 계정은 DB trigger가 무조건 `viewer`로 등록하며 클라이언트 metadata로 역할을 지정할 수 없다. 비밀값은 들어 있지 않다. OAuth나 외부 작업자 secret을 추가할 때도 파일에 직접 쓰지 말고 `env(...)`만 사용한다.
 
 ## 운영 프로젝트 최초 설정
 
-1. Supabase Dashboard의 `Authentication > Users`에서 관리자 이메일/비밀번호 계정을 직접 하나 만든다.
-2. `Authentication > Sign In / Providers`에서 **Allow new users to sign up**, email signup, anonymous sign-in을 모두 끈다. `config.toml`의 Auth 설정은 로컬 stack용이며 `supabase db push`만으로 hosted Auth 설정이 바뀌지는 않는다.
+1. Supabase Dashboard의 `Authentication > Sign In / Providers`에서 **Allow new users to sign up**과 email signup을 켜고 anonymous sign-in은 끈다. `config.toml`은 로컬 stack용이며 `supabase db push`만으로 hosted Auth 설정이 바뀌지는 않는다.
+2. 기존 owner Auth 계정의 UUID를 확인한다.
 3. Dashboard SQL Editor처럼 service-role 권한이 있는 신뢰 경로에서 아래 SQL을 한 번 실행한다. 이 SQL에는 이메일이나 비밀번호를 넣지 않는다.
 
 ```sql
@@ -55,11 +56,12 @@ on conflict (user_id) do update
 set role = 'owner', is_active = true;
 ```
 
-4. 로그인 후 `select public.is_admin()`이 `true`인지 확인한다.
-5. 운영 admin URL과 비밀번호 재설정 URL을 Auth redirect allowlist에 등록한다.
-6. TOTP는 local config에서 활성화되어 있다. 운영에서도 계정에 TOTP를 등록하고 필요 시 AAL2 강제를 별도 정책으로 켠다.
+4. 로그인 후 owner의 `select public.is_admin()`이 `true`인지 확인한다.
+5. 이후 `/signup`에서 가입한 모든 계정은 자동으로 `viewer`가 된다. Viewer를 owner로 올리는 UI나 클라이언트 API는 제공하지 않는다.
+6. 운영 admin URL과 비밀번호 재설정 URL을 Auth redirect allowlist에 등록한다.
+7. TOTP는 local config에서 활성화되어 있다. 운영에서도 owner 계정에 TOTP를 등록하고 필요 시 AAL2 강제를 별도 정책으로 켠다.
 
-Auth 계정이 존재해도 `admin_users`에 활성 행이 없으면 모든 제작 테이블과 Storage 접근이 차단된다. 마지막 활성 `owner`는 DB trigger 때문에 삭제·비활성화·강등할 수 없다.
+Auth 계정을 만들면 `admin_users`에 활성 viewer 행이 자동 생성된다. Viewer는 RLS상 SELECT만 가능하고 모든 write RPC와 Storage write가 차단된다. 마지막 활성 `owner`는 DB trigger 때문에 삭제·비활성화·강등할 수 없다.
 
 공식 설정 참고: [Supabase CLI config](https://supabase.com/docs/guides/local-development/cli/config), [Auth general configuration](https://supabase.com/docs/guides/auth/general-configuration), [Storage RLS](https://supabase.com/docs/guides/storage/security/access-control).
 
@@ -71,7 +73,7 @@ Auth 계정이 존재해도 `admin_users`에 활성 행이 없으면 모든 제�
 python tools/admin_export_content.py --json build/admin-content.json --csv-dir build/admin-content-csv
 ```
 
-로그인한 owner/editor의 Admin 서버 또는 브라우저가 JSON을 읽어 다음 RPC를 호출한다.
+로그인한 owner의 Admin 서버 또는 브라우저가 JSON을 읽어 다음 RPC를 호출한다.
 
 ```ts
 const snapshot = JSON.parse(fileText)
@@ -147,9 +149,9 @@ DB trigger는 자격증명 포함 URL, 로컬 host, IP literal을 거부한다. 
 
 | bucket | 용도 | 브라우저 write 역할 |
 | --- | --- | --- |
-| `source-private` | 원본, snapshot, OCR | owner/editor |
-| `exports-private` | XLSX/CSV/백업 | 모든 active admin |
-| `release-bundles` | SQLite, manifest, signature | owner/releaser |
+| `source-private` | 원본, snapshot, OCR | owner |
+| `exports-private` | XLSX/CSV/백업 | owner |
+| `release-bundles` | SQLite, manifest, signature | owner |
 
 업로드 성공 후 DB insert가 실패하면 Admin이 방금 올린 object를 보상 삭제해야 한다. Worker의 service key는 브라우저 bundle에 넣지 않는다.
 
@@ -196,14 +198,12 @@ draft → building → ready → published(stable 자동 전환)
 
 ## 역할과 RLS
 
-| 역할 | 주요 write 범위 |
+| 역할 | 권한 |
 | --- | --- |
-| `owner` | 모든 사람용 관리 RPC, admin allowlist 관리 |
-| `editor` | 개념/수식/오답/출처 편집, revision validation 시작 |
-| `reviewer` | revision validation 시작, 승인/반려 |
-| `releaser` | 릴리스 생성·검증 요청·상태·channel RPC |
+| `owner` | 개념·출처·오답 편집, 검증·승인, 릴리스와 계정 상태 관리 |
+| `viewer` | 모든 관리 화면 조회만 가능, write 권한 없음 |
 
-사람 역할은 validation 결과나 release item/artifact 행을 직접 쓰지 않는다. revision validation 결과는 010의 service-role 전용 완료 RPC가, 릴리스 투영·검증·자동 stable 공개는 011의 service-role 전용 RPC와 `tools/admin_release_worker.py`가 담당한다. 모든 `public` 테이블에 RLS가 켜져 있고 active allowlist admin만 읽을 수 있다. `anon`에는 테이블/view 권한이 없다. Storage catalog는 Supabase가 관리하며, FinDone의 파일 접근은 `storage.objects` RLS 정책으로 제한한다.
+Owner도 validation 결과나 release item/artifact 행을 직접 쓰지 않는다. revision validation 결과는 010의 service-role 전용 완료 RPC가, 릴리스 투영·검증·자동 stable 공개는 011의 service-role 전용 RPC와 `tools/admin_release_worker.py`가 담당한다. 모든 `public` 테이블에 RLS가 켜져 있고 active owner/viewer만 읽을 수 있다. `anon`에는 테이블/view 권한이 없다. Storage catalog는 Supabase가 관리하며, FinDone의 파일 접근은 `storage.objects` RLS 정책으로 제한한다.
 
 `audit_events`는 주요 mutable 테이블의 old/new 값을 남긴다. 용량 폭증을 막기 위해 `source_versions.extracted_text/extraction_metadata`, job input/output, release manifest 본문은 audit에서 원문 대신 byte length 또는 SHA-256만 저장한다. 실제 콘텐츠 편집 snapshot은 `content_revisions`에 보존된다.
 

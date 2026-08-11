@@ -1,10 +1,10 @@
 import "server-only";
 
+import { capabilitiesForRole, parseAdminRole } from "@/lib/access";
 import { getServerSupabase } from "@/lib/supabase/server";
 import { runtimeMode } from "@/lib/supabase/config";
 import type {
   AdminCapabilities,
-  AdminRole,
   ConceptElement,
   DistractorItem,
   ReleaseRecord,
@@ -65,37 +65,17 @@ export interface ReleaseWorkspace {
 
 export async function getAdminCapabilities(): Promise<AdminCapabilities> {
   const supabase = await getServerSupabase();
-  if (!supabase) return emptyCapabilities();
+  if (!supabase) return capabilitiesForRole(null);
 
   const { data: auth } = await supabase.auth.getUser();
-  if (!auth.user) return emptyCapabilities();
+  if (!auth.user) return capabilitiesForRole(null);
   const { data, error } = await supabase
     .from("admin_users")
     .select("role,is_active")
     .eq("user_id", auth.user.id)
     .maybeSingle();
-  if (error || !data?.is_active) return emptyCapabilities();
-
-  const role = data.role as AdminRole;
-  return {
-    role,
-    canEdit: role === "owner" || role === "editor",
-    canValidateRevision: role === "owner" || role === "editor" || role === "reviewer",
-    canReview: role === "owner" || role === "reviewer",
-    canRelease: role === "owner" || role === "releaser",
-    canValidateRelease: role === "owner" || role === "reviewer" || role === "releaser",
-  };
-}
-
-function emptyCapabilities(): AdminCapabilities {
-  return {
-    role: null,
-    canEdit: false,
-    canValidateRevision: false,
-    canReview: false,
-    canRelease: false,
-    canValidateRelease: false,
-  };
+  if (error || !data?.is_active) return capabilitiesForRole(null);
+  return capabilitiesForRole(parseAdminRole(data.role));
 }
 
 export async function getConceptElements(): Promise<ConceptElement[]> {

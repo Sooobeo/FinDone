@@ -203,20 +203,26 @@ export function ConceptDatabase({ initialElements, readOnly }: ConceptDatabasePr
       <PageHeader
         eyebrow="CONTENT DATABASE"
         title="개념 DB"
-        description="현재 앱의 모든 요소와 설명을 스프레드시트처럼 찾고, 수정하고, 검수합니다."
+        description={readOnly
+          ? "현재 앱의 모든 요소와 설명을 검색하고 조회합니다."
+          : "현재 앱의 모든 요소와 설명을 스프레드시트처럼 찾고, 수정하고, 검수합니다."}
         actions={
           <>
-            <input
-              ref={importRef}
-              className="visually-hidden"
-              type="file"
-              accept=".csv,text/csv"
-              onChange={importFile}
-              tabIndex={-1}
-            />
-            <button className="button button-secondary" type="button" disabled={importing} onClick={() => importRef.current?.click()} title="Excel에서 UTF-8 CSV로 저장한 파일">
-              <Upload size={16} /> {importing ? "CSV 확인 중…" : "Excel CSV 가져오기"}
-            </button>
+            {!readOnly ? (
+              <>
+                <input
+                  ref={importRef}
+                  className="visually-hidden"
+                  type="file"
+                  accept=".csv,text/csv"
+                  onChange={importFile}
+                  tabIndex={-1}
+                />
+                <button className="button button-secondary" type="button" disabled={importing} onClick={() => importRef.current?.click()} title="Excel에서 UTF-8 CSV로 저장한 파일">
+                  <Upload size={16} /> {importing ? "CSV 확인 중…" : "Excel CSV 가져오기"}
+                </button>
+              </>
+            ) : null}
             <button className="button button-primary" type="button" onClick={exportCsv}>
               <Download size={16} /> 내보내기
             </button>
@@ -224,7 +230,7 @@ export function ConceptDatabase({ initialElements, readOnly }: ConceptDatabasePr
         }
       />
 
-      <section className="concept-workspace" aria-label="개념 데이터베이스 편집기">
+      <section className="concept-workspace" aria-label={readOnly ? "개념 데이터베이스 뷰어" : "개념 데이터베이스 편집기"}>
         <div className={`concept-grid-panel ${drawerOpen ? "with-editor" : ""}`}>
           <div className="table-toolbar">
             <label className="search-box">
@@ -334,7 +340,7 @@ export function ConceptDatabase({ initialElements, readOnly }: ConceptDatabasePr
         </div>
 
         {drawerOpen && draft ? (
-          <aside className="editor-drawer" aria-label={`${draft.elementId} 편집`}>
+          <aside className="editor-drawer" aria-label={`${draft.elementId} ${readOnly ? "상세 보기" : "편집"}`}>
             <div className="editor-heading">
               <div>
                 <div className="editor-id-line">
@@ -367,19 +373,19 @@ export function ConceptDatabase({ initialElements, readOnly }: ConceptDatabasePr
             <div className="editor-body">
               {editorTab === "concept" ? (
                 <>
-                  <EditorField label="핵심 관계" field="coreRelation" value={draft.coreRelation} onChange={updateField} />
-                  <EditorField label="정의" field="definition" value={draft.definition} onChange={updateField} tall />
-                  <EditorField label="직관 설명" field="intuition" value={draft.intuition} onChange={updateField} tall />
-                  <EditorField label="요소 적용 범위" field="elementScopeNotes" value={draft.elementScopeNotes} onChange={updateField} tall />
-                  <EditorField label="상세 학습 설명" field="scopeNotes" value={draft.scopeNotes} onChange={updateField} tall />
+                  <EditorField label="핵심 관계" field="coreRelation" value={draft.coreRelation} onChange={updateField} readOnly={readOnly} />
+                  <EditorField label="정의" field="definition" value={draft.definition} onChange={updateField} tall readOnly={readOnly} />
+                  <EditorField label="직관 설명" field="intuition" value={draft.intuition} onChange={updateField} tall readOnly={readOnly} />
+                  <EditorField label="요소 적용 범위" field="elementScopeNotes" value={draft.elementScopeNotes} onChange={updateField} tall readOnly={readOnly} />
+                  <EditorField label="상세 학습 설명" field="scopeNotes" value={draft.scopeNotes} onChange={updateField} tall readOnly={readOnly} />
                 </>
               ) : null}
               {editorTab === "formula" ? (
                 <>
-                  <EditorField label="수식 · Markdown/LaTeX" field="formulaExpression" value={draft.formulaExpression} onChange={updateField} tall mono />
-                  <EditorField label="적용 가정" field="formulaAssumptions" value={draft.formulaAssumptions} onChange={updateField} tall />
-                  <EditorField label="수식 설명" field="formulaNotes" value={draft.formulaNotes} onChange={updateField} tall />
-                  <EditorField label="학습 체크리스트" field="checklist" value={draft.checklist} onChange={updateField} tall />
+                  <EditorField label="수식 · Markdown/LaTeX" field="formulaExpression" value={draft.formulaExpression} onChange={updateField} tall mono readOnly={readOnly} />
+                  <EditorField label="적용 가정" field="formulaAssumptions" value={draft.formulaAssumptions} onChange={updateField} tall readOnly={readOnly} />
+                  <EditorField label="수식 설명" field="formulaNotes" value={draft.formulaNotes} onChange={updateField} tall readOnly={readOnly} />
+                  <EditorField label="학습 체크리스트" field="checklist" value={draft.checklist} onChange={updateField} tall readOnly={readOnly} />
                   <div className="render-preview">
                     <span>앱 미리보기</span>
                     <p>{textPreview(draft.formulaExpression, 220)}</p>
@@ -388,9 +394,9 @@ export function ConceptDatabase({ initialElements, readOnly }: ConceptDatabasePr
               ) : null}
               {editorTab === "source" ? (
                 <>
-                  <EditorField label="출처명" field="sourceLabel" value={draft.sourceLabel} onChange={updateField} />
-                  <EditorField label="출처 URL·위치" field="sourceLocator" value={draft.sourceLocator} onChange={updateField} tall />
-                  <EditorField label="원본 명세 위치" field="specSectionLocator" value={draft.specSectionLocator} onChange={updateField} />
+                  <EditorField label="출처명" field="sourceLabel" value={draft.sourceLabel} onChange={updateField} readOnly={readOnly} />
+                  <EditorField label="출처 URL·위치" field="sourceLocator" value={draft.sourceLocator} onChange={updateField} tall readOnly={readOnly} />
+                  <EditorField label="원본 명세 위치" field="specSectionLocator" value={draft.specSectionLocator} onChange={updateField} readOnly={readOnly} />
                   {draft.sourceLocator.startsWith("http") ? (
                     <a className="source-preview-link" href={draft.sourceLocator} target="_blank" rel="noreferrer">
                       연결된 원본 새 창에서 확인
@@ -417,17 +423,18 @@ export function ConceptDatabase({ initialElements, readOnly }: ConceptDatabasePr
             <div className="editor-footer">
               <div>
                 <span className={dirty ? "dirty-indicator is-dirty" : "dirty-indicator"} />
-                {dirty ? "저장하지 않은 변경" : "변경 없음"}
+                {readOnly ? "Viewer · 읽기 전용" : dirty ? "저장하지 않은 변경" : "변경 없음"}
               </div>
-              <button
-                className="button button-primary"
-                type="button"
-                onClick={saveDraft}
-                disabled={readOnly || !dirty || validation.some((issue) => issue.severity === "error")}
-                title={readOnly ? "Supabase 연결 후 저장할 수 있습니다" : undefined}
-              >
-                revision 저장
-              </button>
+              {!readOnly ? (
+                <button
+                  className="button button-primary"
+                  type="button"
+                  onClick={saveDraft}
+                  disabled={!dirty || validation.some((issue) => issue.severity === "error")}
+                >
+                  revision 저장
+                </button>
+              ) : null}
             </div>
           </aside>
         ) : null}
@@ -443,9 +450,10 @@ interface EditorFieldProps {
   onChange: (field: keyof ConceptElement, value: string) => void;
   tall?: boolean;
   mono?: boolean;
+  readOnly?: boolean;
 }
 
-function EditorField({ label, field, value, onChange, tall, mono }: EditorFieldProps) {
+function EditorField({ label, field, value, onChange, tall, mono, readOnly }: EditorFieldProps) {
   return (
     <label className="editor-field">
       <span>{label}</span>
@@ -454,6 +462,7 @@ function EditorField({ label, field, value, onChange, tall, mono }: EditorFieldP
         value={value}
         onChange={(event) => onChange(field, event.target.value)}
         rows={tall ? 7 : 3}
+        readOnly={readOnly}
       />
     </label>
   );

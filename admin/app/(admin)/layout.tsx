@@ -8,10 +8,10 @@ export default async function ProtectedLayout({ children }: { children: ReactNod
 
   if (context.mode === "misconfigured") redirect("/login?error=config");
   if (context.mode === "supabase" && !context.user) redirect("/login");
-  if (context.mode === "supabase" && !context.isAdmin) redirect("/unauthorized");
+  if (context.mode === "supabase" && !context.hasAccess) redirect("/unauthorized");
 
   return (
-    <AdminShell mode={context.mode} email={context.user?.email}>
+    <AdminShell mode={context.mode} email={context.user?.email} role={context.role}>
       {children}
     </AdminShell>
   );

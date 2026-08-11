@@ -1,9 +1,8 @@
 -- FinDone deliberately does not create Auth users or passwords from source control.
--- Create the local owner in Supabase Studio > Authentication > Users, then copy the
--- commented statement from seed.example.sql and replace the UUID before running it.
+-- New Auth accounts are provisioned as viewers. Promote exactly one trusted UUID
+-- to owner with the statement in seed.example.sql.
 do $$
 begin
-    raise notice 'No FinDone admin seeded. Create an Auth user, then add its UUID to public.admin_users.';
+    raise notice 'No FinDone owner seeded. New Auth users become viewers; promote exactly one trusted UUID to owner.';
 end;
 $$;
-

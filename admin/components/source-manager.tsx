@@ -198,11 +198,13 @@ export function SourceManager({ initialSources, readOnly }: { initialSources: So
       <PageHeader
         eyebrow="SOURCE LIBRARY"
         title="원본 자료"
-        description="파일 탐색기, 드래그앤드롭 또는 URL로 근거 자료를 등록하고 개념 요소와 연결합니다."
+        description={readOnly
+          ? "등록된 파일·웹 근거 자료와 연결 상태를 조회합니다."
+          : "파일 탐색기, 드래그앤드롭 또는 URL로 근거 자료를 등록하고 개념 요소와 연결합니다."}
         actions={<span className="count-pill">현재 원본 {sources.length}건</span>}
       />
 
-      <section className="source-ingest-grid">
+      {!readOnly ? <section className="source-ingest-grid">
         <article className="panel upload-panel">
           <div className="panel-heading compact-heading">
             <div><p className="eyebrow">FILES</p><h2>파일 가져오기</h2></div>
@@ -258,7 +260,7 @@ export function SourceManager({ initialSources, readOnly }: { initialSources: So
             <div><span>3</span><p><strong>근거 연결</strong>추출한 구절을 요소별 출처로 연결합니다.</p></div>
           </div>
         </article>
-      </section>
+      </section> : null}
 
       <section className="panel source-library-panel">
         <div className="library-toolbar">

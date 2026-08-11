@@ -1,7 +1,7 @@
 begin;
 
 create extension if not exists pgtap with schema extensions;
-select plan(41);
+select plan(45);
 
 select has_table('public', 'admin_users', 'admin allowlist exists');
 select has_table('public', 'domains', 'domains exists');
@@ -42,6 +42,7 @@ select is(
 select has_function('public', 'start_revision_validation', 'validation RPC exists');
 select has_function('public', 'submit_review', 'review RPC exists');
 select has_function('public', 'activate_release', 'release activation RPC exists');
+select has_function('public', 'provision_viewer_membership', 'viewer provisioning trigger function exists');
 
 select ok(
     not exists (
@@ -127,12 +128,46 @@ select throws_ok(
 );
 reset role;
 
+insert into auth.users (
+    id, aud, role, email, encrypted_password, email_confirmed_at,
+    raw_app_meta_data, raw_user_meta_data, created_at, updated_at
+) values (
+    '20000000-0000-0000-0000-000000000002',
+    'authenticated',
+    'authenticated',
+    'viewer-rls-test@example.invalid',
+    '',
+    clock_timestamp(),
+    '{}'::jsonb,
+    '{"display_name":"Viewer RLS test"}'::jsonb,
+    clock_timestamp(),
+    clock_timestamp()
+);
+select is(
+    (
+        select role::text
+        from public.admin_users
+        where user_id = '20000000-0000-0000-0000-000000000002'
+    ),
+    'viewer',
+    'new Auth user is automatically provisioned as viewer'
+);
+
 select set_config('request.jwt.claim.sub', '20000000-0000-0000-0000-000000000002', true);
 set local role authenticated;
 select is(
     (select count(*) from public.domains where domain_id = 'TST'),
-    0::bigint,
-    'authenticated user outside allowlist cannot read authoring content'
+    1::bigint,
+    'viewer can read authoring content'
+);
+select lives_ok(
+    $$update public.domains set name = 'viewer tampered' where domain_id = 'TST'$$,
+    'viewer write is safely filtered by RLS'
+);
+select is(
+    (select name from public.domains where domain_id = 'TST'),
+    'RLS test domain',
+    'viewer cannot modify authoring content'
 );
 reset role;
 
