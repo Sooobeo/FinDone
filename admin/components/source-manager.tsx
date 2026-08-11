@@ -16,7 +16,7 @@ import {
   UploadCloud,
   X,
 } from "lucide-react";
-import { ChangeEvent, DragEvent, FormEvent, useMemo, useRef, useState } from "react";
+import { ChangeEvent, DragEvent, FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { PageHeader } from "@/components/page-header";
 import {
   ALL_SOURCE_DOMAINS,
@@ -24,7 +24,6 @@ import {
   sourceDomainOptions,
   UNASSIGNED_SOURCE_DOMAIN,
 } from "@/lib/source-filter";
-import { SOURCE_STATUS_LABELS } from "@/lib/status";
 import {
   classifySourceFiles,
   SOURCE_FILE_ACCEPT,
@@ -37,6 +36,12 @@ import {
   sourceUploadErrorMessage,
   uploadSourceFileResumable,
 } from "@/lib/source-upload";
+import {
+  hasActiveSourceProcessing,
+  mergeSourceStatus,
+  sourceStatusPresentation,
+  type SourceStatusRow,
+} from "@/lib/source-processing";
 import { parsePublicSourceUrl } from "@/lib/source-url";
 import { getBrowserSupabase } from "@/lib/supabase/browser";
 import { supabaseUrl } from "@/lib/supabase/config";
@@ -65,6 +70,9 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
   const [domainId, setDomainId] = useState(ALL_SOURCE_DOMAINS);
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [submittingTask, setSubmittingTask] = useState<"file" | "url" | null>(null);
+  const [statusRefreshing, setStatusRefreshing] = useState(false);
+  const [statusRefreshError, setStatusRefreshError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const domainOptions = useMemo(() => sourceDomainOptions(sources), [sources]);
@@ -75,6 +83,75 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
   const filtered = useMemo(() => {
     return filterSources(sources, { query, kind, domainId });
   }, [sources, query, kind, domainId]);
+  const activeProcessing = useMemo(() => {
+    const activeSources = sources.filter(hasActiveSourceProcessing);
+    const hasMeasuredProgress = activeSources.some((source) => (source.progressPercent ?? 0) > 0);
+    const progress = hasMeasuredProgress
+      ? Math.round(activeSources.reduce((total, source) => total + Math.max(0, Math.min(100, source.progressPercent ?? 0)), 0) / activeSources.length)
+      : undefined;
+    return { count: activeSources.length, progress };
+  }, [sources]);
+  const activeSourceCount = activeProcessing.count;
+
+  useEffect(() => {
+    if (readOnly) return;
+    const supabase = getBrowserSupabase();
+    if (!supabase) return;
+
+    let disposed = false;
+    let timer: number | undefined;
+    const refreshStatuses = async () => {
+      setStatusRefreshing(true);
+      try {
+        const { data, error } = await supabase
+          .from("source_catalog_overview")
+          .select([
+            "source_id",
+            "latest_parse_status",
+            "latest_job_id",
+            "latest_job_status",
+            "latest_job_progress_percent",
+            "latest_processing_stage",
+            "latest_job_error_message",
+            "latest_job_updated_at",
+            "linked_element_count",
+            "candidate_count",
+            "top_candidate_element_id",
+            "top_candidate_score",
+          ].join(","));
+        if (disposed) return;
+
+        if (error) {
+          setStatusRefreshError(`자동 가공 상태를 갱신하지 못했습니다: ${error.message}`);
+        } else {
+          const rowsBySourceId = new Map<string, SourceStatusRow>();
+          for (const row of (data ?? []) as SourceStatusRow[]) {
+            if (typeof row.source_id === "string") rowsBySourceId.set(row.source_id, row);
+          }
+          setSources((current) => current.map((source) => {
+            const row = rowsBySourceId.get(source.id);
+            return row ? mergeSourceStatus(source, row) : source;
+          }));
+          setStatusRefreshError("");
+        }
+      } catch (error) {
+        if (!disposed) {
+          setStatusRefreshError(`자동 가공 상태를 갱신하지 못했습니다: ${error instanceof Error ? error.message : "네트워크 오류"}`);
+        }
+      } finally {
+        if (!disposed) {
+          setStatusRefreshing(false);
+          timer = window.setTimeout(refreshStatuses, 3_000);
+        }
+      }
+    };
+
+    timer = window.setTimeout(refreshStatuses, 700);
+    return () => {
+      disposed = true;
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
+  }, [readOnly]);
 
   function stageFiles(files: FileList | File[]) {
     if (readOnly || submitting) return;
@@ -154,18 +231,35 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
 
     const supabase = getBrowserSupabase();
     if (!supabase) return setMessage("Supabase 연결을 확인해 주세요.");
+    setSubmittingTask("url");
     setSubmitting(true);
-    const { error } = await supabase.rpc("register_url_source", {
-      p_source_id: sourceId,
-      p_label: parsed.hostname,
-      p_url: parsed.toString(),
-      p_source_type: "web",
-    });
-    setSubmitting(false);
-    if (error) return setMessage(`URL 수집 요청을 등록하지 못했습니다: ${error.message}`);
-    setSources((current) => [draft, ...current]);
-    setUrl("");
-    setMessage("URL 수집 요청을 등록했습니다.");
+    try {
+      const { data: registration, error } = await supabase.rpc("register_url_source", {
+        p_source_id: sourceId,
+        p_label: parsed.hostname,
+        p_url: parsed.toString(),
+        p_source_type: "web",
+      });
+      if (error) {
+        setMessage(`URL 수집 요청을 등록하지 못했습니다: ${error.message}`);
+        return;
+      }
+      setSources((current) => [{
+        ...draft,
+        jobId: registrationJobId(registration),
+        jobStatus: "queued",
+        progressPercent: 0,
+        processingStage: "starting",
+        createdAt: "방금 등록",
+      }, ...current]);
+      setUrl("");
+      setMessage("URL 자동 수집 대기열에 등록했습니다. 아래 목록에서 실제 진행 단계를 확인할 수 있습니다.");
+    } catch (error) {
+      setMessage(`URL 수집 요청을 등록하지 못했습니다: ${error instanceof Error ? error.message : "네트워크 오류"}`);
+    } finally {
+      setSubmitting(false);
+      setSubmittingTask(null);
+    }
   }
 
   async function submitStaged() {
@@ -186,9 +280,11 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
     }
 
     const queued = [...staged];
+    setSubmittingTask("file");
     setSubmitting(true);
     setMessage("");
     const uploaded: SourceItem[] = [];
+    let reusedObjectCount = 0;
     for (const [itemIndex, item] of queued.entries()) {
       setFileFeedback({
         tone: "progress",
@@ -199,10 +295,13 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
       const sourceId = `file-${item.id}`;
       const versionId = item.id;
       const safeName = item.file.name.replace(/[^a-zA-Z0-9._-]/g, "_") || "upload";
-      const objectPath = `${auth.user.id}/sources/${sourceId}/${versionId}/${safeName}`;
+      let objectPath = `${auth.user.id}/sources/${sourceId}/${versionId}/${safeName}`;
+      let reusedExistingObject = false;
       const mimeType = sourceMimeType(item.file);
+      let registeredJobId: string | undefined;
       if (!mimeType) {
         setSubmitting(false);
+        setSubmittingTask(null);
         setStaged(queued.slice(itemIndex));
         if (uploaded.length) setSources((current) => [...uploaded, ...current]);
         setFileFeedback({ tone: "error", title: `${item.file.name} 업로드 실패`, detail: `지원하지 않는 형식입니다. 앞의 ${uploaded.length}개는 서버 저장을 완료했습니다.` });
@@ -214,51 +313,74 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
           setFileFeedback({
             tone: "progress",
             title: `${itemIndex + 1}/${queued.length} · ${item.file.name}`,
-            detail: `1/2 · 무결성 확인 ${Math.round(progress)}% · ${formatBytes(bytesHashed)} / ${formatBytes(bytesTotal)}`,
+            detail: `1/3 · 무결성 확인 ${Math.round(progress)}% · ${formatBytes(bytesHashed)} / ${formatBytes(bytesTotal)}`,
             progress,
           });
         });
 
-        let bytesUploaded = 0;
-        await uploadSourceFileResumable({
-          file: item.file,
-          bucketName: "source-private",
-          objectPath,
-          contentType: mimeType,
-          projectUrl: supabaseUrl,
-          getAccessToken: async () => {
-            const { data } = await supabase.auth.getSession();
-            return data.session?.access_token ?? null;
-          },
-          onResume: () => {
-            setFileFeedback({
-              tone: "progress",
-              title: `${itemIndex + 1}/${queued.length} · ${item.file.name}`,
-              detail: "중단된 업로드를 찾았습니다. 저장된 지점부터 이어서 준비 중입니다.",
-              progress: percent(bytesUploaded, item.file.size),
-            });
-          },
-          onRetry: (attempt) => {
-            setFileFeedback({
-              tone: "progress",
-              title: `${itemIndex + 1}/${queued.length} · 연결 재시도 중`,
-              detail: `네트워크 연결을 자동으로 다시 시도하고 있습니다 (${attempt}/5). 완료된 청크부터 이어집니다.`,
-              progress: percent(bytesUploaded, item.file.size),
-            });
-          },
-          onProgress: (uploadedBytes, bytesTotal) => {
-            bytesUploaded = uploadedBytes;
-            const progress = percent(uploadedBytes, bytesTotal);
-            setFileFeedback({
-              tone: "progress",
-              title: `${itemIndex + 1}/${queued.length} · ${item.file.name}`,
-              detail: `2/2 · 서버 전송 ${Math.round(progress)}% · ${formatBytes(uploadedBytes)} / ${formatBytes(bytesTotal)}`,
-              progress,
-            });
-          },
+        setFileFeedback({
+          tone: "progress",
+          title: `${itemIndex + 1}/${queued.length} · ${item.file.name}`,
+          detail: "2/3 · 같은 SHA-256 원본이 이미 보관되어 있는지 확인 중입니다.",
         });
+        const { data: reusable, error: reuseError } = await supabase.rpc("find_reusable_source_file", {
+          p_sha256: digest,
+          p_byte_size: item.file.size,
+        });
+        if (reuseError) throw new Error(`원본 중복 확인 실패: ${reuseError.message}`);
+        const reusablePath = reusableObjectPath(reusable);
+        if (reusablePath) {
+          objectPath = reusablePath;
+          reusedExistingObject = true;
+          reusedObjectCount += 1;
+          setFileFeedback({
+            tone: "progress",
+            title: `${itemIndex + 1}/${queued.length} · 동일 원본 재사용`,
+            detail: "SHA-256이 같은 private 원본을 찾았습니다. 파일을 다시 전송하지 않고 새 source version만 연결합니다.",
+            progress: 100,
+          });
+        } else {
+          let bytesUploaded = 0;
+          await uploadSourceFileResumable({
+            file: item.file,
+            bucketName: "source-private",
+            objectPath,
+            contentType: mimeType,
+            projectUrl: supabaseUrl,
+            getAccessToken: async () => {
+              const { data } = await supabase.auth.getSession();
+              return data.session?.access_token ?? null;
+            },
+            onResume: () => {
+              setFileFeedback({
+                tone: "progress",
+                title: `${itemIndex + 1}/${queued.length} · ${item.file.name}`,
+                detail: "중단된 업로드를 찾았습니다. 저장된 지점부터 이어서 준비 중입니다.",
+                progress: percent(bytesUploaded, item.file.size),
+              });
+            },
+            onRetry: (attempt) => {
+              setFileFeedback({
+                tone: "progress",
+                title: `${itemIndex + 1}/${queued.length} · 연결 재시도 중`,
+                detail: `네트워크 연결을 자동으로 다시 시도하고 있습니다 (${attempt}/5). 완료된 청크부터 이어집니다.`,
+                progress: percent(bytesUploaded, item.file.size),
+              });
+            },
+            onProgress: (uploadedBytes, bytesTotal) => {
+              bytesUploaded = uploadedBytes;
+              const progress = percent(uploadedBytes, bytesTotal);
+              setFileFeedback({
+                tone: "progress",
+                title: `${itemIndex + 1}/${queued.length} · ${item.file.name}`,
+                detail: `3/3 · 서버 전송 ${Math.round(progress)}% · ${formatBytes(uploadedBytes)} / ${formatBytes(bytesTotal)}`,
+                progress,
+              });
+            },
+          });
+        }
 
-        const { error: metadataError } = await supabase.rpc("register_file_source", {
+        const { data: registration, error: metadataError } = await supabase.rpc("register_file_source", {
           p_source_id: sourceId,
           p_source_version_id: versionId,
           p_label: item.file.name,
@@ -269,11 +391,13 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
           p_sha256: digest,
         });
         if (metadataError) {
-          await supabase.storage.from("source-private").remove([objectPath]);
+          if (!reusedExistingObject) await supabase.storage.from("source-private").remove([objectPath]);
           throw new Error(metadataError.message);
         }
+        registeredJobId = registrationJobId(registration);
       } catch (error) {
         setSubmitting(false);
+        setSubmittingTask(null);
         setStaged(queued.slice(itemIndex));
         if (uploaded.length) setSources((current) => [...uploaded, ...current]);
         setFileFeedback({
@@ -293,15 +417,20 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
         domains: [],
         size: formatBytes(item.file.size),
         createdAt: "방금 등록",
+        jobId: registeredJobId,
+        jobStatus: "queued",
+        progressPercent: 0,
+        processingStage: "starting",
       });
     }
     setSources((current) => [...uploaded, ...current]);
     setStaged([]);
     setSubmitting(false);
+    setSubmittingTask(null);
     setFileFeedback({
       tone: "success",
       title: `${uploaded.length}개 파일의 서버 저장을 완료했습니다.`,
-      detail: "아래 등록된 원본 목록 맨 위에서 처리 상태를 확인할 수 있습니다. 대용량 파일은 6MB 단위로 안전하게 전송되었습니다.",
+      detail: `자동 가공 대기열에도 등록했습니다.${reusedObjectCount ? ` 동일 SHA-256 원본 ${reusedObjectCount}개는 재전송하지 않았습니다.` : ""} 아래 목록에서 실제 처리 단계를 확인할 수 있습니다.`,
     });
   }
 
@@ -347,16 +476,17 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
               {fileFeedback.tone === "progress" ? <LoaderCircle size={18} /> : fileFeedback.tone === "error" || fileFeedback.tone === "warning" ? <AlertTriangle size={18} /> : <CheckCircle2 size={18} />}
               <div className="file-feedback-body">
                 <strong>{fileFeedback.title}</strong><p>{fileFeedback.detail}</p>
-                {fileFeedback.progress !== undefined ? (
+                {fileFeedback.tone === "progress" ? (
                   <div
-                    className="source-upload-progress"
+                    className={`source-upload-progress ${fileFeedback.progress === undefined || fileFeedback.progress <= 0 ? "is-indeterminate" : ""}`}
                     role="progressbar"
                     aria-label="파일 업로드 진행률"
                     aria-valuemin={0}
                     aria-valuemax={100}
-                    aria-valuenow={Math.round(fileFeedback.progress)}
+                    aria-valuenow={fileFeedback.progress === undefined || fileFeedback.progress <= 0 ? undefined : Math.round(fileFeedback.progress)}
+                    aria-valuetext={fileFeedback.progress === undefined || fileFeedback.progress <= 0 ? "다음 단계를 준비하는 중" : undefined}
                   >
-                    <span style={{ width: `${fileFeedback.progress}%` }} />
+                    <span style={fileFeedback.progress === undefined || fileFeedback.progress <= 0 ? undefined : { width: `${fileFeedback.progress}%` }} />
                   </div>
                 ) : null}
               </div>
@@ -373,7 +503,9 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
                   <button type="button" onClick={() => removeStagedFile(item.id)} aria-label={`${item.file.name} 제거`} disabled={submitting}><X size={15} /></button>
                 </div>
               ))}
-              <button className="button button-primary staged-submit" type="button" onClick={submitStaged} disabled={submitting}>{submitting ? fileFeedback?.progress !== undefined ? `${Math.round(fileFeedback.progress)}% 저장 중…` : "서버에 저장 중…" : `${staged.length}개 파일 서버에 저장`}</button>
+              <button className="button button-primary staged-submit" type="button" onClick={submitStaged} disabled={submitting}>
+                {submittingTask === "file" ? <><LoaderCircle className="spin" size={16} />{fileFeedback?.progress !== undefined ? `${Math.round(fileFeedback.progress)}% 저장 중…` : "서버에 저장 중…"}</> : `${staged.length}개 파일 서버에 저장`}
+              </button>
             </div>
           ) : null}
         </article>
@@ -388,8 +520,16 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
             <label htmlFor="source-url">원본 URL</label>
             <div className="url-input-row">
               <div className="input-with-icon"><Link2 size={17} /><input id="source-url" type="url" value={url} onChange={(event) => setUrl(event.target.value)} placeholder={viewerMode ? "공개 URL 또는 PDF 주소가 들어가는 자리" : "https://…"} required disabled={readOnly} /></div>
-              <button className="button button-primary" type="submit" disabled={submitting || readOnly}><Plus size={16} /> 등록</button>
+              <button className="button button-primary" type="submit" disabled={submitting || readOnly}>{submittingTask === "url" ? <><LoaderCircle className="spin" size={16} /> 등록 중…</> : <><Plus size={16} /> 등록</>}</button>
             </div>
+            {submittingTask === "url" ? (
+              <div className="url-registration-progress" role="status" aria-live="polite">
+                <span>URL 수집 요청을 안전하게 등록하는 중입니다.</span>
+                <div className="url-registration-progress-bar is-indeterminate" role="progressbar" aria-label="URL 수집 요청 등록 진행률" aria-valuetext="등록 처리 중">
+                  <span />
+                </div>
+              </div>
+            ) : null}
           </form>
           <div className="ingest-notes">
             <div><span>1</span><p><strong>원본 보관</strong>본문과 접근 시점을 snapshot으로 남깁니다.</p></div>
@@ -410,6 +550,26 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
             <label className="select-wrap"><span className="visually-hidden">파일 종류</span><select value={kind} onChange={(event) => setKind(event.target.value)}><option value="all">모든 유형</option><option value="pdf">PDF</option><option value="spreadsheet">스프레드시트</option><option value="document">문서</option><option value="url">URL</option></select><ChevronDown size={14} /></label>
           </div>
         </div>
+        {activeSourceCount ? (
+          <div className="source-processing-summary" role="status" aria-live="polite">
+            <LoaderCircle className="spin" size={19} aria-hidden="true" />
+            <div>
+              <strong>자동 가공 중 · {activeSourceCount}건</strong>
+              <p>{statusRefreshing ? "최신 처리 단계를 확인하는 중입니다…" : "Worker가 원본을 검증하고 본문·표·수식·OCR 결과를 저장하고 있습니다."}</p>
+              <div
+                className={`source-processing-summary-bar ${activeProcessing.progress === undefined ? "is-indeterminate" : ""}`}
+                role="progressbar"
+                aria-label="전체 자동 가공 진행률"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={activeProcessing.progress}
+                aria-valuetext={activeProcessing.progress === undefined ? "대기열 처리 시작 중" : undefined}
+              >
+                <span style={activeProcessing.progress === undefined ? undefined : { width: `${activeProcessing.progress}%` }} />
+              </div>
+            </div>
+          </div>
+        ) : null}
         <div className="source-domain-filter" role="group" aria-label="원본 자료 단원 필터">
           <span className="source-domain-filter-label">단원</span>
           <button
@@ -443,16 +603,40 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
           ) : null}
         </div>
         {message ? <div className="table-notice" role="status">{message}</div> : null}
+        {statusRefreshError ? <div className="table-notice table-notice-error" role="alert">{statusRefreshError}</div> : null}
         <div className="source-list">
-          {filtered.slice(0, 80).map((source) => (
-            <article className="source-row" key={source.id}>
-              <span className={`source-kind-icon kind-${source.kind}`}>{source.kind === "url" ? <Globe2 size={19} /> : source.kind === "spreadsheet" ? <FileSpreadsheet size={19} /> : <FileText size={19} />}</span>
-              <div className="source-main"><strong>{source.label}</strong><span>{source.locator}</span></div>
-              <span className={`source-state source-${source.status}`}><i />{SOURCE_STATUS_LABELS[source.status]}</span>
-              <span className="source-links"><strong>{viewerMode ? "연결" : source.linkedElements}</strong><small>{viewerMode ? "기준 설명" : "연결 요소"}</small></span>
-              {source.locator.startsWith("http") ? <a className="icon-button" href={source.locator} target="_blank" rel="noreferrer" aria-label={`${source.label} 열기`}><ArrowUpRight size={17} /></a> : <span className="icon-button-placeholder" />}
-            </article>
-          ))}
+          {filtered.slice(0, 80).map((source) => {
+            const presentation = sourceStatusPresentation(source);
+            const progressIndeterminate = presentation.progress === undefined || presentation.progress <= 0;
+            return (
+              <article className="source-row" key={source.id}>
+                <span className={`source-kind-icon kind-${source.kind}`}>{source.kind === "url" ? <Globe2 size={19} /> : source.kind === "spreadsheet" ? <FileSpreadsheet size={19} /> : <FileText size={19} />}</span>
+                <div className="source-main"><strong>{source.label}</strong><span>{source.locator}</span></div>
+                <span className={`source-state source-${source.status}`} title={presentation.detail}>
+                  {presentation.loading ? <LoaderCircle className="source-state-spinner" size={14} aria-hidden="true" /> : <i />}
+                  <span className="source-state-copy">
+                    <strong>{presentation.label}</strong>
+                    <small>{presentation.detail}</small>
+                    {presentation.loading ? (
+                      <span
+                        className={`source-processing-progress ${progressIndeterminate ? "is-indeterminate" : ""}`}
+                        role="progressbar"
+                        aria-label={`${source.label} 자동 가공 진행률`}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-valuenow={progressIndeterminate ? undefined : Math.round(presentation.progress ?? 0)}
+                        aria-valuetext={progressIndeterminate ? "작업 시작 또는 대기 중" : undefined}
+                      >
+                        <span style={progressIndeterminate ? undefined : { width: `${presentation.progress}%` }} />
+                      </span>
+                    ) : null}
+                  </span>
+                </span>
+                <span className="source-links"><strong>{viewerMode ? "연결" : source.linkedElements}</strong><small>{viewerMode ? "기준 설명" : "연결 요소"}</small></span>
+                {source.locator.startsWith("http") ? <a className="icon-button" href={source.locator} target="_blank" rel="noreferrer" aria-label={`${source.label} 열기`}><ArrowUpRight size={17} /></a> : <span className="icon-button-placeholder" />}
+              </article>
+            );
+          })}
           {!filtered.length ? <div className="source-empty">선택한 조건에 해당하는 원본 자료가 없습니다.</div> : null}
         </div>
         {filtered.length > 80 ? <p className="list-limit-note">검색 성능을 위해 첫 80건을 표시 중입니다. 검색어로 범위를 좁혀 주세요.</p> : null}
@@ -471,4 +655,18 @@ function formatBytes(bytes: number) {
 function percent(current: number, total: number): number {
   if (!total) return 0;
   return Math.min(100, Math.max(0, (current / total) * 100));
+}
+
+function registrationJobId(value: unknown): string | undefined {
+  const candidate = Array.isArray(value) ? value[0] : value;
+  if (!candidate || typeof candidate !== "object" || !("jobId" in candidate)) return undefined;
+  const jobId = (candidate as { jobId?: unknown }).jobId;
+  return typeof jobId === "string" && jobId ? jobId : undefined;
+}
+
+function reusableObjectPath(value: unknown): string | undefined {
+  const candidate = Array.isArray(value) ? value[0] : value;
+  if (!candidate || typeof candidate !== "object" || !("objectPath" in candidate)) return undefined;
+  const objectPath = (candidate as { objectPath?: unknown }).objectPath;
+  return typeof objectPath === "string" && objectPath ? objectPath : undefined;
 }

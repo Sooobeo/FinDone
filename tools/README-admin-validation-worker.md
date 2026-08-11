@@ -14,10 +14,9 @@
 - 15분이 지난 abandoned claim을 다음 worker가 retry budget 안에서 원자적으로 회수하고, budget 소진 시 job/run을 실패로 봉인
 - complete/fail RPC의 terminal 재호출과 completion 응답 유실을 idempotent하게 조정
 
-다음 기능은 의도적으로 구현하지 않았다.
+다음 기능은 이 Validation Worker가 의도적으로 claim하지 않는다.
 
-- `url_fetch`, redirect/DNS 처리, SSRF 관련 네트워크 작업
-- `file_extract`, OCR, 업로드 파일 처리
+- `url_fetch`, redirect/DNS 처리와 `file_extract`, OCR은 별도의 [Source Ingestion Worker](README-admin-source-worker.md)가 담당
 - `release_build`와 `release_validation`
 - `content.sqlite3` 또는 `user.sqlite` 수정
 

@@ -1,13 +1,21 @@
-export const SOURCE_FILE_ACCEPT = ".pdf,.docx,.xlsx,.csv,.md,.txt";
-export const SOURCE_FILE_SUPPORT_LABEL = "PDF · DOCX · XLSX · CSV · MD · TXT";
+export const SOURCE_FILE_ACCEPT = ".pdf,.docx,.xlsx,.pptx,.csv,.md,.markdown,.txt,.html,.htm,.png,.jpg,.jpeg,.webp";
+export const SOURCE_FILE_SUPPORT_LABEL = "PDF · Office · 표 · 텍스트 · HTML · 이미지";
 
 const SOURCE_MIME_BY_EXTENSION: Record<string, string> = {
   pdf: "application/pdf",
   docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
   csv: "text/csv",
   md: "text/markdown",
+  markdown: "text/markdown",
   txt: "text/plain",
+  html: "text/html",
+  htm: "text/html",
+  png: "image/png",
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  webp: "image/webp",
 };
 
 export interface SourceFileDescriptor {

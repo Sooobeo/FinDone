@@ -1,6 +1,7 @@
 import "server-only";
 
 import { capabilitiesForRole, parseAdminRole } from "@/lib/access";
+import { mergeSourceStatus, parseSourceStatus, type SourceStatusRow } from "@/lib/source-processing";
 import { getServerSupabase } from "@/lib/supabase/server";
 import { runtimeMode } from "@/lib/supabase/config";
 import type {
@@ -164,18 +165,17 @@ export async function getSources(): Promise<SourceItem[]> {
   }
 
   return ((sourceResult.data ?? []) as Row[]).map((row) => {
-    const sourceType = text(row, "kind", "source_type").toLocaleLowerCase("en-US");
+    const sourceType = text(row, "source_type", "kind").toLocaleLowerCase("en-US");
+    const sourceKind = text(row, "kind").toLocaleLowerCase("en-US");
     const locator = text(row, "locator");
     const kind: SourceItem["kind"] = sourceType.includes("pdf")
       ? "pdf"
-      : sourceType.includes("sheet")
+      : sourceType.includes("sheet") || sourceType.includes("excel") || sourceType.includes("csv")
         ? "spreadsheet"
-        : sourceType === "file"
-          ? "document"
-        : /^https?:\/\//.test(locator)
+        : sourceKind === "url" || /^https?:\/\//.test(locator)
           ? "url"
           : "document";
-    return {
+    const source: SourceItem = {
       id: text(row, "source_id"),
       label: text(row, "label"),
       kind,
@@ -188,6 +188,7 @@ export async function getSources(): Promise<SourceItem[]> {
         .sort((left, right) => left.displayOrder - right.displayOrder || left.name.localeCompare(right.name, "ko-KR")),
       createdAt: text(row, "created_at") || "—",
     };
+    return mergeSourceStatus(source, row as SourceStatusRow);
   });
 }
 
@@ -439,13 +440,6 @@ function mapRelease(row: Row): ReleaseRecord {
       ? row.active_channels.filter((value): value is string => typeof value === "string")
       : [],
   };
-}
-
-function parseSourceStatus(value: string): SourceItem["status"] {
-  if (value === "failed") return "failed";
-  if (value === "needs_review") return "needs_review";
-  if (value === "ready" || value === "parsed") return "ready";
-  return "processing";
 }
 
 function parseDifficulty(value: unknown): DistractorItem["difficulty"] {

@@ -1,6 +1,6 @@
 # FinDone Admin 배포 절차
 
-Admin은 Next.js 웹, Supabase Auth/PostgreSQL/Storage, 별도 worker로 나뉜다. 브라우저에는 publishable key만 두며 `SUPABASE_SECRET_KEY`는 최초 import, worker와 서버 전용 stable endpoint 같은 신뢰 실행 환경에서만 사용한다. 현재 저장소는 revision 검증과 승인본 SQLite 빌드·검증·stable 공개까지 자동화한다.
+Admin은 Next.js 웹, Supabase Auth/PostgreSQL/Storage, 별도 worker로 나뉜다. 브라우저에는 publishable key만 두며 `SUPABASE_SECRET_KEY`는 최초 import, worker와 서버 전용 stable endpoint 같은 신뢰 실행 환경에서만 사용한다. 현재 저장소는 파일·URL 원본 가공, revision 검증, 승인본 SQLite 빌드·검증·stable 공개까지 자동화한다.
 
 ## 1. 로컬 확인
 
@@ -58,6 +58,26 @@ Remove-Item Env:SUPABASE_SECRET_KEY
 
 ## 4. 자동 Worker
 
+### 4.1 원본 파일·URL 가공
+
+`202608110004_source_ingestion_worker.sql`까지 적용한 뒤 GitHub repository secret에 `SUPABASE_URL`, `SUPABASE_SECRET_KEY`를 등록하고 repository variable `ADMIN_SOURCE_WORKER_ENABLED=true`를 설정한다. [Admin Source Worker](../.github/workflows/admin-source-worker.yml)는 5분마다 최대 4개의 `file_extract`/`url_fetch` 작업을 처리한다.
+
+파일은 Storage에서 stream으로 내려받아 등록 크기와 SHA-256을 재검증한다. URL은 DNS 및 각 redirect의 public IP를 재검증하고 검증된 IP에 pin해서 fetch한 뒤 raw snapshot을 private Storage에 보존한다. 이후 PDF/Office/표/텍스트/HTML/image parser, 필요한 페이지만 `kor+eng` OCR, fragment/FTS 저장, 기존 요소·개념·공식 결정론적 대조가 자동 실행된다. 애매하거나 OCR 신뢰도 0.90 미만인 결과는 추측하지 않고 `needs_review`로 끝난다.
+
+```powershell
+python -m pip install --requirement tools/requirements-source-worker.txt
+$env:SUPABASE_URL = 'https://<project-ref>.supabase.co'
+$env:SUPABASE_SECRET_KEY = '<sb_secret key>'
+python tools/admin_source_ingestion_worker.py --worker-id 'source:local-01' --max-jobs 4
+Remove-Item Env:SUPABASE_SECRET_KEY
+```
+
+로컬 OCR에는 Tesseract 실행 파일과 `eng`, `kor` language data가 필요하다. GitHub workflow는 이 의존성을 자동 설치한다. 자세한 처리·보안·상한 계약은 [Source Ingestion Worker 문서](../tools/README-admin-source-worker.md)에 있다.
+
+Admin 원본 목록은 DB의 실제 job 상태를 3초마다 갱신한다. 업로드/hash/전송/URL 등록과 Worker의 대기·내려받기·검증·snapshot 보관·추출·OCR·정규화·요소 대조·저장 단계마다 스피너와 실제 진행률이 표시되며, 완료·검토필요·실패는 terminal 상태로 바뀐다.
+
+### 4.2 Revision 검증
+
 `202608100010_validation_worker_rpc.sql`까지 적용한 뒤 GitHub repository secret에 `SUPABASE_URL`, `SUPABASE_SECRET_KEY`를 등록하고 repository variable `ADMIN_VALIDATION_WORKER_ENABLED=true`를 설정한다. [Admin Validation Worker](../.github/workflows/admin-validation-worker.yml)는 그때부터 5분마다 revision validation 작업 한 건을 원자적으로 claim해 검사한다. 같은 worker ID의 실행 중 작업은 먼저 복구하고, 15분 넘게 중단된 lease는 retry 예산 안에서 회수하며, 예산을 소진한 작업은 실패로 봉인한다. variable이 없으면 예약 실행은 건너뛰며, 같은 작업을 수동 또는 로컬에서 한 번 실행할 수도 있다.
 
 ```powershell
@@ -67,7 +87,9 @@ python tools/admin_validation_worker.py --worker-id 'validator:local-01'
 Remove-Item Env:SUPABASE_SECRET_KEY
 ```
 
-Revision Validation Worker는 URL fetch, 파일 파싱, `release_build`, `release_validation` 작업을 claim하지 않는다. 릴리스 작업은 아래의 전용 Worker가 담당한다.
+Revision Validation Worker는 원본 가공이나 `release_build`, `release_validation` 작업을 claim하지 않는다. 원본은 위 Source Worker, 릴리스는 아래 전용 Worker가 담당한다.
+
+### 4.3 릴리스 빌드·검증·stable 공개
 
 `202608100011_release_worker_rpc.sql`까지 적용한 뒤 같은 GitHub secrets를 사용하고 repository variable `ADMIN_RELEASE_WORKER_ENABLED=true`도 설정한다. [Admin Release Worker](../.github/workflows/admin-release-worker.yml)는 5분마다 승인 릴리스 작업을 claim하며 한 실행에서 최대 4건을 처리한다. 보통 한 번의 실행에서 SQLite 빌드가 검증 작업을 만들고, 이어서 검증을 통과하면 `stable` 채널 공개까지 완료한다.
 
@@ -78,7 +100,7 @@ python tools/admin_release_worker.py --worker-id 'release:local-01' --max-jobs 4
 Remove-Item Env:SUPABASE_SECRET_KEY
 ```
 
-릴리스 Worker는 현재 Android schema v1의 분야·요소·개념·수식 revision을 투영합니다. 앱 schema에 없는 distractor revision은 조용히 누락하지 않고 릴리스를 실패시킵니다. URL fetch와 파일 파싱 작업은 계속 별도 경계입니다.
+릴리스 Worker는 현재 Android schema v1의 분야·요소·개념·수식 revision을 투영한다. 앱 schema에 없는 distractor revision은 조용히 누락하지 않고 릴리스를 실패시킨다. 원본 가공은 Source Worker와 별도 권한·RPC 경계로 유지된다.
 
 ## 5. 웹 배포
 
@@ -96,4 +118,4 @@ Vercel 프로젝트의 Root Directory를 `admin`으로 지정하고 공개 환�
 
 ## 6. 아직 외부 설정이 필요한 경계
 
-코드만으로는 Supabase 프로젝트·관리자 Auth 사용자·호스팅 도메인이나 GitHub secrets/variables를 생성할 수 없다. 실제 반영 전에는 migration push, Vercel 환경변수·배포, 두 Worker variable 활성화, 그리고 APK 빌드 시 `https://<admin-domain>/api/content/stable` 주입이 필요하다. URL/file ingestion worker는 아직 별도 구현 경계다.
+코드만으로는 Supabase 프로젝트·관리자 Auth 사용자·호스팅 도메인이나 GitHub secrets/variables를 생성할 수 없다. 실제 반영 전에는 migration push, Vercel 환경변수·배포, Source/Validation/Release 세 Worker variable 활성화, 그리고 APK 빌드 시 `https://<admin-domain>/api/content/stable` 주입이 필요하다.

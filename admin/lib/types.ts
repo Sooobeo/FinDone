@@ -148,6 +148,15 @@ export interface SourceItem {
   domains: SourceDomain[];
   size?: string;
   createdAt: string;
+  jobId?: string;
+  jobStatus?: "queued" | "running" | "succeeded" | "failed" | "cancelled";
+  progressPercent?: number;
+  processingStage?: string;
+  processingError?: string;
+  processingUpdatedAt?: string;
+  candidateCount?: number;
+  topCandidateElementId?: string;
+  topCandidateScore?: number;
 }
 
 export interface SourceDomain {

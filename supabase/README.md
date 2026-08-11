@@ -7,6 +7,7 @@
 - 회원가입 계정을 자동으로 읽기 전용 `viewer`로 등록하는 `admin_users` 멤버십
 - 분야·요소·개념 설명·수식·변수 설명·개념형 오답 후보
 - URL/파일 출처, 출처 버전, 비공개 Storage 파일, 근거 위치
+- 파일·URL snapshot의 실제 parser/OCR fragment, FTS와 결정론적 요소 후보
 - 모든 개념 변경의 자동 immutable revision과 상태 이력
 - validation run/issue, 사람의 승인·반려와 승인 snapshot
 - 승인 revision만 포함할 수 있는 SQLite 릴리스와 원자적 active channel
@@ -32,6 +33,7 @@
 12. `202608110001_viewer_signup.sql`: viewer 자동 가입과 owner-only write 권한
 13. `202608110002_viewer_catalog_only.sql`: viewer에게 실제 DB 행 대신 카탈로그 설명만 노출
 14. `202608110003_resumable_source_uploads.sql`: 원본의 100 MiB 개별 제한 제거와 대용량 등록 RPC
+15. `202608110004_source_ingestion_worker.sql`: 파일·URL 가공 Worker RPC, immutable fragment/FTS, 요소 후보와 실제 진행 상태 view
 
 ## 로컬 실행
 
@@ -159,6 +161,24 @@ DB trigger는 자격증명 포함 URL, 로컬 host, IP literal을 거부한다. 
 
 업로드 성공 후 DB insert가 실패하면 Admin이 방금 올린 object를 보상 삭제해야 한다. Worker의 service key는 브라우저 bundle에 넣지 않는다.
 
+### 실제 원본 가공
+
+등록 RPC가 만든 `file_extract`/`url_fetch` 작업은 `tools/admin_source_ingestion_worker.py`가 원자적으로 claim한다. 파일은 private Storage 원본의 크기·SHA-256·MIME signature를 재검증한다. URL은 최초 요청과 매 redirect의 DNS 결과를 검사하고 public IP에 pin해 수집하며, raw response를 `source-private`의 immutable snapshot으로 보존한다.
+
+Worker는 PDF/스캔 PDF, DOCX, XLSX, PPTX, CSV, Markdown/TXT, HTML, PNG/JPG/WEBP를 처리한다. PDF는 native text를 먼저 읽고 부족한 페이지만 OCR한다. 결과는 다음에 저장된다.
+
+| 저장 위치 | 내용 |
+| --- | --- |
+| `source_versions` | 원본 hash/크기/MIME, 추출 text, parser/OCR/capture metadata, terminal parse status |
+| `source_files` | 업로드 original 또는 URL raw snapshot의 private Storage locator |
+| `source_fragments` | 본문·표·수식·OCR 조각, page/sheet/slide/row/selector locator, confidence, SHA-256, FTS |
+| `source_element_candidates` | 기존 요소와의 결정론적 후보 순위·점수·근거; 콘텐츠 승인과 분리 |
+| `ingestion_jobs`/`job_events` | 대기·다운로드·검증·snapshot 보관·추출·OCR·정규화·대조·저장 진행률과 실패 이유 |
+
+top score 0.92 이상이면서 2위와 gap이 0.12 이상인 R0 결과만 `element_sources` lineage를 자동 연결한다. 명확한 결정론적 결과는 `ready`, OCR 신뢰도 0.90 미만이나 요소 연결이 애매한 결과는 `needs_review`, 손상·미지원·인프라 오류는 `failed`가 된다. Worker lease가 끊기면 20분 뒤 retry budget 안에서 회수하고, 소진 시 실패로 봉인해 `processing` 상태가 무기한 남지 않는다. `source_catalog_overview`는 최신 job 단계·진행률·오류·top 후보를 Admin UI에 제공한다.
+
+자동 실행과 URL SSRF 방어 계약은 [Source Worker 문서](../tools/README-admin-source-worker.md)를 따른다.
+
 ## Revision, 검증, 승인
 
 `domains`, `elements`, `concepts`, `formulas`, `distractors`의 insert/update/delete는 자동으로 `content_revisions` snapshot과 최초 `draft` state를 만든다. 이 테이블들과 review/approval/audit event는 DB trigger 수준에서 append-only다.
@@ -221,4 +241,4 @@ supabase db push --linked --dry-run
 supabase db push --linked
 ```
 
-`tests/database/schema_and_security.test.sql`은 핵심 테이블/view/RPC, 모든 public table RLS, private bucket, append-only trigger, anon/non-admin 차단을 확인한다. `validation_worker_rpc.test.sql`과 `release_worker_rpc.test.sql`은 worker claim·완료·실패 및 검증 통과 후 stable 자동 공개를 확인한다. 운영 push 전 local reset과 pgTAP을 모두 통과해야 한다.
+`tests/database/schema_and_security.test.sql`은 핵심 테이블/view/RPC, 모든 public table RLS, private bucket, append-only trigger, anon/non-admin 차단을 확인한다. `source_ingestion_worker_rpc.test.sql`은 파일·URL claim, 실제 진행률, fragment/후보/snapshot 저장, ready/review/failed 종단 상태를 검증한다. `validation_worker_rpc.test.sql`과 `release_worker_rpc.test.sql`은 revision 검증과 stable 자동 공개를 확인한다. 운영 push 전 local reset과 pgTAP을 모두 통과해야 한다.

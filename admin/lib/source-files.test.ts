@@ -7,7 +7,19 @@ import {
 
 describe("source file staging", () => {
   it("accepts every file type advertised by the drop zone", () => {
-    for (const name of ["sample.PDF", "sample.docx", "sample.xlsx", "sample.csv", "sample.md", "sample.txt"]) {
+    for (const name of [
+      "sample.PDF",
+      "sample.docx",
+      "sample.xlsx",
+      "sample.pptx",
+      "sample.csv",
+      "sample.md",
+      "sample.txt",
+      "sample.html",
+      "sample.png",
+      "sample.jpeg",
+      "sample.webp",
+    ]) {
       expect(sourceMimeType({ name })).toBeTruthy();
     }
   });

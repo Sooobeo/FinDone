@@ -992,6 +992,10 @@ p {
 .file-feedback-progress { color: var(--blue); background: var(--blue-soft); border-color: #bed2e5; }
 .file-feedback-progress > svg { animation: source-upload-spin 900ms linear infinite; }
 @keyframes source-upload-spin { to { transform: rotate(360deg); } }
+@keyframes source-progress-indeterminate {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(330%); }
+}
 .staged-files { margin-top: 13px; padding: 11px; background: var(--surface-soft); border-radius: 10px; }
 .staged-heading { margin-bottom: 7px; display: flex; justify-content: space-between; font-size: 9px; }
 .staged-heading button { color: var(--red); background: none; border: 0; font-size: 8px; cursor: pointer; }
@@ -1010,6 +1014,9 @@ p {
 .input-with-icon { min-width: 0; min-height: 39px; padding: 0 10px; flex: 1; display: flex; align-items: center; gap: 8px; color: #82908b; background: white; border: 1px solid var(--line-strong); border-radius: 9px; }
 .input-with-icon:focus-within { border-color: #86aaa3; box-shadow: 0 0 0 3px rgb(45 120 113 / 0.08); }
 .input-with-icon input { min-width: 0; flex: 1; background: transparent; border: 0; outline: 0; font-size: 11px; }
+.url-registration-progress { margin-top: 9px; color: #526f7f; font-size: 8px; font-weight: 700; }
+.url-registration-progress-bar { height: 5px; margin-top: 6px; overflow: hidden; background: #dfeaf0; border-radius: 99px; }
+.url-registration-progress-bar > span { display: block; height: 100%; background: var(--blue); border-radius: inherit; }
 .ingest-notes { margin-top: 21px; display: grid; gap: 12px; }
 .ingest-notes > div { display: flex; gap: 9px; }
 .ingest-notes > div > span { width: 21px; height: 21px; flex: 0 0 auto; display: grid; place-items: center; color: var(--teal-700); background: var(--teal-50); border-radius: 6px; font-size: 8px; font-weight: 800; }
@@ -1019,6 +1026,13 @@ p {
 .library-toolbar { padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; gap: 15px; border-bottom: 1px solid var(--line); }
 .library-toolbar h2 { margin: 0; font-size: 15px; }
 .compact-search { width: 260px; min-height: 34px; }
+.source-processing-summary { padding: 10px 18px; display: flex; align-items: center; gap: 10px; color: #315f78; background: #eef7fc; border-bottom: 1px solid #c9dfec; }
+.source-processing-summary > svg { flex: 0 0 auto; }
+.source-processing-summary > div { min-width: 0; flex: 1; }
+.source-processing-summary strong { display: block; font-size: 9px; }
+.source-processing-summary p { margin: 2px 0 0; color: #5b7584; font-size: 8px; line-height: 1.45; }
+.source-processing-summary-bar { height: 5px; margin-top: 7px; overflow: hidden; background: #d5e6ef; border-radius: 99px; }
+.source-processing-summary-bar > span { display: block; height: 100%; background: var(--blue); border-radius: inherit; transition: width 180ms ease; }
 .source-domain-filter { padding: 9px 18px; display: flex; align-items: center; gap: 6px; overflow-x: auto; background: #fafbfa; border-bottom: 1px solid var(--line); scrollbar-width: thin; }
 .source-domain-filter-label { margin-right: 2px; color: var(--muted); font-size: 8px; font-weight: 800; white-space: nowrap; }
 .source-domain-toggle { min-height: 29px; padding: 0 9px; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; color: #52625d; background: white; border: 1px solid var(--line-strong); border-radius: 4px; font-size: 9px; font-weight: 750; cursor: pointer; transition: color 120ms ease, background 120ms ease, border-color 120ms ease; }
@@ -1028,8 +1042,9 @@ p {
 .source-domain-toggle.active small { color: var(--teal-900); background: #dff0eb; }
 .source-domain-unassigned { margin-left: 4px; border-style: dashed; }
 .table-notice { padding: 8px 16px; color: #66512c; background: #fff8e9; border-bottom: 1px solid #eadbbd; font-size: 9px; }
+.table-notice-error { color: #8c4545; background: var(--red-soft); border-color: #e4bdbd; }
 .source-list { max-height: 480px; overflow-y: auto; }
-.source-row { min-height: 62px; padding: 9px 17px; display: grid; grid-template-columns: 38px minmax(180px, 1fr) 90px 62px 34px; align-items: center; gap: 11px; border-bottom: 1px solid #edf0ef; }
+.source-row { min-height: 70px; padding: 9px 17px; display: grid; grid-template-columns: 38px minmax(180px, 1fr) minmax(145px, 190px) 62px 34px; align-items: center; gap: 11px; border-bottom: 1px solid #edf0ef; }
 .source-row:hover { background: #fbfcfb; }
 .source-kind-icon { width: 35px; height: 35px; display: grid; place-items: center; color: var(--blue); background: var(--blue-soft); border-radius: 9px; }
 .kind-url { color: var(--teal-700); background: var(--teal-50); }
@@ -1037,8 +1052,18 @@ p {
 .source-main { min-width: 0; display: flex; flex-direction: column; }
 .source-main strong { overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
 .source-main span { overflow: hidden; color: var(--muted); font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
-.source-state { display: flex; align-items: center; gap: 5px; color: #687772; font-size: 8px; font-weight: 700; }
-.source-state i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.source-state { min-width: 0; display: flex; align-items: flex-start; gap: 6px; color: #687772; font-size: 8px; font-weight: 700; }
+.source-state > i { width: 5px; height: 5px; margin-top: 4px; flex: 0 0 auto; border-radius: 50%; background: currentColor; }
+.source-state-spinner { margin-top: 1px; flex: 0 0 auto; animation: source-upload-spin 900ms linear infinite; }
+.source-state-copy { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 1px; }
+.source-state-copy > strong { overflow: hidden; color: currentColor; font-size: 8px; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+.source-state-copy > small { overflow: hidden; color: #778783; font-size: 7px; font-weight: 550; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+.source-processing-progress { width: 100%; height: 3px; margin-top: 3px; overflow: hidden; background: #dfe9ed; border-radius: 99px; }
+.source-processing-progress > span { display: block; height: 100%; background: currentColor; border-radius: inherit; transition: width 180ms ease; }
+.source-upload-progress.is-indeterminate > span,
+.url-registration-progress-bar.is-indeterminate > span,
+.source-processing-summary-bar.is-indeterminate > span,
+.source-processing-progress.is-indeterminate > span { width: 32%; animation: source-progress-indeterminate 1.25s ease-in-out infinite; }
 .source-ready { color: var(--green); }
 .source-processing { color: var(--blue); }
 .source-needs_review { color: var(--amber); }
@@ -2108,7 +2133,7 @@ p {
   .filter-group { overflow-x: auto; padding-bottom: 2px; }
   .table-summary { flex-wrap: wrap; }
   .table-message { width: 100%; margin: 0; }
-  .source-row { grid-template-columns: 38px minmax(120px, 1fr) 80px 34px; }
+  .source-row { grid-template-columns: 38px minmax(120px, 1fr) minmax(130px, 160px) 34px; }
   .source-links { display: none; }
   .library-toolbar { align-items: stretch; flex-direction: column; }
   .library-filters { flex-direction: column; align-items: stretch; }
@@ -2168,8 +2193,12 @@ p {
   .detail-footer .button { width: 100%; }
   .detail-footer-actions { width: 100%; }
   .url-input-row { align-items: stretch; flex-direction: column; }
-  .source-row { grid-template-columns: 36px minmax(0, 1fr) 32px; }
-  .source-state { display: none; }
+  .source-row { grid-template-columns: 36px minmax(0, 1fr) 32px; grid-template-areas: "source-kind source-main source-action" ". source-state ."; row-gap: 6px; }
+  .source-kind-icon { grid-area: source-kind; }
+  .source-main { grid-area: source-main; }
+  .source-state { grid-area: source-state; display: flex; }
+  .source-row > .icon-button,
+  .source-row > .icon-button-placeholder { grid-area: source-action; }
   .issue-row { grid-template-columns: 28px 1fr; }
   .issue-row > .icon-button { display: none; }
   .issue-content > div { align-items: flex-start; flex-wrap: wrap; }
@@ -2205,5 +2234,12 @@ p {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+  .source-upload-progress.is-indeterminate > span,
+  .url-registration-progress-bar.is-indeterminate > span,
+  .source-processing-summary-bar.is-indeterminate > span,
+  .source-processing-progress.is-indeterminate > span {
+    width: 38%;
+    transform: none;
   }
 }

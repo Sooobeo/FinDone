@@ -7,9 +7,11 @@ on:
       - "supabase/**"
       - "tools/admin_*.py"
       - "tools/test_admin_*.py"
+      - "tools/requirements-source-worker.txt"
       - "tools/validate_supabase_sql.py"
       - "scripts/refresh_admin_content.ps1"
       - ".github/workflows/admin-ci.yml"
+      - ".github/workflows/admin-source-worker.yml"
   push:
     branches: [main]
     paths:
@@ -17,9 +19,11 @@ on:
       - "supabase/**"
       - "tools/admin_*.py"
       - "tools/test_admin_*.py"
+      - "tools/requirements-source-worker.txt"
       - "tools/validate_supabase_sql.py"
       - "scripts/refresh_admin_content.ps1"
       - ".github/workflows/admin-ci.yml"
+      - ".github/workflows/admin-source-worker.yml"
 
 permissions:
   contents: read
