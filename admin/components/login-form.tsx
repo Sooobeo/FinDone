@@ -1,19 +1,30 @@
 "use client";
 
-import { ArrowRight, LockKeyhole, Mail } from "lucide-react";
+import { ArrowRight, ChevronDown, LockKeyhole, Mail, ShieldCheck, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { getBrowserSupabase } from "@/lib/supabase/browser";
 import type { RuntimeMode } from "@/lib/supabase/config";
+import type { AdminRole } from "@/lib/types";
 
-export function LoginForm({ mode }: { mode: RuntimeMode }) {
+interface RoleLoginPanelProps {
+  expectedRole: AdminRole;
+  mode: RuntimeMode;
+  title: string;
+  description: string;
+}
+
+function RoleLoginPanel({ expectedRole, mode, title, description }: RoleLoginPanelProps) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const configError = mode === "misconfigured";
+  const isOwner = expectedRole === "owner";
+  const emailId = `${expectedRole}-email`;
+  const passwordId = `${expectedRole}-password`;
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -29,57 +40,65 @@ export function LoginForm({ mode }: { mode: RuntimeMode }) {
     }
 
     setLoading(true);
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    if (signInError) {
+    const { data: auth, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    if (signInError || !auth.user) {
+      setLoading(false);
       setError("이메일 또는 비밀번호가 올바르지 않습니다.");
       return;
     }
+
+    const { data: membership, error: membershipError } = await supabase
+      .from("admin_users")
+      .select("role,is_active")
+      .eq("user_id", auth.user.id)
+      .maybeSingle();
+
+    if (membershipError || !membership?.is_active || membership.role !== expectedRole) {
+      await supabase.auth.signOut();
+      setLoading(false);
+      setError(isOwner ? "Owner 계정으로 로그인해 주세요." : "Viewer 계정으로 로그인해 주세요.");
+      return;
+    }
+
+    setLoading(false);
     router.replace("/dashboard");
     router.refresh();
   }
 
   return (
-    <div className="login-card">
-      <div className="login-heading">
-        <p className="eyebrow">ACCOUNT ACCESS</p>
-        <h2>FinDone 로그인</h2>
-        <p>Owner와 읽기 전용 Viewer가 같은 화면에서 로그인합니다.</p>
-      </div>
+    <details className="login-role-toggle">
+      <summary>
+        <span className="login-role-icon" aria-hidden="true">
+          {isOwner ? <ShieldCheck size={19} /> : <UserRound size={19} />}
+        </span>
+        <span className="login-role-copy">
+          <strong>{title}</strong>
+          <small>{description}</small>
+        </span>
+        <ChevronDown className="login-role-chevron" size={18} aria-hidden="true" />
+      </summary>
 
-      {configError ? (
-        <div className="inline-alert alert-error" role="alert">
-          Supabase URL과 publishable key가 모두 설정되어야 합니다.
-        </div>
-      ) : null}
-
-      {mode === "demo" ? (
-        <div className="inline-alert alert-demo" role="status">
-          연결 정보가 없어 읽기 전용 데모로 실행 중입니다. 로그인 없이 현재 콘텐츠를 확인할 수 있습니다.
-        </div>
-      ) : null}
-
-      <form className="login-form" onSubmit={submit}>
-        <label className="field-label" htmlFor="email">이메일</label>
+      <form className="login-form login-role-form" onSubmit={submit}>
+        <label className="field-label" htmlFor={emailId}>이메일</label>
         <div className="input-with-icon">
           <Mail size={18} aria-hidden="true" />
           <input
-            id="email"
+            id={emailId}
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            placeholder="admin@example.com"
+            placeholder={isOwner ? "owner@example.com" : "viewer@example.com"}
             autoComplete="email"
             required={mode !== "demo"}
             disabled={configError}
           />
         </div>
 
-        <label className="field-label" htmlFor="password">비밀번호</label>
+        <label className="field-label" htmlFor={passwordId}>비밀번호</label>
         <div className="input-with-icon">
           <LockKeyhole size={18} aria-hidden="true" />
           <input
-            id="password"
+            id={passwordId}
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
@@ -97,12 +116,53 @@ export function LoginForm({ mode }: { mode: RuntimeMode }) {
           <ArrowRight size={17} />
         </button>
       </form>
+    </details>
+  );
+}
 
-      <p className="login-footnote">
-        콘텐츠를 조회하려면 <Link href="/signup">Viewer로 회원가입</Link>하세요. Viewer는 편집·검수·배포 권한을 받을 수 없습니다.
-      </p>
+export function LoginForm({ mode }: { mode: RuntimeMode }) {
+  const configError = mode === "misconfigured";
+
+  return (
+    <div className="login-card login-choice-card">
+      <div className="login-heading">
+        <p className="eyebrow">ACCOUNT ACCESS</p>
+        <h2>FinDone 로그인</h2>
+      </div>
+
+      {configError ? (
+        <div className="inline-alert alert-error" role="alert">
+          Supabase URL과 publishable key가 모두 설정되어야 합니다.
+        </div>
+      ) : null}
+
+      {mode === "demo" ? (
+        <div className="inline-alert alert-demo" role="status">
+          연결 정보가 없어 읽기 전용 데모로 실행 중입니다.
+        </div>
+      ) : null}
+
+      <div className="login-role-options">
+        <RoleLoginPanel
+          expectedRole="owner"
+          mode={mode}
+          title="Admin Login"
+          description="Owner 전용 관리 로그인"
+        />
+        <RoleLoginPanel
+          expectedRole="viewer"
+          mode={mode}
+          title="Viewer Login"
+          description="읽기 전용 계정 로그인"
+        />
+        <Link className="button button-secondary viewer-signup-button" href="/signup">
+          Viewer 회원가입 <ArrowRight size={17} />
+        </Link>
+      </div>
+
       <p className="login-copyright">
-        © 2026 FinDone · <a href="mailto:qyurimoon@yonsei.ac.kr">qyurimoon@yonsei.ac.kr</a>
+        <span>© 2026 FinDone. All rights reserved.</span>
+        <a href="mailto:qyurimoon@yonsei.ac.kr">Contact: qyurimoon@yonsei.ac.kr</a>
       </p>
     </div>
   );

@@ -67,7 +67,7 @@ export function SignupForm({ mode }: { mode: RuntimeMode }) {
       <div className="login-heading">
         <p className="eyebrow">VIEWER SIGN UP</p>
         <h2>Viewer 회원가입</h2>
-        <p>가입 계정은 자동으로 읽기 전용 Viewer 권한만 받습니다.</p>
+        <p className="login-heading-description">가입 계정은 자동으로 읽기 전용 Viewer 권한만 받습니다.</p>
       </div>
 
       {configError ? (
@@ -152,7 +152,8 @@ export function SignupForm({ mode }: { mode: RuntimeMode }) {
         이미 계정이 있나요? <Link href="/login">로그인</Link>
       </p>
       <p className="login-copyright">
-        © 2026 FinDone · <a href="mailto:qyurimoon@yonsei.ac.kr">qyurimoon@yonsei.ac.kr</a>
+        <span>© 2026 FinDone. All rights reserved.</span>
+        <a href="mailto:qyurimoon@yonsei.ac.kr">Contact: qyurimoon@yonsei.ac.kr</a>
       </p>
     </div>
   );
