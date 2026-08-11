@@ -32,7 +32,7 @@ class ContentUpdateManager(private val context: Context) {
             }
             val remoteVersion = release.getInt("contentDbVersion")
             if (remoteVersion <= currentVersion) return ContentUpdateResult.Current
-            if (release.getInt("schemaVersion") != 1) {
+            if (release.getInt("schemaVersion") != 2) {
                 throw ContentIntegrityException("Content update requires an unsupported schema")
             }
             if (release.getInt("minimumAppVersion") > BuildConfig.VERSION_CODE) {

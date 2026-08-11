@@ -103,3 +103,27 @@ tasks.matching { it.name == "processDebugUnitTestJavaRes" }.configureEach {
 tasks.matching { it.name == "processReleaseUnitTestJavaRes" }.configureEach {
     dependsOn("mergeReleaseAssets")
 }
+
+val verifyReleaseConceptQuestionBank by tasks.registering {
+    group = "verification"
+    description = "Blocks release APKs until the offline concept-question bank is human reviewed."
+    inputs.file(layout.projectDirectory.file("src/main/assets/content-manifest.json"))
+    doLast {
+        val manifestFile = layout.projectDirectory.file("src/main/assets/content-manifest.json").asFile
+        val manifestText = manifestFile.readText(Charsets.UTF_8)
+        val status = Regex("\\\"conceptQuestionReleaseStatus\\\"\\s*:\\s*\\\"([^\\\"]+)\\\"")
+            .find(manifestText)
+            ?.groupValues
+            ?.get(1)
+            ?: throw GradleException("content manifest has no conceptQuestionReleaseStatus")
+        if (status != "release_ready") {
+            throw GradleException(
+                "Concept question bank is '$status'. Complete independent human review before a release build."
+            )
+        }
+    }
+}
+
+tasks.matching { it.name == "preReleaseBuild" }.configureEach {
+    dependsOn(verifyReleaseConceptQuestionBank)
+}

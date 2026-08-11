@@ -62,44 +62,74 @@
   "retrievalProfiles": [
     {
       "id": "lexical-balanced",
-      "word": 0.5,
-      "char": 0.5,
-      "semantic": 0.0,
+      "questionWord": 0.1666666667,
+      "questionChar": 0.1666666667,
+      "answerWord": 0.1666666667,
+      "answerChar": 0.1666666667,
+      "sameDomain": 0.1666666666,
+      "sameMode": 0.1666666666,
+      "questionSemantic": 0.0,
+      "answerSemantic": 0.0,
       "provenance": "equal-weight RRF reference baseline"
     },
     {
       "id": "lexical-word-heavy",
-      "word": 0.7,
-      "char": 0.3,
-      "semantic": 0.0
-      ,"provenance": "word/char sensitivity ablation; not a paper default"
+      "questionWord": 0.25,
+      "questionChar": 0.08,
+      "answerWord": 0.25,
+      "answerChar": 0.08,
+      "sameDomain": 0.25,
+      "sameMode": 0.09,
+      "questionSemantic": 0.0,
+      "answerSemantic": 0.0,
+      "provenance": "word/char sensitivity ablation; not a paper default"
     },
     {
       "id": "lexical-char-heavy",
-      "word": 0.35,
-      "char": 0.65,
-      "semantic": 0.0
-      ,"provenance": "word/char sensitivity ablation; not a paper default"
+      "questionWord": 0.08,
+      "questionChar": 0.25,
+      "answerWord": 0.08,
+      "answerChar": 0.25,
+      "sameDomain": 0.25,
+      "sameMode": 0.09,
+      "questionSemantic": 0.0,
+      "answerSemantic": 0.0,
+      "provenance": "word/char sensitivity ablation; not a paper default"
     },
     {
       "id": "semantic-balanced",
-      "word": 0.3333333333,
-      "char": 0.3333333333,
-      "semantic": 0.3333333334,
+      "questionWord": 0.125,
+      "questionChar": 0.125,
+      "answerWord": 0.125,
+      "answerChar": 0.125,
+      "sameDomain": 0.125,
+      "sameMode": 0.125,
+      "questionSemantic": 0.125,
+      "answerSemantic": 0.125,
       "provenance": "equal-weight sparse/dense RRF reference baseline"
     },
     {
       "id": "semantic-conservative",
-      "word": 0.4,
-      "char": 0.4,
-      "semantic": 0.2,
+      "questionWord": 0.1333333333,
+      "questionChar": 0.1333333333,
+      "answerWord": 0.1333333333,
+      "answerChar": 0.1333333333,
+      "sameDomain": 0.1333333334,
+      "sameMode": 0.1333333334,
+      "questionSemantic": 0.1,
+      "answerSemantic": 0.1,
       "provenance": "dense-weight sensitivity ablation; not a paper default"
     },
     {
       "id": "semantic-heavy",
-      "word": 0.25,
-      "char": 0.25,
-      "semantic": 0.5,
+      "questionWord": 0.0833333333,
+      "questionChar": 0.0833333333,
+      "answerWord": 0.0833333333,
+      "answerChar": 0.0833333333,
+      "sameDomain": 0.0833333334,
+      "sameMode": 0.0833333334,
+      "questionSemantic": 0.25,
+      "answerSemantic": 0.25,
       "provenance": "dense-weight sensitivity ablation; not a paper default"
     }
   ],
@@ -152,6 +182,16 @@
       "id": "beir",
       "title": "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
       "url": "https://arxiv.org/abs/2104.08663"
+    },
+    {
+      "id": "bge-m3",
+      "title": "BGE M3-Embedding: Multi-Lingual, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation",
+      "url": "https://arxiv.org/abs/2402.03216"
+    },
+    {
+      "id": "kure-v1-model-card",
+      "title": "KURE-v1 official model card (model provenance and training details; not a paper)",
+      "url": "https://huggingface.co/nlpai-lab/KURE-v1"
     }
   ],
   "embeddingCandidates": [
@@ -193,7 +233,9 @@
       "queryPrefix": "",
       "passagePrefix": "",
       "trustRemoteCode": true,
-      "priority": 3
+      "priority": 3,
+      "reference": "https://huggingface.co/nlpai-lab/KURE-v1",
+      "provenance": "Korean retrieval encoder fine-tuned from BGE-M3; official model card benchmark is external context, not a FinDone baseline"
     },
     {
       "id": "bge-m3",
@@ -203,7 +245,9 @@
       "queryPrefix": "",
       "passagePrefix": "",
       "trustRemoteCode": true,
-      "priority": 4
+      "priority": 4,
+      "reference": "https://arxiv.org/abs/2402.03216",
+      "provenance": "BGE-M3 paper candidate; FinDone selection is based only on the fixed validation split"
     },
     {
       "id": "multilingual-e5-base",

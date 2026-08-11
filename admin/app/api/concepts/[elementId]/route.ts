@@ -48,7 +48,7 @@ export async function PUT(
     p_formula_patch: {
       expression_markdown: body.formulaExpression,
       assumptions_markdown: body.formulaAssumptions,
-      // Android schema v1 reads formula_cards.notes as the final learning card.
+      // Android schema v2 still reads formula_cards.notes as the final learning card.
       notes_markdown: body.checklist,
     },
     p_change_reason: "Admin 개념 DB 편집",

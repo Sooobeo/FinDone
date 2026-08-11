@@ -29,6 +29,7 @@ import com.findone.app.model.ContentElement
 import com.findone.app.model.ContentManifest
 import com.findone.app.model.Domain
 import com.findone.app.quiz.ElementSeed
+import com.findone.app.quiz.CuratedConceptQuestion
 import com.findone.app.quiz.ExplanationSteps
 import com.findone.app.quiz.MentalMathAudit
 import com.findone.app.quiz.MentalMathOperation
@@ -158,6 +159,7 @@ class AppViewModel(
 ) : AndroidViewModel(application) {
     private val userRepository = UserRepository(application)
     private var contentRepository: ContentRepository? = null
+    private var conceptQuestionsByElement: Map<String, List<CuratedConceptQuestion>> = emptyMap()
 
     var domains by mutableStateOf<List<Domain>>(emptyList())
         private set
@@ -240,18 +242,21 @@ class AppViewModel(
         var repository: ContentRepository? = null
         var loadedDomains = emptyList<Domain>()
         var loadedElements = emptyList<ContentElement>()
+        var loadedConceptQuestions = emptyList<CuratedConceptQuestion>()
         var loadedManifest: ContentManifest? = null
         runCatching {
             ContentRepository(application).also { repo ->
                 repository = repo
                 loadedDomains = repo.domains()
                 loadedElements = repo.elements()
+                loadedConceptQuestions = repo.conceptQuestions()
                 loadedManifest = repo.manifest
             }
         }.onFailure { contentError = it.message ?: "콘텐츠 DB를 열지 못했습니다." }
         contentRepository = repository
         domains = loadedDomains
         allElements = loadedElements
+        conceptQuestionsByElement = loadedConceptQuestions.groupBy { it.elementId }
         contentManifest = loadedManifest
         studyDomainId = studyDomainId?.takeIf { id -> domains.any { it.id == id } }
         if (studyDomainId == null) savedStateHandle.remove<String>(STUDY_DOMAIN_STATE)
@@ -314,6 +319,7 @@ class AppViewModel(
                                     repository = repository,
                                     domains = repository.domains(),
                                     elements = repository.elements(),
+                                    conceptQuestions = repository.conceptQuestions(),
                                     manifest = repository.manifest,
                                 )
                             }
@@ -322,6 +328,7 @@ class AppViewModel(
                         contentRepository = loaded.repository
                         domains = loaded.domains
                         allElements = loaded.elements
+                        conceptQuestionsByElement = loaded.conceptQuestions.groupBy { it.elementId }
                         contentManifest = loaded.manifest
                         previous?.close()
                         normalizeContentSelections()
@@ -360,6 +367,7 @@ class AppViewModel(
         val repository: ContentRepository,
         val domains: List<Domain>,
         val elements: List<ContentElement>,
+        val conceptQuestions: List<CuratedConceptQuestion>,
         val manifest: ContentManifest,
     )
 
@@ -751,7 +759,7 @@ class AppViewModel(
             if (bookmark.mode == QuizMode.CALCULATION.name) {
                 QuizEngine.generateCalculation(element.id, seed, quizDifficulty)
             } else {
-                QuizEngine.generateConcept(element.seed(), allElements.map { it.seed() }, seed, quizDifficulty)
+                generateConceptQuestion(element, seed, quizDifficulty)
             }
         }
         if (question == null) {
@@ -918,7 +926,12 @@ class AppViewModel(
                 val generated = if (wantsCalculation && element.id in QuizEngine.calculationElementIds) {
                     QuizEngine.generateCalculation(element.id, itemSeed, itemDifficulty)
                 } else null
-                val question = generated ?: QuizEngine.generateConcept(element.seed(), allSeeds, itemSeed, itemDifficulty)
+                val question = generated ?: generateConceptQuestion(
+                    element,
+                    itemSeed,
+                    itemDifficulty,
+                    allSeeds,
+                )
                 add(question)
                 presentations += weakTarget?.presentation ?: track.presentation()
             }
@@ -1143,6 +1156,22 @@ class AppViewModel(
         contentRepository?.close()
         userRepository.close()
         super.onCleared()
+    }
+
+    private fun generateConceptQuestion(
+        element: ContentElement,
+        seed: Long,
+        difficulty: Int,
+        fallbackPool: List<ElementSeed> = allElements.map { it.seed() },
+    ): QuizQuestion {
+        val allCurated = conceptQuestionsByElement[element.id].orEmpty()
+        val difficultyMatched = allCurated.filter { it.difficulty <= difficulty }
+        val candidates = (difficultyMatched.ifEmpty { allCurated }).sortedBy { it.questionId }
+        if (candidates.isNotEmpty()) {
+            val index = ((seed and Long.MAX_VALUE) % candidates.size).toInt()
+            return QuizEngine.generateConceptFromBank(candidates[index], seed)
+        }
+        return QuizEngine.generateConcept(element.seed(), fallbackPool, seed, difficulty)
     }
 
     private fun ContentElement.seed() = ElementSeed(id, title, domainId, coreRelation)

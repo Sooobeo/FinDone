@@ -100,7 +100,7 @@ python tools/admin_release_worker.py --worker-id 'release:local-01' --max-jobs 4
 Remove-Item Env:SUPABASE_SECRET_KEY
 ```
 
-릴리스 Worker는 현재 Android schema v1의 분야·요소·개념·수식 revision을 투영한다. 앱 schema에 없는 distractor revision은 조용히 누락하지 않고 릴리스를 실패시킨다. 원본 가공은 Source Worker와 별도 권한·RPC 경계로 유지된다.
+릴리스 Worker는 Android schema v2의 분야·요소·개념·수식과 5지선다 문항은행을 클린 SQLite에 투영한다. 문항은행이 `release_ready`가 아니면 stable 공개를 차단한다. 기존 `distractors` authoring row에는 `question_id`와 `choice_key`가 없으므로 임의로 문항 선택지를 덮어쓰지 않고 명시적 오류로 중단한다. 원본 가공은 Source Worker와 별도 권한·RPC 경계로 유지된다.
 
 ## 5. 웹 배포
 

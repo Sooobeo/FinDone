@@ -2380,6 +2380,55 @@ p {
 .model-adapter-list { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 5px; }
 .model-adapter-list span { padding: 4px 6px; border: 1px solid var(--line); background: var(--surface-soft); color: var(--muted); font-size: 7px; font-weight: 700; }
 
+.model-section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding: 4px 2px 0; }
+.model-section-heading h2 { margin: 3px 0 0; font-size: 17px; }
+.model-section-heading > p { max-width: 620px; margin: 0; color: var(--muted); font-size: 9px; line-height: 1.6; text-align: right; }
+.rule-model-heading { margin-top: 10px; padding-top: 20px; border-top: 1px solid var(--line); }
+
+.concept-model-hero { padding: 18px; display: grid; grid-template-columns: minmax(220px, 0.75fr) minmax(260px, 1.05fr) minmax(230px, 0.8fr); align-items: center; gap: 22px; }
+.concept-model-hero.blocked { border-color: #efc1bc; box-shadow: inset 4px 0 0 var(--red); }
+.concept-model-hero.ready { border-color: var(--teal-100); box-shadow: inset 4px 0 0 var(--teal-700); }
+.concept-model-status { display: flex; align-items: center; gap: 12px; }
+.concept-model-status > span { width: 46px; height: 46px; display: grid; place-items: center; background: var(--teal-50); color: var(--teal-700); }
+.concept-model-status h2 { margin: 3px 0 4px; font-size: 14px; }
+.concept-model-status code { color: var(--muted); font-size: 7px; }
+.concept-model-review-progress { display: grid; gap: 6px; }
+.concept-model-review-progress > div:first-child { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #465650; font-size: 8px; }
+.concept-model-review-progress strong { font-size: 10px; }
+.concept-model-review-progress small { color: var(--muted); font-size: 7px; }
+.concept-model-run-meta { display: grid; justify-items: end; gap: 4px; padding-left: 18px; border-left: 1px solid var(--line); text-align: right; }
+.concept-model-run-meta small, .concept-model-run-meta span { color: var(--muted); font-size: 7px; }
+.concept-model-run-meta strong { font-size: 11px; }
+.concept-model-run-meta code { max-width: 100%; overflow: hidden; color: var(--teal-800); font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+
+.concept-model-warning { padding: 14px 16px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; border-color: #efd4aa; background: #fffaf0; color: #74572d; }
+.concept-model-warning > div strong { display: block; font-size: 9px; }
+.concept-model-warning > div p { margin: 3px 0 0; color: #8b7049; font-size: 8px; line-height: 1.5; }
+.concept-model-warning > span { padding: 5px 7px; border: 1px solid #ead1a8; background: #fff; font-size: 7px; font-weight: 800; }
+
+.concept-experiment-columns { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); }
+.concept-embedding-list { margin-top: 13px; display: grid; gap: 7px; }
+.concept-embedding-list > div { padding: 9px 10px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 10px; border: 1px solid var(--line); background: var(--surface-soft); }
+.concept-embedding-list > div.selected { border-color: var(--teal-100); background: var(--teal-50); }
+.concept-embedding-list > div > span { color: var(--teal-700); }
+.concept-embedding-list strong, .concept-embedding-list small { display: block; }
+.concept-embedding-list strong { font-size: 8px; }
+.concept-embedding-list small { margin-top: 2px; max-width: 240px; overflow: hidden; color: var(--muted); font-size: 6px; text-overflow: ellipsis; white-space: nowrap; }
+.concept-embedding-list dl { min-width: 78px; margin: 0; text-align: right; }
+.concept-embedding-list dt { color: var(--muted); font-size: 6px; }
+.concept-embedding-list dd { margin: 2px 0 0; font-size: 8px; font-weight: 800; }
+.concept-gate-list { max-height: 420px; overflow-y: auto; }
+.concept-gate-list > div:has(> span.failed) > b { color: var(--red); }
+
+.concept-experiment-history { padding: 18px; }
+.concept-experiment-history .table-scroll { margin-top: 13px; overflow-x: auto; }
+.concept-experiment-history table { min-width: 960px; }
+.concept-experiment-history td, .concept-experiment-history th { font-size: 7px; }
+.concept-experiment-history td code { font-size: 6px; }
+.model-history-status { display: inline-flex; padding: 4px 6px; font-size: 6px; font-weight: 900; letter-spacing: 0.05em; }
+.model-history-status.ready { background: var(--teal-50); color: var(--teal-800); }
+.model-history-status.blocked { background: var(--red-soft); color: var(--red); }
+
 .route-loading-state { min-height: 280px; padding: 28px; display: grid; place-items: center; align-content: center; gap: 12px; text-align: center; }
 .route-loading-state > svg { color: var(--teal-700); }
 .route-loading-state strong { font-size: 13px; }
@@ -2435,6 +2484,8 @@ p {
   .model-runtime-strip { grid-template-columns: 1fr; }
   .model-readiness-hero { grid-template-columns: auto minmax(160px, 1fr); }
   .model-version-block { grid-column: 1 / -1; justify-items: start; }
+  .concept-model-hero { grid-template-columns: 1fr 1fr; }
+  .concept-model-run-meta { grid-column: 1 / -1; justify-items: start; padding: 12px 0 0; border-left: 0; border-top: 1px solid var(--line); text-align: left; }
 }
 
 @media (max-width: 760px) {
@@ -2497,6 +2548,14 @@ p {
   .model-version-block { grid-column: auto; }
   .model-build-proof { grid-template-columns: auto 1fr; }
   .model-adapter-list { grid-column: 1 / -1; justify-content: flex-start; }
+  .model-section-heading { align-items: flex-start; flex-direction: column; gap: 6px; }
+  .model-section-heading > p { text-align: left; }
+  .concept-model-hero { grid-template-columns: 1fr; }
+  .concept-model-run-meta { grid-column: auto; }
+  .concept-model-warning { grid-template-columns: auto minmax(0, 1fr); }
+  .concept-model-warning > span { grid-column: 2; justify-self: start; }
+  .concept-embedding-list > div { grid-template-columns: auto minmax(0, 1fr); }
+  .concept-embedding-list dl { text-align: left; }
   .release-checks { grid-template-columns: 1fr; }
   .release-fact-row { grid-template-columns: auto 1fr auto 1fr; }
   .release-fact-row span:nth-of-type(3),

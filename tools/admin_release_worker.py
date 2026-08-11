@@ -44,7 +44,7 @@ COMPLETE_VALIDATION_RPC = "complete_release_validation_job"
 FAIL_RPC = "fail_release_job"
 VALIDATOR_NAME = "findone-release-validator"
 VALIDATOR_VERSION = "admin-v1"
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 EXPECTED_DOMAIN_COUNTS = {
     "ACC": 12,
     "CF": 12,
@@ -60,6 +60,8 @@ VERIFIED_TABLES = (
     "elements",
     "concept_cards",
     "formula_cards",
+    "concept_questions",
+    "concept_question_choices",
     "sources",
     "element_sources",
     "knowledge_fts",
@@ -79,6 +81,13 @@ COPY_TABLE_COLUMNS: dict[str, tuple[str, ...]] = {
     ),
     "formula_cards": (
         "formula_id", "element_id", "title", "expression", "assumptions", "notes", "source_ids_json",
+    ),
+    "concept_questions": (
+        "question_id", "element_id", "question_type", "stem", "explanation",
+        "difficulty", "model_version", "review_status", "source_fact_ids_json", "display_order",
+    ),
+    "concept_question_choices": (
+        "question_id", "choice_key", "choice_order", "element_id", "text", "explanation", "is_correct",
     ),
     "element_sources": ("element_id", "source_id", "ordinal"),
 }
@@ -144,6 +153,31 @@ CREATE TABLE formula_cards (
     source_ids_json TEXT NOT NULL
 ) WITHOUT ROWID;
 
+CREATE TABLE concept_questions (
+    question_id TEXT PRIMARY KEY NOT NULL,
+    element_id TEXT NOT NULL REFERENCES elements(element_id) ON DELETE CASCADE,
+    question_type TEXT NOT NULL,
+    stem TEXT NOT NULL,
+    explanation TEXT NOT NULL,
+    difficulty INTEGER NOT NULL CHECK (difficulty BETWEEN 1 AND 3),
+    model_version TEXT NOT NULL,
+    review_status TEXT NOT NULL,
+    source_fact_ids_json TEXT NOT NULL,
+    display_order INTEGER NOT NULL UNIQUE
+) WITHOUT ROWID;
+
+CREATE TABLE concept_question_choices (
+    question_id TEXT NOT NULL REFERENCES concept_questions(question_id) ON DELETE CASCADE,
+    choice_key TEXT NOT NULL CHECK (choice_key IN ('A', 'B', 'C', 'D', 'E')),
+    choice_order INTEGER NOT NULL CHECK (choice_order BETWEEN 0 AND 4),
+    element_id TEXT NOT NULL REFERENCES elements(element_id),
+    text TEXT NOT NULL,
+    explanation TEXT NOT NULL,
+    is_correct INTEGER NOT NULL CHECK (is_correct IN (0, 1)),
+    PRIMARY KEY (question_id, choice_key),
+    UNIQUE (question_id, choice_order)
+) WITHOUT ROWID;
+
 CREATE TABLE element_sources (
     element_id TEXT NOT NULL REFERENCES elements(element_id) ON DELETE CASCADE,
     source_id TEXT NOT NULL REFERENCES sources(source_id),
@@ -152,6 +186,7 @@ CREATE TABLE element_sources (
 ) WITHOUT ROWID;
 
 CREATE INDEX elements_domain_order_idx ON elements(domain_id, display_order);
+CREATE INDEX concept_questions_element_idx ON concept_questions(element_id, difficulty, display_order);
 CREATE INDEX element_sources_source_idx ON element_sources(source_id, element_id);
 
 CREATE VIRTUAL TABLE knowledge_fts USING fts5(
@@ -525,10 +560,11 @@ def _apply_revision(database: sqlite3.Connection, revision: Mapping[str, Any]) -
         return element_id
 
     if entity_type == "distractor":
-        # The current Android schema generates concept choices deterministically and
-        # has no distractor table. Keep the release build honest instead of silently
-        # claiming that an unconsumed authoring record reached the app.
-        raise ReleaseWorkerError("distractor revisions are not supported by Android schema v1")
+        # Schema v2 stores question-specific choices, while the legacy authoring row
+        # has no question_id/choice_key identity. Do not guess which reviewed item to replace.
+        raise ReleaseWorkerError(
+            "legacy distractor revision needs question_id and choice_key for Android schema v2"
+        )
 
     raise ReleaseWorkerError(f"unsupported release entity type: {entity_type}")
 
@@ -563,6 +599,102 @@ def _rebuild_fts(database: sqlite3.Connection) -> None:
     )
 
 
+def _refresh_concept_questions(
+    database: sqlite3.Connection,
+    changed_element_ids: set[str],
+) -> tuple[str, str, str, int]:
+    """Refresh visible question copy while preserving an already approved bank gate."""
+    metadata = dict(database.execute("SELECT key,value FROM metadata"))
+    original_status = metadata.get("concept_question_release_status", "candidate")
+    content = {
+        row[0]: {
+            "title": row[1],
+            "core_relation": row[2],
+            "definition": row[3],
+            "intuition": row[4],
+        }
+        for row in database.execute(
+            """SELECT e.element_id, e.title, e.core_relation, c.definition, c.intuition
+               FROM elements e JOIN concept_cards c USING(element_id)"""
+        )
+    }
+    prompts = {
+        "definition_to_term": "다음 설명에 가장 부합하는 금융 개념은 무엇인가?",
+        "intuition_to_term": "다음 직관적 설명이 가리키는 금융 개념은 무엇인가?",
+        "core_relation_to_term": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?",
+    }
+    fields = {
+        "definition_to_term": "definition",
+        "intuition_to_term": "intuition",
+        "core_relation_to_term": "core_relation",
+    }
+    question_rows = database.execute(
+        "SELECT question_id,element_id,question_type FROM concept_questions ORDER BY display_order"
+    ).fetchall()
+    for question_id, element_id, question_type in question_rows:
+        if question_type not in prompts or element_id not in content:
+            raise ReleaseWorkerError(f"unsupported concept question projection: {question_id}")
+        target = content[element_id]
+        database.execute(
+            "UPDATE concept_questions SET stem=?,explanation=? WHERE question_id=?",
+            (
+                f"{prompts[question_type]}\n{target[fields[question_type]]}",
+                f"정답은 {target['title']}입니다. {target['definition']} {target['intuition']}",
+                question_id,
+            ),
+        )
+    database.executemany(
+        """UPDATE concept_question_choices SET text=?,explanation=?
+           WHERE question_id=? AND choice_key=?""",
+        (
+            (content[element_id]["title"], content[element_id]["definition"], question_id, choice_key)
+            for question_id, choice_key, element_id in database.execute(
+                """SELECT question_id,choice_key,element_id
+                   FROM concept_question_choices ORDER BY question_id,choice_order"""
+            ).fetchall()
+        ),
+    )
+    if changed_element_ids and original_status != "release_ready":
+        placeholders = ",".join("?" for _ in changed_element_ids)
+        affected = [
+            row[0]
+            for row in database.execute(
+                f"""SELECT DISTINCT q.question_id
+                    FROM concept_questions q
+                    JOIN concept_question_choices c ON c.question_id=q.question_id
+                    WHERE q.element_id IN ({placeholders}) OR c.element_id IN ({placeholders})""",
+                (*sorted(changed_element_ids), *sorted(changed_element_ids)),
+            )
+        ]
+        database.executemany(
+            "UPDATE concept_questions SET review_status='bootstrap' WHERE question_id=?",
+            ((question_id,) for question_id in affected),
+        )
+
+    projection = [
+        list(row)
+        for row in database.execute(
+            """SELECT q.question_id,q.element_id,q.question_type,q.stem,q.explanation,
+                      q.difficulty,q.model_version,q.review_status,q.source_fact_ids_json,
+                      c.choice_key,c.choice_order,c.element_id,c.text,c.explanation,c.is_correct
+               FROM concept_questions q JOIN concept_question_choices c USING(question_id)
+               ORDER BY q.display_order,c.choice_order"""
+        )
+    ]
+    bank_sha = sha256_bytes(canonical_json_bytes(projection))
+    bank_status = original_status
+    model_version = metadata.get("concept_question_model_version", "unknown")
+    bank_version = int(metadata.get("concept_question_bank_version", "1"))
+    database.executemany(
+        "INSERT OR REPLACE INTO metadata(key,value) VALUES (?,?)",
+        (
+            ("concept_question_bank_sha256", bank_sha),
+            ("concept_question_release_status", bank_status),
+        ),
+    )
+    return bank_sha, bank_status, model_version, bank_version
+
+
 def validate_release_database(path: Path, manifest: Mapping[str, Any]) -> ValidationResult:
     issues: list[ValidationIssue] = []
     checks = 0
@@ -589,6 +721,16 @@ def validate_release_database(path: Path, manifest: Mapping[str, Any]) -> Valida
         metadata = dict(database.execute("SELECT key,value FROM metadata"))
         check(metadata.get("content_db_version") == str(manifest.get("contentDbVersion")), "metadata_version", "SQLite metadata content version differs")
         check(metadata.get("source_spec_sha256") == manifest.get("sourceSha256"), "metadata_source", "SQLite release fingerprint differs from manifest")
+        check(
+            metadata.get("concept_question_bank_sha256") == manifest.get("conceptQuestionBankSha256"),
+            "metadata_question_bank",
+            "SQLite question-bank fingerprint differs from manifest",
+        )
+        check(
+            metadata.get("concept_question_release_status") == manifest.get("conceptQuestionReleaseStatus"),
+            "metadata_question_status",
+            "SQLite question-bank status differs from manifest",
+        )
         for table in VERIFIED_TABLES:
             try:
                 row_counts[table] = int(database.execute(f'SELECT COUNT(*) FROM "{table}"').fetchone()[0])
@@ -605,6 +747,20 @@ def validate_release_database(path: Path, manifest: Mapping[str, Any]) -> Valida
                   OR trim(c.scope_notes)='' OR trim(f.expression)=''"""
         ).fetchall()
         check(not blank_rows, "visible_content_blank", "a visible learning field is blank", {"sample": [row[0] for row in blank_rows[:3]]})
+        malformed_questions = database.execute(
+            """SELECT q.question_id FROM concept_questions q
+               JOIN concept_question_choices c USING(question_id)
+               GROUP BY q.question_id,q.element_id
+               HAVING COUNT(*) != 5 OR COUNT(DISTINCT c.text) != 5
+                  OR SUM(c.is_correct) != 1
+                  OR SUM(CASE WHEN c.is_correct=1 AND c.element_id=q.element_id THEN 1 ELSE 0 END) != 1"""
+        ).fetchall()
+        check(
+            not malformed_questions,
+            "concept_question_shape",
+            "a concept question does not have five distinct choices and one target answer",
+            {"sample": [row[0] for row in malformed_questions[:3]]},
+        )
         malformed_fts = database.execute(
             """SELECT e.element_id FROM elements e
                JOIN concept_cards c USING(element_id)
@@ -654,11 +810,22 @@ def build_release_bundle(
     source_sha = sha256_bytes(canonical_json_bytes({"releaseId": release_id, "items": release_identity}))
 
     database = sqlite3.connect(output_database)
+    bank_sha = ""
+    bank_status = "candidate"
+    bank_model_version = "unknown"
+    bank_version = 1
     try:
         database.execute("PRAGMA foreign_keys=ON")
+        question_changed_elements: set[str] = set()
         for revision in sorted(revisions, key=lambda row: (str(row.get("entity_type")), str(row.get("entity_key")))):
-            _apply_revision(database, revision)
+            changed_element = _apply_revision(database, revision)
+            if changed_element and revision.get("entity_type") in {"element", "concept"}:
+                question_changed_elements.add(changed_element)
         _rebuild_fts(database)
+        bank_sha, bank_status, bank_model_version, bank_version = _refresh_concept_questions(
+            database,
+            question_changed_elements,
+        )
         metadata_values = {
             "content_db_version": str(content_version),
             "schema_version": str(schema_version),
@@ -672,6 +839,10 @@ def build_release_bundle(
             "INSERT OR REPLACE INTO metadata(key,value) VALUES (?,?)",
             metadata_values.items(),
         )
+        if bank_status != "release_ready":
+            raise ReleaseWorkerError(
+                "concept question bank requires independent human review before stable release"
+            )
         database.commit()
         database.execute("PRAGMA optimize")
         database.execute("VACUUM")
@@ -699,6 +870,10 @@ def build_release_bundle(
         "byteSize": output_database.stat().st_size,
         "sourceSpec": f"supabase-release:{release_id}",
         "sourceSha256": source_sha,
+        "conceptQuestionBankVersion": bank_version,
+        "conceptQuestionBankSha256": bank_sha,
+        "conceptQuestionModelVersion": bank_model_version,
+        "conceptQuestionReleaseStatus": bank_status,
         "rowCounts": row_counts,
         "domainElementCounts": EXPECTED_DOMAIN_COUNTS,
         "buildMode": "clean-rebuild",

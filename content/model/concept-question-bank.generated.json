@@ -1,5 +1,5 @@
 {
-  "bankSha256": "3308364f6111642b151b3dbb00442c391f64a45c5d8596c073ae6dd6af347c68",
+  "bankSha256": "028b8037307adaeaafa0457c0b48f3454a24f669bc1f8c019a1b381dfc932880",
   "bankVersion": 1,
   "contentFingerprint": "1292a74307d173ea13e1790b1336359d6a5a6b458f7948b79b82306795f96535",
   "modelVersion": "findone-concept-ranker-v0-bootstrap",
@@ -22,18 +22,18 @@
           "text": "기본 EPS"
         },
         {
-          "elementId": "EQV-09",
-          "explanation": "ROE는 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다.",
-          "isCorrect": false,
-          "key": "C",
-          "text": "ROE"
-        },
-        {
           "elementId": "EQV-05",
           "explanation": "순설비투자는 새로 지출한 CAPEX에서 기존 자산의 가치소모를 나타내는 감가상각을 뺀 자산기반의 순증가분이다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "설비투자·감가상각"
+        },
+        {
+          "elementId": "EQV-11",
+          "explanation": "EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는 배수다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "EV와 EV/EBITDA"
         },
         {
           "elementId": "ACC-01",
@@ -58,11 +58,11 @@
     {
       "choices": [
         {
-          "elementId": "ACC-10",
-          "explanation": "3개 재무제표 연결은 한 거래가 손익, 자산·부채, 현금흐름에 서로 다른 시점과 방식으로 반영되는 과정을 추적하는 작업이다.",
+          "elementId": "IBT-09",
+          "explanation": "IPO primary/secondary 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을 나눈다.",
           "isCorrect": false,
           "key": "A",
-          "text": "손익계산서·재무상태표·현금흐름표 연결"
+          "text": "IPO primary/secondary"
         },
         {
           "elementId": "ACC-01",
@@ -208,11 +208,11 @@
     {
       "choices": [
         {
-          "elementId": "EQV-13",
-          "explanation": "WACC는 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
+          "elementId": "DER-05",
+          "explanation": "옵션 profit은 만기 payoff에서 처음 지급하거나 받은 프리미엄까지 반영한 최종 손익이다.",
           "isCorrect": false,
           "key": "A",
-          "text": "WACC"
+          "text": "옵션 Profit·손익분기점·전략손익"
         },
         {
           "elementId": "ACC-03",
@@ -315,11 +315,11 @@
           "text": "매출채권·대손충당금"
         },
         {
-          "elementId": "CF-03",
-          "explanation": "NPV는 투자로 들어오고 나가는 모든 현금흐름을 현재가치로 바꾼 뒤 초기투자와 비교한 순가치다.",
+          "elementId": "ACC-06",
+          "explanation": "유효이자율법은 사채의 실제 조달수익률을 장부금액에 적용해 기간별 이자비용과 장부가 변화를 계산하는 방법이다.",
           "isCorrect": false,
           "key": "B",
-          "text": "NPV와 투자안 채택"
+          "text": "사채 회계·유효이자율법"
         },
         {
           "elementId": "IBT-02",
@@ -565,18 +565,18 @@
           "text": "통화정책·이자수익 전이"
         },
         {
-          "elementId": "ACC-05",
-          "explanation": "감가상각은 장기간 사용하는 자산의 취득원가를 사용기간에 나누어 비용으로 배분하고 장부가를 줄이는 절차다.",
-          "isCorrect": false,
-          "key": "B",
-          "text": "유형자산·감가상각·처분손익"
-        },
-        {
           "elementId": "ACC-04",
           "explanation": "재고 회계는 판매 가능한 물량의 원가를 판매된 부분인 매출원가와 남은 부분인 기말재고로 나누는 과정이다.",
           "isCorrect": true,
-          "key": "C",
+          "key": "B",
           "text": "재고자산·매출원가"
+        },
+        {
+          "elementId": "EQV-03",
+          "explanation": "NOPAT은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다.",
+          "isCorrect": false,
+          "key": "C",
+          "text": "현금세율·NOPAT"
         },
         {
           "elementId": "EQV-04",
@@ -822,18 +822,18 @@
           "text": "사채 회계·유효이자율법"
         },
         {
-          "elementId": "ACC-05",
-          "explanation": "감가상각은 장기간 사용하는 자산의 취득원가를 사용기간에 나누어 비용으로 배분하고 장부가를 줄이는 절차다.",
-          "isCorrect": false,
-          "key": "C",
-          "text": "유형자산·감가상각·처분손익"
-        },
-        {
           "elementId": "ACC-09",
           "explanation": "현금흐름표는 한 기간의 현금 증감을 영업, 투자, 재무 활동으로 나누어 이익이 실제 현금으로 이어진 경로를 보여 준다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "현금흐름표(CFO·CFI·CFF)"
+        },
+        {
+          "elementId": "IBT-13",
+          "explanation": "Cap rate 가치는 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "Cap rate 가치"
         },
         {
           "elementId": "CF-07",
@@ -1379,11 +1379,11 @@
           "text": "회계등식과 차변·대변"
         },
         {
-          "elementId": "ACC-09",
-          "explanation": "현금흐름표는 한 기간의 현금 증감을 영업, 투자, 재무 활동으로 나누어 이익이 실제 현금으로 이어진 경로를 보여 준다.",
+          "elementId": "ACC-05",
+          "explanation": "감가상각은 장기간 사용하는 자산의 취득원가를 사용기간에 나누어 비용으로 배분하고 장부가를 줄이는 절차다.",
           "isCorrect": false,
           "key": "D",
-          "text": "현금흐름표(CFO·CFI·CFF)"
+          "text": "유형자산·감가상각·처분손익"
         },
         {
           "elementId": "ACC-11",
@@ -1865,18 +1865,18 @@
           "text": "NPV와 투자안 채택"
         },
         {
+          "elementId": "DER-01",
+          "explanation": "선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가격을 정한 값이다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "Forward·Futures 이론가격"
+        },
+        {
           "elementId": "CF-02",
           "explanation": "연금과 영구연금은 일정하거나 성장하는 반복 현금흐름을 한 시점의 가치로 묶어 계산하는 모형이다.",
           "isCorrect": false,
-          "key": "B",
-          "text": "연금·영구연금·성장영구연금"
-        },
-        {
-          "elementId": "CF-05",
-          "explanation": "배당할인모형은 주주가 받을 미래 배당의 현재가치로 주식가치를 설명하는 모형이다.",
-          "isCorrect": false,
           "key": "C",
-          "text": "배당할인모형(DDM)"
+          "text": "연금·영구연금·성장영구연금"
         },
         {
           "elementId": "FI-02",
@@ -1915,32 +1915,32 @@
           "text": "Forward·Futures 이론가격"
         },
         {
+          "elementId": "FI-01",
+          "explanation": "채권가격은 약정된 쿠폰과 원금을 시장이 요구하는 수익률로 할인한 현재가치이며, YTM은 그 가격을 설명하는 만기수익률이다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "채권가격·YTM"
+        },
+        {
           "elementId": "CF-03",
           "explanation": "NPV는 투자로 들어오고 나가는 모든 현금흐름을 현재가치로 바꾼 뒤 초기투자와 비교한 순가치다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "C",
           "text": "NPV와 투자안 채택"
         },
         {
           "elementId": "CF-02",
           "explanation": "연금과 영구연금은 일정하거나 성장하는 반복 현금흐름을 한 시점의 가치로 묶어 계산하는 모형이다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "D",
           "text": "연금·영구연금·성장영구연금"
         },
         {
           "elementId": "CF-01",
           "explanation": "화폐의 시간가치는 서로 다른 시점의 돈을 하나의 기준시점으로 옮겨 비교하는 원리다.",
           "isCorrect": true,
-          "key": "D",
-          "text": "화폐의 시간가치 — 일시금 PV·FV"
-        },
-        {
-          "elementId": "FI-02",
-          "explanation": "현물이자율은 오늘부터 특정 만기까지의 금리이고, 선도금리는 서로 다른 만기 현물금리가 암시하는 미래 구간의 금리다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "현물이자율·선도금리"
+          "text": "화폐의 시간가치 — 일시금 PV·FV"
         }
       ],
       "difficulty": 2,
@@ -2458,18 +2458,18 @@
     {
       "choices": [
         {
+          "elementId": "CF-06",
+          "explanation": "CAPM은 시장 전체와 함께 움직이는 위험인 베타에 시장위험 보상을 붙여 자기자본 요구수익률을 추정하는 모형이다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "CAPM·베타"
+        },
+        {
           "elementId": "CF-05",
           "explanation": "배당할인모형은 주주가 받을 미래 배당의 현재가치로 주식가치를 설명하는 모형이다.",
           "isCorrect": true,
-          "key": "A",
-          "text": "배당할인모형(DDM)"
-        },
-        {
-          "elementId": "DER-08",
-          "explanation": "Black–Scholes–Merton 모형은 무배당 유럽형 옵션을 주가, 행사가, 시간, 금리, 변동성으로 연결해 이론가를 계산한다.",
-          "isCorrect": false,
           "key": "B",
-          "text": "Black–Scholes–Merton"
+          "text": "배당할인모형(DDM)"
         },
         {
           "elementId": "CF-03",
@@ -2515,11 +2515,11 @@
           "text": "연금·영구연금·성장영구연금"
         },
         {
-          "elementId": "EQV-13",
-          "explanation": "WACC는 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
+          "elementId": "INV-01",
+          "explanation": "수익률 측정은 가격변화와 현금분배를 한 기간의 성과로 바꾸고, 여러 기간의 성과를 목적에 맞는 평균으로 요약하는 작업이다.",
           "isCorrect": false,
           "key": "B",
-          "text": "WACC"
+          "text": "보유기간수익률·로그수익률·산술평균·기하평균"
         },
         {
           "elementId": "CF-05",
@@ -2758,25 +2758,25 @@
     {
       "choices": [
         {
-          "elementId": "INV-07",
-          "explanation": "APT는 여러 공통 위험요인에 대한 민감도와 각 요인의 위험보상을 합해 자산의 기대수익률을 설명한다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "APT 다요인 기대수익률"
-        },
-        {
           "elementId": "CF-07",
           "explanation": "WACC는 채권자와 주주가 요구하는 수익률을 시장가치 조달비중으로 가중한 기업 전체의 자본비용이다.",
           "isCorrect": true,
-          "key": "B",
+          "key": "A",
           "text": "WACC"
         },
         {
           "elementId": "EQV-15",
           "explanation": "계속가치는 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "계속가치"
+        },
+        {
+          "elementId": "CF-10",
+          "explanation": "FCFF와 FCFE는 영업과 재투자 뒤 기업 전체 또는 보통주주에게 남는 현금을 각각 측정한다.",
+          "isCorrect": false,
+          "key": "C",
+          "text": "FCFF·FCFE"
         },
         {
           "elementId": "ACC-12",
@@ -2958,11 +2958,11 @@
     {
       "choices": [
         {
-          "elementId": "EQV-13",
-          "explanation": "WACC는 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
+          "elementId": "CF-10",
+          "explanation": "FCFF와 FCFE는 영업과 재투자 뒤 기업 전체 또는 보통주주에게 남는 현금을 각각 측정한다.",
           "isCorrect": false,
           "key": "A",
-          "text": "WACC"
+          "text": "FCFF·FCFE"
         },
         {
           "elementId": "IBT-16",
@@ -3058,18 +3058,18 @@
     {
       "choices": [
         {
+          "elementId": "EQV-12",
+          "explanation": "FCFF는 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "FCFF"
+        },
+        {
           "elementId": "EQV-05",
           "explanation": "순설비투자는 새로 지출한 CAPEX에서 기존 자산의 가치소모를 나타내는 감가상각을 뺀 자산기반의 순증가분이다.",
           "isCorrect": false,
-          "key": "A",
-          "text": "설비투자·감가상각"
-        },
-        {
-          "elementId": "CF-07",
-          "explanation": "WACC는 채권자와 주주가 요구하는 수익률을 시장가치 조달비중으로 가중한 기업 전체의 자본비용이다.",
-          "isCorrect": false,
           "key": "B",
-          "text": "WACC"
+          "text": "설비투자·감가상각"
         },
         {
           "elementId": "CF-09",
@@ -3086,11 +3086,11 @@
           "text": "운전자본과 순운전자본 증감"
         },
         {
-          "elementId": "ACC-05",
-          "explanation": "감가상각은 장기간 사용하는 자산의 취득원가를 사용기간에 나누어 비용으로 배분하고 장부가를 줄이는 절차다.",
+          "elementId": "CF-11",
+          "explanation": "계속가치는 명시적 예측기간 뒤에 발생할 모든 현금흐름을 예측 종료시점의 한 금액으로 요약한 값이다.",
           "isCorrect": false,
           "key": "E",
-          "text": "유형자산·감가상각·처분손익"
+          "text": "계속가치(Terminal Value)"
         }
       ],
       "difficulty": 2,
@@ -3422,18 +3422,18 @@
           "text": "FCFF·FCFE"
         },
         {
+          "elementId": "EQV-13",
+          "explanation": "WACC는 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
+          "isCorrect": false,
+          "key": "C",
+          "text": "WACC"
+        },
+        {
           "elementId": "EQV-16",
           "explanation": "Peer multiple 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다.",
           "isCorrect": false,
-          "key": "C",
-          "text": "Peer multiple"
-        },
-        {
-          "elementId": "CF-07",
-          "explanation": "WACC는 채권자와 주주가 요구하는 수익률을 시장가치 조달비중으로 가중한 기업 전체의 자본비용이다.",
-          "isCorrect": false,
           "key": "D",
-          "text": "WACC"
+          "text": "Peer multiple"
         },
         {
           "elementId": "CF-11",
@@ -3736,11 +3736,11 @@
           "text": "단순 보유기간 IRR"
         },
         {
-          "elementId": "INV-04",
-          "explanation": "2자산 포트폴리오는 각 자산의 비중뿐 아니라 두 자산의 동행 정도까지 반영해 전체 기대수익과 위험을 계산한다.",
+          "elementId": "INV-06",
+          "explanation": "CAPM 요구수익률은 시장위험 노출에 맞는 기준수익을 제시하고, 알파는 실제 성과가 그 기준을 얼마나 웃돌았는지 보여 준다.",
           "isCorrect": false,
           "key": "E",
-          "text": "2자산 포트폴리오"
+          "text": "CAPM 요구수익률·알파"
         }
       ],
       "difficulty": 2,
@@ -3758,25 +3758,25 @@
     {
       "choices": [
         {
+          "elementId": "EQV-09",
+          "explanation": "ROE는 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "ROE"
+        },
+        {
           "elementId": "INV-03",
           "explanation": "공분산과 상관계수는 두 자산의 수익률이 같은 방향 또는 반대 방향으로 함께 움직이는 정도를 측정한다.",
           "isCorrect": false,
-          "key": "A",
+          "key": "B",
           "text": "공분산·상관계수"
         },
         {
           "elementId": "INV-09",
           "explanation": "Tracking Error는 벤치마크 대비 수익의 흔들림을, Information Ratio는 그 위험 한 단위당 평균 초과수익을 측정한다.",
           "isCorrect": false,
-          "key": "B",
-          "text": "Tracking Error·Information Ratio"
-        },
-        {
-          "elementId": "INV-04",
-          "explanation": "2자산 포트폴리오는 각 자산의 비중뿐 아니라 두 자산의 동행 정도까지 반영해 전체 기대수익과 위험을 계산한다.",
-          "isCorrect": false,
           "key": "C",
-          "text": "2자산 포트폴리오"
+          "text": "Tracking Error·Information Ratio"
         },
         {
           "elementId": "INV-07",
@@ -3808,11 +3808,11 @@
     {
       "choices": [
         {
-          "elementId": "INV-06",
-          "explanation": "CAPM 요구수익률은 시장위험 노출에 맞는 기준수익을 제시하고, 알파는 실제 성과가 그 기준을 얼마나 웃돌았는지 보여 준다.",
+          "elementId": "EQV-19",
+          "explanation": "시나리오 가중가치는 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다.",
           "isCorrect": false,
           "key": "A",
-          "text": "CAPM 요구수익률·알파"
+          "text": "시나리오 가중가치"
         },
         {
           "elementId": "INV-09",
@@ -4165,11 +4165,11 @@
           "text": "Sharpe·Treynor·Jensen 성과평가"
         },
         {
-          "elementId": "INV-05",
-          "explanation": "베타는 개별 자산 수익률이 시장 수익률 변화에 평균적으로 얼마나 민감하게 반응하는지 나타낸다.",
+          "elementId": "FI-05",
+          "explanation": "Duration immunization은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는 영향을 줄이는 전략이다.",
           "isCorrect": false,
           "key": "B",
-          "text": "베타"
+          "text": "Duration Immunization"
         },
         {
           "elementId": "INV-07",
@@ -4208,25 +4208,25 @@
     {
       "choices": [
         {
+          "elementId": "INV-03",
+          "explanation": "공분산과 상관계수는 두 자산의 수익률이 같은 방향 또는 반대 방향으로 함께 움직이는 정도를 측정한다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "공분산·상관계수"
+        },
+        {
           "elementId": "INV-07",
           "explanation": "APT는 여러 공통 위험요인에 대한 민감도와 각 요인의 위험보상을 합해 자산의 기대수익률을 설명한다.",
           "isCorrect": false,
-          "key": "A",
+          "key": "B",
           "text": "APT 다요인 기대수익률"
         },
         {
           "elementId": "INV-05",
           "explanation": "베타는 개별 자산 수익률이 시장 수익률 변화에 평균적으로 얼마나 민감하게 반응하는지 나타낸다.",
           "isCorrect": true,
-          "key": "B",
-          "text": "베타"
-        },
-        {
-          "elementId": "INV-04",
-          "explanation": "2자산 포트폴리오는 각 자산의 비중뿐 아니라 두 자산의 동행 정도까지 반영해 전체 기대수익과 위험을 계산한다.",
-          "isCorrect": false,
           "key": "C",
-          "text": "2자산 포트폴리오"
+          "text": "베타"
         },
         {
           "elementId": "CF-06",
@@ -4258,39 +4258,39 @@
     {
       "choices": [
         {
+          "elementId": "FI-03",
+          "explanation": "Macaulay duration은 채권 현금흐름을 회수하는 가중평균 시점이고, modified duration은 수익률 변화에 대한 가격 민감도로 바꾼 값이다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "Macaulay Duration·Modified Duration"
+        },
+        {
           "elementId": "INV-03",
           "explanation": "공분산과 상관계수는 두 자산의 수익률이 같은 방향 또는 반대 방향으로 함께 움직이는 정도를 측정한다.",
           "isCorrect": false,
-          "key": "A",
+          "key": "B",
           "text": "공분산·상관계수"
         },
         {
           "elementId": "INV-06",
           "explanation": "CAPM 요구수익률은 시장위험 노출에 맞는 기준수익을 제시하고, 알파는 실제 성과가 그 기준을 얼마나 웃돌았는지 보여 준다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "C",
           "text": "CAPM 요구수익률·알파"
         },
         {
           "elementId": "INV-05",
           "explanation": "베타는 개별 자산 수익률이 시장 수익률 변화에 평균적으로 얼마나 민감하게 반응하는지 나타낸다.",
           "isCorrect": true,
-          "key": "C",
+          "key": "D",
           "text": "베타"
         },
         {
           "elementId": "INV-07",
           "explanation": "APT는 여러 공통 위험요인에 대한 민감도와 각 요인의 위험보상을 합해 자산의 기대수익률을 설명한다.",
           "isCorrect": false,
-          "key": "D",
-          "text": "APT 다요인 기대수익률"
-        },
-        {
-          "elementId": "INV-04",
-          "explanation": "2자산 포트폴리오는 각 자산의 비중뿐 아니라 두 자산의 동행 정도까지 반영해 전체 기대수익과 위험을 계산한다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "2자산 포트폴리오"
+          "text": "APT 다요인 기대수익률"
         }
       ],
       "difficulty": 2,
@@ -4436,11 +4436,11 @@
           "text": "채권가격·YTM"
         },
         {
-          "elementId": "INV-09",
-          "explanation": "Tracking Error는 벤치마크 대비 수익의 흔들림을, Information Ratio는 그 위험 한 단위당 평균 초과수익을 측정한다.",
+          "elementId": "INV-08",
+          "explanation": "Sharpe·Treynor·Jensen 지표는 초과수익을 총위험, 시장위험 또는 CAPM 기준과 비교해 위험조정 성과를 평가한다.",
           "isCorrect": false,
           "key": "E",
-          "text": "Tracking Error·Information Ratio"
+          "text": "Sharpe·Treynor·Jensen 성과평가"
         }
       ],
       "difficulty": 2,
@@ -4822,11 +4822,11 @@
           "text": "기대수익률·분산·표준편차"
         },
         {
-          "elementId": "FI-10",
-          "explanation": "기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험 등을 가격에 반영한 추가 수익률이다.",
+          "elementId": "INV-06",
+          "explanation": "CAPM 요구수익률은 시장위험 노출에 맞는 기준수익을 제시하고, 알파는 실제 성과가 그 기준을 얼마나 웃돌았는지 보여 준다.",
           "isCorrect": false,
           "key": "C",
-          "text": "신용위험·Credit Spread·Expected Loss"
+          "text": "CAPM 요구수익률·알파"
         },
         {
           "elementId": "EQV-09",
@@ -5015,11 +5015,11 @@
           "text": "채권가격·YTM"
         },
         {
-          "elementId": "FI-08",
-          "explanation": "채권선물 basis는 현물채권 가격과 전환계수로 조정한 선물가격의 차이고, CTD는 인도 선택권을 고려할 때 가장 유리한 후보 채권이다.",
+          "elementId": "DER-04",
+          "explanation": "옵션 payoff는 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다.",
           "isCorrect": false,
           "key": "B",
-          "text": "채권선물 Basis·CTD"
+          "text": "Call·Put Payoff"
         },
         {
           "elementId": "FI-07",
@@ -5479,18 +5479,18 @@
           "text": "채권선물 Basis·CTD"
         },
         {
-          "elementId": "EQV-04",
-          "explanation": "매출연동 운전자본은 성장에 따라 매출채권·재고 등에 추가로 묶이는 영업자금을 단순 비율로 추정한다.",
-          "isCorrect": false,
-          "key": "D",
-          "text": "운전자본"
-        },
-        {
           "elementId": "FI-03",
           "explanation": "Macaulay duration은 채권 현금흐름을 회수하는 가중평균 시점이고, modified duration은 수익률 변화에 대한 가격 민감도로 바꾼 값이다.",
           "isCorrect": false,
-          "key": "E",
+          "key": "D",
           "text": "Macaulay Duration·Modified Duration"
+        },
+        {
+          "elementId": "FI-06",
+          "explanation": "금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를 줄이는 작업이다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "금리위험 헤징·계약수"
         }
       ],
       "difficulty": 2,
@@ -5615,11 +5615,11 @@
           "text": "금리위험 헤징·계약수"
         },
         {
-          "elementId": "FI-04",
-          "explanation": "DV01은 금리가 1bp 움직일 때의 금액 변화이고, convexity는 큰 금리 변화에서 duration의 직선 근사를 보정한다.",
+          "elementId": "IBT-04",
+          "explanation": "금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한다.",
           "isCorrect": false,
           "key": "B",
-          "text": "DV01·Convexity 가격변화"
+          "text": "통화정책·이자수익 전이"
         },
         {
           "elementId": "FI-03",
@@ -5872,18 +5872,18 @@
           "text": "Repo·Haircut"
         },
         {
-          "elementId": "IBT-05",
-          "explanation": "EV–Equity bridge는 인수대상 사업 전체 가치에서 부채·우선주·비지배지분을 빼고 현금을 더해 보통주 매매대금을 구하는 과정이다.",
-          "isCorrect": false,
-          "key": "C",
-          "text": "EV–Equity bridge"
-        },
-        {
           "elementId": "IBT-14",
           "explanation": "LTV는 담보 부동산가치 중 대출이 차지하는 비율로, 가격하락을 흡수할 자기자본 완충을 보여 준다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "LTV"
+        },
+        {
+          "elementId": "DER-10",
+          "explanation": "스왑 현금흐름 netting은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방식이다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "Swap Cash Flows·Netting"
         },
         {
           "elementId": "FI-01",
@@ -5965,25 +5965,25 @@
           "text": "EV와 EV/EBITDA"
         },
         {
-          "elementId": "IBT-05",
-          "explanation": "EV–Equity bridge는 인수대상 사업 전체 가치에서 부채·우선주·비지배지분을 빼고 현금을 더해 보통주 매매대금을 구하는 과정이다.",
-          "isCorrect": false,
-          "key": "B",
-          "text": "EV–Equity bridge"
-        },
-        {
           "elementId": "DER-02",
           "explanation": "선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정이익을 만드는 전략이다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "Forward·Futures 무차익거래"
         },
         {
           "elementId": "DER-10",
           "explanation": "스왑 현금흐름 netting은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방식이다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "Swap Cash Flows·Netting"
+        },
+        {
+          "elementId": "FI-01",
+          "explanation": "채권가격은 약정된 쿠폰과 원금을 시장이 요구하는 수익률로 할인한 현재가치이며, YTM은 그 가격을 설명하는 만기수익률이다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "채권가격·YTM"
         },
         {
           "elementId": "FI-07",
@@ -6058,32 +6058,32 @@
     {
       "choices": [
         {
-          "elementId": "FI-04",
-          "explanation": "DV01은 금리가 1bp 움직일 때의 금액 변화이고, convexity는 큰 금리 변화에서 duration의 직선 근사를 보정한다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "DV01·Convexity 가격변화"
-        },
-        {
           "elementId": "EQV-11",
           "explanation": "EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는 배수다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "A",
           "text": "EV와 EV/EBITDA"
         },
         {
           "elementId": "FI-06",
           "explanation": "금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를 줄이는 작업이다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "금리위험 헤징·계약수"
         },
         {
           "elementId": "FI-08",
           "explanation": "채권선물 basis는 현물채권 가격과 전환계수로 조정한 선물가격의 차이고, CTD는 인도 선택권을 고려할 때 가장 유리한 후보 채권이다.",
           "isCorrect": true,
-          "key": "D",
+          "key": "C",
           "text": "채권선물 Basis·CTD"
+        },
+        {
+          "elementId": "ACC-10",
+          "explanation": "3개 재무제표 연결은 한 거래가 손익, 자산·부채, 현금흐름에 서로 다른 시점과 방식으로 반영되는 과정을 추적하는 작업이다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "손익계산서·재무상태표·현금흐름표 연결"
         },
         {
           "elementId": "FI-01",
@@ -6229,11 +6229,11 @@
           "text": "Cap rate 가치"
         },
         {
-          "elementId": "CF-02",
-          "explanation": "연금과 영구연금은 일정하거나 성장하는 반복 현금흐름을 한 시점의 가치로 묶어 계산하는 모형이다.",
+          "elementId": "EQV-15",
+          "explanation": "계속가치는 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다.",
           "isCorrect": false,
           "key": "D",
-          "text": "연금·영구연금·성장영구연금"
+          "text": "계속가치"
         },
         {
           "elementId": "DER-10",
@@ -6322,25 +6322,25 @@
           "text": "리서치 위험·기대 하방"
         },
         {
+          "elementId": "INV-09",
+          "explanation": "Tracking Error는 벤치마크 대비 수익의 흔들림을, Information Ratio는 그 위험 한 단위당 평균 초과수익을 측정한다.",
+          "isCorrect": false,
+          "key": "C",
+          "text": "Tracking Error·Information Ratio"
+        },
+        {
           "elementId": "INV-02",
           "explanation": "기대수익률은 가능한 결과의 확률가중 평균이고, 분산과 표준편차는 결과가 그 평균 주변에서 얼마나 흔들리는지 측정한다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "D",
           "text": "기대수익률·분산·표준편차"
         },
         {
           "elementId": "FI-10",
           "explanation": "기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험 등을 가격에 반영한 추가 수익률이다.",
           "isCorrect": true,
-          "key": "D",
-          "text": "신용위험·Credit Spread·Expected Loss"
-        },
-        {
-          "elementId": "EQV-63",
-          "explanation": "기대손실·유동성 런웨이는 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "기대손실·유동성 런웨이"
+          "text": "신용위험·Credit Spread·Expected Loss"
         }
       ],
       "difficulty": 1,
@@ -6408,11 +6408,11 @@
     {
       "choices": [
         {
-          "elementId": "EQV-63",
-          "explanation": "기대손실·유동성 런웨이는 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다.",
+          "elementId": "IBT-18",
+          "explanation": "기대 하방은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표다.",
           "isCorrect": false,
           "key": "A",
-          "text": "기대손실·유동성 런웨이"
+          "text": "리서치 위험·기대 하방"
         },
         {
           "elementId": "IBT-03",
@@ -6608,18 +6608,18 @@
     {
       "choices": [
         {
-          "elementId": "DER-04",
-          "explanation": "옵션 payoff는 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "Call·Put Payoff"
-        },
-        {
           "elementId": "FI-08",
           "explanation": "채권선물 basis는 현물채권 가격과 전환계수로 조정한 선물가격의 차이고, CTD는 인도 선택권을 고려할 때 가장 유리한 후보 채권이다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "A",
           "text": "채권선물 Basis·CTD"
+        },
+        {
+          "elementId": "DER-03",
+          "explanation": "최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "최소분산 Hedge Ratio·선물계약수"
         },
         {
           "elementId": "FI-02",
@@ -6865,32 +6865,32 @@
           "text": "금리위험 헤징·계약수"
         },
         {
+          "elementId": "DER-09",
+          "explanation": "Greeks는 옵션가치가 주가, 변동성, 시간, 금리에 얼마나 민감한지 요인별로 나눈 측정치다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "Greeks·Delta Hedge·근사 P&L"
+        },
+        {
           "elementId": "DER-03",
           "explanation": "최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다.",
           "isCorrect": true,
-          "key": "B",
+          "key": "C",
           "text": "최소분산 Hedge Ratio·선물계약수"
         },
         {
           "elementId": "DER-01",
           "explanation": "선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가격을 정한 값이다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "D",
           "text": "Forward·Futures 이론가격"
         },
         {
           "elementId": "INV-04",
           "explanation": "2자산 포트폴리오는 각 자산의 비중뿐 아니라 두 자산의 동행 정도까지 반영해 전체 기대수익과 위험을 계산한다.",
           "isCorrect": false,
-          "key": "D",
-          "text": "2자산 포트폴리오"
-        },
-        {
-          "elementId": "FI-08",
-          "explanation": "채권선물 basis는 현물채권 가격과 전환계수로 조정한 선물가격의 차이고, CTD는 인도 선택권을 고려할 때 가장 유리한 후보 채권이다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "채권선물 Basis·CTD"
+          "text": "2자산 포트폴리오"
         }
       ],
       "difficulty": 2,
@@ -7022,25 +7022,25 @@
           "text": "옵션 Profit·손익분기점·전략손익"
         },
         {
-          "elementId": "FI-01",
-          "explanation": "채권가격은 약정된 쿠폰과 원금을 시장이 요구하는 수익률로 할인한 현재가치이며, YTM은 그 가격을 설명하는 만기수익률이다.",
-          "isCorrect": false,
-          "key": "C",
-          "text": "채권가격·YTM"
-        },
-        {
           "elementId": "DER-06",
           "explanation": "Put–Call parity는 같은 만기·행사가의 유럽형 콜과 풋을 주식·무위험채권 조합과 연결하는 무차익 관계다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "Put–Call Parity·차익거래"
         },
         {
           "elementId": "DER-02",
           "explanation": "선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정이익을 만드는 전략이다.",
           "isCorrect": false,
-          "key": "E",
+          "key": "D",
           "text": "Forward·Futures 무차익거래"
+        },
+        {
+          "elementId": "DER-10",
+          "explanation": "스왑 현금흐름 netting은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방식이다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "Swap Cash Flows·Netting"
         }
       ],
       "difficulty": 2,
@@ -7358,18 +7358,18 @@
     {
       "choices": [
         {
+          "elementId": "DER-06",
+          "explanation": "Put–Call parity는 같은 만기·행사가의 유럽형 콜과 풋을 주식·무위험채권 조합과 연결하는 무차익 관계다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "Put–Call Parity·차익거래"
+        },
+        {
           "elementId": "INV-01",
           "explanation": "수익률 측정은 가격변화와 현금분배를 한 기간의 성과로 바꾸고, 여러 기간의 성과를 목적에 맞는 평균으로 요약하는 작업이다.",
           "isCorrect": false,
-          "key": "A",
-          "text": "보유기간수익률·로그수익률·산술평균·기하평균"
-        },
-        {
-          "elementId": "DER-01",
-          "explanation": "선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가격을 정한 값이다.",
-          "isCorrect": false,
           "key": "B",
-          "text": "Forward·Futures 이론가격"
+          "text": "보유기간수익률·로그수익률·산술평균·기하평균"
         },
         {
           "elementId": "DER-07",
@@ -7486,11 +7486,11 @@
           "text": "Put–Call Parity·차익거래"
         },
         {
-          "elementId": "FI-06",
-          "explanation": "금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를 줄이는 작업이다.",
+          "elementId": "FI-10",
+          "explanation": "기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험 등을 가격에 반영한 추가 수익률이다.",
           "isCorrect": false,
           "key": "E",
-          "text": "금리위험 헤징·계약수"
+          "text": "신용위험·Credit Spread·Expected Loss"
         }
       ],
       "difficulty": 2,
@@ -7508,25 +7508,25 @@
     {
       "choices": [
         {
-          "elementId": "FI-05",
-          "explanation": "Duration immunization은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는 영향을 줄이는 전략이다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "Duration Immunization"
-        },
-        {
           "elementId": "DER-09",
           "explanation": "Greeks는 옵션가치가 주가, 변동성, 시간, 금리에 얼마나 민감한지 요인별로 나눈 측정치다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "A",
           "text": "Greeks·Delta Hedge·근사 P&L"
         },
         {
           "elementId": "DER-06",
           "explanation": "Put–Call parity는 같은 만기·행사가의 유럽형 콜과 풋을 주식·무위험채권 조합과 연결하는 무차익 관계다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "Put–Call Parity·차익거래"
+        },
+        {
+          "elementId": "DER-07",
+          "explanation": "이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오의 비용으로 현재가를 구한다.",
+          "isCorrect": false,
+          "key": "C",
+          "text": "Binomial Option Pricing"
         },
         {
           "elementId": "DER-08",
@@ -7758,11 +7758,11 @@
     {
       "choices": [
         {
-          "elementId": "IBT-17",
-          "explanation": "리서치 촉매·실적서프라이즈 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한다.",
+          "elementId": "FI-05",
+          "explanation": "Duration immunization은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는 영향을 줄이는 전략이다.",
           "isCorrect": false,
           "key": "A",
-          "text": "리서치 촉매·실적서프라이즈"
+          "text": "Duration Immunization"
         },
         {
           "elementId": "IBT-01",
@@ -7772,25 +7772,25 @@
           "text": "시장금리·실질금리"
         },
         {
-          "elementId": "FI-10",
-          "explanation": "기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험 등을 가격에 반영한 추가 수익률이다.",
-          "isCorrect": false,
-          "key": "C",
-          "text": "신용위험·Credit Spread·Expected Loss"
-        },
-        {
           "elementId": "FI-04",
           "explanation": "DV01은 금리가 1bp 움직일 때의 금액 변화이고, convexity는 큰 금리 변화에서 duration의 직선 근사를 보정한다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "DV01·Convexity 가격변화"
         },
         {
           "elementId": "DER-09",
           "explanation": "Greeks는 옵션가치가 주가, 변동성, 시간, 금리에 얼마나 민감한지 요인별로 나눈 측정치다.",
           "isCorrect": true,
-          "key": "E",
+          "key": "D",
           "text": "Greeks·Delta Hedge·근사 P&L"
+        },
+        {
+          "elementId": "DER-03",
+          "explanation": "최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "최소분산 Hedge Ratio·선물계약수"
         }
       ],
       "difficulty": 2,
@@ -8108,18 +8108,18 @@
     {
       "choices": [
         {
+          "elementId": "EQV-01",
+          "explanation": "P×Q 매출 추정은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "P×Q 매출 추정"
+        },
+        {
           "elementId": "EQV-03",
           "explanation": "NOPAT은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다.",
           "isCorrect": false,
-          "key": "A",
-          "text": "현금세율·NOPAT"
-        },
-        {
-          "elementId": "ACC-11",
-          "explanation": "재무비율은 이익창출력, 자산 활용도, 재무부담을 서로 다른 분모로 표준화해 기업과 기간을 비교하는 도구다.",
-          "isCorrect": false,
           "key": "B",
-          "text": "수익성·효율성·레버리지 비율"
+          "text": "현금세율·NOPAT"
         },
         {
           "elementId": "EQV-22",
@@ -8272,11 +8272,11 @@
           "text": "FCFF"
         },
         {
-          "elementId": "EQV-41",
-          "explanation": "ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
+          "elementId": "EQV-11",
+          "explanation": "EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는 배수다.",
           "isCorrect": false,
           "key": "C",
-          "text": "ROIC·투하자본"
+          "text": "EV와 EV/EBITDA"
         },
         {
           "elementId": "EQV-03",
@@ -8315,25 +8315,25 @@
           "text": "WACC"
         },
         {
-          "elementId": "CF-10",
-          "explanation": "FCFF와 FCFE는 영업과 재투자 뒤 기업 전체 또는 보통주주에게 남는 현금을 각각 측정한다.",
-          "isCorrect": false,
-          "key": "B",
-          "text": "FCFF·FCFE"
-        },
-        {
           "elementId": "EQV-03",
           "explanation": "NOPAT은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다.",
           "isCorrect": true,
-          "key": "C",
+          "key": "B",
           "text": "현금세율·NOPAT"
         },
         {
           "elementId": "EQV-11",
           "explanation": "EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는 배수다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "EV와 EV/EBITDA"
+        },
+        {
+          "elementId": "IBT-12",
+          "explanation": "부동산 NOI는 잠재 임대수입에서 공실손실과 부동산 운영비를 뺀 자산 자체의 영업소득이다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "부동산 NOI"
         },
         {
           "elementId": "EQV-12",
@@ -8508,11 +8508,11 @@
     {
       "choices": [
         {
-          "elementId": "ACC-08",
-          "explanation": "순운전자본은 단기 영업에 묶인 자산과 단기 영업으로 조달한 부채의 차이를 통해 일상 영업의 자금 소요를 보여 준다.",
+          "elementId": "EQV-02",
+          "explanation": "마진 분석은 매출에서 원가와 판관비가 차지하는 비중을 연결해 영업이익의 변화를 설명한다.",
           "isCorrect": false,
           "key": "A",
-          "text": "운전자본과 순운전자본 증감"
+          "text": "마진과 영업이익"
         },
         {
           "elementId": "EQV-04",
@@ -8565,25 +8565,25 @@
           "text": "FCFF"
         },
         {
-          "elementId": "CF-09",
-          "explanation": "증분 프로젝트 현금흐름은 투자안을 선택했기 때문에 새로 생기거나 사라지는 현금만 골라낸 값이다.",
-          "isCorrect": false,
-          "key": "B",
-          "text": "증분 프로젝트 현금흐름"
-        },
-        {
           "elementId": "ACC-05",
           "explanation": "감가상각은 장기간 사용하는 자산의 취득원가를 사용기간에 나누어 비용으로 배분하고 장부가를 줄이는 절차다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "유형자산·감가상각·처분손익"
         },
         {
           "elementId": "EQV-48",
           "explanation": "재무제표 롤포워드는 기초잔액에 기간 중 증가·감소 거래를 반영해 기말잔액을 만드는 연결표다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "재무제표 롤포워드"
+        },
+        {
+          "elementId": "EQV-06",
+          "explanation": "3개 재무제표 연결은 순이익에서 비현금항목·운전자본·투자·조달을 거쳐 기말현금까지 일관되게 이어 붙이는 모델링 과정이다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "3개 재무제표 연결"
         },
         {
           "elementId": "EQV-05",
@@ -8758,32 +8758,32 @@
     {
       "choices": [
         {
+          "elementId": "EQV-12",
+          "explanation": "FCFF는 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "FCFF"
+        },
+        {
           "elementId": "ACC-10",
           "explanation": "3개 재무제표 연결은 한 거래가 손익, 자산·부채, 현금흐름에 서로 다른 시점과 방식으로 반영되는 과정을 추적하는 작업이다.",
           "isCorrect": false,
-          "key": "A",
+          "key": "B",
           "text": "손익계산서·재무상태표·현금흐름표 연결"
         },
         {
           "elementId": "EQV-06",
           "explanation": "3개 재무제표 연결은 순이익에서 비현금항목·운전자본·투자·조달을 거쳐 기말현금까지 일관되게 이어 붙이는 모델링 과정이다.",
           "isCorrect": true,
-          "key": "B",
+          "key": "C",
           "text": "3개 재무제표 연결"
         },
         {
           "elementId": "ACC-09",
           "explanation": "현금흐름표는 한 기간의 현금 증감을 영업, 투자, 재무 활동으로 나누어 이익이 실제 현금으로 이어진 경로를 보여 준다.",
           "isCorrect": false,
-          "key": "C",
-          "text": "현금흐름표(CFO·CFI·CFF)"
-        },
-        {
-          "elementId": "EQV-48",
-          "explanation": "재무제표 롤포워드는 기초잔액에 기간 중 증가·감소 거래를 반영해 기말잔액을 만드는 연결표다.",
-          "isCorrect": false,
           "key": "D",
-          "text": "재무제표 롤포워드"
+          "text": "현금흐름표(CFO·CFI·CFF)"
         },
         {
           "elementId": "EQV-05",
@@ -8858,25 +8858,25 @@
     {
       "choices": [
         {
+          "elementId": "EQV-08",
+          "explanation": "PER은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "PER"
+        },
+        {
           "elementId": "ACC-07",
           "explanation": "기본 EPS는 보통주주에게 귀속되는 이익을 해당 기간 실제로 유통된 보통주식수의 시간가중 평균으로 나눈 값이다.",
           "isCorrect": false,
-          "key": "A",
+          "key": "B",
           "text": "기본주당이익(EPS)·가중평균주식수"
         },
         {
           "elementId": "EQV-10",
           "explanation": "PBR은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다.",
           "isCorrect": false,
-          "key": "B",
-          "text": "PBR"
-        },
-        {
-          "elementId": "CF-12",
-          "explanation": "EV–지분가치 브리지는 영업자산 전체 가치에서 채권자 등 다른 청구권을 조정해 보통주주 몫과 주당가치를 구하는 과정이다.",
-          "isCorrect": false,
           "key": "C",
-          "text": "기업가치(EV)·지분가치·주당가치 연결"
+          "text": "PBR"
         },
         {
           "elementId": "EQV-09",
@@ -8908,11 +8908,11 @@
     {
       "choices": [
         {
-          "elementId": "EQV-13",
-          "explanation": "WACC는 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
+          "elementId": "EQV-29",
+          "explanation": "발생액비율과 현금전환율은 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 측정한다.",
           "isCorrect": false,
           "key": "A",
-          "text": "WACC"
+          "text": "발생액비율·현금전환"
         },
         {
           "elementId": "EQV-07",
@@ -8922,25 +8922,25 @@
           "text": "기본 EPS"
         },
         {
+          "elementId": "EQV-08",
+          "explanation": "PER은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다.",
+          "isCorrect": false,
+          "key": "C",
+          "text": "PER"
+        },
+        {
           "elementId": "EQV-10",
           "explanation": "PBR은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "D",
           "text": "PBR"
         },
         {
           "elementId": "EQV-09",
           "explanation": "ROE는 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다.",
           "isCorrect": false,
-          "key": "D",
-          "text": "ROE"
-        },
-        {
-          "elementId": "CF-08",
-          "explanation": "자본구조 분석은 부채 사용이 세금효과, 주주위험, 자본비용과 기업가치에 미치는 영향을 연결한다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "레버리지·자본구조"
+          "text": "ROE"
         }
       ],
       "difficulty": 2,
@@ -9022,25 +9022,25 @@
           "text": "PER"
         },
         {
-          "elementId": "CF-12",
-          "explanation": "EV–지분가치 브리지는 영업자산 전체 가치에서 채권자 등 다른 청구권을 조정해 보통주주 몫과 주당가치를 구하는 과정이다.",
-          "isCorrect": false,
-          "key": "C",
-          "text": "기업가치(EV)·지분가치·주당가치 연결"
-        },
-        {
           "elementId": "EQV-10",
           "explanation": "PBR은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "PBR"
         },
         {
           "elementId": "IBT-15",
           "explanation": "DSCR은 부동산 NOI가 한 해의 원금과 이자 상환액을 몇 배 감당하는지 보여 주는 채무상환 지표다.",
           "isCorrect": false,
-          "key": "E",
+          "key": "D",
           "text": "DSCR"
+        },
+        {
+          "elementId": "EQV-17",
+          "explanation": "목표주가 상승여력은 현재 주가가 분석가의 목표가까지 움직일 경우 얻을 수 있는 가격수익률이다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "목표주가·상승여력"
         }
       ],
       "difficulty": 1,
@@ -9072,25 +9072,25 @@
           "text": "WACC"
         },
         {
-          "elementId": "IBT-13",
-          "explanation": "Cap rate 가치는 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다.",
-          "isCorrect": false,
-          "key": "C",
-          "text": "Cap rate 가치"
-        },
-        {
           "elementId": "IBT-15",
           "explanation": "DSCR은 부동산 NOI가 한 해의 원금과 이자 상환액을 몇 배 감당하는지 보여 주는 채무상환 지표다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "DSCR"
         },
         {
           "elementId": "EQV-08",
           "explanation": "PER은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다.",
           "isCorrect": true,
-          "key": "E",
+          "key": "D",
           "text": "PER"
+        },
+        {
+          "elementId": "EQV-07",
+          "explanation": "기본 EPS는 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "기본 EPS"
         }
       ],
       "difficulty": 2,
@@ -9658,18 +9658,18 @@
     {
       "choices": [
         {
-          "elementId": "EQV-15",
-          "explanation": "계속가치는 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다.",
+          "elementId": "EQV-03",
+          "explanation": "NOPAT은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다.",
           "isCorrect": false,
           "key": "A",
-          "text": "계속가치"
+          "text": "현금세율·NOPAT"
         },
         {
-          "elementId": "ACC-08",
-          "explanation": "순운전자본은 단기 영업에 묶인 자산과 단기 영업으로 조달한 부채의 차이를 통해 일상 영업의 자금 소요를 보여 준다.",
+          "elementId": "EQV-05",
+          "explanation": "순설비투자는 새로 지출한 CAPEX에서 기존 자산의 가치소모를 나타내는 감가상각을 뺀 자산기반의 순증가분이다.",
           "isCorrect": false,
           "key": "B",
-          "text": "운전자본과 순운전자본 증감"
+          "text": "설비투자·감가상각"
         },
         {
           "elementId": "EQV-12",
@@ -9908,25 +9908,25 @@
     {
       "choices": [
         {
+          "elementId": "EQV-01",
+          "explanation": "P×Q 매출 추정은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "P×Q 매출 추정"
+        },
+        {
           "elementId": "EQV-14",
           "explanation": "명시기간 DCF는 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다.",
           "isCorrect": true,
-          "key": "A",
+          "key": "B",
           "text": "명시기간 DCF"
         },
         {
           "elementId": "EQV-12",
           "explanation": "FCFF는 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다.",
           "isCorrect": false,
-          "key": "B",
-          "text": "FCFF"
-        },
-        {
-          "elementId": "CF-11",
-          "explanation": "계속가치는 명시적 예측기간 뒤에 발생할 모든 현금흐름을 예측 종료시점의 한 금액으로 요약한 값이다.",
-          "isCorrect": false,
           "key": "C",
-          "text": "계속가치(Terminal Value)"
+          "text": "FCFF"
         },
         {
           "elementId": "EQV-51",
@@ -9965,32 +9965,32 @@
           "text": "PBR"
         },
         {
-          "elementId": "ACC-02",
-          "explanation": "발생주의는 현금이 오간 날이 아니라 수익을 벌고 비용을 부담한 기간에 경영성과를 기록하는 원칙이다.",
-          "isCorrect": false,
-          "key": "B",
-          "text": "발생주의·현금주의와 결산조정"
-        },
-        {
           "elementId": "EQV-14",
           "explanation": "명시기간 DCF는 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다.",
           "isCorrect": true,
-          "key": "C",
+          "key": "B",
           "text": "명시기간 DCF"
         },
         {
           "elementId": "EQV-01",
           "explanation": "P×Q 매출 추정은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "P×Q 매출 추정"
         },
         {
           "elementId": "EQV-02",
           "explanation": "마진 분석은 매출에서 원가와 판관비가 차지하는 비중을 연결해 영업이익의 변화를 설명한다.",
           "isCorrect": false,
-          "key": "E",
+          "key": "D",
           "text": "마진과 영업이익"
+        },
+        {
+          "elementId": "EQV-15",
+          "explanation": "계속가치는 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "계속가치"
         }
       ],
       "difficulty": 2,
@@ -10015,11 +10015,11 @@
           "text": "계속가치"
         },
         {
-          "elementId": "CF-11",
-          "explanation": "계속가치는 명시적 예측기간 뒤에 발생할 모든 현금흐름을 예측 종료시점의 한 금액으로 요약한 값이다.",
+          "elementId": "EQV-13",
+          "explanation": "WACC는 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
           "isCorrect": false,
           "key": "B",
-          "text": "계속가치(Terminal Value)"
+          "text": "WACC"
         },
         {
           "elementId": "EQV-51",
@@ -10129,11 +10129,11 @@
           "text": "명시기간 DCF"
         },
         {
-          "elementId": "CF-11",
-          "explanation": "계속가치는 명시적 예측기간 뒤에 발생할 모든 현금흐름을 예측 종료시점의 한 금액으로 요약한 값이다.",
+          "elementId": "EQV-49",
+          "explanation": "안정기 계속가치 분석은 장기 성장률, ROIC, 재투자율, 마진이 서로 양립하도록 맞춘 뒤 terminal value를 계산한다.",
           "isCorrect": false,
           "key": "D",
-          "text": "계속가치(Terminal Value)"
+          "text": "계속가치·안정기 재투자"
         },
         {
           "elementId": "EQV-15",
@@ -10408,11 +10408,11 @@
     {
       "choices": [
         {
-          "elementId": "EQV-07",
-          "explanation": "기본 EPS는 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다.",
+          "elementId": "EQV-63",
+          "explanation": "기대손실·유동성 런웨이는 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다.",
           "isCorrect": false,
           "key": "A",
-          "text": "기본 EPS"
+          "text": "기대손실·유동성 런웨이"
         },
         {
           "elementId": "EQV-62",
@@ -10479,18 +10479,18 @@
           "text": "기대 TSR·촉매"
         },
         {
+          "elementId": "IBT-17",
+          "explanation": "리서치 촉매·실적서프라이즈 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "리서치 촉매·실적서프라이즈"
+        },
+        {
           "elementId": "IBT-07",
           "explanation": "EPS accretion/dilution은 인수 후 합산이익과 새 주식수를 반영한 주당이익이 인수 전보다 늘거나 줄었는지 측정한다.",
           "isCorrect": false,
-          "key": "D",
-          "text": "EPS accretion/dilution"
-        },
-        {
-          "elementId": "EQV-07",
-          "explanation": "기본 EPS는 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "기본 EPS"
+          "text": "EPS accretion/dilution"
         }
       ],
       "difficulty": 2,
@@ -10529,18 +10529,18 @@
           "text": "계속가치"
         },
         {
-          "elementId": "IBT-17",
-          "explanation": "리서치 촉매·실적서프라이즈 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한다.",
-          "isCorrect": false,
-          "key": "D",
-          "text": "리서치 촉매·실적서프라이즈"
-        },
-        {
           "elementId": "FI-05",
           "explanation": "Duration immunization은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는 영향을 줄이는 전략이다.",
           "isCorrect": false,
-          "key": "E",
+          "key": "D",
           "text": "Duration Immunization"
+        },
+        {
+          "elementId": "EQV-54",
+          "explanation": "시나리오·민감도 분석은 여러 일관된 미래 경로의 가치와 개별 입력 변화에 대한 가치 반응을 구분해 불확실성을 보여 준다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "시나리오·민감도"
         }
       ],
       "difficulty": 1,
@@ -10622,11 +10622,11 @@
           "text": "민감도"
         },
         {
-          "elementId": "EQV-54",
-          "explanation": "시나리오·민감도 분석은 여러 일관된 미래 경로의 가치와 개별 입력 변화에 대한 가치 반응을 구분해 불확실성을 보여 준다.",
+          "elementId": "EQV-07",
+          "explanation": "기본 EPS는 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다.",
           "isCorrect": false,
           "key": "C",
-          "text": "시나리오·민감도"
+          "text": "기본 EPS"
         },
         {
           "elementId": "EQV-11",
@@ -10808,39 +10808,39 @@
     {
       "choices": [
         {
-          "elementId": "EQV-51",
-          "explanation": "Reverse DCF는 현재 시장가치를 출발점으로 두고 그 가격을 정당화하는 성장·마진·ROIC 가정을 역산하는 분석이다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "Reverse DCF"
-        },
-        {
           "elementId": "EQV-33",
           "explanation": "R&D 자산화 조정은 당기 연구개발비를 장기투자로 보고 과거 투자분의 상각과 바꿔 영업이익과 투하자본을 함께 재작성하는 분석이다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "A",
           "text": "R&D 자산화·순설비투자"
         },
         {
           "elementId": "EQV-25",
           "explanation": "점포 단위경제성은 전체 매출을 점포 수와 점포당 매출로, 점포당 매출을 트래픽·전환율·객단가로 분해한다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "점포 매출·단위경제성"
         },
         {
           "elementId": "EQV-21",
           "explanation": "가격·물량 브리지는 매출변화를 판매가격 변화와 판매수량 변화로 나누고 두 변화가 겹치는 효과의 귀속 기준을 정한다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "가격·물량 매출 브리지"
         },
         {
           "elementId": "EQV-20",
           "explanation": "매출 브리지는 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다.",
           "isCorrect": true,
-          "key": "E",
+          "key": "D",
           "text": "매출 브리지"
+        },
+        {
+          "elementId": "EQV-01",
+          "explanation": "P×Q 매출 추정은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "P×Q 매출 추정"
         }
       ],
       "difficulty": 1,
@@ -11008,32 +11008,32 @@
     {
       "choices": [
         {
-          "elementId": "EQV-48",
-          "explanation": "재무제표 롤포워드는 기초잔액에 기간 중 증가·감소 거래를 반영해 기말잔액을 만드는 연결표다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "재무제표 롤포워드"
-        },
-        {
           "elementId": "EQV-01",
           "explanation": "P×Q 매출 추정은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "A",
           "text": "P×Q 매출 추정"
         },
         {
           "elementId": "EQV-54",
           "explanation": "시나리오·민감도 분석은 여러 일관된 미래 경로의 가치와 개별 입력 변화에 대한 가치 반응을 구분해 불확실성을 보여 준다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "시나리오·민감도"
         },
         {
           "elementId": "EQV-04",
           "explanation": "매출연동 운전자본은 성장에 따라 매출채권·재고 등에 추가로 묶이는 영업자금을 단순 비율로 추정한다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "운전자본"
+        },
+        {
+          "elementId": "EQV-59",
+          "explanation": "경기민감·원자재 정상화는 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "경기민감·원자재 정상화"
         },
         {
           "elementId": "EQV-21",
@@ -11458,32 +11458,32 @@
     {
       "choices": [
         {
+          "elementId": "EQV-56",
+          "explanation": "은행 충당금·CET1·ROTCE 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "은행 충당금·CET1·ROTCE"
+        },
+        {
           "elementId": "EQV-30",
           "explanation": "DSO·DIO·DPO와 현금전환주기는 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순기간을 일수로 보여 준다.",
           "isCorrect": false,
-          "key": "A",
+          "key": "B",
           "text": "운전자본 일수·현금전환주기"
         },
         {
           "elementId": "EQV-24",
           "explanation": "CAC·LTV·회수기간은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다.",
           "isCorrect": true,
-          "key": "B",
+          "key": "C",
           "text": "CAC·LTV·회수기간"
         },
         {
           "elementId": "EQV-63",
           "explanation": "기대손실·유동성 런웨이는 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다.",
           "isCorrect": false,
-          "key": "C",
-          "text": "기대손실·유동성 런웨이"
-        },
-        {
-          "elementId": "EQV-55",
-          "explanation": "은행 수익성 분석은 이자수익·이자비용·평균이자수익자산과 예금금리 전가속도를 연결해 NIM과 PPNR을 본다.",
-          "isCorrect": false,
           "key": "D",
-          "text": "은행 수익성·NIM"
+          "text": "기대손실·유동성 런웨이"
         },
         {
           "elementId": "EQV-29",
@@ -11508,18 +11508,18 @@
     {
       "choices": [
         {
+          "elementId": "EQV-59",
+          "explanation": "경기민감·원자재 정상화는 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "경기민감·원자재 정상화"
+        },
+        {
           "elementId": "EQV-55",
           "explanation": "은행 수익성 분석은 이자수익·이자비용·평균이자수익자산과 예금금리 전가속도를 연결해 NIM과 PPNR을 본다.",
           "isCorrect": false,
-          "key": "A",
-          "text": "은행 수익성·NIM"
-        },
-        {
-          "elementId": "EQV-56",
-          "explanation": "은행 충당금·CET1·ROTCE 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다.",
-          "isCorrect": false,
           "key": "B",
-          "text": "은행 충당금·CET1·ROTCE"
+          "text": "은행 수익성·NIM"
         },
         {
           "elementId": "EQV-24",
@@ -11665,32 +11665,32 @@
           "text": "점포 매출·단위경제성"
         },
         {
+          "elementId": "EQV-20",
+          "explanation": "매출 브리지는 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "매출 브리지"
+        },
+        {
+          "elementId": "EQV-29",
+          "explanation": "발생액비율과 현금전환율은 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 측정한다.",
+          "isCorrect": false,
+          "key": "C",
+          "text": "발생액비율·현금전환"
+        },
+        {
           "elementId": "EQV-44",
           "explanation": "5단계 DuPont은 ROE를 세금부담, 이자부담, 영업마진, 자산회전율, 재무레버리지로 세분한다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "D",
           "text": "5단계 DuPont"
         },
         {
           "elementId": "EQV-41",
           "explanation": "ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
           "isCorrect": false,
-          "key": "C",
-          "text": "ROIC·투하자본"
-        },
-        {
-          "elementId": "EQV-52",
-          "explanation": "가치평가 배수 일치는 분자와 분모의 청구권, 기간, 회계정책을 맞춰 비교가능한 배수만 사용하는 원칙이다.",
-          "isCorrect": false,
-          "key": "D",
-          "text": "가치평가 배수 일치"
-        },
-        {
-          "elementId": "EQV-26",
-          "explanation": "GMV·Take Rate 분석은 플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비 차감 후 공헌이익을 연결한다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "GMV·Take Rate·공헌이익"
+          "text": "ROIC·투하자본"
         }
       ],
       "difficulty": 2,
@@ -11808,39 +11808,39 @@
     {
       "choices": [
         {
-          "elementId": "EQV-20",
-          "explanation": "매출 브리지는 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "매출 브리지"
-        },
-        {
           "elementId": "EQV-28",
           "explanation": "Backlog와 book-to-bill은 확보한 주문잔고의 롤포워드와 신규수주가 현재 매출을 얼마나 대체하는지 보여 주는 선행지표다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "A",
           "text": "Backlog·Book-to-Bill"
         },
         {
           "elementId": "EQV-26",
           "explanation": "GMV·Take Rate 분석은 플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비 차감 후 공헌이익을 연결한다.",
           "isCorrect": true,
-          "key": "C",
+          "key": "B",
           "text": "GMV·Take Rate·공헌이익"
         },
         {
           "elementId": "EQV-22",
           "explanation": "사업부 믹스 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "사업부 믹스·연결 EBIT"
         },
         {
           "elementId": "EQV-27",
           "explanation": "가동률·손익분기점 분석은 생산능력 사용 정도와 단위당 공헌이익을 통해 고정비를 회수하는 물량을 계산한다.",
           "isCorrect": false,
-          "key": "E",
+          "key": "D",
           "text": "가동률·손익분기점"
+        },
+        {
+          "elementId": "EQV-31",
+          "explanation": "Billings와 계약자산·계약부채는 청구, 수익인식, 현금수취의 시점 차이를 연결해 계약사업의 활동을 보여 준다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "Billings·계약자산·계약부채"
         }
       ],
       "difficulty": 2,
@@ -11865,11 +11865,11 @@
           "text": "생명보험 CSM·지급여력"
         },
         {
-          "elementId": "EQV-02",
-          "explanation": "마진 분석은 매출에서 원가와 판관비가 차지하는 비중을 연결해 영업이익의 변화를 설명한다.",
+          "elementId": "EQV-24",
+          "explanation": "CAC·LTV·회수기간은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다.",
           "isCorrect": false,
           "key": "B",
-          "text": "마진과 영업이익"
+          "text": "CAC·LTV·회수기간"
         },
         {
           "elementId": "EQV-49",
@@ -11958,11 +11958,11 @@
     {
       "choices": [
         {
-          "elementId": "EQV-02",
-          "explanation": "마진 분석은 매출에서 원가와 판관비가 차지하는 비중을 연결해 영업이익의 변화를 설명한다.",
+          "elementId": "EQV-31",
+          "explanation": "Billings와 계약자산·계약부채는 청구, 수익인식, 현금수취의 시점 차이를 연결해 계약사업의 활동을 보여 준다.",
           "isCorrect": false,
           "key": "A",
-          "text": "마진과 영업이익"
+          "text": "Billings·계약자산·계약부채"
         },
         {
           "elementId": "EQV-26",
@@ -12015,18 +12015,18 @@
           "text": "Backlog·Book-to-Bill"
         },
         {
+          "elementId": "EQV-20",
+          "explanation": "매출 브리지는 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "매출 브리지"
+        },
+        {
           "elementId": "EQV-58",
           "explanation": "생명보험 CSM·지급여력 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다.",
           "isCorrect": false,
-          "key": "B",
-          "text": "생명보험 CSM·지급여력"
-        },
-        {
-          "elementId": "EQV-59",
-          "explanation": "경기민감·원자재 정상화는 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다.",
-          "isCorrect": false,
           "key": "C",
-          "text": "경기민감·원자재 정상화"
+          "text": "생명보험 CSM·지급여력"
         },
         {
           "elementId": "EQV-23",
@@ -12122,11 +12122,11 @@
           "text": "매출 브리지"
         },
         {
-          "elementId": "EQV-26",
-          "explanation": "GMV·Take Rate 분석은 플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비 차감 후 공헌이익을 연결한다.",
+          "elementId": "EQV-31",
+          "explanation": "Billings와 계약자산·계약부채는 청구, 수익인식, 현금수취의 시점 차이를 연결해 계약사업의 활동을 보여 준다.",
           "isCorrect": false,
           "key": "C",
-          "text": "GMV·Take Rate·공헌이익"
+          "text": "Billings·계약자산·계약부채"
         },
         {
           "elementId": "EQV-28",
@@ -12172,11 +12172,11 @@
           "text": "Mid-year·Stub 할인"
         },
         {
-          "elementId": "EQV-47",
-          "explanation": "FCFF·FCFE·잔여이익은 각각 전체 자본, 보통주 현금, 장부자본 초과이익을 기준으로 같은 기업가치를 다른 경로에서 측정한다.",
+          "elementId": "EQV-09",
+          "explanation": "ROE는 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다.",
           "isCorrect": false,
           "key": "C",
-          "text": "FCFF·FCFE·잔여이익"
+          "text": "ROE"
         },
         {
           "elementId": "EQV-63",
@@ -12229,18 +12229,18 @@
           "text": "실효세율·NOL"
         },
         {
-          "elementId": "EQV-55",
-          "explanation": "은행 수익성 분석은 이자수익·이자비용·평균이자수익자산과 예금금리 전가속도를 연결해 NIM과 PPNR을 본다.",
+          "elementId": "EQV-07",
+          "explanation": "기본 EPS는 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다.",
           "isCorrect": false,
           "key": "D",
-          "text": "은행 수익성·NIM"
+          "text": "기본 EPS"
         },
         {
-          "elementId": "EQV-32",
-          "explanation": "재고회전율과 충당률은 재고가 판매로 전환되는 속도와 매출채권 손실에 대비한 완충 수준을 보여 준다.",
+          "elementId": "EQV-04",
+          "explanation": "매출연동 운전자본은 성장에 따라 매출채권·재고 등에 추가로 묶이는 영업자금을 단순 비율로 추정한다.",
           "isCorrect": false,
           "key": "E",
-          "text": "재고회전율·충당률"
+          "text": "운전자본"
         }
       ],
       "difficulty": 2,
@@ -12415,32 +12415,32 @@
           "text": "Billings·계약자산·계약부채"
         },
         {
+          "elementId": "EQV-24",
+          "explanation": "CAC·LTV·회수기간은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "CAC·LTV·회수기간"
+        },
+        {
           "elementId": "EQV-30",
           "explanation": "DSO·DIO·DPO와 현금전환주기는 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순기간을 일수로 보여 준다.",
           "isCorrect": true,
-          "key": "B",
+          "key": "C",
           "text": "운전자본 일수·현금전환주기"
         },
         {
-          "elementId": "EQV-29",
-          "explanation": "발생액비율과 현금전환율은 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 측정한다.",
+          "elementId": "EQV-28",
+          "explanation": "Backlog와 book-to-bill은 확보한 주문잔고의 롤포워드와 신규수주가 현재 매출을 얼마나 대체하는지 보여 주는 선행지표다.",
           "isCorrect": false,
-          "key": "C",
-          "text": "발생액비율·현금전환"
+          "key": "D",
+          "text": "Backlog·Book-to-Bill"
         },
         {
           "elementId": "EQV-32",
           "explanation": "재고회전율과 충당률은 재고가 판매로 전환되는 속도와 매출채권 손실에 대비한 완충 수준을 보여 준다.",
           "isCorrect": false,
-          "key": "D",
-          "text": "재고회전율·충당률"
-        },
-        {
-          "elementId": "EQV-04",
-          "explanation": "매출연동 운전자본은 성장에 따라 매출채권·재고 등에 추가로 묶이는 영업자금을 단순 비율로 추정한다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "운전자본"
+          "text": "재고회전율·충당률"
         }
       ],
       "difficulty": 2,
@@ -12479,18 +12479,18 @@
           "text": "사업부 믹스·연결 EBIT"
         },
         {
-          "elementId": "EQV-55",
-          "explanation": "은행 수익성 분석은 이자수익·이자비용·평균이자수익자산과 예금금리 전가속도를 연결해 NIM과 PPNR을 본다.",
-          "isCorrect": false,
-          "key": "D",
-          "text": "은행 수익성·NIM"
-        },
-        {
           "elementId": "EQV-39",
           "explanation": "영업권은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다.",
           "isCorrect": false,
-          "key": "E",
+          "key": "D",
           "text": "영업권"
+        },
+        {
+          "elementId": "EQV-30",
+          "explanation": "DSO·DIO·DPO와 현금전환주기는 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순기간을 일수로 보여 준다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "운전자본 일수·현금전환주기"
         }
       ],
       "difficulty": 1,
@@ -12515,11 +12515,11 @@
           "text": "Billings·계약자산·계약부채"
         },
         {
-          "elementId": "ACC-08",
-          "explanation": "순운전자본은 단기 영업에 묶인 자산과 단기 영업으로 조달한 부채의 차이를 통해 일상 영업의 자금 소요를 보여 준다.",
+          "elementId": "EQV-28",
+          "explanation": "Backlog와 book-to-bill은 확보한 주문잔고의 롤포워드와 신규수주가 현재 매출을 얼마나 대체하는지 보여 주는 선행지표다.",
           "isCorrect": false,
           "key": "B",
-          "text": "운전자본과 순운전자본 증감"
+          "text": "Backlog·Book-to-Bill"
         },
         {
           "elementId": "EQV-30",
@@ -12572,11 +12572,11 @@
           "text": "Billings·계약자산·계약부채"
         },
         {
-          "elementId": "EQV-39",
-          "explanation": "영업권은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다.",
+          "elementId": "EQV-30",
+          "explanation": "DSO·DIO·DPO와 현금전환주기는 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순기간을 일수로 보여 준다.",
           "isCorrect": false,
           "key": "C",
-          "text": "영업권"
+          "text": "운전자본 일수·현금전환주기"
         },
         {
           "elementId": "EQV-28",
@@ -12636,11 +12636,11 @@
           "text": "영업권"
         },
         {
-          "elementId": "EQV-54",
-          "explanation": "시나리오·민감도 분석은 여러 일관된 미래 경로의 가치와 개별 입력 변화에 대한 가치 반응을 구분해 불확실성을 보여 준다.",
+          "elementId": "EQV-28",
+          "explanation": "Backlog와 book-to-bill은 확보한 주문잔고의 롤포워드와 신규수주가 현재 매출을 얼마나 대체하는지 보여 주는 선행지표다.",
           "isCorrect": false,
           "key": "E",
-          "text": "시나리오·민감도"
+          "text": "Backlog·Book-to-Bill"
         }
       ],
       "difficulty": 1,
@@ -12979,18 +12979,18 @@
           "text": "실효세율·NOL"
         },
         {
-          "elementId": "EQV-40",
-          "explanation": "보통주 지분가치 브리지는 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구한다.",
-          "isCorrect": false,
-          "key": "D",
-          "text": "보통주 지분가치 브리지"
-        },
-        {
           "elementId": "EQV-34",
           "explanation": "정상화 영업이익은 보고이익에서 영업 외 이익과 진짜 일회성 항목을 일관되게 조정해 반복 가능한 수익력을 추정한 값이다.",
           "isCorrect": true,
-          "key": "E",
+          "key": "D",
           "text": "정상화 영업이익·일회성 조정"
+        },
+        {
+          "elementId": "EQV-62",
+          "explanation": "기대 TSR·촉매 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "기대 TSR·촉매"
         }
       ],
       "difficulty": 2,
@@ -13022,25 +13022,25 @@
           "text": "정상화 영업이익·일회성 조정"
         },
         {
-          "elementId": "EQV-36",
-          "explanation": "리스 조정 순부채는 사용권을 얻기 위해 부담한 리스부채를 차입과 유사한 청구권으로 보고 순부채에 포함한 값이다.",
-          "isCorrect": false,
-          "key": "C",
-          "text": "리스 조정 순부채"
-        },
-        {
           "elementId": "EQV-33",
           "explanation": "R&D 자산화 조정은 당기 연구개발비를 장기투자로 보고 과거 투자분의 상각과 바꿔 영업이익과 투하자본을 함께 재작성하는 분석이다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "R&D 자산화·순설비투자"
         },
         {
           "elementId": "EQV-59",
           "explanation": "경기민감·원자재 정상화는 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다.",
           "isCorrect": false,
-          "key": "E",
+          "key": "D",
           "text": "경기민감·원자재 정상화"
+        },
+        {
+          "elementId": "EQV-41",
+          "explanation": "ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "ROIC·투하자본"
         }
       ],
       "difficulty": 2,
@@ -13129,11 +13129,11 @@
           "text": "증분 ROIC"
         },
         {
-          "elementId": "EQV-18",
-          "explanation": "배수 민감도는 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다.",
+          "elementId": "EQV-34",
+          "explanation": "정상화 영업이익은 보고이익에서 영업 외 이익과 진짜 일회성 항목을 일관되게 조정해 반복 가능한 수익력을 추정한 값이다.",
           "isCorrect": false,
           "key": "D",
-          "text": "민감도"
+          "text": "정상화 영업이익·일회성 조정"
         },
         {
           "elementId": "EQV-37",
@@ -13158,39 +13158,39 @@
     {
       "choices": [
         {
+          "elementId": "EQV-37",
+          "explanation": "연금 적립상태는 확정급여채무와 이를 충당할 사외적립자산의 차이로, 부족분은 기업의 장기 재무부담을 나타낸다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "연금 적립상태"
+        },
+        {
           "elementId": "EQV-43",
           "explanation": "증분 ROIC는 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다.",
           "isCorrect": false,
-          "key": "A",
+          "key": "B",
           "text": "증분 ROIC"
         },
         {
           "elementId": "EQV-58",
           "explanation": "생명보험 CSM·지급여력 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "C",
           "text": "생명보험 CSM·지급여력"
         },
         {
           "elementId": "EQV-45",
           "explanation": "성장·재투자 관계는 회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속가능한 성장률을 결정한다는 원리다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "D",
           "text": "성장·재투자"
         },
         {
           "elementId": "EQV-35",
           "explanation": "주식보상·희석 분석은 옵션·RSU·전환증권이 미래 보통주식수를 얼마나 늘려 기존 주주의 몫을 줄이는지 측정한다.",
           "isCorrect": true,
-          "key": "D",
-          "text": "주식보상·희석주식수"
-        },
-        {
-          "elementId": "EQV-18",
-          "explanation": "배수 민감도는 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "민감도"
+          "text": "주식보상·희석주식수"
         }
       ],
       "difficulty": 2,
@@ -13265,11 +13265,11 @@
           "text": "FCFF·FCFE·잔여이익"
         },
         {
-          "elementId": "EQV-11",
-          "explanation": "EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는 배수다.",
+          "elementId": "EQV-52",
+          "explanation": "가치평가 배수 일치는 분자와 분모의 청구권, 기간, 회계정책을 맞춰 비교가능한 배수만 사용하는 원칙이다.",
           "isCorrect": false,
           "key": "B",
-          "text": "EV와 EV/EBITDA"
+          "text": "가치평가 배수 일치"
         },
         {
           "elementId": "EQV-10",
@@ -13315,32 +13315,32 @@
           "text": "R&D 자산화·순설비투자"
         },
         {
-          "elementId": "EQV-53",
-          "explanation": "SOTP는 성격이 다른 사업부를 각자 맞는 비교기업·배수·DCF로 평가한 뒤 본사비용과 순부채 등을 조정해 합산하는 방법이다.",
-          "isCorrect": false,
-          "key": "B",
-          "text": "SOTP"
-        },
-        {
           "elementId": "EQV-63",
           "explanation": "기대손실·유동성 런웨이는 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "기대손실·유동성 런웨이"
         },
         {
           "elementId": "EQV-34",
           "explanation": "정상화 영업이익은 보고이익에서 영업 외 이익과 진짜 일회성 항목을 일관되게 조정해 반복 가능한 수익력을 추정한 값이다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "정상화 영업이익·일회성 조정"
         },
         {
           "elementId": "EQV-36",
           "explanation": "리스 조정 순부채는 사용권을 얻기 위해 부담한 리스부채를 차입과 유사한 청구권으로 보고 순부채에 포함한 값이다.",
           "isCorrect": true,
-          "key": "E",
+          "key": "D",
           "text": "리스 조정 순부채"
+        },
+        {
+          "elementId": "EQV-11",
+          "explanation": "EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는 배수다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "EV와 EV/EBITDA"
         }
       ],
       "difficulty": 2,
@@ -13379,11 +13379,11 @@
           "text": "WACC"
         },
         {
-          "elementId": "EQV-61",
-          "explanation": "추정치 괴리·실적 서프라이즈는 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결한다.",
+          "elementId": "EQV-35",
+          "explanation": "주식보상·희석 분석은 옵션·RSU·전환증권이 미래 보통주식수를 얼마나 늘려 기존 주주의 몫을 줄이는지 측정한다.",
           "isCorrect": false,
           "key": "D",
-          "text": "추정치 괴리·실적 서프라이즈"
+          "text": "주식보상·희석주식수"
         },
         {
           "elementId": "EQV-37",
@@ -13422,11 +13422,11 @@
           "text": "연금 적립상태"
         },
         {
-          "elementId": "INV-05",
-          "explanation": "베타는 개별 자산 수익률이 시장 수익률 변화에 평균적으로 얼마나 민감하게 반응하는지 나타낸다.",
+          "elementId": "CF-02",
+          "explanation": "연금과 영구연금은 일정하거나 성장하는 반복 현금흐름을 한 시점의 가치로 묶어 계산하는 모형이다.",
           "isCorrect": false,
           "key": "C",
-          "text": "베타"
+          "text": "연금·영구연금·성장영구연금"
         },
         {
           "elementId": "EQV-46",
@@ -13522,25 +13522,25 @@
           "text": "주식보상·희석주식수"
         },
         {
-          "elementId": "EQV-03",
-          "explanation": "NOPAT은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다.",
-          "isCorrect": false,
-          "key": "C",
-          "text": "현금세율·NOPAT"
-        },
-        {
           "elementId": "EQV-38",
           "explanation": "실효세율·NOL 분석은 회계상 세금비용, 실제 현금세금, 이월결손금이 미래 세후이익과 현금흐름에 미치는 차이를 추적한다.",
           "isCorrect": true,
-          "key": "D",
+          "key": "C",
           "text": "실효세율·NOL"
         },
         {
           "elementId": "EQV-58",
           "explanation": "생명보험 CSM·지급여력 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다.",
           "isCorrect": false,
-          "key": "E",
+          "key": "D",
           "text": "생명보험 CSM·지급여력"
+        },
+        {
+          "elementId": "EQV-29",
+          "explanation": "발생액비율과 현금전환율은 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 측정한다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "발생액비율·현금전환"
         }
       ],
       "difficulty": 1,
@@ -13765,18 +13765,18 @@
           "text": "보통주 지분가치 브리지"
         },
         {
-          "elementId": "EQV-57",
-          "explanation": "손해보험 손해율·합산비율은 보험료 중 사고손해와 사업비가 차지하는 비중으로 보험영업의 수익성을 측정한다.",
+          "elementId": "EQV-55",
+          "explanation": "은행 수익성 분석은 이자수익·이자비용·평균이자수익자산과 예금금리 전가속도를 연결해 NIM과 PPNR을 본다.",
           "isCorrect": false,
           "key": "B",
-          "text": "손해보험 손해율·합산비율"
+          "text": "은행 수익성·NIM"
         },
         {
-          "elementId": "EQV-31",
-          "explanation": "Billings와 계약자산·계약부채는 청구, 수익인식, 현금수취의 시점 차이를 연결해 계약사업의 활동을 보여 준다.",
+          "elementId": "EQV-41",
+          "explanation": "ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
           "isCorrect": false,
           "key": "C",
-          "text": "Billings·계약자산·계약부채"
+          "text": "ROIC·투하자본"
         },
         {
           "elementId": "EQV-53",
@@ -13958,18 +13958,18 @@
     {
       "choices": [
         {
+          "elementId": "EQV-09",
+          "explanation": "ROE는 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "ROE"
+        },
+        {
           "elementId": "EQV-46",
           "explanation": "EVA는 NOPAT에서 투하자본에 대한 요구수익을 차감해 회계이익 중 자본비용을 넘은 경제적 이익을 측정한다.",
           "isCorrect": false,
-          "key": "A",
-          "text": "EVA·가치 스프레드"
-        },
-        {
-          "elementId": "EQV-23",
-          "explanation": "ARR·NRR·GRR은 구독사업의 반복매출 기반이 신규, 확장, 축소, 이탈로 어떻게 변하는지 측정하는 지표다.",
-          "isCorrect": false,
           "key": "B",
-          "text": "ARR·NRR·GRR"
+          "text": "EVA·가치 스프레드"
         },
         {
           "elementId": "EQV-41",
@@ -14408,11 +14408,11 @@
     {
       "choices": [
         {
-          "elementId": "ACC-12",
-          "explanation": "DuPont 분해는 ROE를 이익률, 자산 효율, 레버리지로 나누어 주주수익성의 원인을 설명하는 방법이다.",
+          "elementId": "EQV-42",
+          "explanation": "ROIC 분해는 자본수익률을 세후 영업마진과 투하자본 회전율로 나눠 수익성의 원천을 설명한다.",
           "isCorrect": false,
           "key": "A",
-          "text": "ROA·ROE·DuPont 분해"
+          "text": "ROIC 마진·회전율 분해"
         },
         {
           "elementId": "EQV-22",
@@ -14715,25 +14715,25 @@
           "text": "EVA·가치 스프레드"
         },
         {
-          "elementId": "EQV-43",
-          "explanation": "증분 ROIC는 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다.",
-          "isCorrect": false,
-          "key": "B",
-          "text": "증분 ROIC"
-        },
-        {
           "elementId": "EQV-41",
           "explanation": "ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "ROIC·투하자본"
         },
         {
           "elementId": "EQV-29",
           "explanation": "발생액비율과 현금전환율은 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 측정한다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "발생액비율·현금전환"
+        },
+        {
+          "elementId": "EQV-45",
+          "explanation": "성장·재투자 관계는 회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속가능한 성장률을 결정한다는 원리다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "성장·재투자"
         },
         {
           "elementId": "EQV-42",
@@ -14786,11 +14786,11 @@
           "text": "성장·재투자"
         },
         {
-          "elementId": "EQV-49",
-          "explanation": "안정기 계속가치 분석은 장기 성장률, ROIC, 재투자율, 마진이 서로 양립하도록 맞춘 뒤 terminal value를 계산한다.",
+          "elementId": "EQV-54",
+          "explanation": "시나리오·민감도 분석은 여러 일관된 미래 경로의 가치와 개별 입력 변화에 대한 가치 반응을 구분해 불확실성을 보여 준다.",
           "isCorrect": false,
           "key": "E",
-          "text": "계속가치·안정기 재투자"
+          "text": "시나리오·민감도"
         }
       ],
       "difficulty": 2,
@@ -14872,11 +14872,11 @@
           "text": "FCFF·FCFE·잔여이익"
         },
         {
-          "elementId": "EQV-09",
-          "explanation": "ROE는 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다.",
+          "elementId": "EQV-29",
+          "explanation": "발생액비율과 현금전환율은 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 측정한다.",
           "isCorrect": false,
           "key": "C",
-          "text": "ROE"
+          "text": "발생액비율·현금전환"
         },
         {
           "elementId": "EQV-36",
@@ -14929,18 +14929,18 @@
           "text": "FCFF·FCFE·잔여이익"
         },
         {
-          "elementId": "EQV-10",
-          "explanation": "PBR은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다.",
+          "elementId": "EQV-29",
+          "explanation": "발생액비율과 현금전환율은 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 측정한다.",
           "isCorrect": false,
           "key": "D",
-          "text": "PBR"
+          "text": "발생액비율·현금전환"
         },
         {
-          "elementId": "EQV-14",
-          "explanation": "명시기간 DCF는 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다.",
+          "elementId": "EQV-40",
+          "explanation": "보통주 지분가치 브리지는 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구한다.",
           "isCorrect": false,
           "key": "E",
-          "text": "명시기간 DCF"
+          "text": "보통주 지분가치 브리지"
         }
       ],
       "difficulty": 2,
@@ -14965,25 +14965,25 @@
           "text": "FCFF"
         },
         {
-          "elementId": "EQV-29",
-          "explanation": "발생액비율과 현금전환율은 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 측정한다.",
-          "isCorrect": false,
-          "key": "B",
-          "text": "발생액비율·현금전환"
-        },
-        {
           "elementId": "EQV-47",
           "explanation": "FCFF·FCFE·잔여이익은 각각 전체 자본, 보통주 현금, 장부자본 초과이익을 기준으로 같은 기업가치를 다른 경로에서 측정한다.",
           "isCorrect": true,
-          "key": "C",
+          "key": "B",
           "text": "FCFF·FCFE·잔여이익"
         },
         {
           "elementId": "EQV-48",
           "explanation": "재무제표 롤포워드는 기초잔액에 기간 중 증가·감소 거래를 반영해 기말잔액을 만드는 연결표다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "재무제표 롤포워드"
+        },
+        {
+          "elementId": "EQV-46",
+          "explanation": "EVA는 NOPAT에서 투하자본에 대한 요구수익을 차감해 회계이익 중 자본비용을 넘은 경제적 이익을 측정한다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "EVA·가치 스프레드"
         },
         {
           "elementId": "EQV-41",
@@ -15058,25 +15058,25 @@
     {
       "choices": [
         {
-          "elementId": "EQV-06",
-          "explanation": "3개 재무제표 연결은 순이익에서 비현금항목·운전자본·투자·조달을 거쳐 기말현금까지 일관되게 이어 붙이는 모델링 과정이다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "3개 재무제표 연결"
-        },
-        {
           "elementId": "EQV-05",
           "explanation": "순설비투자는 새로 지출한 CAPEX에서 기존 자산의 가치소모를 나타내는 감가상각을 뺀 자산기반의 순증가분이다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "A",
           "text": "설비투자·감가상각"
         },
         {
           "elementId": "EQV-03",
           "explanation": "NOPAT은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "현금세율·NOPAT"
+        },
+        {
+          "elementId": "EQV-54",
+          "explanation": "시나리오·민감도 분석은 여러 일관된 미래 경로의 가치와 개별 입력 변화에 대한 가치 반응을 구분해 불확실성을 보여 준다.",
+          "isCorrect": false,
+          "key": "C",
+          "text": "시나리오·민감도"
         },
         {
           "elementId": "EQV-48",
@@ -15315,32 +15315,32 @@
           "text": "CAC·LTV·회수기간"
         },
         {
-          "elementId": "EQV-52",
-          "explanation": "가치평가 배수 일치는 분자와 분모의 청구권, 기간, 회계정책을 맞춰 비교가능한 배수만 사용하는 원칙이다.",
+          "elementId": "EQV-30",
+          "explanation": "DSO·DIO·DPO와 현금전환주기는 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순기간을 일수로 보여 준다.",
           "isCorrect": false,
           "key": "B",
-          "text": "가치평가 배수 일치"
+          "text": "운전자본 일수·현금전환주기"
+        },
+        {
+          "elementId": "EQV-29",
+          "explanation": "발생액비율과 현금전환율은 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 측정한다.",
+          "isCorrect": false,
+          "key": "C",
+          "text": "발생액비율·현금전환"
         },
         {
           "elementId": "EQV-50",
           "explanation": "Mid-year·stub 할인은 현금이 연말 한 번이 아니라 연중 발생하고 가치평가일이 회계연도 시작과 다르다는 점을 할인기간에 반영한다.",
           "isCorrect": true,
-          "key": "C",
+          "key": "D",
           "text": "Mid-year·Stub 할인"
         },
         {
           "elementId": "ACC-02",
           "explanation": "발생주의는 현금이 오간 날이 아니라 수익을 벌고 비용을 부담한 기간에 경영성과를 기록하는 원칙이다.",
           "isCorrect": false,
-          "key": "D",
-          "text": "발생주의·현금주의와 결산조정"
-        },
-        {
-          "elementId": "EQV-48",
-          "explanation": "재무제표 롤포워드는 기초잔액에 기간 중 증가·감소 거래를 반영해 기말잔액을 만드는 연결표다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "재무제표 롤포워드"
+          "text": "발생주의·현금주의와 결산조정"
         }
       ],
       "difficulty": 1,
@@ -15415,25 +15415,25 @@
           "text": "발생액비율·현금전환"
         },
         {
-          "elementId": "CF-01",
-          "explanation": "화폐의 시간가치는 서로 다른 시점의 돈을 하나의 기준시점으로 옮겨 비교하는 원리다.",
-          "isCorrect": false,
-          "key": "B",
-          "text": "화폐의 시간가치 — 일시금 PV·FV"
-        },
-        {
           "elementId": "EQV-50",
           "explanation": "Mid-year·stub 할인은 현금이 연말 한 번이 아니라 연중 발생하고 가치평가일이 회계연도 시작과 다르다는 점을 할인기간에 반영한다.",
           "isCorrect": true,
-          "key": "C",
+          "key": "B",
           "text": "Mid-year·Stub 할인"
         },
         {
           "elementId": "EQV-52",
           "explanation": "가치평가 배수 일치는 분자와 분모의 청구권, 기간, 회계정책을 맞춰 비교가능한 배수만 사용하는 원칙이다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "가치평가 배수 일치"
+        },
+        {
+          "elementId": "EQV-63",
+          "explanation": "기대손실·유동성 런웨이는 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "기대손실·유동성 런웨이"
         },
         {
           "elementId": "EQV-49",
@@ -15515,25 +15515,25 @@
           "text": "기대 TSR·촉매"
         },
         {
-          "elementId": "EQV-18",
-          "explanation": "배수 민감도는 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다.",
-          "isCorrect": false,
-          "key": "B",
-          "text": "민감도"
-        },
-        {
           "elementId": "EQV-41",
           "explanation": "ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "ROIC·투하자본"
         },
         {
           "elementId": "EQV-51",
           "explanation": "Reverse DCF는 현재 시장가치를 출발점으로 두고 그 가격을 정당화하는 성장·마진·ROIC 가정을 역산하는 분석이다.",
           "isCorrect": true,
-          "key": "D",
+          "key": "C",
           "text": "Reverse DCF"
+        },
+        {
+          "elementId": "EQV-20",
+          "explanation": "매출 브리지는 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "매출 브리지"
         },
         {
           "elementId": "EQV-61",
@@ -16158,25 +16158,25 @@
     {
       "choices": [
         {
-          "elementId": "EQV-41",
-          "explanation": "ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "ROIC·투하자본"
-        },
-        {
           "elementId": "EQV-56",
           "explanation": "은행 충당금·CET1·ROTCE 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "A",
           "text": "은행 충당금·CET1·ROTCE"
         },
         {
           "elementId": "EQV-58",
           "explanation": "생명보험 CSM·지급여력 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "생명보험 CSM·지급여력"
+        },
+        {
+          "elementId": "EQV-24",
+          "explanation": "CAC·LTV·회수기간은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다.",
+          "isCorrect": false,
+          "key": "C",
+          "text": "CAC·LTV·회수기간"
         },
         {
           "elementId": "EQV-55",
@@ -16265,18 +16265,18 @@
           "text": "은행 수익성·NIM"
         },
         {
+          "elementId": "EQV-07",
+          "explanation": "기본 EPS는 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "기본 EPS"
+        },
+        {
           "elementId": "EQV-56",
           "explanation": "은행 충당금·CET1·ROTCE 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다.",
           "isCorrect": true,
-          "key": "B",
-          "text": "은행 충당금·CET1·ROTCE"
-        },
-        {
-          "elementId": "EQV-29",
-          "explanation": "발생액비율과 현금전환율은 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 측정한다.",
-          "isCorrect": false,
           "key": "C",
-          "text": "발생액비율·현금전환"
+          "text": "은행 충당금·CET1·ROTCE"
         },
         {
           "elementId": "EQV-24",
@@ -16408,32 +16408,32 @@
     {
       "choices": [
         {
+          "elementId": "EQV-43",
+          "explanation": "증분 ROIC는 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "증분 ROIC"
+        },
+        {
           "elementId": "EQV-57",
           "explanation": "손해보험 손해율·합산비율은 보험료 중 사고손해와 사업비가 차지하는 비중으로 보험영업의 수익성을 측정한다.",
           "isCorrect": true,
-          "key": "A",
+          "key": "B",
           "text": "손해보험 손해율·합산비율"
         },
         {
           "elementId": "EQV-08",
           "explanation": "PER은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "C",
           "text": "PER"
         },
         {
           "elementId": "EQV-33",
           "explanation": "R&D 자산화 조정은 당기 연구개발비를 장기투자로 보고 과거 투자분의 상각과 바꿔 영업이익과 투하자본을 함께 재작성하는 분석이다.",
           "isCorrect": false,
-          "key": "C",
-          "text": "R&D 자산화·순설비투자"
-        },
-        {
-          "elementId": "EQV-42",
-          "explanation": "ROIC 분해는 자본수익률을 세후 영업마진과 투하자본 회전율로 나눠 수익성의 원천을 설명한다.",
-          "isCorrect": false,
           "key": "D",
-          "text": "ROIC 마진·회전율 분해"
+          "text": "R&D 자산화·순설비투자"
         },
         {
           "elementId": "EQV-59",
@@ -16465,32 +16465,32 @@
           "text": "손해보험 손해율·합산비율"
         },
         {
+          "elementId": "EQV-59",
+          "explanation": "경기민감·원자재 정상화는 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "경기민감·원자재 정상화"
+        },
+        {
           "elementId": "EQV-63",
           "explanation": "기대손실·유동성 런웨이는 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "C",
           "text": "기대손실·유동성 런웨이"
         },
         {
           "elementId": "EQV-39",
           "explanation": "영업권은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "D",
           "text": "영업권"
         },
         {
           "elementId": "EQV-55",
           "explanation": "은행 수익성 분석은 이자수익·이자비용·평균이자수익자산과 예금금리 전가속도를 연결해 NIM과 PPNR을 본다.",
           "isCorrect": false,
-          "key": "D",
-          "text": "은행 수익성·NIM"
-        },
-        {
-          "elementId": "EQV-29",
-          "explanation": "발생액비율과 현금전환율은 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 측정한다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "발생액비율·현금전환"
+          "text": "은행 수익성·NIM"
         }
       ],
       "difficulty": 2,
@@ -16508,32 +16508,32 @@
     {
       "choices": [
         {
-          "elementId": "EQV-54",
-          "explanation": "시나리오·민감도 분석은 여러 일관된 미래 경로의 가치와 개별 입력 변화에 대한 가치 반응을 구분해 불확실성을 보여 준다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "시나리오·민감도"
-        },
-        {
           "elementId": "EQV-43",
           "explanation": "증분 ROIC는 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "A",
           "text": "증분 ROIC"
         },
         {
           "elementId": "EQV-28",
           "explanation": "Backlog와 book-to-bill은 확보한 주문잔고의 롤포워드와 신규수주가 현재 매출을 얼마나 대체하는지 보여 주는 선행지표다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "Backlog·Book-to-Bill"
         },
         {
           "elementId": "EQV-58",
           "explanation": "생명보험 CSM·지급여력 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다.",
           "isCorrect": true,
-          "key": "D",
+          "key": "C",
           "text": "생명보험 CSM·지급여력"
+        },
+        {
+          "elementId": "EQV-27",
+          "explanation": "가동률·손익분기점 분석은 생산능력 사용 정도와 단위당 공헌이익을 통해 고정비를 회수하는 물량을 계산한다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "가동률·손익분기점"
         },
         {
           "elementId": "EQV-55",
@@ -16808,39 +16808,39 @@
     {
       "choices": [
         {
-          "elementId": "EQV-18",
-          "explanation": "배수 민감도는 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "민감도"
-        },
-        {
           "elementId": "IBT-06",
           "explanation": "M&A 시너지는 결합으로 새로 생기는 세후 현금효과의 현재가치에서 통합비용을 차감한 순가치다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "A",
           "text": "M&A 시너지"
         },
         {
           "elementId": "EQV-36",
           "explanation": "리스 조정 순부채는 사용권을 얻기 위해 부담한 리스부채를 차입과 유사한 청구권으로 보고 순부채에 포함한 값이다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "리스 조정 순부채"
         },
         {
           "elementId": "EQV-60",
           "explanation": "자원기업 NAV는 유한한 광산·유전별 세후 현금흐름 현재가치에서 순부채와 폐쇄의무를 조정한 자산가치다.",
           "isCorrect": true,
-          "key": "D",
+          "key": "C",
           "text": "자원기업 NAV·매장량수명"
         },
         {
-          "elementId": "EQV-12",
-          "explanation": "FCFF는 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다.",
+          "elementId": "EQV-41",
+          "explanation": "ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "ROIC·투하자본"
+        },
+        {
+          "elementId": "EQV-53",
+          "explanation": "SOTP는 성격이 다른 사업부를 각자 맞는 비교기업·배수·DCF로 평가한 뒤 본사비용과 순부채 등을 조정해 합산하는 방법이다.",
           "isCorrect": false,
           "key": "E",
-          "text": "FCFF"
+          "text": "SOTP"
         }
       ],
       "difficulty": 1,
@@ -17072,11 +17072,11 @@
           "text": "기대 TSR·촉매"
         },
         {
-          "elementId": "IBT-17",
-          "explanation": "리서치 촉매·실적서프라이즈 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한다.",
+          "elementId": "EQV-41",
+          "explanation": "ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
           "isCorrect": false,
           "key": "C",
-          "text": "리서치 촉매·실적서프라이즈"
+          "text": "ROIC·투하자본"
         },
         {
           "elementId": "EQV-20",
@@ -17172,18 +17172,18 @@
           "text": "추정치 괴리·실적 서프라이즈"
         },
         {
-          "elementId": "EQV-45",
-          "explanation": "성장·재투자 관계는 회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속가능한 성장률을 결정한다는 원리다.",
-          "isCorrect": false,
-          "key": "C",
-          "text": "성장·재투자"
-        },
-        {
           "elementId": "EQV-51",
           "explanation": "Reverse DCF는 현재 시장가치를 출발점으로 두고 그 가격을 정당화하는 성장·마진·ROIC 가정을 역산하는 분석이다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "Reverse DCF"
+        },
+        {
+          "elementId": "EQV-19",
+          "explanation": "시나리오 가중가치는 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "시나리오 가중가치"
         },
         {
           "elementId": "EQV-17",
@@ -17208,39 +17208,39 @@
     {
       "choices": [
         {
-          "elementId": "EQV-59",
-          "explanation": "경기민감·원자재 정상화는 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다.",
+          "elementId": "EQV-39",
+          "explanation": "영업권은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다.",
           "isCorrect": false,
           "key": "A",
-          "text": "경기민감·원자재 정상화"
+          "text": "영업권"
+        },
+        {
+          "elementId": "EQV-61",
+          "explanation": "추정치 괴리·실적 서프라이즈는 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결한다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "추정치 괴리·실적 서프라이즈"
         },
         {
           "elementId": "EQV-62",
           "explanation": "기대 TSR·촉매 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다.",
           "isCorrect": true,
-          "key": "B",
+          "key": "C",
           "text": "기대 TSR·촉매"
         },
         {
           "elementId": "EQV-19",
           "explanation": "시나리오 가중가치는 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "D",
           "text": "시나리오 가중가치"
         },
         {
           "elementId": "EQV-17",
           "explanation": "목표주가 상승여력은 현재 주가가 분석가의 목표가까지 움직일 경우 얻을 수 있는 가격수익률이다.",
           "isCorrect": false,
-          "key": "D",
-          "text": "목표주가·상승여력"
-        },
-        {
-          "elementId": "EQV-33",
-          "explanation": "R&D 자산화 조정은 당기 연구개발비를 장기투자로 보고 과거 투자분의 상각과 바꿔 영업이익과 투하자본을 함께 재작성하는 분석이다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "R&D 자산화·순설비투자"
+          "text": "목표주가·상승여력"
         }
       ],
       "difficulty": 2,
@@ -17265,18 +17265,18 @@
           "text": "운전자본 일수·현금전환주기"
         },
         {
+          "elementId": "EQV-33",
+          "explanation": "R&D 자산화 조정은 당기 연구개발비를 장기투자로 보고 과거 투자분의 상각과 바꿔 영업이익과 투하자본을 함께 재작성하는 분석이다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "R&D 자산화·순설비투자"
+        },
+        {
           "elementId": "EQV-17",
           "explanation": "목표주가 상승여력은 현재 주가가 분석가의 목표가까지 움직일 경우 얻을 수 있는 가격수익률이다.",
           "isCorrect": false,
-          "key": "B",
-          "text": "목표주가·상승여력"
-        },
-        {
-          "elementId": "EQV-58",
-          "explanation": "생명보험 CSM·지급여력 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다.",
-          "isCorrect": false,
           "key": "C",
-          "text": "생명보험 CSM·지급여력"
+          "text": "목표주가·상승여력"
         },
         {
           "elementId": "EQV-63",
@@ -17365,11 +17365,11 @@
           "text": "기대손실·유동성 런웨이"
         },
         {
-          "elementId": "EQV-38",
-          "explanation": "실효세율·NOL 분석은 회계상 세금비용, 실제 현금세금, 이월결손금이 미래 세후이익과 현금흐름에 미치는 차이를 추적한다.",
+          "elementId": "EQV-33",
+          "explanation": "R&D 자산화 조정은 당기 연구개발비를 장기투자로 보고 과거 투자분의 상각과 바꿔 영업이익과 투하자본을 함께 재작성하는 분석이다.",
           "isCorrect": false,
           "key": "B",
-          "text": "실효세율·NOL"
+          "text": "R&D 자산화·순설비투자"
         },
         {
           "elementId": "EQV-24",
@@ -17386,11 +17386,11 @@
           "text": "리스 조정 순부채"
         },
         {
-          "elementId": "EQV-57",
-          "explanation": "손해보험 손해율·합산비율은 보험료 중 사고손해와 사업비가 차지하는 비중으로 보험영업의 수익성을 측정한다.",
+          "elementId": "EQV-29",
+          "explanation": "발생액비율과 현금전환율은 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 측정한다.",
           "isCorrect": false,
           "key": "E",
-          "text": "손해보험 손해율·합산비율"
+          "text": "발생액비율·현금전환"
         }
       ],
       "difficulty": 2,
@@ -17429,18 +17429,18 @@
           "text": "주주환원수익률·자본배분"
         },
         {
-          "elementId": "EQV-11",
-          "explanation": "EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는 배수다.",
+          "elementId": "EQV-53",
+          "explanation": "SOTP는 성격이 다른 사업부를 각자 맞는 비교기업·배수·DCF로 평가한 뒤 본사비용과 순부채 등을 조정해 합산하는 방법이다.",
           "isCorrect": false,
           "key": "D",
-          "text": "EV와 EV/EBITDA"
+          "text": "SOTP"
         },
         {
-          "elementId": "IBT-11",
-          "explanation": "IPO 밸류에이션 배수는 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다.",
+          "elementId": "EQV-45",
+          "explanation": "성장·재투자 관계는 회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속가능한 성장률을 결정한다는 원리다.",
           "isCorrect": false,
           "key": "E",
-          "text": "IPO 밸류에이션 배수"
+          "text": "성장·재투자"
         }
       ],
       "difficulty": 1,
@@ -17515,18 +17515,18 @@
           "text": "SOTP"
         },
         {
+          "elementId": "EQV-45",
+          "explanation": "성장·재투자 관계는 회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속가능한 성장률을 결정한다는 원리다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "성장·재투자"
+        },
+        {
           "elementId": "EQV-64",
           "explanation": "주주환원수익률은 배당, 순자사주매입, 순부채상환을 시가총액과 비교해 주주에게 돌아가는 자본의 규모를 본다.",
           "isCorrect": true,
-          "key": "B",
-          "text": "주주환원수익률·자본배분"
-        },
-        {
-          "elementId": "EQV-11",
-          "explanation": "EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는 배수다.",
-          "isCorrect": false,
           "key": "C",
-          "text": "EV와 EV/EBITDA"
+          "text": "주주환원수익률·자본배분"
         },
         {
           "elementId": "EQV-35",
@@ -17558,11 +17558,11 @@
     {
       "choices": [
         {
-          "elementId": "ACC-08",
-          "explanation": "순운전자본은 단기 영업에 묶인 자산과 단기 영업으로 조달한 부채의 차이를 통해 일상 영업의 자금 소요를 보여 준다.",
+          "elementId": "IBT-02",
+          "explanation": "FX 환산손익은 외화로 받을 금액의 원화가치가 환율 변화 때문에 얼마나 달라졌는지 측정한다.",
           "isCorrect": false,
           "key": "A",
-          "text": "운전자본과 순운전자본 증감"
+          "text": "FX 환산손익"
         },
         {
           "elementId": "IBT-01",
@@ -17572,18 +17572,18 @@
           "text": "시장금리·실질금리"
         },
         {
+          "elementId": "IBT-04",
+          "explanation": "금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한다.",
+          "isCorrect": false,
+          "key": "C",
+          "text": "통화정책·이자수익 전이"
+        },
+        {
           "elementId": "CF-03",
           "explanation": "NPV는 투자로 들어오고 나가는 모든 현금흐름을 현재가치로 바꾼 뒤 초기투자와 비교한 순가치다.",
           "isCorrect": false,
-          "key": "C",
-          "text": "NPV와 투자안 채택"
-        },
-        {
-          "elementId": "EQV-05",
-          "explanation": "순설비투자는 새로 지출한 CAPEX에서 기존 자산의 가치소모를 나타내는 감가상각을 뺀 자산기반의 순증가분이다.",
-          "isCorrect": false,
           "key": "D",
-          "text": "설비투자·감가상각"
+          "text": "NPV와 투자안 채택"
         },
         {
           "elementId": "EQV-07",
@@ -17665,18 +17665,18 @@
           "text": "Duration Immunization"
         },
         {
-          "elementId": "IBT-03",
-          "explanation": "신용스프레드 가격민감도는 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지 duration으로 근사한다.",
+          "elementId": "IBT-02",
+          "explanation": "FX 환산손익은 외화로 받을 금액의 원화가치가 환율 변화 때문에 얼마나 달라졌는지 측정한다.",
           "isCorrect": false,
           "key": "B",
-          "text": "신용스프레드·가격민감도"
+          "text": "FX 환산손익"
         },
         {
-          "elementId": "FI-04",
-          "explanation": "DV01은 금리가 1bp 움직일 때의 금액 변화이고, convexity는 큰 금리 변화에서 duration의 직선 근사를 보정한다.",
+          "elementId": "IBT-04",
+          "explanation": "금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한다.",
           "isCorrect": false,
           "key": "C",
-          "text": "DV01·Convexity 가격변화"
+          "text": "통화정책·이자수익 전이"
         },
         {
           "elementId": "FI-03",
@@ -18008,25 +18008,25 @@
     {
       "choices": [
         {
+          "elementId": "EQV-18",
+          "explanation": "배수 민감도는 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "민감도"
+        },
+        {
           "elementId": "IBT-04",
           "explanation": "금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한다.",
           "isCorrect": true,
-          "key": "A",
+          "key": "B",
           "text": "통화정책·이자수익 전이"
         },
         {
           "elementId": "FI-05",
           "explanation": "Duration immunization은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는 영향을 줄이는 전략이다.",
           "isCorrect": false,
-          "key": "B",
-          "text": "Duration Immunization"
-        },
-        {
-          "elementId": "DER-10",
-          "explanation": "스왑 현금흐름 netting은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방식이다.",
-          "isCorrect": false,
           "key": "C",
-          "text": "Swap Cash Flows·Netting"
+          "text": "Duration Immunization"
         },
         {
           "elementId": "IBT-01",
@@ -18108,18 +18108,18 @@
     {
       "choices": [
         {
-          "elementId": "EQV-55",
-          "explanation": "은행 수익성 분석은 이자수익·이자비용·평균이자수익자산과 예금금리 전가속도를 연결해 NIM과 PPNR을 본다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "은행 수익성·NIM"
-        },
-        {
           "elementId": "ACC-11",
           "explanation": "재무비율은 이익창출력, 자산 활용도, 재무부담을 서로 다른 분모로 표준화해 기업과 기간을 비교하는 도구다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "A",
           "text": "수익성·효율성·레버리지 비율"
+        },
+        {
+          "elementId": "IBT-17",
+          "explanation": "리서치 촉매·실적서프라이즈 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "리서치 촉매·실적서프라이즈"
         },
         {
           "elementId": "IBT-06",
@@ -18172,25 +18172,25 @@
           "text": "기본주당이익(EPS)·가중평균주식수"
         },
         {
+          "elementId": "ACC-04",
+          "explanation": "재고 회계는 판매 가능한 물량의 원가를 판매된 부분인 매출원가와 남은 부분인 기말재고로 나누는 과정이다.",
+          "isCorrect": false,
+          "key": "C",
+          "text": "재고자산·매출원가"
+        },
+        {
           "elementId": "CF-12",
           "explanation": "EV–지분가치 브리지는 영업자산 전체 가치에서 채권자 등 다른 청구권을 조정해 보통주주 몫과 주당가치를 구하는 과정이다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "D",
           "text": "기업가치(EV)·지분가치·주당가치 연결"
         },
         {
           "elementId": "EQV-11",
           "explanation": "EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는 배수다.",
           "isCorrect": false,
-          "key": "D",
-          "text": "EV와 EV/EBITDA"
-        },
-        {
-          "elementId": "EQV-40",
-          "explanation": "보통주 지분가치 브리지는 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구한다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "보통주 지분가치 브리지"
+          "text": "EV와 EV/EBITDA"
         }
       ],
       "difficulty": 1,
@@ -18229,18 +18229,18 @@
           "text": "EV–Equity bridge"
         },
         {
+          "elementId": "CF-12",
+          "explanation": "EV–지분가치 브리지는 영업자산 전체 가치에서 채권자 등 다른 청구권을 조정해 보통주주 몫과 주당가치를 구하는 과정이다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "기업가치(EV)·지분가치·주당가치 연결"
+        },
+        {
           "elementId": "ACC-04",
           "explanation": "재고 회계는 판매 가능한 물량의 원가를 판매된 부분인 매출원가와 남은 부분인 기말재고로 나누는 과정이다.",
           "isCorrect": false,
-          "key": "D",
-          "text": "재고자산·매출원가"
-        },
-        {
-          "elementId": "ACC-07",
-          "explanation": "기본 EPS는 보통주주에게 귀속되는 이익을 해당 기간 실제로 유통된 보통주식수의 시간가중 평균으로 나눈 값이다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "기본주당이익(EPS)·가중평균주식수"
+          "text": "재고자산·매출원가"
         }
       ],
       "difficulty": 2,
@@ -18608,25 +18608,25 @@
     {
       "choices": [
         {
+          "elementId": "IBT-09",
+          "explanation": "IPO primary/secondary 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을 나눈다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "IPO primary/secondary"
+        },
+        {
           "elementId": "IBT-07",
           "explanation": "EPS accretion/dilution은 인수 후 합산이익과 새 주식수를 반영한 주당이익이 인수 전보다 늘거나 줄었는지 측정한다.",
           "isCorrect": false,
-          "key": "A",
+          "key": "B",
           "text": "EPS accretion/dilution"
         },
         {
           "elementId": "DER-06",
           "explanation": "Put–Call parity는 같은 만기·행사가의 유럽형 콜과 풋을 주식·무위험채권 조합과 연결하는 무차익 관계다.",
           "isCorrect": false,
-          "key": "B",
-          "text": "Put–Call Parity·차익거래"
-        },
-        {
-          "elementId": "EQV-17",
-          "explanation": "목표주가 상승여력은 현재 주가가 분석가의 목표가까지 움직일 경우 얻을 수 있는 가격수익률이다.",
-          "isCorrect": false,
           "key": "C",
-          "text": "목표주가·상승여력"
+          "text": "Put–Call Parity·차익거래"
         },
         {
           "elementId": "IBT-10",
@@ -18822,11 +18822,11 @@
           "text": "IPO primary/secondary"
         },
         {
-          "elementId": "EQV-18",
-          "explanation": "배수 민감도는 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다.",
+          "elementId": "IBT-11",
+          "explanation": "IPO 밸류에이션 배수는 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다.",
           "isCorrect": false,
           "key": "C",
-          "text": "민감도"
+          "text": "IPO 밸류에이션 배수"
         },
         {
           "elementId": "ACC-01",
@@ -18979,18 +18979,18 @@
           "text": "IPO primary/secondary"
         },
         {
-          "elementId": "IBT-14",
-          "explanation": "LTV는 담보 부동산가치 중 대출이 차지하는 비율로, 가격하락을 흡수할 자기자본 완충을 보여 준다.",
-          "isCorrect": false,
-          "key": "D",
-          "text": "LTV"
-        },
-        {
           "elementId": "IBT-07",
           "explanation": "EPS accretion/dilution은 인수 후 합산이익과 새 주식수를 반영한 주당이익이 인수 전보다 늘거나 줄었는지 측정한다.",
           "isCorrect": false,
-          "key": "E",
+          "key": "D",
           "text": "EPS accretion/dilution"
+        },
+        {
+          "elementId": "IBT-05",
+          "explanation": "EV–Equity bridge는 인수대상 사업 전체 가치에서 부채·우선주·비지배지분을 빼고 현금을 더해 보통주 매매대금을 구하는 과정이다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "EV–Equity bridge"
         }
       ],
       "difficulty": 2,
@@ -19115,25 +19115,25 @@
           "text": "PER"
         },
         {
+          "elementId": "IBT-08",
+          "explanation": "주식교환비율은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "주식교환비율"
+        },
+        {
           "elementId": "IBT-09",
           "explanation": "IPO primary/secondary 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을 나눈다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "C",
           "text": "IPO primary/secondary"
         },
         {
           "elementId": "IBT-11",
           "explanation": "IPO 밸류에이션 배수는 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다.",
           "isCorrect": true,
-          "key": "C",
-          "text": "IPO 밸류에이션 배수"
-        },
-        {
-          "elementId": "EQV-07",
-          "explanation": "기본 EPS는 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다.",
-          "isCorrect": false,
           "key": "D",
-          "text": "기본 EPS"
+          "text": "IPO 밸류에이션 배수"
         },
         {
           "elementId": "IBT-10",
@@ -19258,39 +19258,39 @@
     {
       "choices": [
         {
+          "elementId": "EQV-11",
+          "explanation": "EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는 배수다.",
+          "isCorrect": false,
+          "key": "A",
+          "text": "EV와 EV/EBITDA"
+        },
+        {
           "elementId": "IBT-12",
           "explanation": "부동산 NOI는 잠재 임대수입에서 공실손실과 부동산 운영비를 뺀 자산 자체의 영업소득이다.",
           "isCorrect": true,
-          "key": "A",
+          "key": "B",
           "text": "부동산 NOI"
         },
         {
           "elementId": "IBT-13",
           "explanation": "Cap rate 가치는 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "C",
           "text": "Cap rate 가치"
         },
         {
           "elementId": "EQV-03",
           "explanation": "NOPAT은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "D",
           "text": "현금세율·NOPAT"
         },
         {
           "elementId": "ACC-10",
           "explanation": "3개 재무제표 연결은 한 거래가 손익, 자산·부채, 현금흐름에 서로 다른 시점과 방식으로 반영되는 과정을 추적하는 작업이다.",
           "isCorrect": false,
-          "key": "D",
-          "text": "손익계산서·재무상태표·현금흐름표 연결"
-        },
-        {
-          "elementId": "IBT-15",
-          "explanation": "DSCR은 부동산 NOI가 한 해의 원금과 이자 상환액을 몇 배 감당하는지 보여 주는 채무상환 지표다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "DSCR"
+          "text": "손익계산서·재무상태표·현금흐름표 연결"
         }
       ],
       "difficulty": 2,
@@ -19315,11 +19315,11 @@
           "text": "부동산 NOI"
         },
         {
-          "elementId": "EQV-02",
-          "explanation": "마진 분석은 매출에서 원가와 판관비가 차지하는 비중을 연결해 영업이익의 변화를 설명한다.",
+          "elementId": "EQV-03",
+          "explanation": "NOPAT은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다.",
           "isCorrect": false,
           "key": "B",
-          "text": "마진과 영업이익"
+          "text": "현금세율·NOPAT"
         },
         {
           "elementId": "IBT-13",
@@ -19408,32 +19408,32 @@
     {
       "choices": [
         {
-          "elementId": "IBT-06",
-          "explanation": "M&A 시너지는 결합으로 새로 생기는 세후 현금효과의 현재가치에서 통합비용을 차감한 순가치다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "M&A 시너지"
-        },
-        {
           "elementId": "IBT-13",
           "explanation": "Cap rate 가치는 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다.",
           "isCorrect": true,
-          "key": "B",
+          "key": "A",
           "text": "Cap rate 가치"
         },
         {
           "elementId": "EQV-08",
           "explanation": "PER은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "PER"
         },
         {
           "elementId": "CF-11",
           "explanation": "계속가치는 명시적 예측기간 뒤에 발생할 모든 현금흐름을 예측 종료시점의 한 금액으로 요약한 값이다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "계속가치(Terminal Value)"
+        },
+        {
+          "elementId": "FI-01",
+          "explanation": "채권가격은 약정된 쿠폰과 원금을 시장이 요구하는 수익률로 할인한 현재가치이며, YTM은 그 가격을 설명하는 만기수익률이다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "채권가격·YTM"
         },
         {
           "elementId": "EQV-10",
@@ -19508,18 +19508,18 @@
     {
       "choices": [
         {
-          "elementId": "ACC-09",
-          "explanation": "현금흐름표는 한 기간의 현금 증감을 영업, 투자, 재무 활동으로 나누어 이익이 실제 현금으로 이어진 경로를 보여 준다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "현금흐름표(CFO·CFI·CFF)"
-        },
-        {
           "elementId": "EQV-04",
           "explanation": "매출연동 운전자본은 성장에 따라 매출채권·재고 등에 추가로 묶이는 영업자금을 단순 비율로 추정한다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "A",
           "text": "운전자본"
+        },
+        {
+          "elementId": "IBT-13",
+          "explanation": "Cap rate 가치는 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다.",
+          "isCorrect": false,
+          "key": "B",
+          "text": "Cap rate 가치"
         },
         {
           "elementId": "IBT-10",
@@ -19722,25 +19722,25 @@
           "text": "PER"
         },
         {
-          "elementId": "ACC-03",
-          "explanation": "대손충당금은 외상매출 중 회수하지 못할 것으로 예상되는 금액을 미리 반영해 순매출채권을 현실적으로 표시하는 계정이다.",
+          "elementId": "IBT-12",
+          "explanation": "부동산 NOI는 잠재 임대수입에서 공실손실과 부동산 운영비를 뺀 자산 자체의 영업소득이다.",
           "isCorrect": false,
           "key": "C",
-          "text": "매출채권·대손충당금"
+          "text": "부동산 NOI"
+        },
+        {
+          "elementId": "IBT-13",
+          "explanation": "Cap rate 가치는 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다.",
+          "isCorrect": false,
+          "key": "D",
+          "text": "Cap rate 가치"
         },
         {
           "elementId": "IBT-06",
           "explanation": "M&A 시너지는 결합으로 새로 생기는 세후 현금효과의 현재가치에서 통합비용을 차감한 순가치다.",
           "isCorrect": false,
-          "key": "D",
-          "text": "M&A 시너지"
-        },
-        {
-          "elementId": "EQV-10",
-          "explanation": "PBR은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다.",
-          "isCorrect": false,
           "key": "E",
-          "text": "PBR"
+          "text": "M&A 시너지"
         }
       ],
       "difficulty": 2,
@@ -20108,39 +20108,39 @@
     {
       "choices": [
         {
-          "elementId": "EQV-63",
-          "explanation": "기대손실·유동성 런웨이는 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다.",
-          "isCorrect": false,
-          "key": "A",
-          "text": "기대손실·유동성 런웨이"
-        },
-        {
           "elementId": "CF-11",
           "explanation": "계속가치는 명시적 예측기간 뒤에 발생할 모든 현금흐름을 예측 종료시점의 한 금액으로 요약한 값이다.",
           "isCorrect": false,
-          "key": "B",
+          "key": "A",
           "text": "계속가치(Terminal Value)"
         },
         {
           "elementId": "EQV-19",
           "explanation": "시나리오 가중가치는 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다.",
           "isCorrect": false,
-          "key": "C",
+          "key": "B",
           "text": "시나리오 가중가치"
         },
         {
           "elementId": "FI-10",
           "explanation": "기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험 등을 가격에 반영한 추가 수익률이다.",
           "isCorrect": false,
-          "key": "D",
+          "key": "C",
           "text": "신용위험·Credit Spread·Expected Loss"
         },
         {
           "elementId": "IBT-18",
           "explanation": "기대 하방은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표다.",
           "isCorrect": true,
-          "key": "E",
+          "key": "D",
           "text": "리서치 위험·기대 하방"
+        },
+        {
+          "elementId": "IBT-17",
+          "explanation": "리서치 촉매·실적서프라이즈 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한다.",
+          "isCorrect": false,
+          "key": "E",
+          "text": "리서치 촉매·실적서프라이즈"
         }
       ],
       "difficulty": 1,
@@ -20258,7 +20258,7 @@
   ],
   "releaseStatus": "bootstrap_not_reviewed",
   "selectedEmbedding": "tfidf-word-char",
-  "selectedRanker": "xgboost-shallow-medium",
-  "selectedRetrievalProfile": "lexical-balanced",
+  "selectedRanker": "xgboost-reference-default",
+  "selectedRetrievalProfile": "lexical-char-heavy",
   "splitSha256": "e1555069fc32ea58f91fbd3d34d9ba91e735ceb7f782082368d87606b0d75dc7"
 }

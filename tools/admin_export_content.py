@@ -73,6 +73,27 @@ TABLE_COLUMNS: dict[str, tuple[str, ...]] = {
         "notes",
         "source_ids_json",
     ),
+    "concept_questions": (
+        "question_id",
+        "element_id",
+        "question_type",
+        "stem",
+        "explanation",
+        "difficulty",
+        "model_version",
+        "review_status",
+        "source_fact_ids_json",
+        "display_order",
+    ),
+    "concept_question_choices": (
+        "question_id",
+        "choice_key",
+        "choice_order",
+        "element_id",
+        "text",
+        "explanation",
+        "is_correct",
+    ),
     "element_sources": (
         "element_id",
         "source_id",
@@ -86,6 +107,8 @@ TABLE_ORDER_BY = {
     "elements": "display_order",
     "concept_cards": "element_id",
     "formula_cards": "element_id",
+    "concept_questions": "display_order",
+    "concept_question_choices": "question_id, choice_order",
     "element_sources": "element_id, ordinal, source_id",
 }
 
@@ -186,6 +209,8 @@ def _validate_tables(
     elements = tables["elements"]
     concepts = tables["concept_cards"]
     formulas = tables["formula_cards"]
+    questions = tables["concept_questions"]
+    choices = tables["concept_question_choices"]
     sources = tables["sources"]
     links = tables["element_sources"]
     element_ids = {row["element_id"] for row in elements}
@@ -197,6 +222,30 @@ def _validate_tables(
         raise AdminExportError("Concept cards are not exactly one per element")
     if {row["element_id"] for row in formulas} != element_ids:
         raise AdminExportError("Formula cards are not exactly one per element")
+    question_ids = {row["question_id"] for row in questions}
+    if len(question_ids) != len(questions):
+        raise AdminExportError("Duplicate concept question_id found")
+    if any(row["element_id"] not in element_ids for row in questions):
+        raise AdminExportError("Concept questions contain an unknown target element")
+    choices_by_question: dict[str, list[dict[str, Any]]] = {
+        question_id: [] for question_id in question_ids
+    }
+    for choice in choices:
+        if choice["question_id"] not in choices_by_question:
+            raise AdminExportError("Concept choice references an unknown question")
+        if choice["element_id"] not in element_ids:
+            raise AdminExportError("Concept choice references an unknown element")
+        choices_by_question[choice["question_id"]].append(choice)
+    targets = {row["question_id"]: row["element_id"] for row in questions}
+    for question_id, rows in choices_by_question.items():
+        correct = [row for row in rows if row["is_correct"] == 1]
+        if (
+            len(rows) != 5
+            or len({row["text"] for row in rows}) != 5
+            or len(correct) != 1
+            or correct[0]["element_id"] != targets[question_id]
+        ):
+            raise AdminExportError(f"Malformed five-choice question: {question_id}")
     if any(row["element_id"] not in element_ids for row in links):
         raise AdminExportError("element_sources contains an unknown element_id")
     if any(row["source_id"] not in source_ids for row in links):
@@ -256,6 +305,10 @@ def build_export(
             "databaseByteSize": manifest["byteSize"],
             "sourceSpec": manifest["sourceSpec"],
             "sourceSha256": manifest["sourceSha256"],
+            "conceptQuestionBankVersion": manifest["conceptQuestionBankVersion"],
+            "conceptQuestionBankSha256": manifest["conceptQuestionBankSha256"],
+            "conceptQuestionModelVersion": manifest["conceptQuestionModelVersion"],
+            "conceptQuestionReleaseStatus": manifest["conceptQuestionReleaseStatus"],
             "manifestSha256": sha256_file(manifest_path),
             "metadata": metadata,
         },

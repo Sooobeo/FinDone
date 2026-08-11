@@ -1,6 +1,7 @@
 import re
 import sqlite3
 import unittest
+from contextlib import closing
 from pathlib import Path
 
 from tools import build_content_db as generator
@@ -10,6 +11,17 @@ ASSET_DATABASE = Path(__file__).parents[1] / "app" / "src" / "main" / "assets" /
 
 
 class FormulaMarkdownGeneratorTest(unittest.TestCase):
+    def test_concept_question_bank_is_hash_valid_and_covers_every_element(self) -> None:
+        _, elements, _, _ = generator.parse_spec(generator.DEFAULT_SPEC)
+        bank = generator.load_concept_question_bank(
+            expected_element_ids=(element.element_id for element in elements),
+        )
+
+        self.assertEqual(405, bank["questionCount"])
+        self.assertEqual("bootstrap_not_reviewed", bank["releaseStatus"])
+        self.assertEqual(405, len(bank["questions"]))
+        self.assertTrue(all(len(question["choices"]) == 5 for question in bank["questions"]))
+
     def test_explicit_formula_boundaries_keep_hangul_outside_math(self) -> None:
         source = "자산 `(A)` = 부채 `(L)` + 자본 `(E)`"
         relation = generator.clean_inline_markdown(source)
@@ -101,7 +113,7 @@ class FormulaMarkdownGeneratorTest(unittest.TestCase):
             )
 
     def test_packaged_formula_cards_have_no_code_or_hangul_math_fallback(self) -> None:
-        with sqlite3.connect(ASSET_DATABASE) as database:
+        with closing(sqlite3.connect(ASSET_DATABASE)) as database:
             rows = database.execute("SELECT expression FROM formula_cards").fetchall()
             all_visible_rows = database.execute(
                 """SELECT c.definition, c.intuition, c.scope_notes,
@@ -111,8 +123,28 @@ class FormulaMarkdownGeneratorTest(unittest.TestCase):
             version = database.execute(
                 "SELECT value FROM metadata WHERE key = 'content_db_version'"
             ).fetchone()
+            schema_version = database.execute("PRAGMA user_version").fetchone()
+            question_count = database.execute(
+                "SELECT COUNT(*) FROM concept_questions"
+            ).fetchone()
+            choice_count = database.execute(
+                "SELECT COUNT(*) FROM concept_question_choices"
+            ).fetchone()
+            malformed_questions = database.execute(
+                """
+                SELECT q.question_id FROM concept_questions q
+                JOIN concept_question_choices c USING(question_id)
+                GROUP BY q.question_id, q.element_id
+                HAVING COUNT(*) != 5 OR SUM(c.is_correct) != 1
+                   OR SUM(c.is_correct = 1 AND c.element_id = q.element_id) != 1
+                """
+            ).fetchall()
 
         self.assertEqual((str(generator.CONTENT_DB_VERSION),), version)
+        self.assertEqual((generator.SCHEMA_VERSION,), schema_version)
+        self.assertEqual((405,), question_count)
+        self.assertEqual((2025,), choice_count)
+        self.assertEqual([], malformed_questions)
         self.assertEqual(135, len(rows))
         self.assertEqual(135, sum("$$" in expression for (expression,) in rows))
         self.assertFalse(any("`" in value for row in all_visible_rows for value in row))

@@ -32,7 +32,7 @@ class AdminContentExportTest(unittest.TestCase):
         self.assertEqual("ACC-01", fixture[0]["elementId"])
         self.assertEqual("calculation", fixture[0]["mode"])
         self.assertEqual("published", fixture[0]["status"])
-        self.assertEqual("packaged-v6", fixture[0]["updatedAt"])
+        self.assertEqual("packaged-v7", fixture[0]["updatedAt"])
 
         source_fixture = exporter.build_frontend_sources_fixture(snapshot)
         self.assertEqual(174, len(source_fixture))

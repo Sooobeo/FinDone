@@ -46,6 +46,10 @@ data class ContentManifest(
     val byteSize: Long,
     val sourceSpec: String,
     val sourceSha256: String,
+    val conceptQuestionBankVersion: Int,
+    val conceptQuestionBankSha256: String,
+    val conceptQuestionModelVersion: String,
+    val conceptQuestionReleaseStatus: String,
     val rowCounts: Map<String, Int>,
     val domainElementCounts: Map<String, Int>,
 )

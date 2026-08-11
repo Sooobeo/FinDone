@@ -42,13 +42,51 @@ class QuizEngineTest {
 
             assertEquals(target.id, question.elementId)
             assertEquals(QuizMode.CONCEPT, question.mode)
-            assertEquals(4, question.choices?.size)
-            assertEquals(4, question.choices?.map { it.text }?.distinct()?.size)
+            assertEquals(5, question.choices?.size)
+            assertEquals(5, question.choices?.map { it.text }?.distinct()?.size)
             assertTrue(question.choices.orEmpty().any {
                 it.id == question.canonicalAnswer && it.sourceElementId == target.id
             })
             assertTrue(question.audit.passed)
         }
+    }
+
+    @Test
+    fun `curated bank renderer keeps five choices and one target answer`() {
+        val target = curriculum.first()
+        val curated = CuratedConceptQuestion(
+            questionId = "${target.id}-definition_to_term-01",
+            elementId = target.id,
+            questionType = "definition_to_term",
+            stem = "다음 설명에 가장 부합하는 개념은?",
+            explanation = "정답 개념을 검토된 사실 레코드와 대조합니다.",
+            coreRelation = target.coreRelation,
+            difficulty = 1,
+            modelVersion = "test-ranker-v1",
+            reviewStatus = "bootstrap",
+            sourceFactIds = listOf("${target.id}:definition:01"),
+            choices = curriculum.take(5).mapIndexed { index, element ->
+                CuratedConceptChoice(
+                    key = "ABCDE"[index].toString(),
+                    text = element.title,
+                    elementId = element.id,
+                    explanation = "${element.title}의 검토된 정의입니다.",
+                    isCorrect = element.id == target.id,
+                )
+            },
+        )
+
+        val first = QuizEngine.generateConceptFromBank(curated, seed = 42L)
+        val repeated = QuizEngine.generateConceptFromBank(curated, seed = 42L)
+
+        assertEquals(first, repeated)
+        assertEquals(5, first.choices?.size)
+        assertEquals(5, first.choices?.map { it.text }?.distinct()?.size)
+        assertEquals(
+            target.id,
+            first.choices.orEmpty().single { it.id == first.canonicalAnswer }.sourceElementId,
+        )
+        assertTrue(first.audit.passed)
     }
 
     @Test

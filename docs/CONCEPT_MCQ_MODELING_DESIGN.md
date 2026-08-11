@@ -338,21 +338,23 @@ CREATE TABLE concept_questions (
     question_type TEXT NOT NULL,
     stem TEXT NOT NULL,
     explanation TEXT NOT NULL,
-    difficulty INTEGER NOT NULL CHECK (difficulty BETWEEN 1 AND 5),
+    difficulty INTEGER NOT NULL CHECK (difficulty BETWEEN 1 AND 3),
     model_version TEXT NOT NULL,
+    review_status TEXT NOT NULL,
     source_fact_ids_json TEXT NOT NULL,
-    display_order INTEGER NOT NULL
+    display_order INTEGER NOT NULL UNIQUE
 );
 
 CREATE TABLE concept_question_choices (
     question_id TEXT NOT NULL REFERENCES concept_questions(question_id) ON DELETE CASCADE,
     choice_key TEXT NOT NULL CHECK (choice_key IN ('A','B','C','D','E')),
-    choice_text TEXT NOT NULL,
+    choice_order INTEGER NOT NULL CHECK (choice_order BETWEEN 0 AND 4),
+    element_id TEXT NOT NULL REFERENCES elements(element_id),
+    text TEXT NOT NULL,
     explanation TEXT NOT NULL,
     is_correct INTEGER NOT NULL CHECK (is_correct IN (0,1)),
-    display_order INTEGER NOT NULL CHECK (display_order BETWEEN 0 AND 4),
     PRIMARY KEY (question_id, choice_key),
-    UNIQUE (question_id, display_order)
+    UNIQUE (question_id, choice_order)
 );
 ```
 
@@ -503,6 +505,7 @@ CI는 먼저 모델링 테스트를 실행하고, 질문 은행의 입력 해시
 - [multilingual-e5-base 모델 카드](https://huggingface.co/intfloat/multilingual-e5-base)
 - [multilingual MiniLM 모델 카드](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2)
 - [KURE-v1 모델 카드](https://huggingface.co/nlpai-lab/KURE-v1)
-- [BGE-M3 모델 카드](https://huggingface.co/BAAI/bge-m3)
+- [BGE-M3 원 논문](https://arxiv.org/abs/2402.03216)
+- [BGE-M3 공식 모델 카드](https://huggingface.co/BAAI/bge-m3)
 - [XGBoost Learning to Rank](https://xgboost.readthedocs.io/en/release_3.0.0/tutorials/learning_to_rank.html)
 - [scikit-learn GroupKFold](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GroupKFold.html)

@@ -14,6 +14,10 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
+import {
+  conceptModelExperiments,
+  type ConceptQualityGate,
+} from "@/lib/concept-model-report";
 import { getLocalModelOperationalMetrics } from "@/lib/data";
 import { localModelReport } from "@/lib/local-model-report";
 
@@ -32,12 +36,42 @@ function bytes(value: number) {
   return `${(value / 1024).toLocaleString("ko-KR", { maximumFractionDigits: 0 })} KB`;
 }
 
+function seconds(value: number) {
+  if (value < 60) return `${value.toFixed(1)}초`;
+  return `${Math.floor(value / 60)}분 ${Math.round(value % 60)}초`;
+}
+
+function conceptGateMetric(gate: ConceptQualityGate, value: number | boolean) {
+  if (typeof value === "boolean") return value ? "충족" : "미충족";
+  if (["answer-leak", "duplicate-choice", "ambiguous-question", "questions-per-element"].includes(gate.id)) {
+    return value.toLocaleString("ko-KR");
+  }
+  return percent(value);
+}
+
 export default async function ModelDashboardPage() {
   const report = localModelReport;
   const runtime = await getLocalModelOperationalMetrics();
   const training = report.training;
   const evaluation = report.evaluation;
   const performance = report.performance;
+  const conceptHistory = conceptModelExperiments;
+  const latestConcept = conceptHistory.experiments[0];
+  const completedConceptRuns = latestConcept.rankerRuns.filter(
+    (run) => run.status === "completed" && run.validation,
+  );
+  const bestByEmbedding = latestConcept.embeddings.map((embedding) => {
+    const runs = completedConceptRuns
+      .filter((run) => run.embeddingId === embedding.candidateId)
+      .sort((left, right) => (right.validation?.ndcgAt4 ?? 0) - (left.validation?.ndcgAt4 ?? 0));
+    return { ...embedding, bestRun: runs[0] };
+  });
+  const passedConceptGates = latestConcept.qualityGates.filter((gate) => gate.passed).length;
+  const conceptFinishedAt = new Intl.DateTimeFormat("ko-KR", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: "Asia/Seoul",
+  }).format(new Date(latestConcept.finishedAt));
   const maxCorpusCount = Math.max(
     training.reviewedElementCount,
     training.cataloguedSourceCount,
@@ -68,13 +102,145 @@ export default async function ModelDashboardPage() {
       <PageHeader
         eyebrow="LOCAL CONTENT MODEL"
         title="로컬 모델 현황"
-        description="외부 LLM API 없이 코드에 고정된 변환 규칙의 학습 반영량, 정확도, 처리 성능과 품질 게이트를 확인합니다."
+        description="외부 LLM API 없이 실행한 개념형 오지선다 랭커 실험과 코드 기반 콘텐츠 변환 규칙을 분리해 확인합니다."
         actions={
-          <span className={`model-health-badge ${report.status === "passed" ? "passed" : "failed"}`}>
-            <ShieldCheck size={15} /> {report.status === "passed" ? "릴리스 게이트 통과" : "릴리스 차단"}
+          <span className={`model-health-badge ${latestConcept.releaseReady ? "passed" : "failed"}`}>
+            <ShieldCheck size={15} /> {latestConcept.releaseReady ? "문항은행 릴리스 가능" : "사람 검토 전 · 릴리스 차단"}
           </span>
         }
       />
+
+      <div className="model-section-heading">
+        <div><p className="eyebrow">CONCEPT MCQ RANKER</p><h2>개념형 오지선다 모델</h2></div>
+        <p>train으로 학습하고 validation으로만 구성을 선택한 뒤, 선택된 1개 구성에만 test를 실행합니다.</p>
+      </div>
+
+      <section className={`panel concept-model-hero ${latestConcept.releaseReady ? "ready" : "blocked"}`}>
+        <div className="concept-model-status">
+          <span><Cpu size={24} /></span>
+          <div>
+            <p className="eyebrow">LATEST EXPERIMENT</p>
+            <h2>{latestConcept.releaseReady ? "릴리스 준비 완료" : "Bootstrap · 사람 test 필요"}</h2>
+            <code>{latestConcept.experimentId}</code>
+          </div>
+        </div>
+        <div className="concept-model-review-progress">
+          <div><span>독립 사람 test 커버리지</span><strong>{percent(latestConcept.labels.humanTestCoverage)}</strong></div>
+          <div className="model-readiness-track" role="progressbar" aria-label="독립 사람 test 커버리지" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(latestConcept.labels.humanTestCoverage * 100)}>
+            <span style={{ width: `${latestConcept.labels.humanTestCoverage * 100}%` }} />
+          </div>
+          <small>{latestConcept.labels.coveredTestQuestionCount}/{latestConcept.labels.testQuestionCount} test 문항 라벨 완료</small>
+        </div>
+        <div className="concept-model-run-meta">
+          <small>선택 구성</small>
+          <strong>{latestConcept.selection.embeddingId}</strong>
+          <code>{latestConcept.selection.retrievalProfileId} · {latestConcept.selection.rankerId}</code>
+          <span>{conceptFinishedAt} · {seconds(latestConcept.durationSeconds)}</span>
+        </div>
+      </section>
+
+      <section className="model-metric-grid concept-model-metrics" aria-label="개념형 모델 핵심 지표">
+        <article className="panel model-metric-card">
+          <span><Database size={19} /></span>
+          <small>학습 단위</small>
+          <strong>{latestConcept.dataset.elementCount}<em>요소</em></strong>
+          <p>사실 {latestConcept.dataset.factCount}개 · 생성 문항 {latestConcept.dataset.questionCount}개</p>
+        </article>
+        <article className="panel model-metric-card">
+          <span><Layers3 size={19} /></span>
+          <small>전체 오답 후보</small>
+          <strong>{latestConcept.dataset.candidateCount.toLocaleString("ko-KR")}<em>쌍</em></strong>
+          <p>문항당 4개 오답을 골라 5지선다 {latestConcept.dataset.questionCount}개 생성</p>
+        </article>
+        <article className="panel model-metric-card">
+          <span><GitCompareArrows size={19} /></span>
+          <small>선택 구성 test NDCG@4</small>
+          <strong>{percent(latestConcept.evaluation.test.ndcgAt4)}</strong>
+          <p>Precision@4 {percent(latestConcept.evaluation.test.precisionAt4)} · Recall@20 {percent(latestConcept.evaluation.test.retrievalRecallAt20)}</p>
+        </article>
+        <article className="panel model-metric-card">
+          <span><FileCheck2 size={19} /></span>
+          <small>사람 라벨 학습률</small>
+          <strong>{percent(latestConcept.labels.humanLabelCompletion)}</strong>
+          <p>{latestConcept.labels.humanLabelCount.toLocaleString("ko-KR")}/{(latestConcept.labels.humanLabelCount + latestConcept.labels.weakLabelCount).toLocaleString("ko-KR")} 후보 라벨 · 현재 수치는 약지도 재현도</p>
+        </article>
+      </section>
+
+      <section className="panel concept-model-warning" role="status">
+        <Activity size={20} />
+        <div><strong>100%에 가까운 수치를 실제 문제 품질 100%로 해석하면 안 됩니다.</strong><p>{latestConcept.labels.metricWarning ?? "독립 사람 test가 완료되기 전까지 약지도 규칙 재현 성능입니다."}</p></div>
+        <span>{passedConceptGates}/{latestConcept.qualityGates.length} 게이트 통과</span>
+      </section>
+
+      <section className="model-dashboard-columns concept-experiment-columns">
+        <article className="panel">
+          <div className="panel-heading">
+            <div><p className="eyebrow">EMBEDDING BAKE-OFF</p><h2>임베딩 후보 비교</h2></div>
+            <span className="panel-kicker">완료 랭커 실행 {completedConceptRuns.length}개</span>
+          </div>
+          <div className="concept-embedding-list">
+            {bestByEmbedding.map((embedding) => {
+              const selected = embedding.candidateId === latestConcept.selection.embeddingId;
+              return (
+                <div className={selected ? "selected" : ""} key={embedding.candidateId}>
+                  <span>{selected ? <CheckCircle2 size={14} /> : <Cpu size={14} />}</span>
+                  <div><strong>{embedding.candidateId}</strong><small>{embedding.modelId}</small></div>
+                  <dl><dt>best val NDCG@4</dt><dd>{embedding.bestRun?.validation ? percent(embedding.bestRun.validation.ndcgAt4) : "실행 실패"}</dd></dl>
+                  <dl><dt>인코딩</dt><dd>{embedding.encodeSeconds == null ? "기준선" : `${seconds(embedding.encodeSeconds)}${embedding.cacheHit ? " · 캐시" : ""}`}</dd></dl>
+                </div>
+              );
+            })}
+          </div>
+          <p className="model-panel-note">최고 validation과 {percent(latestConcept.selection.selectionTolerance)}p 이내면 더 가벼운 임베딩·랭커를 우선하고, 같은 비용군에서 validation 최고 조합을 선택합니다.</p>
+        </article>
+
+        <article className="panel model-gates-panel">
+          <div className="panel-heading">
+            <div><p className="eyebrow">RELEASE GATES</p><h2>문항은행 품질 게이트</h2></div>
+            <ShieldCheck size={19} className="subtle-icon" />
+          </div>
+          <div className="model-gate-list concept-gate-list">
+            {latestConcept.qualityGates.map((gate) => (
+              <div key={gate.id}>
+                <span className={gate.passed ? "passed" : "failed"}>{gate.passed ? <CheckCircle2 size={15} /> : <Activity size={15} />}</span>
+                <div><strong>{gate.label}</strong><small>측정 {conceptGateMetric(gate, gate.measured)} · 기준 {conceptGateMetric(gate, gate.threshold)}</small></div>
+                <b>{gate.passed ? "PASS" : "BLOCK"}</b>
+              </div>
+            ))}
+          </div>
+        </article>
+      </section>
+
+      <section className="panel concept-experiment-history">
+        <div className="panel-heading">
+          <div><p className="eyebrow">EXPERIMENT LOG</p><h2>누적 실험 기록</h2></div>
+          <span className="panel-kicker">Markdown 보고서 {conceptHistory.experiments.length}개</span>
+        </div>
+        <div className="table-scroll">
+          <table className="data-table">
+            <thead><tr><th>실험</th><th>임베딩</th><th>랭커</th><th>Val NDCG@4</th><th>Test NDCG@4</th><th>사람 test</th><th>상태</th><th>보고서</th></tr></thead>
+            <tbody>
+              {conceptHistory.experiments.map((experiment) => (
+                <tr key={experiment.experimentId}>
+                  <td><code>{experiment.experimentId}</code></td>
+                  <td>{experiment.selection.embeddingId}</td>
+                  <td>{experiment.selection.rankerId}</td>
+                  <td>{percent(experiment.evaluation.validation.ndcgAt4)}</td>
+                  <td>{percent(experiment.evaluation.test.ndcgAt4)}</td>
+                  <td>{percent(experiment.labels.humanTestCoverage)}</td>
+                  <td><span className={`model-history-status ${experiment.releaseReady ? "ready" : "blocked"}`}>{experiment.releaseReady ? "READY" : "BOOTSTRAP"}</span></td>
+                  <td><code>{experiment.artifacts.markdownReport.split("/").at(-1)}</code></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div className="model-section-heading rule-model-heading">
+        <div><p className="eyebrow">DETERMINISTIC TRANSFORMER</p><h2>콘텐츠 변환 규칙 모델</h2></div>
+        <p>아래 100%는 머신러닝 정확도가 아니라 고정 규칙의 스키마·골든셋 커버리지입니다.</p>
+      </div>
 
       <section className="panel model-readiness-hero">
         <div className="model-score-block">

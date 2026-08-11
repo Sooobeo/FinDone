@@ -29,7 +29,7 @@ class AdminSupabaseImportTest(unittest.TestCase):
 
     def test_summary_matches_packaged_content(self) -> None:
         summary = importer.snapshot_summary(self.snapshot)
-        self.assertEqual(6, summary["contentDbVersion"])
+        self.assertEqual(7, summary["contentDbVersion"])
         self.assertEqual(135, summary["rowCounts"]["elements"])
         self.assertEqual(174, summary["rowCounts"]["sources"])
 

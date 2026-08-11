@@ -12,7 +12,7 @@
 6. 검증 작업을 이어서 claim해 내려받은 산출물을 독립적으로 다시 검사합니다.
 7. 통과하면 service-role RPC가 같은 트랜잭션에서 릴리스를 `published`로 만들고 `stable`을 교체합니다.
 
-Android schema v1에 없는 distractor revision은 누락하지 않고 릴리스를 실패시킵니다. `user.sqlite3`와 Android 소스 asset은 Worker가 읽거나 쓰지 않습니다.
+Android schema v2의 5지선다 문항은행을 그대로 보존·검증하며, 문항은행 상태가 `release_ready`가 아니면 stable 릴리스를 차단합니다. 기존 distractor revision은 문항/선택지 ID가 없어 임의 투영하지 않고 실패시킵니다. `user.sqlite3`와 Android 소스 asset은 Worker가 읽거나 쓰지 않습니다.
 
 ## 실행
 

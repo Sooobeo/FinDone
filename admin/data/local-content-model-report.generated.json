@@ -1,9 +1,9 @@
 {
   "content": {
-    "changedFromPackagedBaseline": false,
-    "contentDbVersion": 6,
+    "changedFromPackagedBaseline": true,
+    "contentDbVersion": 7,
     "multipleSourceElementCount": 113,
-    "previousDatabaseSha256": "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198",
+    "previousDatabaseSha256": "994b42d41f19ceef2814000d6cdecc5ac39368ef5352e6c76bbd535187f385ef",
     "requiredFieldCount": 2160,
     "resolvedRequiredFieldCount": 2160,
     "rowCounts": {
@@ -15,7 +15,7 @@
       "knowledge_fts": 135,
       "sources": 174
     },
-    "schemaVersion": 1,
+    "schemaVersion": 2,
     "sourceTypes": {
       "api": 9,
       "book": 13,
@@ -28,11 +28,9 @@
   },
   "evaluation": {
     "buildHashes": [
-      "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198",
-      "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198",
-      "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198",
-      "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198",
-      "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198"
+      "e70bf9db21be53392262933c65476b7e3136e873b6aa2cb01339132900e235b8",
+      "e70bf9db21be53392262933c65476b7e3136e873b6aa2cb01339132900e235b8",
+      "e70bf9db21be53392262933c65476b7e3136e873b6aa2cb01339132900e235b8"
     ],
     "caseAccuracy": 1.0,
     "caseAccuracyWilson95LowerBound": 0.72246,
@@ -82,7 +80,7 @@
       }
     ]
   },
-  "generatedAt": "2026-08-11T11:31:00.617827+00:00",
+  "generatedAt": "2026-08-11T16:18:13.454356+00:00",
   "model": {
     "externalLlmApiCalls": 0,
     "name": "FinDone Local Content Model",
@@ -100,20 +98,18 @@
     "version": "findone-local-content-v1"
   },
   "performance": {
-    "benchmarkRounds": 5,
+    "benchmarkRounds": 3,
     "buildDurationsMs": [
-      185.35,
-      185.98,
-      179.22,
-      198.22,
-      194.27
+      698.0,
+      663.47,
+      684.5
     ],
-    "databaseByteSize": 921600,
-    "databaseSha256": "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198",
-    "elementsPerSecond": 725.89,
-    "maximumBuildMs": 198.22,
-    "medianBuildMs": 185.98,
-    "minimumBuildMs": 179.22
+    "databaseByteSize": 1900544,
+    "databaseSha256": "e70bf9db21be53392262933c65476b7e3136e873b6aa2cb01339132900e235b8",
+    "elementsPerSecond": 197.22,
+    "maximumBuildMs": 698.0,
+    "medianBuildMs": 684.5,
+    "minimumBuildMs": 663.47
   },
   "reportVersion": 1,
   "status": "passed",

@@ -10,6 +10,9 @@ import com.findone.app.model.ContentElement
 import com.findone.app.model.ContentManifest
 import com.findone.app.model.ContentSource
 import com.findone.app.model.Domain
+import com.findone.app.quiz.CuratedConceptChoice
+import com.findone.app.quiz.CuratedConceptQuestion
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.Closeable
 import java.io.File
@@ -21,6 +24,34 @@ import java.util.Locale
 
 class ContentIntegrityException(message: String, cause: Throwable? = null) :
     IllegalStateException(message, cause)
+
+private data class CuratedQuestionBuilder(
+    val questionId: String,
+    val elementId: String,
+    val questionType: String,
+    val stem: String,
+    val explanation: String,
+    val coreRelation: String,
+    val difficulty: Int,
+    val modelVersion: String,
+    val reviewStatus: String,
+    val sourceFactIds: List<String>,
+    val choices: MutableList<CuratedConceptChoice> = mutableListOf(),
+) {
+    fun build() = CuratedConceptQuestion(
+        questionId = questionId,
+        elementId = elementId,
+        questionType = questionType,
+        stem = stem,
+        explanation = explanation,
+        coreRelation = coreRelation,
+        difficulty = difficulty,
+        modelVersion = modelVersion,
+        reviewStatus = reviewStatus,
+        sourceFactIds = sourceFactIds,
+        choices = choices.toList(),
+    )
+}
 
 /**
  * Read-only access to the signed content asset.
@@ -86,6 +117,49 @@ class ContentRepository(context: Context) : Closeable {
                    WHERE e.element_id = ? LIMIT 1""".trimIndent(),
                 listOf(normalizedId),
             ) { statement -> if (statement.step()) statement.contentElement() else null }
+        }
+    }
+
+    fun conceptQuestions(): List<CuratedConceptQuestion> = synchronized(queryLock) {
+        database.query(
+            """
+            SELECT q.question_id, q.element_id, q.question_type, q.stem,
+                   q.explanation, e.core_relation, q.difficulty, q.model_version,
+                   q.review_status, q.source_fact_ids_json,
+                   c.choice_key, c.text, c.element_id, c.explanation, c.is_correct
+            FROM concept_questions q
+            JOIN elements e ON e.element_id = q.element_id
+            JOIN concept_question_choices c ON c.question_id = q.question_id
+            ORDER BY q.display_order, c.choice_order
+            """.trimIndent()
+        ) { statement ->
+            val builders = linkedMapOf<String, CuratedQuestionBuilder>()
+            while (statement.step()) {
+                val questionId = statement.getText(0)
+                val builder = builders.getOrPut(questionId) {
+                    val sourceJson = JSONArray(statement.getText(9))
+                    CuratedQuestionBuilder(
+                        questionId = questionId,
+                        elementId = statement.getText(1),
+                        questionType = statement.getText(2),
+                        stem = statement.getText(3),
+                        explanation = statement.getText(4),
+                        coreRelation = statement.getText(5),
+                        difficulty = statement.getLong(6).toInt(),
+                        modelVersion = statement.getText(7),
+                        reviewStatus = statement.getText(8),
+                        sourceFactIds = List(sourceJson.length()) { sourceJson.getString(it) },
+                    )
+                }
+                builder.choices += CuratedConceptChoice(
+                    key = statement.getText(10),
+                    text = statement.getText(11),
+                    elementId = statement.getText(12),
+                    explanation = statement.getText(13),
+                    isCorrect = statement.getLong(14) == 1L,
+                )
+            }
+            builders.values.map(CuratedQuestionBuilder::build)
         }
     }
 
@@ -204,7 +278,8 @@ class ContentRepository(context: Context) : Closeable {
         )
         private val VERIFIED_TABLES = setOf(
             "metadata", "domains", "elements", "concept_cards", "formula_cards",
-            "sources", "element_sources", "knowledge_fts",
+            "concept_questions", "concept_question_choices", "sources",
+            "element_sources", "knowledge_fts",
         )
         private const val ELEMENT_PROJECTION = """
             e.element_id, e.domain_id, e.title, e.core_relation, e.scope_notes,
@@ -224,6 +299,11 @@ class ContentRepository(context: Context) : Closeable {
                 byteSize = json.getLong("byteSize"),
                 sourceSpec = json.getString("sourceSpec"),
                 sourceSha256 = json.getString("sourceSha256").lowercase(Locale.ROOT),
+                conceptQuestionBankVersion = json.getInt("conceptQuestionBankVersion"),
+                conceptQuestionBankSha256 = json.getString("conceptQuestionBankSha256")
+                    .lowercase(Locale.ROOT),
+                conceptQuestionModelVersion = json.getString("conceptQuestionModelVersion"),
+                conceptQuestionReleaseStatus = json.getString("conceptQuestionReleaseStatus"),
                 rowCounts = json.getJSONObject("rowCounts").toIntMap(),
                 domainElementCounts = json.getJSONObject("domainElementCounts").toIntMap(),
             )
@@ -263,14 +343,15 @@ class ContentRepository(context: Context) : Closeable {
         }
 
         private fun validateManifestInvariants(manifest: ContentManifest) {
-            if (manifest.manifestVersion != 1 || manifest.schemaVersion != 1) {
+            if (manifest.manifestVersion != 1 || manifest.schemaVersion != 2) {
                 throw ContentIntegrityException("Unsupported content manifest/schema version")
             }
             if (manifest.databaseAsset != "content.sqlite3") {
                 throw ContentIntegrityException("Unsupported database asset name")
             }
             if (!manifest.sha256.matches(Regex("[0-9a-f]{64}")) ||
-                !manifest.sourceSha256.matches(Regex("[0-9a-f]{64}"))
+                !manifest.sourceSha256.matches(Regex("[0-9a-f]{64}")) ||
+                !manifest.conceptQuestionBankSha256.matches(Regex("[0-9a-f]{64}"))
             ) {
                 throw ContentIntegrityException("Malformed content SHA-256")
             }
@@ -282,8 +363,16 @@ class ContentRepository(context: Context) : Closeable {
             }
             if (manifest.rowCounts["concept_cards"] != 135 ||
                 manifest.rowCounts["formula_cards"] != 135 ||
+                manifest.rowCounts["concept_questions"] != 405 ||
+                manifest.rowCounts["concept_question_choices"] != 2025 ||
                 manifest.rowCounts["knowledge_fts"] != 135
-            ) throw ContentIntegrityException("Manifest card/FTS invariant failed")
+            ) throw ContentIntegrityException("Manifest card/question/FTS invariant failed")
+            if (manifest.conceptQuestionBankVersion != 1 ||
+                manifest.conceptQuestionModelVersion.isBlank() ||
+                manifest.conceptQuestionReleaseStatus !in setOf(
+                    "bootstrap_not_reviewed", "candidate", "release_ready"
+                )
+            ) throw ContentIntegrityException("Manifest question-bank invariant failed")
             if (manifest.domainElementCounts != EXPECTED_DOMAIN_COUNTS) {
                 throw ContentIntegrityException("Manifest domain row counts are not canonical")
             }
@@ -350,6 +439,18 @@ class ContentRepository(context: Context) : Closeable {
                 if (domainCounts != EXPECTED_DOMAIN_COUNTS) throw ContentIntegrityException("Database domain row counts are not canonical")
                 val specSha = connection.scalarText("SELECT value FROM metadata WHERE key = 'source_spec_sha256'")
                 if (!specSha.equals(manifest.sourceSha256, ignoreCase = true)) throw ContentIntegrityException("Database source-spec hash mismatch")
+                val bankSha = connection.scalarText(
+                    "SELECT value FROM metadata WHERE key = 'concept_question_bank_sha256'"
+                )
+                if (!bankSha.equals(manifest.conceptQuestionBankSha256, ignoreCase = true)) {
+                    throw ContentIntegrityException("Database concept-question bank hash mismatch")
+                }
+                val bankStatus = connection.scalarText(
+                    "SELECT value FROM metadata WHERE key = 'concept_question_release_status'"
+                )
+                if (bankStatus != manifest.conceptQuestionReleaseStatus) {
+                    throw ContentIntegrityException("Database concept-question status mismatch")
+                }
                 val foreignKeyError = connection.query("PRAGMA foreign_key_check") { it.step() }
                 if (foreignKeyError) throw ContentIntegrityException("SQLite foreign_key_check failed")
                 // This statement proves the bundled driver actually loaded FTS5 and BM25.

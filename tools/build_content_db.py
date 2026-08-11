@@ -18,16 +18,17 @@ import sqlite3
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Sequence
+from typing import Any, Iterable, Sequence
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SPEC = ROOT / "finance_interview_app_final_spec.md"
 DEFAULT_ASSET_DIR = ROOT / "app" / "src" / "main" / "assets"
 LEARNING_COPY_DIR = ROOT / "content" / "learning-copy"
+DEFAULT_QUESTION_BANK = ROOT / "content" / "model" / "concept-question-bank.generated.json"
 
-SCHEMA_VERSION = 1
-CONTENT_DB_VERSION = 6
+SCHEMA_VERSION = 2
+CONTENT_DB_VERSION = 7
 DOMAIN_ORDER = ("ACC", "CF", "INV", "FI", "DER", "EQV", "IBT")
 EXPECTED_DOMAIN_COUNTS = {
     "ACC": 12,
@@ -270,6 +271,107 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def stable_json_bytes(value: Any) -> bytes:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+
+
+def load_concept_question_bank(
+    path: Path = DEFAULT_QUESTION_BANK,
+    expected_element_ids: Iterable[str] | None = None,
+) -> dict[str, Any]:
+    """Load and strictly validate the build-time five-choice question bank."""
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise ValueError(f"Could not read concept question bank: {path}") from error
+    if not isinstance(payload, dict):
+        raise ValueError("Concept question bank must contain an object")
+
+    expected_hash = payload.get("bankSha256")
+    unsigned = dict(payload)
+    unsigned.pop("bankSha256", None)
+    actual_hash = sha256_bytes(stable_json_bytes(unsigned))
+    if expected_hash != actual_hash:
+        raise ValueError("Concept question bank SHA-256 is invalid")
+    if payload.get("bankVersion") != 1:
+        raise ValueError("Unsupported concept question bank version")
+    if payload.get("releaseStatus") not in {
+        "bootstrap_not_reviewed", "candidate", "release_ready"
+    }:
+        raise ValueError("Concept question bank has an invalid release status")
+    if not isinstance(payload.get("modelVersion"), str) or not payload["modelVersion"].strip():
+        raise ValueError("Concept question bank model version is missing")
+
+    questions = payload.get("questions")
+    if not isinstance(questions, list) or len(questions) != payload.get("questionCount"):
+        raise ValueError("Concept question bank count differs from its questions")
+    if len(questions) != 405:
+        raise ValueError(f"Expected 405 concept questions, found {len(questions)}")
+    expected_ids = set(expected_element_ids or ())
+    seen_question_ids: set[str] = set()
+    questions_per_element: dict[str, int] = {}
+    for raw_question in questions:
+        if not isinstance(raw_question, dict):
+            raise ValueError("Concept question rows must be objects")
+        question_id = raw_question.get("questionId")
+        element_id = raw_question.get("elementId")
+        if not isinstance(question_id, str) or not question_id.strip():
+            raise ValueError("Concept question id is missing")
+        if question_id in seen_question_ids:
+            raise ValueError(f"Duplicate concept question id: {question_id}")
+        seen_question_ids.add(question_id)
+        if not isinstance(element_id, str) or (expected_ids and element_id not in expected_ids):
+            raise ValueError(f"Concept question references an unknown element: {element_id}")
+        questions_per_element[element_id] = questions_per_element.get(element_id, 0) + 1
+        for field in ("questionType", "stem", "explanation", "modelVersion", "reviewStatus"):
+            if not isinstance(raw_question.get(field), str) or not raw_question[field].strip():
+                raise ValueError(f"{question_id} has an empty {field}")
+        difficulty = raw_question.get("difficulty")
+        if not isinstance(difficulty, int) or difficulty not in (1, 2, 3):
+            raise ValueError(f"{question_id} has an invalid difficulty")
+        fact_ids = raw_question.get("sourceFactIds")
+        if not isinstance(fact_ids, list) or not fact_ids or any(
+            not isinstance(item, str) or not item.strip() for item in fact_ids
+        ):
+            raise ValueError(f"{question_id} has invalid source fact ids")
+        choices = raw_question.get("choices")
+        if not isinstance(choices, list) or len(choices) != 5:
+            raise ValueError(f"{question_id} must contain five choices")
+        if [choice.get("key") for choice in choices if isinstance(choice, dict)] != list("ABCDE"):
+            raise ValueError(f"{question_id} choice keys must be A through E")
+        choice_texts: set[str] = set()
+        correct_choices: list[dict[str, Any]] = []
+        for choice in choices:
+            if not isinstance(choice, dict):
+                raise ValueError(f"{question_id} choices must be objects")
+            choice_element_id = choice.get("elementId")
+            text = choice.get("text")
+            explanation = choice.get("explanation")
+            if expected_ids and choice_element_id not in expected_ids:
+                raise ValueError(f"{question_id} choice references {choice_element_id}")
+            if not isinstance(text, str) or not text.strip() or text in choice_texts:
+                raise ValueError(f"{question_id} has an empty or duplicate choice")
+            choice_texts.add(text)
+            if not isinstance(explanation, str) or not explanation.strip():
+                raise ValueError(f"{question_id} choice explanation is empty")
+            if not isinstance(choice.get("isCorrect"), bool):
+                raise ValueError(f"{question_id} choice correctness is invalid")
+            if choice["isCorrect"]:
+                correct_choices.append(choice)
+        if len(correct_choices) != 1 or correct_choices[0]["elementId"] != element_id:
+            raise ValueError(f"{question_id} must have one target-element answer")
+    if expected_ids and set(questions_per_element) != expected_ids:
+        raise ValueError("Concept question coverage differs from canonical elements")
+    if set(questions_per_element.values()) != {3}:
+        raise ValueError("Every element must have exactly three concept questions")
+    return payload
 
 
 def split_markdown_row(line: str) -> list[str]:
@@ -1884,6 +1986,31 @@ CREATE TABLE formula_cards (
     source_ids_json TEXT NOT NULL
 ) WITHOUT ROWID;
 
+CREATE TABLE concept_questions (
+    question_id TEXT PRIMARY KEY NOT NULL,
+    element_id TEXT NOT NULL REFERENCES elements(element_id) ON DELETE CASCADE,
+    question_type TEXT NOT NULL,
+    stem TEXT NOT NULL,
+    explanation TEXT NOT NULL,
+    difficulty INTEGER NOT NULL CHECK (difficulty BETWEEN 1 AND 3),
+    model_version TEXT NOT NULL,
+    review_status TEXT NOT NULL,
+    source_fact_ids_json TEXT NOT NULL,
+    display_order INTEGER NOT NULL UNIQUE
+) WITHOUT ROWID;
+
+CREATE TABLE concept_question_choices (
+    question_id TEXT NOT NULL REFERENCES concept_questions(question_id) ON DELETE CASCADE,
+    choice_key TEXT NOT NULL CHECK (choice_key IN ('A', 'B', 'C', 'D', 'E')),
+    choice_order INTEGER NOT NULL CHECK (choice_order BETWEEN 0 AND 4),
+    element_id TEXT NOT NULL REFERENCES elements(element_id),
+    text TEXT NOT NULL,
+    explanation TEXT NOT NULL,
+    is_correct INTEGER NOT NULL CHECK (is_correct IN (0, 1)),
+    PRIMARY KEY (question_id, choice_key),
+    UNIQUE (question_id, choice_order)
+) WITHOUT ROWID;
+
 CREATE TABLE element_sources (
     element_id TEXT NOT NULL REFERENCES elements(element_id) ON DELETE CASCADE,
     source_id TEXT NOT NULL REFERENCES sources(source_id),
@@ -1893,6 +2020,8 @@ CREATE TABLE element_sources (
 
 CREATE INDEX elements_domain_order_idx
     ON elements(domain_id, display_order);
+CREATE INDEX concept_questions_element_idx
+    ON concept_questions(element_id, difficulty, display_order);
 CREATE INDEX element_sources_source_idx
     ON element_sources(source_id, element_id);
 
@@ -1916,6 +2045,7 @@ def build_database(
     elements: Sequence[ElementDraft],
     sources: dict[str, SourceDraft],
     learning_copy: dict[str, LearningCopy],
+    question_bank: dict[str, Any],
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     file_descriptor, temporary_name = tempfile.mkstemp(
@@ -1940,6 +2070,10 @@ def build_database(
                     ("generator", "tools/build_content_db.py"),
                     ("domain_count", str(len(domains))),
                     ("element_count", str(len(elements))),
+                    ("concept_question_bank_version", str(question_bank["bankVersion"])),
+                    ("concept_question_bank_sha256", str(question_bank["bankSha256"])),
+                    ("concept_question_model_version", str(question_bank["modelVersion"])),
+                    ("concept_question_release_status", str(question_bank["releaseStatus"])),
                 ),
             )
             database.executemany(
@@ -2089,6 +2223,52 @@ def build_database(
                         f"{primary_source.locator} {element.spec_section_locator}",
                     ),
                 )
+            for question_order, question in enumerate(question_bank["questions"]):
+                database.execute(
+                    """
+                    INSERT INTO concept_questions(
+                        question_id, element_id, question_type, stem, explanation,
+                        difficulty, model_version, review_status,
+                        source_fact_ids_json, display_order
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        question["questionId"],
+                        question["elementId"],
+                        question["questionType"],
+                        question["stem"],
+                        question["explanation"],
+                        question["difficulty"],
+                        question["modelVersion"],
+                        question["reviewStatus"],
+                        json.dumps(
+                            question["sourceFactIds"],
+                            ensure_ascii=False,
+                            separators=(",", ":"),
+                        ),
+                        question_order,
+                    ),
+                )
+                database.executemany(
+                    """
+                    INSERT INTO concept_question_choices(
+                        question_id, choice_key, choice_order, element_id,
+                        text, explanation, is_correct
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        (
+                            question["questionId"],
+                            choice["key"],
+                            choice_order,
+                            choice["elementId"],
+                            choice["text"],
+                            choice["explanation"],
+                            int(choice["isCorrect"]),
+                        )
+                        for choice_order, choice in enumerate(question["choices"])
+                    ),
+                )
             database.commit()
             database.execute("PRAGMA optimize")
             database.execute("VACUUM")
@@ -2128,6 +2308,8 @@ def validate_database(path: Path) -> dict[str, int]:
                 "elements",
                 "concept_cards",
                 "formula_cards",
+                "concept_questions",
+                "concept_question_choices",
                 "sources",
                 "element_sources",
                 "knowledge_fts",
@@ -2138,6 +2320,8 @@ def validate_database(path: Path) -> dict[str, int]:
             "elements": 135,
             "concept_cards": 135,
             "formula_cards": 135,
+            "concept_questions": 405,
+            "concept_question_choices": 2025,
             "knowledge_fts": 135,
         }
         for table, expected in expected_fixed.items():
@@ -2151,6 +2335,43 @@ def validate_database(path: Path) -> dict[str, int]:
         if actual_domain_counts != EXPECTED_DOMAIN_COUNTS:
             raise ValueError(
                 f"Domain element counts differ: {actual_domain_counts}"
+            )
+        bank_hash = metadata.get("concept_question_bank_sha256", "")
+        if re.fullmatch(r"[0-9a-f]{64}", bank_hash) is None:
+            raise ValueError("Concept question bank metadata hash is invalid")
+        if metadata.get("concept_question_release_status") not in {
+            "bootstrap_not_reviewed", "candidate", "release_ready"
+        }:
+            raise ValueError("Concept question bank release metadata is invalid")
+        malformed_question_groups = database.execute(
+            """
+            SELECT q.question_id
+            FROM concept_questions q
+            LEFT JOIN concept_question_choices c ON c.question_id = q.question_id
+            GROUP BY q.question_id, q.element_id
+            HAVING COUNT(c.choice_key) != 5
+                OR SUM(c.is_correct) != 1
+                OR SUM(CASE WHEN c.is_correct = 1 AND c.element_id = q.element_id THEN 1 ELSE 0 END) != 1
+                OR COUNT(DISTINCT c.text) != 5
+            """
+        ).fetchall()
+        if malformed_question_groups:
+            raise ValueError(
+                "Concept questions must have five distinct choices and one target answer: "
+                f"{malformed_question_groups[:3]}"
+            )
+        malformed_question_coverage = database.execute(
+            """
+            SELECT e.element_id, COUNT(q.question_id)
+            FROM elements e LEFT JOIN concept_questions q USING(element_id)
+            GROUP BY e.element_id
+            HAVING COUNT(q.question_id) != 3
+            """
+        ).fetchall()
+        if malformed_question_coverage:
+            raise ValueError(
+                "Every element must have exactly three concept questions: "
+                f"{malformed_question_coverage[:3]}"
             )
         malformed_learning_structure = database.execute(
             """SELECT e.element_id FROM elements e
@@ -2404,6 +2625,7 @@ def write_manifest(
     spec_path: Path,
     spec_sha256: str,
     row_counts: dict[str, int],
+    question_bank: dict[str, Any],
 ) -> dict[str, object]:
     manifest: dict[str, object] = {
         "manifestVersion": 1,
@@ -2414,6 +2636,10 @@ def write_manifest(
         "byteSize": database_path.stat().st_size,
         "sourceSpec": spec_path.name,
         "sourceSha256": spec_sha256,
+        "conceptQuestionBankVersion": question_bank["bankVersion"],
+        "conceptQuestionBankSha256": question_bank["bankSha256"],
+        "conceptQuestionModelVersion": question_bank["modelVersion"],
+        "conceptQuestionReleaseStatus": question_bank["releaseStatus"],
         "rowCounts": row_counts,
         "domainElementCounts": EXPECTED_DOMAIN_COUNTS,
     }
@@ -2449,10 +2675,18 @@ def parse_spec(spec_path: Path) -> tuple[
     return domains, elements, sources, sha256_bytes(spec_bytes)
 
 
-def build(spec_path: Path, asset_dir: Path) -> dict[str, object]:
+def build(
+    spec_path: Path,
+    asset_dir: Path,
+    question_bank_path: Path = DEFAULT_QUESTION_BANK,
+) -> dict[str, object]:
     domains, elements, sources, spec_sha256 = parse_spec(spec_path)
     learning_copy = load_learning_copy(
         expected_element_ids=(element.element_id for element in elements)
+    )
+    question_bank = load_concept_question_bank(
+        question_bank_path,
+        expected_element_ids=(element.element_id for element in elements),
     )
     database_path = asset_dir / "content.sqlite3"
     manifest_path = asset_dir / "content-manifest.json"
@@ -2464,6 +2698,7 @@ def build(spec_path: Path, asset_dir: Path) -> dict[str, object]:
         elements,
         sources,
         learning_copy,
+        question_bank,
     )
     row_counts = validate_database(database_path)
     return write_manifest(
@@ -2472,6 +2707,7 @@ def build(spec_path: Path, asset_dir: Path) -> dict[str, object]:
         spec_path,
         spec_sha256,
         row_counts,
+        question_bank,
     )
 
 
@@ -2479,8 +2715,13 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--spec", type=Path, default=DEFAULT_SPEC)
     parser.add_argument("--asset-dir", type=Path, default=DEFAULT_ASSET_DIR)
+    parser.add_argument("--question-bank", type=Path, default=DEFAULT_QUESTION_BANK)
     args = parser.parse_args()
-    manifest = build(args.spec.resolve(), args.asset_dir.resolve())
+    manifest = build(
+        args.spec.resolve(),
+        args.asset_dir.resolve(),
+        args.question_bank.resolve(),
+    )
     counts = manifest["domainElementCounts"]
     print(
         "Built content.sqlite3: "

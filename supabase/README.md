@@ -217,7 +217,7 @@ create_release_from_approved(
 )
 ```
 
-현재 Android SQLite `schema_version`은 `1`이고, 콘텐츠 배포 번호인 `content_version`은 기존 최대값(초기 기준 5) 다음 번호로 별도 증가한다. `findone-admin-content-v1`은 이 둘과 다른 최초 import용 export format 이름이다.
+현재 Android SQLite `schema_version`은 `2`이고, 콘텐츠 배포 번호인 `content_version`은 기존 최대값 다음 번호로 별도 증가한다. schema v2에는 build-time 개념형 5지선다 문항·선택지가 포함된다. `findone-admin-content-v1`은 이 둘과 다른 최초 import용 export format 이름이다.
 
 ```text
 draft → building → ready → published(stable 자동 전환)

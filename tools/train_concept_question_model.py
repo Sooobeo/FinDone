@@ -50,6 +50,7 @@ DEFAULT_SPLIT = ROOT / "content" / "model" / "concept-split.json"
 DEFAULT_BANK = ROOT / "content" / "model" / "concept-question-bank.generated.json"
 DEFAULT_ADMIN_REPORT = ROOT / "admin" / "data" / "concept-model-experiments.generated.json"
 DEFAULT_BUILD_DIR = ROOT / "build" / "concept-model"
+DEFAULT_MARKDOWN_REPORT_DIR = ROOT / "docs" / "modeling" / "experiments"
 REPORT_VERSION = 1
 BANK_VERSION = 1
 DOMAIN_ORDER = ("ACC", "CF", "INV", "FI", "DER", "EQV", "IBT")
@@ -128,6 +129,8 @@ class EmbeddingRun:
     encode_seconds: float | None
     artifact_bytes: int | None
     error: str | None
+    cache_hit: bool = False
+    matrix_cache_sha256: str | None = None
     query_candidate_similarity: np.ndarray | None = None
     answer_candidate_similarity: np.ndarray | None = None
 
@@ -141,6 +144,8 @@ class EmbeddingRun:
             "dimensions": self.dimensions,
             "encodeSeconds": self.encode_seconds,
             "artifactBytes": self.artifact_bytes,
+            "cacheHit": self.cache_hit,
+            "matrixCacheSha256": self.matrix_cache_sha256,
             "error": self.error,
         }
 
@@ -202,6 +207,23 @@ def _atomic_json(path: Path, value: Any) -> None:
     try:
         with os.fdopen(descriptor, "w", encoding="utf-8", newline="\n") as stream:
             json.dump(value, stream, ensure_ascii=False, indent=2, sort_keys=True)
+            stream.write("\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def _atomic_text(path: Path, value: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary_name = tempfile.mkstemp(
+        prefix=path.name + ".", suffix=".tmp", dir=path.parent
+    )
+    temporary = Path(temporary_name)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8", newline="\n") as stream:
+            stream.write(value.rstrip())
             stream.write("\n")
             stream.flush()
             os.fsync(stream.fileno())
@@ -722,6 +744,44 @@ def run_sentence_transformer(
         except Exception:
             revision_resolved = None
         revision = revision_resolved or revision_requested
+        query_prefix = str(spec.get("queryPrefix", ""))
+        passage_prefix = str(spec.get("passagePrefix", ""))
+        matrix_identity = {
+            "candidateId": candidate_id,
+            "modelId": model_id,
+            "revision": revision,
+            "queryPrefix": query_prefix,
+            "passagePrefix": passage_prefix,
+            "questions": [item.stem for item in context.questions],
+            "elements": [item.semantic_text for item in context.elements],
+        }
+        matrix_key = _sha256_bytes(_stable_json_bytes(matrix_identity))
+        matrix_dir = model_cache / "findone-similarity-matrices"
+        matrix_path = matrix_dir / f"{matrix_key}.npz"
+        if matrix_path.is_file():
+            with np.load(matrix_path, allow_pickle=False) as cached:
+                query_candidate = np.asarray(cached["queryCandidate"], dtype=np.float32)
+                answer_candidate = np.asarray(cached["answerCandidate"], dtype=np.float32)
+                dimensions = int(np.asarray(cached["dimensions"]).item())
+            expected_query_shape = (len(context.questions), len(context.elements))
+            expected_answer_shape = (len(context.elements), len(context.elements))
+            if query_candidate.shape != expected_query_shape or answer_candidate.shape != expected_answer_shape:
+                raise ConceptModelError(f"Cached embedding matrix shape is invalid: {matrix_path}")
+            return EmbeddingRun(
+                candidate_id=candidate_id,
+                model_id=model_id,
+                status="completed",
+                revision_requested=revision_requested,
+                revision_resolved=revision_resolved,
+                dimensions=dimensions,
+                encode_seconds=round(time.perf_counter() - started, 3),
+                artifact_bytes=_directory_bytes(model_cache),
+                error=None,
+                cache_hit=True,
+                matrix_cache_sha256=_sha256_file(matrix_path),
+                query_candidate_similarity=query_candidate,
+                answer_candidate_similarity=answer_candidate,
+            )
         model = SentenceTransformer(
             model_id,
             revision=revision,
@@ -729,8 +789,6 @@ def run_sentence_transformer(
             cache_folder=str(model_cache),
             device=device,
         )
-        query_prefix = str(spec.get("queryPrefix", ""))
-        passage_prefix = str(spec.get("passagePrefix", ""))
         question_vectors = np.asarray(
             model.encode(
                 [query_prefix + item.stem for item in context.questions],
@@ -753,6 +811,26 @@ def run_sentence_transformer(
         )
         query_candidate = question_vectors @ element_vectors.T
         answer_candidate = element_vectors @ element_vectors.T
+        matrix_dir.mkdir(parents=True, exist_ok=True)
+        file_descriptor, temporary_name = tempfile.mkstemp(
+            prefix=matrix_path.name + ".",
+            suffix=".tmp",
+            dir=matrix_dir,
+        )
+        temporary_path = Path(temporary_name)
+        try:
+            with os.fdopen(file_descriptor, "wb") as stream:
+                np.savez_compressed(
+                    stream,
+                    queryCandidate=query_candidate,
+                    answerCandidate=answer_candidate,
+                    dimensions=np.asarray(element_vectors.shape[1], dtype=np.int32),
+                )
+                stream.flush()
+                os.fsync(stream.fileno())
+            os.replace(temporary_path, matrix_path)
+        finally:
+            temporary_path.unlink(missing_ok=True)
         return EmbeddingRun(
             candidate_id=candidate_id,
             model_id=model_id,
@@ -763,6 +841,8 @@ def run_sentence_transformer(
             encode_seconds=round(time.perf_counter() - started, 3),
             artifact_bytes=_directory_bytes(model_cache),
             error=None,
+            cache_hit=False,
+            matrix_cache_sha256=_sha256_file(matrix_path),
             query_candidate_similarity=query_candidate,
             answer_candidate_similarity=answer_candidate,
         )
@@ -848,16 +928,24 @@ def _candidate_features(
 
 
 def _retrieval_weights(retrieval_profile: Mapping[str, Any]) -> dict[str, float]:
-    word_weight = float(retrieval_profile.get("word", -1.0))
-    char_weight = float(retrieval_profile.get("char", -1.0))
-    semantic_weight = float(retrieval_profile.get("semantic", -1.0))
-    if min(word_weight, char_weight, semantic_weight) < 0 or not math.isclose(
-        word_weight + char_weight + semantic_weight, 1.0, abs_tol=1e-6
+    signal_names = (
+        "questionWord",
+        "questionChar",
+        "answerWord",
+        "answerChar",
+        "sameDomain",
+        "sameMode",
+        "questionSemantic",
+        "answerSemantic",
+    )
+    weights = {name: float(retrieval_profile.get(name, -1.0)) for name in signal_names}
+    if any(value < 0 for value in weights.values()) or not math.isclose(
+        sum(weights.values()), 1.0, abs_tol=1e-6
     ):
         raise ConceptModelError(
             f"Retrieval profile {retrieval_profile.get('id')} weights must sum to 1"
         )
-    return {"word": word_weight, "char": char_weight, "semantic": semantic_weight}
+    return weights
 
 
 def _effective_relevance(
@@ -882,28 +970,53 @@ def retrieve_candidates(
     rrf_k: int = 60,
 ) -> list[list[int]]:
     weights = _retrieval_weights(retrieval_profile)
-    if embedding.query_candidate_similarity is None and weights["semantic"] > 0:
+    if embedding.query_candidate_similarity is None and (
+        weights["questionSemantic"] > 0 or weights["answerSemantic"] > 0
+    ):
         raise ConceptModelError("A semantic retrieval profile requires an embedding model")
     if rrf_k <= 0:
         raise ConceptModelError("RRF k must be positive")
     result: list[list[int]] = []
     for question_index, question in enumerate(context.questions):
+        answer = context.elements[question.element_index]
         candidate_indices = eligible_candidate_indices(
             context.elements, question.element_index
         )
         signal_values: dict[str, dict[int, float]] = {
-            "word": {
+            "questionWord": {
                 index: float(context.question_word_similarity[question_index, index])
                 for index in candidate_indices
             },
-            "char": {
+            "questionChar": {
                 index: float(context.question_char_similarity[question_index, index])
+                for index in candidate_indices
+            },
+            "answerWord": {
+                index: float(context.answer_word_similarity[question.element_index, index])
+                for index in candidate_indices
+            },
+            "answerChar": {
+                index: float(context.answer_char_similarity[question.element_index, index])
+                for index in candidate_indices
+            },
+            "sameDomain": {
+                index: float(answer.domain_id == context.elements[index].domain_id)
+                for index in candidate_indices
+            },
+            "sameMode": {
+                index: float(answer.mode == context.elements[index].mode)
                 for index in candidate_indices
             },
         }
         if embedding.query_candidate_similarity is not None:
-            signal_values["semantic"] = {
+            signal_values["questionSemantic"] = {
                 index: float(embedding.query_candidate_similarity[question_index, index])
+                for index in candidate_indices
+            }
+            signal_values["answerSemantic"] = {
+                index: float(
+                    embedding.answer_candidate_similarity[question.element_index, index]
+                )
                 for index in candidate_indices
             }
         signal_ranks = {
@@ -1162,32 +1275,52 @@ def _question_bank(
     fingerprint: str,
     split_hash: str,
     human_labels: Mapping[tuple[str, str], HumanLabel],
-) -> tuple[dict[str, Any], dict[str, int]]:
+) -> tuple[dict[str, Any], dict[str, Any]]:
     questions: list[dict[str, Any]] = []
     answer_leaks = 0
     duplicate_choices = 0
     ambiguous_questions = 0
+    ambiguous_question_ids: list[str] = []
     for question_index, question in enumerate(context.questions):
         target = context.elements[question.element_index]
         selected: list[tuple[int, float]] = []
         seen_titles = {normalized_key(target.title)}
-        for candidate_index, score in ranked[question_index]:
-            title_key = normalized_key(context.elements[candidate_index].title)
-            if not title_key or title_key in seen_titles:
-                continue
-            seen_titles.add(title_key)
-            selected.append((candidate_index, score))
+        # A ranked candidate can still be an obviously weak distractor. Prefer the
+        # weak/human relevance >= 2 pool, then fall back only when a question does
+        # not have four distinct viable alternatives. This is an output safety
+        # constraint; validation/test model selection remains untouched.
+        for minimum_relevance in (2, 0):
+            for candidate_index, score in ranked[question_index]:
+                title_key = normalized_key(context.elements[candidate_index].title)
+                if not title_key or title_key in seen_titles:
+                    continue
+                if (
+                    _effective_relevance(
+                        context,
+                        question_index,
+                        candidate_index,
+                        human_labels,
+                    )
+                    < minimum_relevance
+                ):
+                    continue
+                seen_titles.add(title_key)
+                selected.append((candidate_index, score))
+                if len(selected) == 4:
+                    break
             if len(selected) == 4:
                 break
         if len(selected) != 4:
             raise ConceptModelError(
                 f"{question.question_id} does not have four distinct distractors"
             )
-        if any(
+        has_weak_distractor = any(
             _effective_relevance(context, question_index, candidate_index, human_labels) < 2
             for candidate_index, _ in selected
-        ):
+        )
+        if has_weak_distractor:
             ambiguous_questions += 1
+            ambiguous_question_ids.append(question.question_id)
 
         raw_choices: list[dict[str, Any]] = [
             {
@@ -1239,7 +1372,13 @@ def _question_bank(
                 "difficulty": difficulty,
                 "modelVersion": model_version,
                 "sourceFactIds": [question.fact_id],
-                "reviewStatus": "reviewed" if human_labels else "bootstrap",
+                "reviewStatus": (
+                    "review_attention"
+                    if has_weak_distractor
+                    else "reviewed"
+                    if human_labels
+                    else "bootstrap"
+                ),
                 "choices": choices,
             }
         )
@@ -1260,6 +1399,7 @@ def _question_bank(
         "answerLeakCount": answer_leaks,
         "duplicateChoiceCount": duplicate_choices,
         "ambiguousQuestionCount": ambiguous_questions,
+        "ambiguousQuestionIds": ambiguous_question_ids,
     }
     return bank, safety
 
@@ -1327,6 +1467,486 @@ def _append_admin_history(path: Path, experiment: Mapping[str, Any]) -> dict[str
     return result
 
 
+def _md_cell(value: Any) -> str:
+    if value is None or value == "":
+        return "—"
+    if isinstance(value, bool):
+        return "YES" if value else "NO"
+    if isinstance(value, float):
+        return f"{value:.6f}".rstrip("0").rstrip(".")
+    if isinstance(value, (dict, list)):
+        value = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return str(value).replace("|", "\\|").replace("\r", " ").replace("\n", "<br>")
+
+
+def _md_percent(value: Any) -> str:
+    try:
+        return f"{float(value) * 100:.2f}%"
+    except (TypeError, ValueError):
+        return "—"
+
+
+def _md_bytes(value: Any) -> str:
+    try:
+        size = int(value)
+    except (TypeError, ValueError):
+        return "—"
+    if size < 1024:
+        return f"{size} B"
+    if size < 1024**2:
+        return f"{size / 1024:.1f} KiB"
+    if size < 1024**3:
+        return f"{size / 1024**2:.1f} MiB"
+    return f"{size / 1024**3:.2f} GiB"
+
+
+def _render_experiment_markdown(experiment: Mapping[str, Any]) -> str:
+    experiment_id = str(experiment.get("experimentId", "unknown-experiment"))
+    status = str(experiment.get("status", "unknown"))
+    release_ready = bool(experiment.get("releaseReady", False))
+    dataset = experiment.get("dataset") if isinstance(experiment.get("dataset"), Mapping) else {}
+    labels = experiment.get("labels") if isinstance(experiment.get("labels"), Mapping) else {}
+    selection = experiment.get("selection") if isinstance(experiment.get("selection"), Mapping) else {}
+    evaluation = experiment.get("evaluation") if isinstance(experiment.get("evaluation"), Mapping) else {}
+    validation = evaluation.get("validation") if isinstance(evaluation.get("validation"), Mapping) else {}
+    test = evaluation.get("test") if isinstance(evaluation.get("test"), Mapping) else {}
+    weights = experiment.get("weightExperiments") if isinstance(experiment.get("weightExperiments"), Mapping) else {}
+    weak = weights.get("weakSupervision") if isinstance(weights.get("weakSupervision"), Mapping) else {}
+    fusion = weights.get("fusionBaseline") if isinstance(weights.get("fusionBaseline"), Mapping) else {}
+    safety = experiment.get("safety") if isinstance(experiment.get("safety"), Mapping) else {}
+    environment = experiment.get("environment") if isinstance(experiment.get("environment"), Mapping) else {}
+    artifacts = experiment.get("artifacts") if isinstance(experiment.get("artifacts"), Mapping) else {}
+    embeddings = experiment.get("embeddings") if isinstance(experiment.get("embeddings"), list) else []
+    ranker_runs = experiment.get("rankerRuns") if isinstance(experiment.get("rankerRuns"), list) else []
+    gates = experiment.get("qualityGates") if isinstance(experiment.get("qualityGates"), list) else []
+    references = experiment.get("methodReferences") if isinstance(experiment.get("methodReferences"), list) else []
+    weak_profiles = weights.get("weakSupervisionProfiles") if isinstance(weights.get("weakSupervisionProfiles"), list) else []
+    retrieval_profiles = weights.get("retrievalProfiles") if isinstance(weights.get("retrievalProfiles"), list) else []
+    xgboost_grid = weights.get("xgboostGrid") if isinstance(weights.get("xgboostGrid"), list) else []
+
+    lines = [
+        f"# 개념형 모델 실험 보고서 — `{experiment_id}`",
+        "",
+        "> 이 파일은 `tools/train_concept_question_model.py`가 실험 JSON에서 자동 생성한 영구 감사 기록입니다.",
+        "> 수동으로 수치를 수정하지 말고 같은 입력과 설정으로 실험을 다시 실행하십시오.",
+        "",
+        "## 1. 결과 요약",
+        "",
+    ]
+    if not release_ready:
+        lines.extend(
+            [
+                f"> **릴리스 차단:** {_md_cell(experiment.get('releaseBlockReason'))}",
+                "> bootstrap의 test 지표는 약지도 규칙 재현도이며 독립적인 교육 품질 성능이 아닙니다.",
+                "",
+            ]
+        )
+    lines.extend(
+        [
+            "| 항목 | 값 |",
+            "|---|---|",
+            f"| 상태 | `{_md_cell(status)}` |",
+            f"| 릴리스 가능 | {_md_cell(release_ready)} |",
+            f"| 시작 | {_md_cell(experiment.get('startedAt'))} |",
+            f"| 종료 | {_md_cell(experiment.get('finishedAt'))} |",
+            f"| 실행 시간 | {_md_cell(experiment.get('durationSeconds'))}초 |",
+            f"| 선택 임베딩 | `{_md_cell(selection.get('embeddingId'))}` |",
+            f"| 선택 검색 결합 | `{_md_cell(selection.get('retrievalProfileId'))}` |",
+            f"| 선택 랭커 | `{_md_cell(selection.get('rankerId'))}` |",
+            f"| validation NDCG@4 | {_md_cell(validation.get('ndcgAt4'))} |",
+            f"| test NDCG@4 | {_md_cell(test.get('ndcgAt4'))} |",
+            f"| test Precision@4 | {_md_cell(test.get('precisionAt4'))} |",
+            f"| 사람 test 커버리지 | {_md_percent(labels.get('humanTestCoverage'))} |",
+            f"| 외부 LLM API 호출 | {_md_cell(environment.get('externalLlmApiCalls'))}회 |",
+            "",
+            "선택 근거: " + _md_cell(selection.get("reason")),
+            "",
+            "## 2. 재현성 및 데이터 분할",
+            "",
+            "| 항목 | 값 |",
+            "|---|---|",
+            f"| 콘텐츠 fingerprint | `{_md_cell(dataset.get('contentFingerprint'))}` |",
+            f"| 설정 SHA-256 | `{_md_cell(dataset.get('configSha256'))}` |",
+            f"| split SHA-256 | `{_md_cell(dataset.get('splitSha256'))}` |",
+            f"| 요소 | {_md_cell(dataset.get('elementCount'))}개 |",
+            f"| 사실 레코드 | {_md_cell(dataset.get('factCount'))}개 |",
+            f"| 문항 | {_md_cell(dataset.get('questionCount'))}개 |",
+            f"| 오답 후보 | {_md_cell(dataset.get('candidateCount'))}개 |",
+            f"| 요소 split | `{_md_cell(dataset.get('elementSplits'))}` |",
+            f"| 문항 split | `{_md_cell(dataset.get('questionSplits'))}` |",
+            f"| 문항 은행 SHA-256 | `{_md_cell(artifacts.get('questionBankSha256'))}` |",
+            f"| 모델 SHA-256 | `{_md_cell(selection.get('modelSha256'))}` |",
+            "",
+            "## 3. 기준선과 레퍼런스 구분",
+            "",
+            "| 구분 | 값 | 출처/판정 |",
+            "|---|---|---|",
+            f"| 검색 결합 기준선 | `{_md_cell(fusion.get('method'))}`, k={_md_cell(fusion.get('rrfK'))} | {_md_cell(fusion.get('reference'))} |",
+            "| RRF 기준 가중치 | 사용 신호 동일 가중치 | reference baseline |",
+            "| RRF 변형 가중치 | dense/word/char 비중 변화 | 민감도 실험, 논문 기본값 아님 |",
+            "| pairwise loss | RankNet-style logistic | Burges et al., ICML 2005 |",
+            "| LogisticRegression C=1 | scikit-learn 기본값 | RankNet 논문값 아님 |",
+            "| C=0.1/1/10 | 로그 간격 탐색 | validation 실험값 |",
+            "| XGBoost depth=6, eta=0.3 | reference implementation 기본값 | FinDone 최적값 아님 |",
+            "| 나머지 XGBoost 조합 | 얕은 트리·낮은 학습률 | validation 실험값 |",
+            "",
+            f"RRF 적용 이유: {_md_cell(fusion.get('rationale'))}",
+            "",
+            "## 4. 약지도 가중치 민감도",
+            "",
+            f"기준 프로필: `{_md_cell(weak.get('canonicalProfileId'))}` · RRF k={_md_cell(weak.get('rrfK'))}",
+            "",
+        ]
+    )
+    if weak_profiles:
+        lines.extend(
+            [
+                "### 입력 가중치",
+                "",
+                "| 프로필 | question-word | question-char | answer-word | answer-char | same-domain | same-mode | 성격 |",
+                "|---|---:|---:|---:|---:|---:|---:|---|",
+            ]
+        )
+        for profile in weak_profiles:
+            if not isinstance(profile, Mapping):
+                continue
+            lines.append(
+                "| {id} | {qw} | {qc} | {aw} | {ac} | {domain} | {mode} | {provenance} |".format(
+                    id=_md_cell(profile.get("id")),
+                    qw=_md_cell(profile.get("questionWord")),
+                    qc=_md_cell(profile.get("questionChar")),
+                    aw=_md_cell(profile.get("answerWord")),
+                    ac=_md_cell(profile.get("answerChar")),
+                    domain=_md_cell(profile.get("sameDomain")),
+                    mode=_md_cell(profile.get("sameMode")),
+                    provenance=_md_cell(profile.get("provenance")),
+                )
+            )
+        lines.append("")
+    lines.extend(
+        [
+            "### 기준 프로필 대비 결과",
+            "",
+            "| 프로필 | 평균 Top-4 Jaccard | 최소 Jaccard | 변경 문항 |",
+            "|---|---:|---:|---:|",
+        ]
+    )
+    comparisons = weak.get("comparisons") if isinstance(weak.get("comparisons"), list) else []
+    for item in comparisons:
+        if not isinstance(item, Mapping):
+            continue
+        lines.append(
+            f"| {_md_cell(item.get('profileId'))} | {_md_cell(item.get('meanTop4JaccardVsCanonical'))} | {_md_cell(item.get('minimumTop4JaccardVsCanonical'))} | {_md_cell(item.get('changedQuestionCount'))} |"
+        )
+    lines.extend(
+        [
+            "",
+            f"전체 대안 평균 Jaccard: **{_md_cell(weak.get('meanTop4JaccardAcrossAlternatives'))}**. {_md_cell(weak.get('interpretation'))}",
+            "",
+            "## 5. 검색 혼합비와 정규화 탐색 범위",
+            "",
+        ]
+    )
+    if retrieval_profiles:
+        profile_keys = sorted(
+            {
+                key
+                for profile in retrieval_profiles
+                if isinstance(profile, Mapping)
+                for key in profile
+                if key not in {"id", "provenance"}
+            }
+        )
+        lines.append("| 프로필 | " + " | ".join(profile_keys) + " | 성격 |")
+        lines.append("|---|" + "---:|" * len(profile_keys) + "---|")
+        for profile in retrieval_profiles:
+            if not isinstance(profile, Mapping):
+                continue
+            lines.append(
+                "| "
+                + _md_cell(profile.get("id"))
+                + " | "
+                + " | ".join(_md_cell(profile.get(key)) for key in profile_keys)
+                + " | "
+                + _md_cell(profile.get("provenance"))
+                + " |"
+            )
+        lines.append("")
+    lines.extend(
+        [
+            f"- Pairwise C 탐색: `{_md_cell(weights.get('pairwiseCValues'))}`",
+            f"- 검색 프로필 수: {_md_cell(weights.get('retrievalProfileCount'))}",
+            f"- 선택 규칙: {_md_cell(weights.get('selectionRule'))}",
+            "",
+            "### XGBoost 탐색 범위",
+            "",
+            "| ID | max depth | learning rate | 성격 |",
+            "|---|---:|---:|---|",
+        ]
+    )
+    for item in xgboost_grid:
+        if not isinstance(item, Mapping):
+            continue
+        lines.append(
+            f"| {_md_cell(item.get('id'))} | {_md_cell(item.get('maxDepth'))} | {_md_cell(item.get('learningRate'))} | {_md_cell(item.get('provenance'))} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## 6. 임베딩 실행 결과",
+            "",
+            "| 후보 | 모델 | 상태 | revision | 차원 | 인코딩 시간 | 캐시 | 행렬 SHA-256 | 로컬 크기 | 오류 |",
+            "|---|---|---|---|---:|---:|---|---|---:|---|",
+        ]
+    )
+    for item in embeddings:
+        if not isinstance(item, Mapping):
+            continue
+        lines.append(
+            f"| {_md_cell(item.get('candidateId'))} | `{_md_cell(item.get('modelId'))}` | {_md_cell(item.get('status'))} | `{_md_cell(item.get('revisionResolved') or item.get('revisionRequested'))}` | {_md_cell(item.get('dimensions'))} | {_md_cell(item.get('encodeSeconds'))}초 | {_md_cell(item.get('cacheHit', False))} | `{_md_cell(item.get('matrixCacheSha256'))}` | {_md_bytes(item.get('artifactBytes'))} | {_md_cell(item.get('error'))} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## 7. 전체 validation 실험 행렬",
+            "",
+            f"총 {len(ranker_runs)}개 실행. 선택 전에는 validation만 계산하며, `test=YES`인 한 행만 최종 test를 열었습니다.",
+            "",
+            "| # | 임베딩 | 검색 프로필 | 랭커 | 하이퍼파라미터 | 상태 | Recall@20 | NDCG@4 | P@4 | MRR | test | 학습초 | 오류 |",
+            "|---:|---|---|---|---|---|---:|---:|---:|---:|---|---:|---|",
+        ]
+    )
+    for index, item in enumerate(ranker_runs, start=1):
+        if not isinstance(item, Mapping):
+            continue
+        metrics = item.get("validation") if isinstance(item.get("validation"), Mapping) else {}
+        is_selected = (
+            item.get("embeddingId") == selection.get("embeddingId")
+            and item.get("retrievalProfileId") == selection.get("retrievalProfileId")
+            and item.get("rankerId") == selection.get("rankerId")
+        )
+        ranker_label = f"**{_md_cell(item.get('rankerId'))}**" if is_selected else _md_cell(item.get("rankerId"))
+        lines.append(
+            f"| {index} | {_md_cell(item.get('embeddingId'))} | {_md_cell(item.get('retrievalProfileId'))} | {ranker_label} | `{_md_cell(item.get('hyperparameters'))}` | {_md_cell(item.get('status'))} | {_md_cell(metrics.get('retrievalRecallAt20'))} | {_md_cell(metrics.get('ndcgAt4'))} | {_md_cell(metrics.get('precisionAt4'))} | {_md_cell(metrics.get('mrr'))} | {_md_cell(item.get('testEvaluated'))} | {_md_cell(item.get('trainingSeconds'))} | {_md_cell(item.get('error'))} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## 8. 선택된 구성과 최종 test",
+            "",
+            "| 항목 | validation | test |",
+            "|---|---:|---:|",
+            f"| Recall@20 | {_md_cell(validation.get('retrievalRecallAt20'))} | {_md_cell(test.get('retrievalRecallAt20'))} |",
+            f"| NDCG@4 | {_md_cell(validation.get('ndcgAt4'))} | {_md_cell(test.get('ndcgAt4'))} |",
+            f"| Precision@4 | {_md_cell(validation.get('precisionAt4'))} | {_md_cell(test.get('precisionAt4'))} |",
+            f"| MRR | {_md_cell(validation.get('mrr'))} | {_md_cell(test.get('mrr'))} |",
+            "",
+            f"- 라벨 출처: `{_md_cell(evaluation.get('labelSource'))}`",
+            f"- 모델 크기: {_md_bytes(selection.get('modelBytes'))}",
+            f"- 선택 허용 오차: {_md_cell(selection.get('selectionTolerance'))}",
+            f"- 지표 경고: {_md_cell(labels.get('metricWarning'))}",
+            "",
+            "## 9. 안전성 및 릴리스 게이트",
+            "",
+            "| 안전성 검사 | 값 |",
+            "|---|---:|",
+            f"| 정답 누출 | {_md_cell(safety.get('answerLeakCount'))} |",
+            f"| 중복 선택지 | {_md_cell(safety.get('duplicateChoiceCount'))} |",
+            f"| 약한 오답 포함 문항 | {_md_cell(safety.get('ambiguousQuestionCount'))} |",
+            "",
+            "| 게이트 | 측정 | 기준 | 결과 |",
+            "|---|---:|---:|---|",
+        ]
+    )
+    for gate in gates:
+        if not isinstance(gate, Mapping):
+            continue
+        lines.append(
+            f"| {_md_cell(gate.get('label'))} | {_md_cell(gate.get('measured'))} | {_md_cell(gate.get('threshold'))} | {'PASS' if gate.get('passed') else 'BLOCK'} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## 10. 환경과 산출물",
+            "",
+            "### 환경",
+            "",
+            "| 항목 | 값 |",
+            "|---|---|",
+        ]
+    )
+    for key, value in environment.items():
+        lines.append(f"| {_md_cell(key)} | `{_md_cell(value)}` |")
+    lines.extend(["", "### 산출물", "", "| 항목 | 값 |", "|---|---|"])
+    for key, value in artifacts.items():
+        lines.append(f"| {_md_cell(key)} | `{_md_cell(value)}` |")
+    lines.extend(["", "## 11. 참고문헌", ""])
+    if fusion.get("referenceUrl"):
+        lines.append(f"- [{_md_cell(fusion.get('reference'))}]({_md_cell(fusion.get('referenceUrl'))})")
+    for reference in references:
+        if not isinstance(reference, Mapping):
+            continue
+        lines.append(
+            f"- [{_md_cell(reference.get('title'))}]({_md_cell(reference.get('url'))})"
+        )
+    if not references and not fusion.get("referenceUrl"):
+        lines.append("- 기록된 참고문헌 없음")
+    return "\n".join(lines)
+
+
+def _render_markdown_index(experiments: Sequence[Mapping[str, Any]]) -> str:
+    lines = [
+        "# FinDone 개념형 모델 실험 기록",
+        "",
+        "이 디렉터리는 오프라인 개념형 5지선다 모델링 실험의 사람이 읽을 수 있는 영구 기록이다.",
+        "Admin 시각화는 `admin/data/concept-model-experiments.generated.json`을 사용하고, 이 MD들은 감사·비교·의사결정 이력으로 유지한다.",
+        "",
+        "- 설계 기준: [개념형 5지선다 오프라인 모델링 설계서](../CONCEPT_MCQ_MODELING_DESIGN.md)",
+        "- 생성 명령: `python tools/train_concept_question_model.py --write-question-bank --write-admin-report --write-markdown-report`",
+        "- 원칙: validation으로 조합을 선택하고 선택된 한 조합에만 test를 실행한다.",
+        "",
+        "| 실험 | 시각 | 상태 | 후보 임베딩 | 실행 조합 | 선택 구성 | val NDCG@4 | test NDCG@4 | 사람 test | 보고서 |",
+        "|---|---|---|---:|---:|---|---:|---:|---:|---|",
+    ]
+    for experiment in experiments:
+        selection = experiment.get("selection") if isinstance(experiment.get("selection"), Mapping) else {}
+        evaluation = experiment.get("evaluation") if isinstance(experiment.get("evaluation"), Mapping) else {}
+        validation = evaluation.get("validation") if isinstance(evaluation.get("validation"), Mapping) else {}
+        test = evaluation.get("test") if isinstance(evaluation.get("test"), Mapping) else {}
+        labels = experiment.get("labels") if isinstance(experiment.get("labels"), Mapping) else {}
+        embeddings = experiment.get("embeddings") if isinstance(experiment.get("embeddings"), list) else []
+        runs = experiment.get("rankerRuns") if isinstance(experiment.get("rankerRuns"), list) else []
+        experiment_id = str(experiment.get("experimentId", "unknown"))
+        selected_label = "/".join(
+            str(selection.get(key, "—"))
+            for key in ("embeddingId", "retrievalProfileId", "rankerId")
+        )
+        lines.append(
+            f"| `{_md_cell(experiment_id)}` | {_md_cell(experiment.get('startedAt'))} | {_md_cell(experiment.get('status'))} | {len(embeddings)} | {len(runs)} | `{_md_cell(selected_label)}` | {_md_cell(validation.get('ndcgAt4'))} | {_md_cell(test.get('ndcgAt4'))} | {_md_percent(labels.get('humanTestCoverage'))} | [열기](experiments/{experiment_id}.md) |"
+        )
+    lines.extend(
+        [
+            "",
+            "## 수치 해석 주의",
+            "",
+            "`bootstrap` 실험은 사람이 독립적으로 라벨링한 test가 없으므로 test 수치를 실제 교육 품질이나 일반화 성능으로 해석하면 안 된다. 사람 test 커버리지가 100%이고 모든 릴리스 게이트를 통과한 실험만 `release_ready`가 될 수 있다.",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def write_markdown_history(
+    report_dir: Path,
+    history: Mapping[str, Any],
+) -> list[Path]:
+    raw_experiments = history.get("experiments")
+    if not isinstance(raw_experiments, list):
+        raise ConceptModelError("Experiment history has no experiments list")
+    experiments = [item for item in raw_experiments if isinstance(item, Mapping)]
+    report_dir.mkdir(parents=True, exist_ok=True)
+    written: list[Path] = []
+    for experiment in experiments:
+        experiment_id = str(experiment.get("experimentId", "")).strip()
+        if not re.fullmatch(r"cmq-[0-9]{8}-[0-9]{6}-[0-9a-f]{8}", experiment_id):
+            raise ConceptModelError(f"Unsafe experiment id for Markdown report: {experiment_id}")
+        path = report_dir / f"{experiment_id}.md"
+        _atomic_text(path, _render_experiment_markdown(experiment))
+        written.append(path)
+    _atomic_text(report_dir.parent / "README.md", _render_markdown_index(experiments))
+    return written
+
+
+def refresh_reference_catalog(
+    config_path: Path = DEFAULT_CONFIG,
+    admin_report_path: Path = DEFAULT_ADMIN_REPORT,
+    markdown_report_dir: Path = DEFAULT_MARKDOWN_REPORT_DIR,
+) -> int:
+    """Backfill the current primary-source catalog into immutable metric records."""
+    config = _load_json_object(config_path)
+    references = config.get("methodReferences")
+    if not isinstance(references, list) or not all(isinstance(item, Mapping) for item in references):
+        raise ConceptModelError("methodReferences is missing from model config")
+    history = _load_json_object(admin_report_path)
+    experiments = history.get("experiments")
+    if not isinstance(experiments, list):
+        raise ConceptModelError("Experiment history has no experiments list")
+    updated = 0
+    for experiment in experiments:
+        if not isinstance(experiment, dict):
+            continue
+        if experiment.get("methodReferences") != references:
+            experiment["methodReferences"] = [dict(item) for item in references]
+            experiment.pop("reportSha256", None)
+            experiment["reportSha256"] = _sha256_bytes(_stable_json_bytes(experiment))
+            updated += 1
+    _atomic_json(admin_report_path, history)
+    write_markdown_history(markdown_report_dir, history)
+    return updated
+
+
+def select_validation_run(
+    successful_runs: Sequence[dict[str, Any]],
+    candidate_specs: Sequence[Mapping[str, Any]],
+    retrieval_profiles: Sequence[Mapping[str, Any]],
+    tolerance: float,
+) -> dict[str, Any]:
+    """Select one run without inspecting test metrics.
+
+    The highest validation NDCG@4 defines the eligible band. Inside that band
+    the build-time cost policy prefers the configured embedding priority and a
+    linear pairwise ranker. Metrics only break ties inside the same cost group.
+    Returning the original run object lets the caller attach the one permitted
+    test evaluation after selection.
+    """
+    if not successful_runs:
+        raise ConceptModelError("No successful validation runs are available")
+    if tolerance < 0:
+        raise ConceptModelError("embeddingSelectionTolerance must be non-negative")
+
+    best_ndcg = max(float(item["validation"]["ndcgAt4"]) for item in successful_runs)
+    eligible = [
+        item
+        for item in successful_runs
+        if best_ndcg - float(item["validation"]["ndcgAt4"]) <= tolerance
+    ]
+    embedding_priority = {
+        str(item.get("id")): int(item.get("priority", 999))
+        for item in candidate_specs
+    }
+    retrieval_priority = {
+        str(item.get("id")): index for index, item in enumerate(retrieval_profiles)
+    }
+    simplest_embedding_priority = min(
+        embedding_priority.get(str(item["embeddingId"]), 999) for item in eligible
+    )
+    same_embedding_cost = [
+        item
+        for item in eligible
+        if embedding_priority.get(str(item["embeddingId"]), 999)
+        == simplest_embedding_priority
+    ]
+    simplest_ranker_priority = min(
+        0 if item["rankerFamily"] == "pairwise-logistic" else 1
+        for item in same_embedding_cost
+    )
+    same_cost = [
+        item
+        for item in same_embedding_cost
+        if (0 if item["rankerFamily"] == "pairwise-logistic" else 1)
+        == simplest_ranker_priority
+    ]
+    return max(
+        same_cost,
+        key=lambda item: (
+            float(item["validation"]["ndcgAt4"]),
+            float(item["validation"]["precisionAt4"]),
+            float(item["validation"]["retrievalRecallAt20"]),
+            -retrieval_priority.get(str(item["retrievalProfileId"]), 999),
+            -int(item["modelBytes"] or 0),
+        ),
+    )
+
+
 def run_experiment(
     *,
     config_path: Path = DEFAULT_CONFIG,
@@ -1336,17 +1956,20 @@ def run_experiment(
     bank_path: Path = DEFAULT_BANK,
     admin_report_path: Path = DEFAULT_ADMIN_REPORT,
     build_dir: Path = DEFAULT_BUILD_DIR,
+    markdown_report_dir: Path = DEFAULT_MARKDOWN_REPORT_DIR,
     embedding_ids: Sequence[str] = (),
     ranker_ids: Sequence[str] = ("pairwise-logistic",),
     device: str = "cpu",
     write_question_bank: bool = False,
     write_admin_report: bool = False,
+    write_markdown_report: bool = False,
     progress: ProgressBar | None = None,
 ) -> dict[str, Any]:
     renderer = progress or ProgressBar(False)
     started_wall = datetime.now(timezone.utc)
     started = time.perf_counter()
     renderer.update(2, "입력 설정과 콘텐츠 스냅샷 확인 중")
+    config_hash = _sha256_file(config_path)
     config = _load_json_object(config_path)
     elements = load_elements(elements_path)
     fingerprint = content_fingerprint(elements)
@@ -1455,7 +2078,10 @@ def run_experiment(
             profile
             for profile in retrieval_profiles
             if embedding.query_candidate_similarity is not None
-            or float(profile.get("semantic", 0.0)) == 0.0
+            or (
+                float(profile.get("questionSemantic", 0.0)) == 0.0
+                and float(profile.get("answerSemantic", 0.0)) == 0.0
+            )
         ]
         for retrieval_profile in compatible_profiles:
             retrieval_id = str(retrieval_profile.get("id", ""))
@@ -1566,30 +2192,12 @@ def run_experiment(
     if not successful:
         raise ConceptModelError("Every ranker training run failed")
 
-    best_ndcg = max(float(item["validation"]["ndcgAt4"]) for item in successful)
     tolerance = float(config.get("embeddingSelectionTolerance", 0.01))
-    eligible = [
-        item
-        for item in successful
-        if best_ndcg - float(item["validation"]["ndcgAt4"]) <= tolerance
-    ]
-    embedding_priority = {
-        str(item.get("id")): int(item.get("priority", 999))
-        for item in candidate_specs
-        if isinstance(item, Mapping)
-    }
-    retrieval_priority = {
-        str(item.get("id")): index for index, item in enumerate(retrieval_profiles)
-    }
-    selected = min(
-        eligible,
-        key=lambda item: (
-            embedding_priority.get(str(item["embeddingId"]), 999),
-            0 if item["rankerFamily"] == "pairwise-logistic" else 1,
-            retrieval_priority.get(str(item["retrievalProfileId"]), 999),
-            int(item["modelBytes"] or 0),
-            str(item["embeddingId"]),
-        ),
+    selected = select_validation_run(
+        successful,
+        [item for item in candidate_specs if isinstance(item, Mapping)],
+        retrieval_profiles,
+        tolerance,
     )
     selected_key = (
         str(selected["embeddingId"]),
@@ -1623,9 +2231,6 @@ def run_experiment(
     serialized_once = _stable_json_bytes(bank)
     serialized_twice = _stable_json_bytes(json.loads(serialized_once.decode("utf-8")))
     deterministic_bank = serialized_once == serialized_twice
-    if write_question_bank:
-        _atomic_json(bank_path, bank)
-
     human_coverage, covered_test_questions, total_test_questions = _human_test_coverage(
         questions, human_labels
     )
@@ -1723,8 +2328,14 @@ def run_experiment(
         ),
     ]
     release_ready = bool(human_labels) and all(item["passed"] for item in gates)
+    bank["releaseStatus"] = (
+        "release_ready" if release_ready else "candidate" if human_labels else "bootstrap_not_reviewed"
+    )
+    bank.pop("bankSha256", None)
+    bank["bankSha256"] = _sha256_bytes(_stable_json_bytes(bank))
+    if write_question_bank:
+        _atomic_json(bank_path, bank)
     finished_wall = datetime.now(timezone.utc)
-    config_hash = _sha256_file(config_path)
     experiment_id = (
         f"cmq-{started_wall.strftime('%Y%m%d-%H%M%S')}-{config_hash[:8]}"
     )
@@ -1779,9 +2390,12 @@ def run_experiment(
         },
         "weightExperiments": {
             "weakSupervision": weak_sensitivity,
+            "weakSupervisionProfiles": [dict(item) for item in weak_profiles],
             "fusionBaseline": dict(fusion_baseline),
+            "retrievalProfiles": [dict(item) for item in retrieval_profiles],
             "retrievalProfileCount": len(retrieval_profiles),
             "pairwiseCValues": pairwise_c_values,
+            "pairwiseReference": dict(config.get("pairwiseLogisticReference", {})),
             "xgboostGrid": [dict(item) for item in xgboost_grid],
             "selectionRule": "train으로 학습하고 validation NDCG@4로만 선택한 뒤 선택된 1개 구성에만 test를 실행",
         },
@@ -1795,7 +2409,7 @@ def run_experiment(
             "hyperparameters": selected["hyperparameters"],
             "validationNdcgAt4": selected["validation"]["ndcgAt4"],
             "selectionTolerance": tolerance,
-            "reason": "최고 validation NDCG@4와 1%p 이내인 후보 중 더 단순하고 작은 구성을 선택",
+            "reason": "최고 validation NDCG@4와 1%p 이내에서 임베딩·랭커 복잡도를 먼저 낮추고, 같은 비용군에서는 validation NDCG@4 최고 조합을 선택",
             "modelSha256": selected["modelSha256"],
             "modelBytes": selected["modelBytes"],
         },
@@ -1813,6 +2427,10 @@ def run_experiment(
             "split": str(split_path.relative_to(ROOT)).replace("\\", "/"),
             "facts": str((build_dir / "facts.jsonl").relative_to(ROOT)).replace("\\", "/"),
             "candidates": str((build_dir / "candidates.jsonl").relative_to(ROOT)).replace("\\", "/"),
+            "markdownReport": str(
+                (markdown_report_dir / f"{experiment_id}.md").relative_to(ROOT)
+            ).replace("\\", "/"),
+            "markdownReportWritten": write_markdown_report,
         },
         "environment": {
             "python": platform.python_version(),
@@ -1826,9 +2444,34 @@ def run_experiment(
         },
         "methodReferences": list(config.get("methodReferences", [])),
     }
+    report["reportSha256"] = _sha256_bytes(_stable_json_bytes(report))
     _atomic_json(build_dir / "latest-report.json", report)
+    history: dict[str, Any] | None = None
     if write_admin_report:
-        _append_admin_history(admin_report_path, report)
+        history = _append_admin_history(admin_report_path, report)
+    if write_markdown_report:
+        if history is None:
+            existing: dict[str, Any] = {}
+            if admin_report_path.exists():
+                try:
+                    loaded = json.loads(admin_report_path.read_text(encoding="utf-8"))
+                    if isinstance(loaded, dict):
+                        existing = loaded
+                except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+                    existing = {}
+            raw_history = existing.get("experiments")
+            previous = raw_history if isinstance(raw_history, list) else []
+            merged = [
+                item
+                for item in previous
+                if isinstance(item, dict) and item.get("experimentId") != experiment_id
+            ]
+            history = {
+                "reportVersion": REPORT_VERSION,
+                "latestExperimentId": experiment_id,
+                "experiments": [report, *merged][:30],
+            }
+        write_markdown_history(markdown_report_dir, history)
     renderer.update(
         100,
         "개념형 모델링 실험 완료",
@@ -1846,6 +2489,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--question-bank", type=Path, default=DEFAULT_BANK)
     parser.add_argument("--admin-report", type=Path, default=DEFAULT_ADMIN_REPORT)
     parser.add_argument("--build-dir", type=Path, default=DEFAULT_BUILD_DIR)
+    parser.add_argument(
+        "--markdown-report-dir",
+        type=Path,
+        default=DEFAULT_MARKDOWN_REPORT_DIR,
+    )
     parser.add_argument(
         "--embedding-model",
         action="append",
@@ -1865,12 +2513,30 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--write-question-bank", action="store_true")
     parser.add_argument("--write-admin-report", action="store_true")
+    parser.add_argument("--write-markdown-report", action="store_true")
+    parser.add_argument(
+        "--refresh-reference-catalog",
+        action="store_true",
+        help="Update stored experiment reference metadata and Markdown without retraining",
+    )
     parser.add_argument("--quiet", action="store_true")
     return parser
 
 
 def main(argv: Iterable[str] | None = None) -> int:
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if callable(reconfigure):
+            reconfigure(encoding="utf-8", errors="replace")
     args = _parser().parse_args(argv)
+    if args.refresh_reference_catalog:
+        updated = refresh_reference_catalog(
+            args.config,
+            args.admin_report,
+            args.markdown_report_dir,
+        )
+        print(json.dumps({"updatedExperiments": updated}, ensure_ascii=False))
+        return 0
     config = _load_json_object(args.config)
     embedding_ids = list(args.embedding_model)
     if args.all_embeddings:
@@ -1893,11 +2559,13 @@ def main(argv: Iterable[str] | None = None) -> int:
         bank_path=args.question_bank,
         admin_report_path=args.admin_report,
         build_dir=args.build_dir,
+        markdown_report_dir=args.markdown_report_dir,
         embedding_ids=embedding_ids,
         ranker_ids=rankers,
         device=args.device,
         write_question_bank=args.write_question_bank,
         write_admin_report=args.write_admin_report,
+        write_markdown_report=args.write_markdown_report or args.write_admin_report,
         progress=ProgressBar(not args.quiet),
     )
     print(

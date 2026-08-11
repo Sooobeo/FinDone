@@ -11,6 +11,28 @@ data class ElementSeed(
     val coreRelation: String,
 )
 
+data class CuratedConceptChoice(
+    val key: String,
+    val text: String,
+    val elementId: String,
+    val explanation: String,
+    val isCorrect: Boolean,
+)
+
+data class CuratedConceptQuestion(
+    val questionId: String,
+    val elementId: String,
+    val questionType: String,
+    val stem: String,
+    val explanation: String,
+    val coreRelation: String,
+    val difficulty: Int,
+    val modelVersion: String,
+    val reviewStatus: String,
+    val sourceFactIds: List<String>,
+    val choices: List<CuratedConceptChoice>,
+)
+
 enum class QuizMode { CONCEPT, CALCULATION }
 
 enum class QuizAnswerKind { MULTIPLE_CHOICE, INTEGER }
@@ -174,6 +196,61 @@ object QuizEngine {
         get() = calculationFactories.keys.toSortedSet()
 
     /**
+     * Materializes a build-time ranked five-choice item. The reviewed choice set remains fixed,
+     * while its presentation order is deterministically shuffled from [seed] so memorizing the
+     * answer position does not replace learning the concept.
+     */
+    fun generateConceptFromBank(
+        question: CuratedConceptQuestion,
+        seed: Long,
+    ): QuizQuestion {
+        requireDifficulty(question.difficulty)
+        require(question.questionId.isNotBlank()) { "Question id must not be blank." }
+        require(question.elementId.isNotBlank()) { "Element id must not be blank." }
+        require(question.choices.size == 5) { "A curated concept question needs five choices." }
+        require(question.choices.map { it.text }.distinct().size == 5) {
+            "Curated concept choices must be distinct."
+        }
+        val correct = question.choices.singleOrNull { it.isCorrect }
+            ?: throw IllegalArgumentException("A curated concept question needs one correct choice.")
+        require(correct.elementId == question.elementId) {
+            "The correct curated choice must reference the target element."
+        }
+
+        val random = StableRandom(
+            mixedSeed(seed, question.questionId, question.difficulty, QuizMode.CONCEPT)
+        )
+        val shuffled = random.shuffled(question.choices)
+        val ids = listOf("A", "B", "C", "D", "E")
+        val choices = shuffled.mapIndexed { index, choice ->
+            QuizChoice(ids[index], choice.text, choice.elementId)
+        }
+        val correctIndex = shuffled.indexOfFirst { it.isCorrect }
+        val canonicalAnswer = ids[correctIndex]
+        return materialize(
+            elementId = question.elementId,
+            mode = QuizMode.CONCEPT,
+            prompt = question.stem,
+            choices = choices,
+            answer = QuizAnswer(
+                kind = QuizAnswerKind.MULTIPLE_CHOICE,
+                canonicalValue = canonicalAnswer,
+                correctChoiceId = canonicalAnswer,
+            ),
+            explanation = ExplanationSteps(
+                concept = question.explanation,
+                formula = question.coreRelation,
+                substitution = "제시된 설명을 다섯 선택지의 정의와 직접 대조합니다.",
+                answer = "정답은 $canonicalAnswer. ${correct.text}입니다.",
+                interpretation = correct.explanation,
+            ),
+            audit = noMathAudit(question.difficulty),
+            seed = seed,
+            difficulty = question.difficulty,
+        )
+    }
+
+    /**
      * Produces a stable, duplicate-free round-robin order across the requested domains.
      *
      * Each domain is independently shuffled from [seed], then one element per non-empty domain is
@@ -216,9 +293,9 @@ object QuizEngine {
     }
 
     /**
-     * Generates a four-choice concept question for any valid [ElementSeed]. The pool can contain
+     * Generates a five-choice concept question for any valid [ElementSeed]. The pool can contain
      * all 135 elements; same-domain distractors are preferred at higher difficulty. If a tiny pool
-     * is supplied, deterministic misconception placeholders complete the four choices.
+     * is supplied, deterministic misconception placeholders complete the five choices.
      */
     fun generateConcept(
         target: ElementSeed,
@@ -252,7 +329,7 @@ object QuizEngine {
         val selected = mutableListOf<ElementSeed>()
         for (candidate in ordered) {
             if (selected.none { it.title == candidate.title }) selected += candidate
-            if (selected.size == 3) break
+            if (selected.size == 4) break
         }
 
         data class ChoiceSeed(val text: String, val sourceId: String?, val correct: Boolean)
@@ -268,12 +345,12 @@ object QuizEngine {
             "분자와 분모의 기준이 다른 관계",
         )
         var fallbackIndex = 0
-        while (rawChoices.size < 4) {
+        while (rawChoices.size < 5) {
             val label = fallbackLabels[fallbackIndex++]
             if (rawChoices.none { it.text == label }) rawChoices += ChoiceSeed(label, null, false)
         }
 
-        val ids = listOf("A", "B", "C", "D")
+        val ids = listOf("A", "B", "C", "D", "E")
         val shuffled = random.shuffled(rawChoices)
         val choices = shuffled.mapIndexed { index, choice ->
             QuizChoice(ids[index], choice.text, choice.sourceId)
