@@ -1187,7 +1187,7 @@ p {
 .login-role-chevron { color: #7c8c87; transition: transform 150ms ease; }
 .login-role-toggle[open] .login-role-chevron { transform: rotate(180deg); }
 .login-role-form { padding: 2px 15px 16px; border-top: 1px solid var(--line); }
-.viewer-signup-button { width: 100%; min-height: 42px; margin-top: 1px; }
+.viewer-signup-button { width: calc(100% - 32px); min-height: 42px; margin: 1px 16px 0; }
 .auth-switch { margin: 20px 0 0; padding-top: 17px; color: #687572; border-top: 1px solid var(--line); font-size: 10px; text-align: center; }
 .login-copyright { margin: 12px 0 0; display: flex; flex-direction: column; gap: 5px; color: #9aa5a1; font-size: 9px; text-align: center; }
 .login-choice-card .login-copyright { margin-top: 21px; padding-top: 16px; border-top: 1px solid var(--line); }
