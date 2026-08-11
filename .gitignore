@@ -22,3 +22,5 @@ secrets.properties
 *.pfx
 *.pem
 .findone-release/
+.venv-concept/
+.cache-concept-model/

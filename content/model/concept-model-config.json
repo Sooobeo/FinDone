@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "modelVersion": "findone-concept-ranker-v0-bootstrap",
+  "featureVersion": "concept-ranker-features-v1",
+  "splitVersion": "element-split-v1",
+  "splitSeed": 20260811,
+  "splitCounts": {
+    "train": 95,
+    "validation": 20,
+    "test": 20
+  },
+  "questionTypes": [
+    "definition_to_term",
+    "intuition_to_term",
+    "core_relation_to_term"
+  ],
+  "retrievalLimit": 20,
+  "choiceCount": 5,
+  "distractorCount": 4,
+  "pairwiseMaxPairsPerQuestion": 80,
+  "embeddingSelectionTolerance": 0.01,
+  "canonicalWeakSupervisionProfile": "balanced",
+  "fusionBaseline": {
+    "method": "reciprocal_rank_fusion",
+    "rrfK": 60,
+    "reference": "Cormack, Clarke, Buettcher (SIGIR 2009), doi:10.1145/1571941.1572114",
+    "referenceUrl": "https://cormack.uwaterloo.ca/cormacksigir09-rrf.pdf",
+    "rationale": "원 점수 스케일 정규화 대신 각 신호의 순위를 결합한다. k=60은 원 논문의 고정 기준값이다."
+  },
+  "weakSupervisionProfiles": [
+    {
+      "id": "balanced",
+      "questionWord": 0.1666666667,
+      "questionChar": 0.1666666667,
+      "answerWord": 0.1666666667,
+      "answerChar": 0.1666666667,
+      "sameDomain": 0.1666666666,
+      "sameMode": 0.1666666666,
+      "provenance": "equal-weight RRF reference baseline"
+    },
+    {
+      "id": "semantic-heavy",
+      "questionWord": 0.25,
+      "questionChar": 0.25,
+      "answerWord": 0.2,
+      "answerChar": 0.2,
+      "sameDomain": 0.05,
+      "sameMode": 0.05,
+      "provenance": "sensitivity ablation around equal-weight RRF; not a paper default"
+    },
+    {
+      "id": "domain-heavy",
+      "questionWord": 0.12,
+      "questionChar": 0.12,
+      "answerWord": 0.13,
+      "answerChar": 0.13,
+      "sameDomain": 0.35,
+      "sameMode": 0.15,
+      "provenance": "sensitivity ablation around equal-weight RRF; not a paper default"
+    }
+  ],
+  "retrievalProfiles": [
+    {
+      "id": "lexical-balanced",
+      "word": 0.5,
+      "char": 0.5,
+      "semantic": 0.0,
+      "provenance": "equal-weight RRF reference baseline"
+    },
+    {
+      "id": "lexical-word-heavy",
+      "word": 0.7,
+      "char": 0.3,
+      "semantic": 0.0
+      ,"provenance": "word/char sensitivity ablation; not a paper default"
+    },
+    {
+      "id": "lexical-char-heavy",
+      "word": 0.35,
+      "char": 0.65,
+      "semantic": 0.0
+      ,"provenance": "word/char sensitivity ablation; not a paper default"
+    },
+    {
+      "id": "semantic-balanced",
+      "word": 0.3333333333,
+      "char": 0.3333333333,
+      "semantic": 0.3333333334,
+      "provenance": "equal-weight sparse/dense RRF reference baseline"
+    },
+    {
+      "id": "semantic-conservative",
+      "word": 0.4,
+      "char": 0.4,
+      "semantic": 0.2,
+      "provenance": "dense-weight sensitivity ablation; not a paper default"
+    },
+    {
+      "id": "semantic-heavy",
+      "word": 0.25,
+      "char": 0.25,
+      "semantic": 0.5,
+      "provenance": "dense-weight sensitivity ablation; not a paper default"
+    }
+  ],
+  "pairwiseLogisticReference": {
+    "method": "RankNet-style pairwise logistic loss",
+    "paper": "Burges et al. (ICML 2005), doi:10.1145/1102351.1102363",
+    "paperUrl": "https://www.microsoft.com/en-us/research/wp-content/uploads/2005/08/icml_ranking.pdf",
+    "regularizationBaselineC": 1.0,
+    "regularizationBaselineSource": "scikit-learn LogisticRegression reference implementation default; not specified by RankNet paper",
+    "regularizationBaselineUrl": "https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html"
+  },
+  "pairwiseLogisticCValues": [0.1, 1.0, 10.0],
+  "xgboostGrid": [
+    {
+      "id": "reference-default",
+      "maxDepth": 6,
+      "learningRate": 0.3,
+      "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+    },
+    {
+      "id": "shallow-medium",
+      "maxDepth": 3,
+      "learningRate": 0.1,
+      "provenance": "regularization sensitivity ablation; not a paper default"
+    },
+    {
+      "id": "shallow-slow",
+      "maxDepth": 4,
+      "learningRate": 0.05,
+      "provenance": "regularization sensitivity ablation; not a paper default"
+    }
+  ],
+  "methodReferences": [
+    {
+      "id": "lambda-mart",
+      "title": "From RankNet to LambdaRank to LambdaMART: An Overview",
+      "url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/MSR-TR-2010-82.pdf"
+    },
+    {
+      "id": "xgboost",
+      "title": "XGBoost: A Scalable Tree Boosting System",
+      "url": "https://arxiv.org/abs/1603.02754"
+    },
+    {
+      "id": "e5",
+      "title": "Text Embeddings by Weakly-Supervised Contrastive Pre-training",
+      "url": "https://arxiv.org/abs/2212.03533"
+    },
+    {
+      "id": "beir",
+      "title": "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+      "url": "https://arxiv.org/abs/2104.08663"
+    }
+  ],
+  "embeddingCandidates": [
+    {
+      "id": "tfidf-word-char",
+      "provider": "local",
+      "model": "tfidf-word-char",
+      "revision": "feature-v1",
+      "queryPrefix": "",
+      "passagePrefix": "",
+      "trustRemoteCode": false,
+      "priority": 0
+    },
+    {
+      "id": "multilingual-e5-small",
+      "provider": "huggingface",
+      "model": "intfloat/multilingual-e5-small",
+      "revision": "main",
+      "queryPrefix": "query: ",
+      "passagePrefix": "passage: ",
+      "trustRemoteCode": false,
+      "priority": 1
+    },
+    {
+      "id": "multilingual-minilm-l12",
+      "provider": "huggingface",
+      "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "revision": "main",
+      "queryPrefix": "",
+      "passagePrefix": "",
+      "trustRemoteCode": false,
+      "priority": 2
+    },
+    {
+      "id": "kure-v1",
+      "provider": "huggingface",
+      "model": "nlpai-lab/KURE-v1",
+      "revision": "main",
+      "queryPrefix": "",
+      "passagePrefix": "",
+      "trustRemoteCode": true,
+      "priority": 3
+    },
+    {
+      "id": "bge-m3",
+      "provider": "huggingface",
+      "model": "BAAI/bge-m3",
+      "revision": "main",
+      "queryPrefix": "",
+      "passagePrefix": "",
+      "trustRemoteCode": true,
+      "priority": 4
+    },
+    {
+      "id": "multilingual-e5-base",
+      "provider": "huggingface",
+      "model": "intfloat/multilingual-e5-base",
+      "revision": "main",
+      "queryPrefix": "query: ",
+      "passagePrefix": "passage: ",
+      "trustRemoteCode": false,
+      "priority": 5
+    }
+  ],
+  "qualityGates": {
+    "minimumRetrievalRecallAt20": 0.95,
+    "minimumTestNdcgAt4": 0.8,
+    "minimumTestPrecisionAt4": 0.9,
+    "minimumHumanTestCoverage": 1.0,
+    "minimumHumanApprovalRate": 0.95,
+    "minimumQuestionsPerElement": 2,
+    "maximumAnswerLeakCount": 0,
+    "maximumDuplicateChoiceCount": 0,
+    "maximumAmbiguousQuestionCount": 0,
+    "requireDeterministicBank": true
+  }
+}

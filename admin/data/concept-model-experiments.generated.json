@@ -1,0 +1,3576 @@
+{
+  "experiments": [
+    {
+      "artifacts": {
+        "candidates": "build/concept-model/candidates.jsonl",
+        "facts": "build/concept-model/facts.jsonl",
+        "questionBank": "content/model/concept-question-bank.generated.json",
+        "questionBankSha256": "3308364f6111642b151b3dbb00442c391f64a45c5d8596c073ae6dd6af347c68",
+        "questionBankWritten": true,
+        "split": "content/model/concept-split.json"
+      },
+      "dataset": {
+        "candidateCount": 54264,
+        "configSha256": "423cc40f8af3cdc115c8ea0b61c39e7db628fd5faed342f2c52db252b3149466",
+        "contentFingerprint": "1292a74307d173ea13e1790b1336359d6a5a6b458f7948b79b82306795f96535",
+        "elementCount": 135,
+        "elementSplits": {
+          "test": 20,
+          "train": 95,
+          "validation": 20
+        },
+        "factCount": 405,
+        "questionCount": 405,
+        "questionSplits": {
+          "test": 60,
+          "train": 285,
+          "validation": 60
+        },
+        "splitSha256": "e1555069fc32ea58f91fbd3d34d9ba91e735ceb7f782082368d87606b0d75dc7"
+      },
+      "durationSeconds": 307.827,
+      "embeddings": [
+        {
+          "artifactBytes": 0,
+          "candidateId": "tfidf-word-char",
+          "dimensions": null,
+          "encodeSeconds": 0.0,
+          "error": null,
+          "modelId": "tfidf-word-char",
+          "revisionRequested": "feature-v1",
+          "revisionResolved": "feature-v1",
+          "status": "completed"
+        },
+        {
+          "artifactBytes": 493293023,
+          "candidateId": "multilingual-e5-small",
+          "dimensions": 384,
+          "encodeSeconds": 106.08,
+          "error": null,
+          "modelId": "intfloat/multilingual-e5-small",
+          "revisionRequested": "main",
+          "revisionResolved": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+          "status": "completed"
+        },
+        {
+          "artifactBytes": 479729205,
+          "candidateId": "multilingual-minilm-l12",
+          "dimensions": 384,
+          "encodeSeconds": 66.02,
+          "error": null,
+          "modelId": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+          "revisionRequested": "main",
+          "revisionResolved": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+          "status": "completed"
+        }
+      ],
+      "environment": {
+        "appRuntimeModelCalls": 0,
+        "externalLlmApiCalls": 0,
+        "numpy": "2.4.4",
+        "platform": "Windows-11-10.0.26200-SP0",
+        "python": "3.13.3",
+        "scikitLearn": "1.7.2",
+        "sentenceTransformers": "5.7.0",
+        "xgboost": "3.4.0"
+      },
+      "evaluation": {
+        "labelSource": "weak_rule_bootstrap",
+        "test": {
+          "labelSource": "weak_rule",
+          "mrr": 1.0,
+          "ndcgAt4": 0.942921,
+          "precisionAt4": 0.995833,
+          "questionCount": 60,
+          "retrievalRecallAt20": 0.9,
+          "split": "test"
+        },
+        "validation": {
+          "labelSource": "weak_rule",
+          "mrr": 1.0,
+          "ndcgAt4": 0.940005,
+          "precisionAt4": 0.995833,
+          "questionCount": 60,
+          "retrievalRecallAt20": 0.885417,
+          "split": "validation"
+        }
+      },
+      "experimentId": "cmq-20260811-130548-423cc40f",
+      "finishedAt": "2026-08-11T13:10:56.618640+00:00",
+      "labels": {
+        "coveredTestQuestionCount": 0,
+        "humanApprovalRate": 0.0,
+        "humanLabelCompletion": 0.0,
+        "humanLabelCount": 0,
+        "humanTestCoverage": 0.0,
+        "metricWarning": "현재 test 점수는 약지도 규칙 재현도이며 교육 품질의 독립 성능이 아닙니다.",
+        "testQuestionCount": 60,
+        "weakLabelCount": 54264
+      },
+      "methodReferences": [
+        {
+          "id": "lambda-mart",
+          "title": "From RankNet to LambdaRank to LambdaMART: An Overview",
+          "url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/MSR-TR-2010-82.pdf"
+        },
+        {
+          "id": "xgboost",
+          "title": "XGBoost: A Scalable Tree Boosting System",
+          "url": "https://arxiv.org/abs/1603.02754"
+        },
+        {
+          "id": "e5",
+          "title": "Text Embeddings by Weakly-Supervised Contrastive Pre-training",
+          "url": "https://arxiv.org/abs/2212.03533"
+        },
+        {
+          "id": "beir",
+          "title": "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+          "url": "https://arxiv.org/abs/2104.08663"
+        }
+      ],
+      "progress": {
+        "message": "bootstrap 평가 완료",
+        "percent": 100,
+        "processed": 405,
+        "stage": "completed",
+        "total": 405
+      },
+      "qualityGates": [
+        {
+          "id": "retrieval-recall-at-20",
+          "label": "test Recall@20",
+          "measured": 0.9,
+          "passed": false,
+          "threshold": 0.95
+        },
+        {
+          "id": "test-ndcg-at-4",
+          "label": "test NDCG@4",
+          "measured": 0.942921,
+          "passed": true,
+          "threshold": 0.8
+        },
+        {
+          "id": "test-precision-at-4",
+          "label": "test Precision@4",
+          "measured": 0.995833,
+          "passed": true,
+          "threshold": 0.9
+        },
+        {
+          "id": "independent-human-test",
+          "label": "독립 사람 test 라벨 커버리지",
+          "measured": 0.0,
+          "passed": false,
+          "threshold": 1.0
+        },
+        {
+          "id": "human-approval",
+          "label": "사람 최종 승인률",
+          "measured": 0.0,
+          "passed": false,
+          "threshold": 0.95
+        },
+        {
+          "id": "questions-per-element",
+          "label": "요소별 생성 문항 수",
+          "measured": 3,
+          "passed": true,
+          "threshold": 2
+        },
+        {
+          "id": "answer-leak",
+          "label": "정답 누출 건수",
+          "measured": 0,
+          "passed": true,
+          "threshold": 0
+        },
+        {
+          "id": "duplicate-choice",
+          "label": "중복 선택지 건수",
+          "measured": 0,
+          "passed": true,
+          "threshold": 0
+        },
+        {
+          "id": "ambiguous-question",
+          "label": "약한 오답 포함 문항 수",
+          "measured": 7,
+          "passed": false,
+          "threshold": 0
+        },
+        {
+          "id": "deterministic-bank",
+          "label": "문항 은행 직렬화 재현성",
+          "measured": true,
+          "passed": true,
+          "threshold": true
+        }
+      ],
+      "rankerRuns": [
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1249,
+          "modelSha256": "fa0cb68a6f68839bcb6ee0cf02cb76ddf92402a7cc5f75acf09cfc6f115e85c1",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.654,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.86533,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1240,
+          "modelSha256": "8d7d0cdb87a5195b3585c8e842bd5b312fef57862b6187723dc25474e4f9cd0b",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.337,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.866932,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1242,
+          "modelSha256": "d315e6c01cc9d0cef855c27854cf4f8c115827621587f87b5fa6fb6aea91eda1",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.288,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.866932,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-xgboost-reference-default.joblib",
+          "modelBytes": 69244,
+          "modelSha256": "2de7c2a6b84539d3f24d50ca51a3f3418da86c5de21143239d2437d4d290efd3",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.964,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.927653,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-xgboost-shallow-medium.joblib",
+          "modelBytes": 47682,
+          "modelSha256": "e1d2df34d8280b7dd56c7b5a6acbfc69319df930dda0007c3275041949a13ec6",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.942921,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.9,
+            "split": "test"
+          },
+          "testEvaluated": true,
+          "trainingSeconds": 1.591,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.940005,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-xgboost-shallow-slow.joblib",
+          "modelBytes": 58780,
+          "modelSha256": "fc19b7f53ca6bbba3cd33076d6e0a78dfc5c2580ba5ce500f3a40677fa220f85",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.506,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.924378,
+            "precisionAt4": 0.991667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1243,
+          "modelSha256": "170df2e77dfcaedf62fac6337099a3c2e220c1a23ad4b6b2b66f09716d6e5fc2",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.442,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.871447,
+            "precisionAt4": 0.954167,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1237,
+          "modelSha256": "07b622cfaf22d54ca9e4549d2245e38ad6dc411230df08567cf637bedcbd054d",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.305,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.872248,
+            "precisionAt4": 0.958333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1243,
+          "modelSha256": "1490705ce78cedcbb546d93fb3aef446f3fd3908656c78249e77de907d9cd029",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.221,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.872248,
+            "precisionAt4": 0.958333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-xgboost-reference-default.joblib",
+          "modelBytes": 129990,
+          "modelSha256": "b14ab9c26a5c6c089963ea93286de2211be876868d51a29cd44cb5a0d58d6b1f",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.287,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.941492,
+            "precisionAt4": 0.991667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-xgboost-shallow-medium.joblib",
+          "modelBytes": 34856,
+          "modelSha256": "b769741e95c7135e709aa36e080fa07304f2f86819927afaf7c371645511c426",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.385,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.930895,
+            "precisionAt4": 0.983333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-xgboost-shallow-slow.joblib",
+          "modelBytes": 95250,
+          "modelSha256": "5e66edbede7720b195bfe7eeddf8e119d70d8e88e7fda7c03ac108ce32c21153",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.937,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.932596,
+            "precisionAt4": 0.991667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1247,
+          "modelSha256": "3473120aa47f504636171d69a9a2e48060a3f839539b4ec8b2de2659aa17d4fa",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.466,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.871707,
+            "precisionAt4": 0.970833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1244,
+          "modelSha256": "02b2abfa50d20911dc464b0139dc3a0d2da8c4764164b0f76d146a3a4669c464",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.679,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.87305,
+            "precisionAt4": 0.970833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1244,
+          "modelSha256": "ca4bf8d0080c57c0458732f2ad53b75fb2c043b9ffdb556332da88e60c1f9333",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.741,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.87305,
+            "precisionAt4": 0.970833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-xgboost-reference-default.joblib",
+          "modelBytes": 93873,
+          "modelSha256": "d7ff3a45fb1de2022c1ff917d73ad5943f232e20cbc9d2ce511e23930a5acd43",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.484,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.940893,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-xgboost-shallow-medium.joblib",
+          "modelBytes": 30512,
+          "modelSha256": "fdbfb2ff2f90c64b9324c8aee30fb062a019601a26f773b23501e9e4f55dfa4a",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.431,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.933341,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-xgboost-shallow-slow.joblib",
+          "modelBytes": 58124,
+          "modelSha256": "596450751d967f392cde17abdfba1b20da5c352c80fd3cc05b431d60f0d6c0fc",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.712,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.926892,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-balanced-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1286,
+          "modelSha256": "fa4025b1fdb37415dc77f4a05accbace110cfa403e00bd327cad369334a92c29",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.671,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.867732,
+            "precisionAt4": 0.966667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-balanced-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1282,
+          "modelSha256": "14521daf733daa36b43f540467dbde82169d22f9760f6fb89086fdc58357e764",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.556,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.866932,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-balanced-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1283,
+          "modelSha256": "d0389c83045dca2af2b58b39140e3d77bddb6063a6dc6799def66b1f2bce2d22",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.45,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.866932,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-balanced-xgboost-reference-default.joblib",
+          "modelBytes": 99275,
+          "modelSha256": "e0db3e8da1205da0cd4f8607860439d41b756bab9db6bdb0f59f5936244a01cb",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.475,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.943093,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-balanced-xgboost-shallow-medium.joblib",
+          "modelBytes": 49968,
+          "modelSha256": "8981dc15698a4a42503c2a0d2a5e43cd8d83868f869a500a5a47e0df94fc5875",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.703,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.945322,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-balanced-xgboost-shallow-slow.joblib",
+          "modelBytes": 53526,
+          "modelSha256": "3a7e5afc548bed882c3983d391cd54fa69ce8f70dff50c5c714f7ab01b21d39a",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.546,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.924864,
+            "precisionAt4": 0.991667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-word-heavy-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1283,
+          "modelSha256": "e859ce64091472ed17f2215443280d2b0fe16fb39905c99ef7d1efde3721297e",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.893,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.868788,
+            "precisionAt4": 0.95,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-word-heavy-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1283,
+          "modelSha256": "d0b21a3d6d9f153d1c90579f7df26aec4c854b712509781b1094d59ce6b2caba",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.319,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.868788,
+            "precisionAt4": 0.95,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-word-heavy-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1285,
+          "modelSha256": "37cefcccb9702615ec63dc77b14208b5802834292b6cfdea5a9c58ac53a66b3f",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.199,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.868788,
+            "precisionAt4": 0.95,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-word-heavy-xgboost-reference-default.joblib",
+          "modelBytes": 64856,
+          "modelSha256": "4af1a39e556c617438de804c7dce5a418709c68b2a9b1bdf3de19bdbbdcd0f63",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.789,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.934185,
+            "precisionAt4": 0.991667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-word-heavy-xgboost-shallow-medium.joblib",
+          "modelBytes": 67522,
+          "modelSha256": "e308fb9653ada1f3438481ccdd8a7cc5c728febaab9d77e81b33b49e4b020c0e",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.819,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.941464,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-word-heavy-xgboost-shallow-slow.joblib",
+          "modelBytes": 75784,
+          "modelSha256": "36106e3b1e1d40fe70582c807076a5b61e8cc9a5798188590044bd538e7e0d96",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.706,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.933125,
+            "precisionAt4": 0.9875,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-char-heavy-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1288,
+          "modelSha256": "f8f18b3c4094d579e5fd35110997a5b48ea543c88bfa6e584a56194d4a28ba8f",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.347,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.872507,
+            "precisionAt4": 0.966667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-char-heavy-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1286,
+          "modelSha256": "5cf1e9199b33eb4bbfb7925f93e4747f60e4158adf4744c4b0bee1efeb080769",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.222,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.870906,
+            "precisionAt4": 0.966667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-char-heavy-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1285,
+          "modelSha256": "4103e660a5958441582d2f2d16af4433f301ad342bb820ccfce7ee11c8f1eaad",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.287,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.870906,
+            "precisionAt4": 0.966667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-char-heavy-xgboost-reference-default.joblib",
+          "modelBytes": 110192,
+          "modelSha256": "4b5b9709c9e096ef7f5fd0cb9f2c1d16ae8a023f313bff54e8c72c3125f3722d",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.276,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.938805,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-char-heavy-xgboost-shallow-medium.joblib",
+          "modelBytes": 30687,
+          "modelSha256": "0ca6b00e0b0e6e2bb704cd2f9b5954e064a8c2b1770eb6f027046452611ce820",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.516,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.935915,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-lexical-char-heavy-xgboost-shallow-slow.joblib",
+          "modelBytes": 65153,
+          "modelSha256": "8891a4b57461264ea045850cfd9d8c77089644ea2f1bff0d7f37d8d5a7b5c3c5",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.568,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.932411,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-balanced-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1286,
+          "modelSha256": "fbf92057315ff9f90424b8a476f3a1a564cf47cb4bfcbefeaf6ec8c6a360e6ea",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "semantic-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.557,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.963889,
+            "ndcgAt4": 0.840808,
+            "precisionAt4": 0.9375,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.81875,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-balanced-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1282,
+          "modelSha256": "158697964184f6aaa07a73dd2616d271048203c13a2dcab723c13a880d66f17f",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "semantic-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.274,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.963889,
+            "ndcgAt4": 0.842667,
+            "precisionAt4": 0.9375,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.81875,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-balanced-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1284,
+          "modelSha256": "fd2dbd584edf3e7311ab62fda85d1d07fbc7004c7a05cb53574b019a3d2dc991",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "semantic-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.267,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.963889,
+            "ndcgAt4": 0.842667,
+            "precisionAt4": 0.9375,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.81875,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-balanced-xgboost-reference-default.joblib",
+          "modelBytes": 84437,
+          "modelSha256": "8ca91f3b2bf43ed723dd1b9b31f230951a457e46526552d73004a9465880d162",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "semantic-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.05,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.913611,
+            "precisionAt4": 0.983333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.81875,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-balanced-xgboost-shallow-medium.joblib",
+          "modelBytes": 32990,
+          "modelSha256": "1d35affd448d66021f8afc7d5da7d74b23a79474acdd4a3563b28caa1b3f6413",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "semantic-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.464,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.921332,
+            "precisionAt4": 0.979167,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.81875,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-balanced-xgboost-shallow-slow.joblib",
+          "modelBytes": 59785,
+          "modelSha256": "82f26a44473dfcee186fc3208e54fa7bc02e99e3040d4e3dfd486ef8d9a69fd2",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "semantic-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.452,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.913667,
+            "precisionAt4": 0.970833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.81875,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-conservative-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1282,
+          "modelSha256": "68360ec3978950bb9e7d9b00c2ecc1cec1d6b476a6bb14c223b437a5bf978b51",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "semantic-conservative",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.59,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.867102,
+            "precisionAt4": 0.954167,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.883333,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-conservative-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1284,
+          "modelSha256": "b1ed49e262899c13222f5b7a48ae7c739f70fc167589df2d493a0faa4579e934",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "semantic-conservative",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.358,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.867231,
+            "precisionAt4": 0.954167,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.883333,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-conservative-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1279,
+          "modelSha256": "11cde258829462ad589c555a0d3c01e802c4f0528f3e53a3b209747880dc47d8",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "semantic-conservative",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.25,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.867231,
+            "precisionAt4": 0.954167,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.883333,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-conservative-xgboost-reference-default.joblib",
+          "modelBytes": 84737,
+          "modelSha256": "4d2ddc084b3c135d157f32c72862f6c63b19b8f3b9432a50b138a74046f13608",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "semantic-conservative",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.063,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.936946,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.883333,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-conservative-xgboost-shallow-medium.joblib",
+          "modelBytes": 29278,
+          "modelSha256": "bcf6e1b88642b6db37a72974a1c7e535997d9d3119c717d8adc8b9aa676e9071",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "semantic-conservative",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.176,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.928822,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.883333,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-conservative-xgboost-shallow-slow.joblib",
+          "modelBytes": 54332,
+          "modelSha256": "a1177781d9219d1fc1a4670a60cd6b7b6faa20dda880cec540c7fb0933780165",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "semantic-conservative",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.449,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.928749,
+            "precisionAt4": 0.991667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.883333,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-heavy-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1287,
+          "modelSha256": "bae530eadff840e6ba998ac4ef8174b7a75037457777a1f5cdf6ac4e41e1a1d7",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "semantic-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.408,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.972222,
+            "ndcgAt4": 0.815827,
+            "precisionAt4": 0.891667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.660417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-heavy-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1285,
+          "modelSha256": "1003677f1af80175d4c80a1a81491366a675f51ffd358e5abb286c35d7d8cbca",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "semantic-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.274,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.972222,
+            "ndcgAt4": 0.81544,
+            "precisionAt4": 0.891667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.660417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-heavy-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1286,
+          "modelSha256": "7b91d0dad48c0d000729a8654e71cfc1ab8b719606fa88d05bd2a025e9dc1d88",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "semantic-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.239,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.972222,
+            "ndcgAt4": 0.815684,
+            "precisionAt4": 0.891667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.660417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-heavy-xgboost-reference-default.joblib",
+          "modelBytes": 84949,
+          "modelSha256": "5583044f0db8be47a6e77f513affe830345f9cc1163e06410e95a6f795aa952e",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "semantic-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.057,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.88001,
+            "precisionAt4": 0.945833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.660417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-heavy-xgboost-shallow-medium.joblib",
+          "modelBytes": 22920,
+          "modelSha256": "cdec26800ffb4bde6b791362dc1799799881909620ab7cf245caafd652bfb846",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "semantic-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.158,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.876877,
+            "precisionAt4": 0.9375,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.660417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-e5-small",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-e5-small-semantic-heavy-xgboost-shallow-slow.joblib",
+          "modelBytes": 72107,
+          "modelSha256": "a74236909b8e15b4f5b050ea6793f8b6dabb7d5c704e7b8bb7bce6bb65a4fe69",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "semantic-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.773,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.878565,
+            "precisionAt4": 0.941667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.660417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-balanced-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1284,
+          "modelSha256": "9a2d5d10f91333cd9ecd2b708142caa1bd011e552c77682ae40265df62aa71d1",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.586,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.866932,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-balanced-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1285,
+          "modelSha256": "24a240d7c1012e6f842ef12fec46ef34402d280ddf4a0c4b6c429649037e369b",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.33,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.866932,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-balanced-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1284,
+          "modelSha256": "cf48f50824d718c577bcb72faf3f68b5857f5b303dc1f13db16a2edcddb25eb9",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.353,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.866932,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-balanced-xgboost-reference-default.joblib",
+          "modelBytes": 59731,
+          "modelSha256": "1cd48559dfd55f8ef14824011b8d8aed54162f1414d8367303d629907ff78716",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.858,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.927137,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-balanced-xgboost-shallow-medium.joblib",
+          "modelBytes": 39623,
+          "modelSha256": "743f2a5df2c5589f21bcee57eae018bb094a8f8ce8bb2e6e0d75262408603c2b",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.771,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.936773,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-balanced-xgboost-shallow-slow.joblib",
+          "modelBytes": 26125,
+          "modelSha256": "e762d9b032d8982a5227c5bc630157f8b302e1fb668f4cf3138fe42f0bfc32f2",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 2.363,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.912849,
+            "precisionAt4": 0.983333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-word-heavy-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1279,
+          "modelSha256": "811416209b56e4e97ab6a1f7d92af39dd38c1f94324e0b4e0fcdeeb0bcf489a8",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.421,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.868245,
+            "precisionAt4": 0.954167,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-word-heavy-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1283,
+          "modelSha256": "66286e70bf35bbc4ea1d5002dd847c0002f9c3181ec4eabbd2bef7c13b97ecbf",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.363,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.870647,
+            "precisionAt4": 0.958333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-word-heavy-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1284,
+          "modelSha256": "1858a6405e3f390e3259cb62982747b65df66292ca68e11459e559acdca89f08",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.375,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.872248,
+            "precisionAt4": 0.958333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-word-heavy-xgboost-reference-default.joblib",
+          "modelBytes": 93237,
+          "modelSha256": "6d0903e8d8defea9f983ba9a3dd47bcb819261062d4c9237dbffd2eec2e6914e",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.123,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.936487,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-word-heavy-xgboost-shallow-medium.joblib",
+          "modelBytes": 29123,
+          "modelSha256": "72c8f51124d76d10db85cb9a3c16aaaf1efa50863f5d97570431567238c31b66",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.133,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.928092,
+            "precisionAt4": 0.9875,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-word-heavy-xgboost-shallow-slow.joblib",
+          "modelBytes": 42111,
+          "modelSha256": "8130c2e089022938b3919d7ba2a572d2226d41e2606bdfaed6dfde17bccd97d9",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.168,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.923216,
+            "precisionAt4": 0.983333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-char-heavy-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1287,
+          "modelSha256": "02b40f11c9294f5ea7e5e2498f5936cbf3eef7de85a4a4b260160911ab0fd28e",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.378,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.874909,
+            "precisionAt4": 0.970833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-char-heavy-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1286,
+          "modelSha256": "ce9aad95512f98f3d2ff1737a3596f6a64f99a20d25f93621ac47237539e779b",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.277,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.874909,
+            "precisionAt4": 0.970833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-char-heavy-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1283,
+          "modelSha256": "a83035229beca9ea0e98045712706a36841c99d4ce4c0c8fea388e287799ccc3",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.244,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.874651,
+            "precisionAt4": 0.970833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-char-heavy-xgboost-reference-default.joblib",
+          "modelBytes": 93023,
+          "modelSha256": "3812060a546701366c3beeb539961fbd38dc1f35046fc9f50775276bb9ccceba",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.995,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.939376,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-char-heavy-xgboost-shallow-medium.joblib",
+          "modelBytes": 38842,
+          "modelSha256": "ef4a5169e71c442839c77caa028f008919c5b76cc28742ab7955bdd617e01897",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.215,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.935686,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-lexical-char-heavy-xgboost-shallow-slow.joblib",
+          "modelBytes": 62629,
+          "modelSha256": "fcd01b235695c42b7140115d792b77eda7272fe3b830f0074a2babb8916fbafc",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.717,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.929466,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-balanced-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1287,
+          "modelSha256": "9c87a1b0b11d3e50ad2afa5edb7891e65c66824caa70b7b2ad7682b5591021f7",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "semantic-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.637,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.853793,
+            "precisionAt4": 0.95,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.797917,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-balanced-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1285,
+          "modelSha256": "13f5048123c9ef4b8056df5b03c65b93fa15af128355175ebc202f875261f6da",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "semantic-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.379,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.853335,
+            "precisionAt4": 0.95,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.797917,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-balanced-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1287,
+          "modelSha256": "7c7477150bcc3775d49f69e9058ed7e9cd029bb45d8b5c56134ab59e38c71402",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "semantic-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.306,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.853335,
+            "precisionAt4": 0.95,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.797917,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-balanced-xgboost-reference-default.joblib",
+          "modelBytes": 107245,
+          "modelSha256": "8b3b89e9a833386d635dec3752db47007781f8195b149575934b8f5bdbe60ecb",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "semantic-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.809,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.920301,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.797917,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-balanced-xgboost-shallow-medium.joblib",
+          "modelBytes": 23164,
+          "modelSha256": "12ee04914b5f0e7aee6c36391de67b387f53b6d1e36c3d1d1e74fb82c43ac28c",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "semantic-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.189,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.920558,
+            "precisionAt4": 0.9875,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.797917,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-balanced-xgboost-shallow-slow.joblib",
+          "modelBytes": 84192,
+          "modelSha256": "f01c864e599c0de107c561b2ea3f68a589e6ce2cf2d46ff83bea10bc1d2f8b77",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "semantic-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.821,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.917927,
+            "precisionAt4": 0.991667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.797917,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-conservative-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1291,
+          "modelSha256": "0165c4c939955eeb5f900e6b4134b88562b97439d9b9eb98b1585e6e72d998eb",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "semantic-conservative",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.628,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.872422,
+            "precisionAt4": 0.945833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.872917,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-conservative-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1290,
+          "modelSha256": "5f59b049a04a1285050436a5d5fa8961c88b5aba6846cb6c6bd5fe240b3aa0eb",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "semantic-conservative",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.571,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.873223,
+            "precisionAt4": 0.95,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.872917,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-conservative-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1288,
+          "modelSha256": "ee556da7f3d92211bb089948a8b6f31398d94f93ce701f304b8603b480d0f5f9",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "semantic-conservative",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.36,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.873223,
+            "precisionAt4": 0.95,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.872917,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-conservative-xgboost-reference-default.joblib",
+          "modelBytes": 112362,
+          "modelSha256": "a919ccc55991699c384b26387e3e5f00c254ae4988ddc2df3e98d14a0f050ba9",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "semantic-conservative",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.168,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.928795,
+            "precisionAt4": 0.991667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.872917,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-conservative-xgboost-shallow-medium.joblib",
+          "modelBytes": 26411,
+          "modelSha256": "aeee93844a5a05bb9a1744102d71a070a09f135d16437fd7d3ea0654664f53a2",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "semantic-conservative",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.207,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.94325,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.872917,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-conservative-xgboost-shallow-slow.joblib",
+          "modelBytes": 78285,
+          "modelSha256": "94f7eefc95e888af1fcd8a68b8f657a659d5a5625d3c12f458096710aebebe8c",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "semantic-conservative",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.63,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.931739,
+            "precisionAt4": 0.991667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.872917,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-heavy-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1289,
+          "modelSha256": "3837efb8e219264d8b6abf9ca87e1f55e1e7ca09ecde768c3186ae8185680e90",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "semantic-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.511,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.958333,
+            "ndcgAt4": 0.793617,
+            "precisionAt4": 0.879167,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.602083,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-heavy-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1285,
+          "modelSha256": "81f0fcab6b31f73a20a2e118cdc4e93f3130c24e5464b1d02c760324b361b05d",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "semantic-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.329,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.958333,
+            "ndcgAt4": 0.792817,
+            "precisionAt4": 0.875,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.602083,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-heavy-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1287,
+          "modelSha256": "75b14d0001efedac67a42ef40861b9884d7f56c8df28071801d20a1c1f3ad439",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "semantic-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.235,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.958333,
+            "ndcgAt4": 0.792817,
+            "precisionAt4": 0.875,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.602083,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-heavy-xgboost-reference-default.joblib",
+          "modelBytes": 69327,
+          "modelSha256": "12c487776e0deb522039a81acac223d2763ce269ebfdc4d6d4fc7121c695ae93",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "semantic-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 2.055,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.843641,
+            "precisionAt4": 0.916667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.602083,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-heavy-xgboost-shallow-medium.joblib",
+          "modelBytes": 43821,
+          "modelSha256": "eeee81356af7a46f984835f05734d0eafbbbbfeae80e782f4a24a52e3d84792b",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "semantic-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 2.403,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.851994,
+            "precisionAt4": 0.929167,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.602083,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "multilingual-minilm-l12",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/multilingual-minilm-l12-semantic-heavy-xgboost-shallow-slow.joblib",
+          "modelBytes": 82344,
+          "modelSha256": "7f1b7e1aa2e2440e6252dd4543790d5b7ffad9fe9d27c6e4823a05d012a02a5e",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "semantic-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 2.441,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.84995,
+            "precisionAt4": 0.925,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.602083,
+            "split": "validation"
+          }
+        }
+      ],
+      "releaseBlockReason": "독립 사람 test 라벨과 최종 검토가 필요합니다.",
+      "releaseReady": false,
+      "reportVersion": 1,
+      "safety": {
+        "ambiguousQuestionCount": 7,
+        "answerLeakCount": 0,
+        "duplicateChoiceCount": 0
+      },
+      "selection": {
+        "embeddingId": "tfidf-word-char",
+        "hyperparameters": {
+          "id": "shallow-medium",
+          "learningRate": 0.1,
+          "maxDepth": 3,
+          "provenance": "regularization sensitivity ablation; not a paper default"
+        },
+        "modelBytes": 47682,
+        "modelSha256": "e1d2df34d8280b7dd56c7b5a6acbfc69319df930dda0007c3275041949a13ec6",
+        "rankerFamily": "xgboost",
+        "rankerId": "xgboost-shallow-medium",
+        "reason": "최고 validation NDCG@4와 1%p 이내인 후보 중 더 단순하고 작은 구성을 선택",
+        "retrievalProfileId": "lexical-balanced",
+        "selectionTolerance": 0.01,
+        "validationNdcgAt4": 0.940005
+      },
+      "startedAt": "2026-08-11T13:05:48.793839+00:00",
+      "status": "bootstrap",
+      "weightExperiments": {
+        "fusionBaseline": {
+          "method": "reciprocal_rank_fusion",
+          "rationale": "원 점수 스케일 정규화 대신 각 신호의 순위를 결합한다. k=60은 원 논문의 고정 기준값이다.",
+          "reference": "Cormack, Clarke, Buettcher (SIGIR 2009), doi:10.1145/1571941.1572114",
+          "referenceUrl": "https://cormack.uwaterloo.ca/cormacksigir09-rrf.pdf",
+          "rrfK": 60
+        },
+        "pairwiseCValues": [
+          0.1,
+          1.0,
+          10.0
+        ],
+        "retrievalProfileCount": 6,
+        "selectionRule": "train으로 학습하고 validation NDCG@4로만 선택한 뒤 선택된 1개 구성에만 test를 실행",
+        "weakSupervision": {
+          "canonicalProfileId": "balanced",
+          "comparisons": [
+            {
+              "changedQuestionCount": 0,
+              "meanTop4JaccardVsCanonical": 1.0,
+              "minimumTop4JaccardVsCanonical": 1.0,
+              "profileId": "balanced"
+            },
+            {
+              "changedQuestionCount": 265,
+              "meanTop4JaccardVsCanonical": 0.681082,
+              "minimumTop4JaccardVsCanonical": 0.142857,
+              "profileId": "semantic-heavy"
+            },
+            {
+              "changedQuestionCount": 188,
+              "meanTop4JaccardVsCanonical": 0.790899,
+              "minimumTop4JaccardVsCanonical": 0.142857,
+              "profileId": "domain-heavy"
+            }
+          ],
+          "fusionMethod": "reciprocal_rank_fusion",
+          "interpretation": "사람 라벨 전에는 최고 성능이 아니라 수동 약지도 가중치 변화에 대한 후보 안정성을 측정합니다.",
+          "meanTop4JaccardAcrossAlternatives": 0.735991,
+          "minimumTop4JaccardAcrossAlternatives": 0.142857,
+          "profileCount": 3,
+          "rrfK": 60
+        },
+        "xgboostGrid": [
+          {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          }
+        ]
+      }
+    },
+    {
+      "artifacts": {
+        "candidates": "build/concept-model/candidates.jsonl",
+        "facts": "build/concept-model/facts.jsonl",
+        "questionBank": "content/model/concept-question-bank.generated.json",
+        "questionBankSha256": "3308364f6111642b151b3dbb00442c391f64a45c5d8596c073ae6dd6af347c68",
+        "questionBankWritten": true,
+        "split": "content/model/concept-split.json"
+      },
+      "dataset": {
+        "candidateCount": 54264,
+        "configSha256": "423cc40f8af3cdc115c8ea0b61c39e7db628fd5faed342f2c52db252b3149466",
+        "contentFingerprint": "1292a74307d173ea13e1790b1336359d6a5a6b458f7948b79b82306795f96535",
+        "elementCount": 135,
+        "elementSplits": {
+          "test": 20,
+          "train": 95,
+          "validation": 20
+        },
+        "factCount": 405,
+        "questionCount": 405,
+        "questionSplits": {
+          "test": 60,
+          "train": 285,
+          "validation": 60
+        },
+        "splitSha256": "e1555069fc32ea58f91fbd3d34d9ba91e735ceb7f782082368d87606b0d75dc7"
+      },
+      "durationSeconds": 23.421,
+      "embeddings": [
+        {
+          "artifactBytes": 0,
+          "candidateId": "tfidf-word-char",
+          "dimensions": null,
+          "encodeSeconds": 0.0,
+          "error": null,
+          "modelId": "tfidf-word-char",
+          "revisionRequested": "feature-v1",
+          "revisionResolved": "feature-v1",
+          "status": "completed"
+        }
+      ],
+      "environment": {
+        "appRuntimeModelCalls": 0,
+        "externalLlmApiCalls": 0,
+        "numpy": "2.4.4",
+        "platform": "Windows-11-10.0.26200-SP0",
+        "python": "3.13.3",
+        "scikitLearn": "1.7.2",
+        "sentenceTransformers": "5.7.0",
+        "xgboost": "3.4.0"
+      },
+      "evaluation": {
+        "labelSource": "weak_rule_bootstrap",
+        "test": {
+          "labelSource": "weak_rule",
+          "mrr": 1.0,
+          "ndcgAt4": 0.942921,
+          "precisionAt4": 0.995833,
+          "questionCount": 60,
+          "retrievalRecallAt20": 0.9,
+          "split": "test"
+        },
+        "validation": {
+          "labelSource": "weak_rule",
+          "mrr": 1.0,
+          "ndcgAt4": 0.940005,
+          "precisionAt4": 0.995833,
+          "questionCount": 60,
+          "retrievalRecallAt20": 0.885417,
+          "split": "validation"
+        }
+      },
+      "experimentId": "cmq-20260811-130417-423cc40f",
+      "finishedAt": "2026-08-11T13:04:41.021229+00:00",
+      "labels": {
+        "coveredTestQuestionCount": 0,
+        "humanApprovalRate": 0.0,
+        "humanLabelCompletion": 0.0,
+        "humanLabelCount": 0,
+        "humanTestCoverage": 0.0,
+        "metricWarning": "현재 test 점수는 약지도 규칙 재현도이며 교육 품질의 독립 성능이 아닙니다.",
+        "testQuestionCount": 60,
+        "weakLabelCount": 54264
+      },
+      "methodReferences": [
+        {
+          "id": "lambda-mart",
+          "title": "From RankNet to LambdaRank to LambdaMART: An Overview",
+          "url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/MSR-TR-2010-82.pdf"
+        },
+        {
+          "id": "xgboost",
+          "title": "XGBoost: A Scalable Tree Boosting System",
+          "url": "https://arxiv.org/abs/1603.02754"
+        },
+        {
+          "id": "e5",
+          "title": "Text Embeddings by Weakly-Supervised Contrastive Pre-training",
+          "url": "https://arxiv.org/abs/2212.03533"
+        },
+        {
+          "id": "beir",
+          "title": "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+          "url": "https://arxiv.org/abs/2104.08663"
+        }
+      ],
+      "progress": {
+        "message": "bootstrap 평가 완료",
+        "percent": 100,
+        "processed": 405,
+        "stage": "completed",
+        "total": 405
+      },
+      "qualityGates": [
+        {
+          "id": "retrieval-recall-at-20",
+          "label": "test Recall@20",
+          "measured": 0.9,
+          "passed": false,
+          "threshold": 0.95
+        },
+        {
+          "id": "test-ndcg-at-4",
+          "label": "test NDCG@4",
+          "measured": 0.942921,
+          "passed": true,
+          "threshold": 0.8
+        },
+        {
+          "id": "test-precision-at-4",
+          "label": "test Precision@4",
+          "measured": 0.995833,
+          "passed": true,
+          "threshold": 0.9
+        },
+        {
+          "id": "independent-human-test",
+          "label": "독립 사람 test 라벨 커버리지",
+          "measured": 0.0,
+          "passed": false,
+          "threshold": 1.0
+        },
+        {
+          "id": "human-approval",
+          "label": "사람 최종 승인률",
+          "measured": 0.0,
+          "passed": false,
+          "threshold": 0.95
+        },
+        {
+          "id": "questions-per-element",
+          "label": "요소별 생성 문항 수",
+          "measured": 3,
+          "passed": true,
+          "threshold": 2
+        },
+        {
+          "id": "answer-leak",
+          "label": "정답 누출 건수",
+          "measured": 0,
+          "passed": true,
+          "threshold": 0
+        },
+        {
+          "id": "duplicate-choice",
+          "label": "중복 선택지 건수",
+          "measured": 0,
+          "passed": true,
+          "threshold": 0
+        },
+        {
+          "id": "ambiguous-question",
+          "label": "약한 오답 포함 문항 수",
+          "measured": 7,
+          "passed": false,
+          "threshold": 0
+        },
+        {
+          "id": "deterministic-bank",
+          "label": "문항 은행 직렬화 재현성",
+          "measured": true,
+          "passed": true,
+          "threshold": true
+        }
+      ],
+      "rankerRuns": [
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1249,
+          "modelSha256": "fa0cb68a6f68839bcb6ee0cf02cb76ddf92402a7cc5f75acf09cfc6f115e85c1",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.079,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.86533,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1240,
+          "modelSha256": "8d7d0cdb87a5195b3585c8e842bd5b312fef57862b6187723dc25474e4f9cd0b",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.519,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.866932,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1242,
+          "modelSha256": "d315e6c01cc9d0cef855c27854cf4f8c115827621587f87b5fa6fb6aea91eda1",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.547,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.866932,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-xgboost-reference-default.joblib",
+          "modelBytes": 69244,
+          "modelSha256": "2de7c2a6b84539d3f24d50ca51a3f3418da86c5de21143239d2437d4d290efd3",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.087,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.927653,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-xgboost-shallow-medium.joblib",
+          "modelBytes": 47682,
+          "modelSha256": "e1d2df34d8280b7dd56c7b5a6acbfc69319df930dda0007c3275041949a13ec6",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.942921,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.9,
+            "split": "test"
+          },
+          "testEvaluated": true,
+          "trainingSeconds": 1.44,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.940005,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-xgboost-shallow-slow.joblib",
+          "modelBytes": 58780,
+          "modelSha256": "fc19b7f53ca6bbba3cd33076d6e0a78dfc5c2580ba5ce500f3a40677fa220f85",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.208,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.924378,
+            "precisionAt4": 0.991667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1243,
+          "modelSha256": "170df2e77dfcaedf62fac6337099a3c2e220c1a23ad4b6b2b66f09716d6e5fc2",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.248,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.871447,
+            "precisionAt4": 0.954167,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1237,
+          "modelSha256": "07b622cfaf22d54ca9e4549d2245e38ad6dc411230df08567cf637bedcbd054d",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.286,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.872248,
+            "precisionAt4": 0.958333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1243,
+          "modelSha256": "1490705ce78cedcbb546d93fb3aef446f3fd3908656c78249e77de907d9cd029",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.991,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.872248,
+            "precisionAt4": 0.958333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-xgboost-reference-default.joblib",
+          "modelBytes": 129990,
+          "modelSha256": "b14ab9c26a5c6c089963ea93286de2211be876868d51a29cd44cb5a0d58d6b1f",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.283,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.941492,
+            "precisionAt4": 0.991667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-xgboost-shallow-medium.joblib",
+          "modelBytes": 34856,
+          "modelSha256": "b769741e95c7135e709aa36e080fa07304f2f86819927afaf7c371645511c426",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.038,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.930895,
+            "precisionAt4": 0.983333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-xgboost-shallow-slow.joblib",
+          "modelBytes": 95250,
+          "modelSha256": "5e66edbede7720b195bfe7eeddf8e119d70d8e88e7fda7c03ac108ce32c21153",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.197,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.932596,
+            "precisionAt4": 0.991667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.860417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1247,
+          "modelSha256": "3473120aa47f504636171d69a9a2e48060a3f839539b4ec8b2de2659aa17d4fa",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.132,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.871707,
+            "precisionAt4": 0.970833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1244,
+          "modelSha256": "02b2abfa50d20911dc464b0139dc3a0d2da8c4764164b0f76d146a3a4669c464",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.967,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.87305,
+            "precisionAt4": 0.970833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1244,
+          "modelSha256": "ca4bf8d0080c57c0458732f2ad53b75fb2c043b9ffdb556332da88e60c1f9333",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.999,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.975,
+            "ndcgAt4": 0.87305,
+            "precisionAt4": 0.970833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-xgboost-reference-default.joblib",
+          "modelBytes": 93873,
+          "modelSha256": "d7ff3a45fb1de2022c1ff917d73ad5943f232e20cbc9d2ce511e23930a5acd43",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.052,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.940893,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-xgboost-shallow-medium.joblib",
+          "modelBytes": 30512,
+          "modelSha256": "fdbfb2ff2f90c64b9324c8aee30fb062a019601a26f773b23501e9e4f55dfa4a",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.768,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.933341,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-xgboost-shallow-slow.joblib",
+          "modelBytes": 58124,
+          "modelSha256": "596450751d967f392cde17abdfba1b20da5c352c80fd3cc05b431d60f0d6c0fc",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.209,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.926892,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.885417,
+            "split": "validation"
+          }
+        }
+      ],
+      "releaseBlockReason": "독립 사람 test 라벨과 최종 검토가 필요합니다.",
+      "releaseReady": false,
+      "reportVersion": 1,
+      "safety": {
+        "ambiguousQuestionCount": 7,
+        "answerLeakCount": 0,
+        "duplicateChoiceCount": 0
+      },
+      "selection": {
+        "embeddingId": "tfidf-word-char",
+        "hyperparameters": {
+          "id": "shallow-medium",
+          "learningRate": 0.1,
+          "maxDepth": 3,
+          "provenance": "regularization sensitivity ablation; not a paper default"
+        },
+        "modelBytes": 47682,
+        "modelSha256": "e1d2df34d8280b7dd56c7b5a6acbfc69319df930dda0007c3275041949a13ec6",
+        "rankerFamily": "xgboost",
+        "rankerId": "xgboost-shallow-medium",
+        "reason": "최고 validation NDCG@4와 1%p 이내인 후보 중 더 단순하고 작은 구성을 선택",
+        "retrievalProfileId": "lexical-balanced",
+        "selectionTolerance": 0.01,
+        "validationNdcgAt4": 0.940005
+      },
+      "startedAt": "2026-08-11T13:04:17.604115+00:00",
+      "status": "bootstrap",
+      "weightExperiments": {
+        "fusionBaseline": {
+          "method": "reciprocal_rank_fusion",
+          "rationale": "원 점수 스케일 정규화 대신 각 신호의 순위를 결합한다. k=60은 원 논문의 고정 기준값이다.",
+          "reference": "Cormack, Clarke, Buettcher (SIGIR 2009), doi:10.1145/1571941.1572114",
+          "referenceUrl": "https://cormack.uwaterloo.ca/cormacksigir09-rrf.pdf",
+          "rrfK": 60
+        },
+        "pairwiseCValues": [
+          0.1,
+          1.0,
+          10.0
+        ],
+        "retrievalProfileCount": 6,
+        "selectionRule": "train으로 학습하고 validation NDCG@4로만 선택한 뒤 선택된 1개 구성에만 test를 실행",
+        "weakSupervision": {
+          "canonicalProfileId": "balanced",
+          "comparisons": [
+            {
+              "changedQuestionCount": 0,
+              "meanTop4JaccardVsCanonical": 1.0,
+              "minimumTop4JaccardVsCanonical": 1.0,
+              "profileId": "balanced"
+            },
+            {
+              "changedQuestionCount": 265,
+              "meanTop4JaccardVsCanonical": 0.681082,
+              "minimumTop4JaccardVsCanonical": 0.142857,
+              "profileId": "semantic-heavy"
+            },
+            {
+              "changedQuestionCount": 188,
+              "meanTop4JaccardVsCanonical": 0.790899,
+              "minimumTop4JaccardVsCanonical": 0.142857,
+              "profileId": "domain-heavy"
+            }
+          ],
+          "fusionMethod": "reciprocal_rank_fusion",
+          "interpretation": "사람 라벨 전에는 최고 성능이 아니라 수동 약지도 가중치 변화에 대한 후보 안정성을 측정합니다.",
+          "meanTop4JaccardAcrossAlternatives": 0.735991,
+          "minimumTop4JaccardAcrossAlternatives": 0.142857,
+          "profileCount": 3,
+          "rrfK": 60
+        },
+        "xgboostGrid": [
+          {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          }
+        ]
+      }
+    }
+  ],
+  "latestExperimentId": "cmq-20260811-130548-423cc40f",
+  "reportVersion": 1
+}

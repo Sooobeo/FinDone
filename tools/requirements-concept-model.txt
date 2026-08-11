@@ -1,0 +1,6 @@
+# Offline concept-question training and embedding bake-off.
+# Validated with CPython 3.13 on Windows and pinned for reproducible experiments.
+numpy==2.4.4
+scikit-learn==1.7.2
+sentence-transformers==5.7.0
+xgboost==3.4.0
