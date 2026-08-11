@@ -1174,6 +1174,7 @@ p {
 .login-form { display: flex; flex-direction: column; }
 .field-label { margin: 11px 0 6px; color: #46554f; font-size: 9px; font-weight: 750; }
 .login-submit { width: 100%; min-height: 42px; margin-top: 19px; }
+.login-button-spinner { animation: spin 700ms linear infinite; }
 .form-error { margin: 8px 0 0; color: var(--red); font-size: 9px; }
 .login-role-options { display: grid; gap: 10px; }
 .login-role-toggle { overflow: hidden; background: #fbfcfc; border: 1px solid var(--line-strong); border-radius: 11px; transition: border-color 140ms ease, box-shadow 140ms ease; }

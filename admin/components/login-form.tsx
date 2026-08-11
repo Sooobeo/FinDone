@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, ChevronDown, LockKeyhole, Mail, ShieldCheck, UserRound } from "lucide-react";
+import { ArrowRight, ChevronDown, LoaderCircle, LockKeyhole, Mail, ShieldCheck, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
@@ -90,7 +90,7 @@ function RoleLoginPanel({ expectedRole, mode, title, description }: RoleLoginPan
             placeholder={isOwner ? "owner@example.com" : "viewer@example.com"}
             autoComplete="email"
             required={mode !== "demo"}
-            disabled={configError}
+            disabled={configError || loading}
           />
         </div>
 
@@ -105,15 +105,23 @@ function RoleLoginPanel({ expectedRole, mode, title, description }: RoleLoginPan
             placeholder="비밀번호 입력"
             autoComplete="current-password"
             required={mode !== "demo"}
-            disabled={configError}
+            disabled={configError || loading}
           />
         </div>
 
         {error ? <p className="form-error" role="alert">{error}</p> : null}
 
-        <button className="button button-primary login-submit" type="submit" disabled={loading || configError}>
-          {loading ? "확인 중…" : mode === "demo" ? "읽기 전용 데모 열기" : "로그인"}
-          <ArrowRight size={17} />
+        <button
+          className="button button-primary login-submit"
+          type="submit"
+          disabled={loading || configError}
+          aria-busy={loading}
+        >
+          {loading ? (
+            <><LoaderCircle className="login-button-spinner" size={17} aria-hidden="true" /> 로그인 중…</>
+          ) : (
+            <>{mode === "demo" ? "읽기 전용 데모 열기" : "로그인"} <ArrowRight size={17} /></>
+          )}
         </button>
       </form>
     </details>

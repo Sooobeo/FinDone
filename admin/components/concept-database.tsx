@@ -105,6 +105,7 @@ export function ConceptDatabase({ initialElements, readOnly }: ConceptDatabasePr
   }
 
   function exportCsv() {
+    if (readOnly) return;
     const selected = selectedIds.size
       ? elements.filter((element) => selectedIds.has(element.elementId))
       : filtered;
@@ -223,9 +224,11 @@ export function ConceptDatabase({ initialElements, readOnly }: ConceptDatabasePr
                 </button>
               </>
             ) : null}
-            <button className="button button-primary" type="button" onClick={exportCsv}>
-              <Download size={16} /> 내보내기
-            </button>
+            {!readOnly ? (
+              <button className="button button-primary" type="button" onClick={exportCsv}>
+                <Download size={16} /> 내보내기
+              </button>
+            ) : null}
           </>
         }
       />
