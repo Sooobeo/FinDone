@@ -15,13 +15,16 @@ interface RoleLoginPanelProps {
   description: string;
 }
 
+type LoginStatus = "idle" | "authenticating" | "redirecting";
+
 function RoleLoginPanel({ expectedRole, mode, title, description }: RoleLoginPanelProps) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<LoginStatus>("idle");
   const configError = mode === "misconfigured";
+  const busy = status !== "idle";
   const isOwner = expectedRole === "owner";
   const emailId = `${expectedRole}-email`;
   const passwordId = `${expectedRole}-password`;
@@ -30,6 +33,8 @@ function RoleLoginPanel({ expectedRole, mode, title, description }: RoleLoginPan
     event.preventDefault();
     setError("");
     if (mode === "demo") {
+      setStatus("redirecting");
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
       router.replace("/dashboard");
       return;
     }
@@ -39,10 +44,10 @@ function RoleLoginPanel({ expectedRole, mode, title, description }: RoleLoginPan
       return;
     }
 
-    setLoading(true);
+    setStatus("authenticating");
     const { data: auth, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
     if (signInError || !auth.user) {
-      setLoading(false);
+      setStatus("idle");
       setError("이메일 또는 비밀번호가 올바르지 않습니다.");
       return;
     }
@@ -55,12 +60,13 @@ function RoleLoginPanel({ expectedRole, mode, title, description }: RoleLoginPan
 
     if (membershipError || !membership?.is_active || membership.role !== expectedRole) {
       await supabase.auth.signOut();
-      setLoading(false);
+      setStatus("idle");
       setError(isOwner ? "Owner 계정으로 로그인해 주세요." : "Viewer 계정으로 로그인해 주세요.");
       return;
     }
 
-    setLoading(false);
+    setStatus("redirecting");
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
     router.replace("/dashboard");
     router.refresh();
   }
@@ -90,7 +96,7 @@ function RoleLoginPanel({ expectedRole, mode, title, description }: RoleLoginPan
             placeholder={isOwner ? "owner@example.com" : "viewer@example.com"}
             autoComplete="email"
             required={mode !== "demo"}
-            disabled={configError || loading}
+            disabled={configError || busy}
           />
         </div>
 
@@ -105,7 +111,7 @@ function RoleLoginPanel({ expectedRole, mode, title, description }: RoleLoginPan
             placeholder="비밀번호 입력"
             autoComplete="current-password"
             required={mode !== "demo"}
-            disabled={configError || loading}
+            disabled={configError || busy}
           />
         </div>
 
@@ -114,11 +120,13 @@ function RoleLoginPanel({ expectedRole, mode, title, description }: RoleLoginPan
         <button
           className="button button-primary login-submit"
           type="submit"
-          disabled={loading || configError}
-          aria-busy={loading}
+          disabled={busy || configError}
+          aria-busy={busy}
         >
-          {loading ? (
+          {status === "authenticating" ? (
             <><LoaderCircle className="login-button-spinner" size={17} aria-hidden="true" /> 로그인 중…</>
+          ) : status === "redirecting" ? (
+            <><LoaderCircle className="login-button-spinner" size={17} aria-hidden="true" /> 대시보드로 이동 중…</>
           ) : (
             <>{mode === "demo" ? "읽기 전용 데모 열기" : "로그인"} <ArrowRight size={17} /></>
           )}
