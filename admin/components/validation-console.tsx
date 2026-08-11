@@ -28,10 +28,12 @@ export function ValidationConsole({
   workspace,
   capabilities,
   demo,
+  viewerMode = false,
 }: {
   workspace: ValidationWorkspace;
   capabilities: AdminCapabilities;
   demo: boolean;
+  viewerMode?: boolean;
 }) {
   const router = useRouter();
   const [selectedId, setSelectedId] = useState(workspace.revisions[0]?.revisionId ?? "");
@@ -81,7 +83,7 @@ export function ValidationConsole({
       <PageHeader
         eyebrow="QUALITY GATE"
         title="자동 검증"
-        description="검증 결과는 Worker만 기록합니다. Admin에서는 대상 revision을 선택해 작업을 대기열에 넣고 결과를 확인합니다."
+        description={viewerMode ? "Owner 화면과 같은 큐·상세 패널에서 자동 검증 DB의 구성과 결과 위치를 설명합니다. 실제 revision과 이슈는 표시하지 않습니다." : "검증 결과는 Worker만 기록합니다. Admin에서는 대상 revision을 선택해 작업을 대기열에 넣고 결과를 확인합니다."}
         actions={
           <div className="workflow-header-actions">
             <span className="role-pill">{roleLabel(capabilities.role)}</span>
@@ -111,9 +113,9 @@ export function ValidationConsole({
       ) : null}
 
       <section className="workflow-metrics" aria-label="검증 현황">
-        <article><span className="metric-mini-icon"><FileCheck2 size={18} /></span><div><strong>{counts.ready}</strong><p>검증 요청 가능</p></div></article>
-        <article><span className="metric-mini-icon icon-blue"><Clock3 size={18} /></span><div><strong>{counts.queued}</strong><p>대기·진행 작업</p></div></article>
-        <article><span className="metric-mini-icon icon-coral"><AlertTriangle size={18} /></span><div><strong>{counts.errors}</strong><p>실제 오류 이슈</p></div></article>
+        <article><span className="metric-mini-icon"><FileCheck2 size={18} /></span><div><strong>{viewerMode ? "대상" : counts.ready}</strong><p>{viewerMode ? "검증할 revision 정보" : "검증 요청 가능"}</p></div></article>
+        <article><span className="metric-mini-icon icon-blue"><Clock3 size={18} /></span><div><strong>{viewerMode ? "작업" : counts.queued}</strong><p>{viewerMode ? "Worker 대기·진행 상태" : "대기·진행 작업"}</p></div></article>
+        <article><span className="metric-mini-icon icon-coral"><AlertTriangle size={18} /></span><div><strong>{viewerMode ? "이슈" : counts.errors}</strong><p>{viewerMode ? "오류·경고 결과 위치" : "실제 오류 이슈"}</p></div></article>
       </section>
 
       {message ? <div className="workflow-notice" role="status">{message}</div> : null}
@@ -123,7 +125,7 @@ export function ValidationConsole({
           <aside className="panel workflow-queue-pane">
             <div className="workflow-pane-heading">
               <div><p className="eyebrow">REVISION QUEUE</p><h2>검증 대상</h2></div>
-              <span>{workspace.revisions.length}</span>
+              <span>{viewerMode ? "구성" : workspace.revisions.length}</span>
             </div>
             <div className="workflow-queue-list">
               {workspace.revisions.map((revision) => {
@@ -136,7 +138,7 @@ export function ValidationConsole({
                     onClick={() => { setSelectedId(revision.revisionId); setMessage(""); }}
                   >
                     <div><span className="mono-id">{revision.entityKey}</span><RevisionStateBadge state={revision.state} /></div>
-                    <strong>{entityLabel(revision.entityType)} revision #{revision.revisionNumber}</strong>
+                    <strong>{viewerMode ? `${entityLabel(revision.entityType)} revision 구성` : `${entityLabel(revision.entityType)} revision #${revision.revisionNumber}`}</strong>
                     <p>{revision.changeReason || "변경 사유 없음"}</p>
                     <small>{run ? `최근 검증: ${run.status}` : "검증 실행 전"} · {formatWorkflowDate(revision.createdAt)}</small>
                   </button>
@@ -151,7 +153,7 @@ export function ValidationConsole({
                 <div className="workflow-detail-heading">
                   <div>
                     <div className="editor-id-line"><span className="mono-id">{selected.entityKey}</span><RevisionStateBadge state={selected.state} /></div>
-                    <h2>{entityLabel(selected.entityType)} revision #{selected.revisionNumber}</h2>
+                    <h2>{viewerMode ? `${entityLabel(selected.entityType)} revision 구성` : `${entityLabel(selected.entityType)} revision #${selected.revisionNumber}`}</h2>
                     <p>{selected.changeReason || "변경 사유가 기록되지 않았습니다."}</p>
                   </div>
                   <code>{selected.contentHash.slice(0, 12)}…</code>
@@ -172,17 +174,17 @@ export function ValidationConsole({
                 ) : null}
 
                 <section className="workflow-section">
-                  <div className="workflow-section-heading"><div><p className="eyebrow">VALIDATION RESULT</p><h3>검사 결과</h3></div>{selectedRun ? <span>{selectedRun.checksPassed}/{selectedRun.checksTotal} 통과</span> : null}</div>
+                  <div className="workflow-section-heading"><div><p className="eyebrow">VALIDATION RESULT</p><h3>검사 결과</h3></div>{selectedRun ? <span>{viewerMode ? "통과·실패 수" : `${selectedRun.checksPassed}/${selectedRun.checksTotal} 통과`}</span> : null}</div>
                   {selectedRun ? (
                     <div className="validation-progress-row">
-                      <div className="readiness-track"><span style={{ width: selectedRun.checksTotal ? `${(selectedRun.checksPassed / selectedRun.checksTotal) * 100}%` : "0%" }} /></div>
-                      <p>실패 {selectedRun.checksFailed}건</p>
+                      <div className="readiness-track"><span style={{ width: viewerMode ? "72%" : selectedRun.checksTotal ? `${(selectedRun.checksPassed / selectedRun.checksTotal) * 100}%` : "0%" }} /></div>
+                      <p>{viewerMode ? "검사 비율 표시" : `실패 ${selectedRun.checksFailed}건`}</p>
                     </div>
                   ) : <div className="workflow-empty-inline">검증 요청 전입니다.</div>}
                 </section>
 
                 <section className="workflow-section">
-                  <div className="workflow-section-heading"><div><p className="eyebrow">ISSUES</p><h3>검증 이슈</h3></div><span>{selectedIssues.length}건</span></div>
+                  <div className="workflow-section-heading"><div><p className="eyebrow">ISSUES</p><h3>검증 이슈</h3></div><span>{viewerMode ? "이슈 구성" : `${selectedIssues.length}건`}</span></div>
                   {selectedIssues.length ? (
                     <div className="actual-issue-list">
                       {selectedIssues.map((issue) => (

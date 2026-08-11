@@ -10,26 +10,37 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
-import { ViewerContentGuide } from "@/components/viewer-content-guide";
 import { getAdminContext } from "@/lib/auth";
 import { getConceptElements, getSources } from "@/lib/data";
 import { packagedContentInfo } from "@/lib/packaged-info";
-import { viewerGuides } from "@/lib/viewer-guides";
+import { viewerConceptElements, viewerSources } from "@/lib/viewer-placeholders";
 
 export const metadata: Metadata = { title: "대시보드" };
 
 export default async function DashboardPage() {
   const context = await getAdminContext();
-  if (context.role === "viewer") return <ViewerContentGuide guide={viewerGuides.dashboard} />;
-  const [elements, sources] = await Promise.all([getConceptElements(), getSources()]);
-  const domainCounts = Array.from(
-    elements.reduce((map, element) => {
-      const item = map.get(element.domainId) ?? { id: element.domainId, name: element.domainName, count: 0 };
-      item.count += 1;
-      map.set(element.domainId, item);
-      return map;
-    }, new Map<string, { id: string; name: string; count: number }>()).values(),
-  );
+  const viewer = context.role === "viewer";
+  const [elements, sources] = viewer
+    ? [viewerConceptElements, viewerSources]
+    : await Promise.all([getConceptElements(), getSources()]);
+  const domainCounts = viewer
+    ? [
+        { id: "FIELD-1", name: "분야 ID와 표시 이름", count: 100 },
+        { id: "FIELD-2", name: "분야별 학습요소 구성", count: 100 },
+        { id: "FIELD-3", name: "개념·계산 유형 구분", count: 100 },
+        { id: "FIELD-4", name: "원본 근거 연결 상태", count: 100 },
+        { id: "FIELD-5", name: "자동 검증 결과", count: 100 },
+        { id: "FIELD-6", name: "승인·배포 상태", count: 100 },
+        { id: "FIELD-7", name: "앱 콘텐츠 버전", count: 100 },
+      ]
+    : Array.from(
+        elements.reduce((map, element) => {
+          const item = map.get(element.domainId) ?? { id: element.domainId, name: element.domainName, count: 0 };
+          item.count += 1;
+          map.set(element.domainId, item);
+          return map;
+        }, new Map<string, { id: string; name: string; count: number }>()).values(),
+      );
   const maxDomainCount = Math.max(...domainCounts.map((domain) => domain.count), 1);
   const issueCount = elements.reduce((sum, element) => sum + element.issueCount, 0);
 
@@ -37,8 +48,8 @@ export default async function DashboardPage() {
     <div className="page-stack">
       <PageHeader
         eyebrow="OVERVIEW"
-        title="콘텐츠 운영 현황"
-        description="현재 앱의 개념 DB를 기준으로 정리·검수·배포 상태를 한눈에 확인합니다."
+        title={viewer ? "콘텐츠 운영 구조" : "콘텐츠 운영 현황"}
+        description={viewer ? "Owner 대시보드와 같은 위치에서 각 요약 박스에 어떤 DB 정보가 표시되는지 설명합니다." : "현재 앱의 개념 DB를 기준으로 정리·검수·배포 상태를 한눈에 확인합니다."}
         actions={
           <Link className="button button-primary" href="/concepts">
             개념 DB 열기 <ArrowRight size={16} />
@@ -50,29 +61,29 @@ export default async function DashboardPage() {
         <article className="metric-card metric-card-featured">
           <div className="metric-icon"><Database size={20} /></div>
           <div className="metric-label">전체 학습 요소</div>
-          <div className="metric-value">{elements.length}<small>개</small></div>
-          <p>7개 금융 분야의 앱 내장 콘텐츠</p>
-          <span className="metric-detail">content-v{packagedContentInfo.version}</span>
+          <div className="metric-value">{viewer ? "요소 수" : elements.length}<small>{viewer ? "" : "개"}</small></div>
+          <p>{viewer ? "분야에 포함된 학습 단위의 총개수" : "7개 금융 분야의 앱 내장 콘텐츠"}</p>
+          <span className="metric-detail">{viewer ? "콘텐츠 버전이 표시되는 위치" : `content-v${packagedContentInfo.version}`}</span>
         </article>
         <article className="metric-card">
           <div className="metric-icon icon-sand"><FileText size={20} /></div>
           <div className="metric-label">연결된 원본</div>
-          <div className="metric-value">{sources.length}<small>건</small></div>
-          <p>문서·웹 링크·공식 레퍼런스</p>
-          <span className="metric-detail positive">근거 연결 완료</span>
+          <div className="metric-value">{viewer ? "원본 수" : sources.length}<small>{viewer ? "" : "건"}</small></div>
+          <p>{viewer ? "문서·웹·공식 레퍼런스의 등록 건수" : "문서·웹 링크·공식 레퍼런스"}</p>
+          <span className="metric-detail positive">{viewer ? "근거 연결 상태가 표시되는 위치" : "근거 연결 완료"}</span>
         </article>
         <article className="metric-card">
           <div className="metric-icon icon-blue"><BookCheck size={20} /></div>
           <div className="metric-label">배포된 요소</div>
-          <div className="metric-value">{elements.filter((item) => item.status === "published").length}<small>개</small></div>
-          <p>현재 APK에서 읽는 콘텐츠</p>
-          <span className="metric-detail positive">SQLite 무결성 통과</span>
+          <div className="metric-value">{viewer ? "승인 수" : elements.filter((item) => item.status === "published").length}<small>{viewer ? "" : "개"}</small></div>
+          <p>{viewer ? "승인되어 앱 반영 대상이 된 요소 수" : "현재 APK에서 읽는 콘텐츠"}</p>
+          <span className="metric-detail positive">{viewer ? "DB 무결성 상태가 표시되는 위치" : "SQLite 무결성 통과"}</span>
         </article>
         <article className="metric-card">
           <div className="metric-icon icon-coral"><CircleAlert size={20} /></div>
           <div className="metric-label">확인할 항목</div>
-          <div className="metric-value">{issueCount}<small>건</small></div>
-          <p>현재 패키지 기준 자동 검증 결과</p>
+          <div className="metric-value">{viewer ? "이슈 수" : issueCount}<small>{viewer ? "" : "건"}</small></div>
+          <p>{viewer ? "검토가 필요한 오류·경고의 총개수" : "현재 패키지 기준 자동 검증 결과"}</p>
           <Link className="metric-link" href="/validation">검증 화면 보기 <ArrowRight size={14} /></Link>
         </article>
       </section>
@@ -84,14 +95,14 @@ export default async function DashboardPage() {
               <p className="eyebrow">CONTENT COVERAGE</p>
               <h2>분야별 콘텐츠</h2>
             </div>
-            <span className="panel-kicker">총 {elements.length}개</span>
+            <span className="panel-kicker">{viewer ? "구성 항목 안내" : `총 ${elements.length}개`}</span>
           </div>
           <div className="domain-bars">
             {domainCounts.map((domain) => (
               <div className="domain-bar-row" key={domain.id}>
                 <div className="domain-bar-label">
                   <span>{domain.name}</span>
-                  <strong>{domain.count}</strong>
+                  <strong>{viewer ? "설명" : domain.count}</strong>
                 </div>
                 <div className="progress-track">
                   <span style={{ width: `${Math.max((domain.count / maxDomainCount) * 100, 4)}%` }} />
@@ -112,7 +123,7 @@ export default async function DashboardPage() {
           <ol className="workflow-list">
             <li className="workflow-complete">
               <span>1</span>
-              <div><strong>현재 DB 가져오기</strong><p>{elements.length}개 요소와 {sources.length}개 출처 준비</p></div>
+              <div><strong>현재 DB 가져오기</strong><p>{viewer ? "학습요소와 원본 근거를 준비하는 단계" : `${elements.length}개 요소와 ${sources.length}개 출처 준비`}</p></div>
             </li>
             <li className="workflow-current">
               <span>2</span>
@@ -135,8 +146,8 @@ export default async function DashboardPage() {
           <span className="large-state-icon state-success"><PackageCheck size={25} /></span>
           <div>
             <p className="eyebrow">CURRENT BASELINE</p>
-            <h2>앱 내장 DB를 기준점으로 고정했습니다</h2>
-            <p>향후 수정은 원본을 덮어쓰지 않고 새 revision으로 남기며, 승인된 변경만 다음 콘텐츠 버전에 포함합니다.</p>
+            <h2>{viewer ? "콘텐츠 기준점과 revision 정책" : "앱 내장 DB를 기준점으로 고정했습니다"}</h2>
+            <p>{viewer ? "기준 DB, revision 이력과 다음 릴리스 포함 여부를 설명하는 영역입니다." : "향후 수정은 원본을 덮어쓰지 않고 새 revision으로 남기며, 승인된 변경만 다음 콘텐츠 버전에 포함합니다."}</p>
           </div>
         </div>
         <Link className="button button-secondary" href="/releases">릴리스 기준 보기 <ArrowRight size={16} /></Link>

@@ -32,10 +32,12 @@ export function ReleaseConsole({
   workspace,
   capabilities,
   demo,
+  viewerMode = false,
 }: {
   workspace: ReleaseWorkspace;
   capabilities: AdminCapabilities;
   demo: boolean;
+  viewerMode?: boolean;
 }) {
   const router = useRouter();
   const [selectedId, setSelectedId] = useState(workspace.releases[0]?.releaseId ?? "");
@@ -135,7 +137,7 @@ export function ReleaseConsole({
       <PageHeader
         eyebrow="RELEASE CENTER"
         title="앱 반영"
-        description="릴리스를 한 번 생성하면 SQLite 빌드, 검증, stable 공개까지 자동 진행됩니다. 앱은 다음 실행 때 검증된 DB를 받고 오프라인에서는 기존 DB를 계속 씁니다."
+        description={viewerMode ? "Owner 화면과 같은 생성·상태·이력 배치에서 릴리스 DB의 구성과 앱 전달 흐름을 설명합니다. 실제 버전과 파일 값은 표시하지 않습니다." : "릴리스를 한 번 생성하면 SQLite 빌드, 검증, stable 공개까지 자동 진행됩니다. 앱은 다음 실행 때 검증된 DB를 받고 오프라인에서는 기존 DB를 계속 씁니다."}
         actions={
           <div className="workflow-header-actions">
             <span className="role-pill">{roleLabel(capabilities.role)}</span>
@@ -201,7 +203,7 @@ export function ReleaseConsole({
               <Rocket size={16} />{submitting === "create" ? "생성 중…" : "승인본으로 릴리스 생성"}
             </button>
           </div>
-          <p className="release-create-help"><ShieldCheck size={15} />최신 승인 revision을 고정한 뒤 Worker가 135개 요소를 빌드·검증하고, 통과한 릴리스만 stable에 자동 공개합니다.</p>
+          <p className="release-create-help"><ShieldCheck size={15} />{viewerMode ? "승인 revision 고정, Worker 빌드·검증과 stable 공개 규칙을 설명하는 영역입니다." : "최신 승인 revision을 고정한 뒤 Worker가 135개 요소를 빌드·검증하고, 통과한 릴리스만 stable에 자동 공개합니다."}</p>
         </section>
       ) : null}
 
@@ -212,7 +214,7 @@ export function ReleaseConsole({
           <div className="current-release-top"><span className="large-state-icon state-success"><Package size={25} /></span>{active ? <span className="release-live"><i />stable 사용 중</span> : <span className="example-tag">내장 기준점</span>}</div>
           <p className="eyebrow">ACTIVE CONTENT</p>
           <h2>{active?.versionName ?? `content-v${packagedContentInfo.version}`}</h2>
-          <p>{active ? `${active.itemCount}개 revision · ${active.activeChannels.join(", ") || "채널 없음"}` : `${packagedContentInfo.elementCount}개 학습 요소 · APK 내장`}</p>
+          <p>{viewerMode ? "포함 revision 수와 활성 채널이 표시되는 위치" : active ? `${active.itemCount}개 revision · ${active.activeChannels.join(", ") || "채널 없음"}` : `${packagedContentInfo.elementCount}개 학습 요소 · APK 내장`}</p>
           <div className="checksum-box"><Fingerprint size={15} /><code>{(active?.databaseSha256 ?? packagedContentInfo.sha256).slice(0, 20)}…</code></div>
         </article>
 
@@ -220,7 +222,7 @@ export function ReleaseConsole({
           <div className="panel-heading compact-heading"><div><p className="eyebrow">SELECTED RELEASE</p><h2>{selected?.versionName ?? "Supabase 릴리스 없음"}</h2></div>{selected ? <ReleaseStatusBadge status={selected.status} /> : null}</div>
           {selected ? (
             <>
-              <div className="release-fact-row"><span>revision</span><strong>{selected.itemCount}</strong><span>artifacts</span><strong>{selected.artifactCount}</strong><span>schema</span><strong>v{selected.schemaVersion}</strong></div>
+              <div className="release-fact-row"><span>revision</span><strong>{viewerMode ? "포함 수" : selected.itemCount}</strong><span>artifacts</span><strong>{viewerMode ? "파일 수" : selected.artifactCount}</strong><span>schema</span><strong>{viewerMode ? "DB 버전" : `v${selected.schemaVersion}`}</strong></div>
               <p className="selected-release-note">{selected.releaseNotes || "릴리스 노트 없음"}</p>
               <div className="selected-release-validation"><span>최근 검증</span>{validation ? <ValidationStatusBadge status={validation.status} /> : <strong>실행 전</strong>}</div>
               {activeValidationJob ? (
@@ -242,13 +244,13 @@ export function ReleaseConsole({
         <div className="release-flow-steps">
           <div><span><Check size={20} /></span><strong>승인 revision 고정</strong><p>요청 키로 원자적·중복 없는 생성</p></div><ChevronRight size={20} />
           <div><span><Database size={20} /></span><strong>Worker DB 생성</strong><p>queued/running/succeeded 상태 구분</p></div><ChevronRight size={20} />
-          <div><span><ShieldCheck size={20} /></span><strong>자동 검증</strong><p>해시·스키마·135개 요소 확인</p></div><ChevronRight size={20} />
+          <div><span><ShieldCheck size={20} /></span><strong>자동 검증</strong><p>{viewerMode ? "해시·스키마·포함 요소 확인" : "해시·스키마·135개 요소 확인"}</p></div><ChevronRight size={20} />
           <div><span><Download size={20} /></span><strong>자동 앱 반영</strong><p>stable 공개 후 앱이 안전하게 교체</p></div>
         </div>
       </section>
 
       <section className="panel release-history">
-        <div className="panel-heading"><div><p className="eyebrow">SUPABASE HISTORY</p><h2>콘텐츠 릴리스 이력</h2></div><span className="count-pill">{workspace.releases.length}개</span></div>
+        <div className="panel-heading"><div><p className="eyebrow">SUPABASE HISTORY</p><h2>콘텐츠 릴리스 이력</h2></div><span className="count-pill">{viewerMode ? "이력 구성 안내" : `${workspace.releases.length}개`}</span></div>
         {workspace.releases.length ? (
           <div className="release-table-scroll"><table className="data-table release-table"><thead><tr><th>버전</th><th>상태</th><th>revision</th><th>artifacts</th><th>검증/Worker</th><th>채널</th><th>생성 시각</th></tr></thead><tbody>{workspace.releases.map((release) => {
             const releaseJob = workspace.jobs.find((job) => job.releaseId === release.releaseId && (job.status === "queued" || job.status === "running")) ?? workspace.jobs.find((job) => job.releaseId === release.releaseId);
@@ -256,10 +258,10 @@ export function ReleaseConsole({
               <tr key={release.releaseId} className={selected?.releaseId === release.releaseId ? "active-row" : ""} onClick={() => { setSelectedId(release.releaseId); setMessage(""); }}>
                 <td><button className="table-title-button" type="button" onClick={() => setSelectedId(release.releaseId)}>{release.versionName}</button></td>
                 <td><ReleaseStatusBadge status={release.status} /></td>
-                <td>{release.itemCount}</td><td>{release.artifactCount}</td>
+                <td>{viewerMode ? "포함 수" : release.itemCount}</td><td>{viewerMode ? "파일 수" : release.artifactCount}</td>
                 <td>{releaseJob ? <JobStatusBadge status={releaseJob.status} /> : "—"}</td>
                 <td>{release.activeChannels.join(", ") || "—"}</td>
-                <td>{formatWorkflowDate(release.createdAt)}</td>
+                <td>{viewerMode ? "생성 시각" : formatWorkflowDate(release.createdAt)}</td>
               </tr>
             );
           })}</tbody></table></div>
@@ -269,7 +271,7 @@ export function ReleaseConsole({
       {selected && jobs.length ? (
         <section className="panel release-job-panel">
           <div className="panel-heading"><div><p className="eyebrow">WORKER JOBS</p><h2>{selected.versionName} 작업 이력</h2></div></div>
-          <div className="release-job-list">{jobs.map((job) => <article key={job.jobId}><span>{job.jobKind}</span><JobStatusBadge status={job.status} /><strong>{job.progressPercent}%</strong><small>{formatWorkflowDate(job.createdAt)}</small>{job.errorMessage ? <p>{job.errorMessage}</p> : null}</article>)}</div>
+          <div className="release-job-list">{jobs.map((job) => <article key={job.jobId}><span>{job.jobKind}</span><JobStatusBadge status={job.status} /><strong>{viewerMode ? "진행률" : `${job.progressPercent}%`}</strong><small>{viewerMode ? "작업 시각" : formatWorkflowDate(job.createdAt)}</small>{job.errorMessage ? <p>{job.errorMessage}</p> : null}</article>)}</div>
         </section>
       ) : null}
 

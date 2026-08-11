@@ -17,10 +17,12 @@ export function DistractorManager({
   initialDistractors,
   elements,
   readOnly,
+  viewerMode = false,
 }: {
   initialDistractors: DistractorItem[];
   elements: ElementOption[];
   readOnly: boolean;
+  viewerMode?: boolean;
 }) {
   const [items, setItems] = useState(initialDistractors);
   const [selected, setSelected] = useState<DistractorItem | null>(initialDistractors[0] ?? null);
@@ -137,10 +139,12 @@ export function DistractorManager({
       <PageHeader
         eyebrow="DISTRACTOR LIBRARY"
         title="오답 후보"
-        description={readOnly
+        description={viewerMode
+          ? "Owner 화면과 같은 목록·상세 편집 배치에서 오답 후보 DB의 구성 필드만 설명합니다. 실제 선택지는 표시하지 않습니다."
+          : readOnly
           ? "랜덤 개념문제에 사용되는 오답 선택지와 설명을 조회합니다."
           : "랜덤 개념문제에 사용할 틀린 선택지와 틀린 이유만 요소별로 관리합니다. 문제 템플릿은 다루지 않습니다."}
-        actions={readOnly ? null : <button className="button button-primary" type="button" onClick={createNew}><Plus size={16} /> 오답 후보 추가</button>}
+        actions={viewerMode ? <button className="button button-primary" type="button" disabled><Plus size={16} /> 오답 후보 추가</button> : readOnly ? null : <button className="button button-primary" type="button" onClick={createNew}><Plus size={16} /> 오답 후보 추가</button>}
       />
 
       {exampleMode ? (
@@ -153,7 +157,7 @@ export function DistractorManager({
             <label className="search-box compact-search"><Search size={16} /><span className="visually-hidden">오답 검색</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="요소 또는 오답 문구 검색" />{query ? <button type="button" onClick={() => setQuery("")} aria-label="검색어 지우기"><X size={14} /></button> : null}</label>
             <label className="select-wrap"><span className="visually-hidden">사용 상태</span><select value={activeFilter} onChange={(event) => setActiveFilter(event.target.value)}><option value="all">전체</option><option value="active">사용 중</option><option value="inactive">사용 안 함</option></select><ChevronDown size={14} /></label>
           </div>
-          <div className="pane-count">{filtered.length}개 후보</div>
+          <div className="pane-count">{viewerMode ? `${filtered.length}개 구성 항목` : `${filtered.length}개 후보`}</div>
           <div className="distractor-list">
             {filtered.map((item) => (
               <button key={item.id} type="button" className={`distractor-card ${selected?.id === item.id ? "active" : ""}`} onClick={() => choose(item)}>

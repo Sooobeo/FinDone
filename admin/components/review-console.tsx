@@ -55,10 +55,12 @@ export function ReviewConsole({
   workspace,
   capabilities,
   demo,
+  viewerMode = false,
 }: {
   workspace: ReviewWorkspace;
   capabilities: AdminCapabilities;
   demo: boolean;
+  viewerMode?: boolean;
 }) {
   const router = useRouter();
   const [selectedId, setSelectedId] = useState(workspace.revisions[0]?.revisionId ?? "");
@@ -102,8 +104,8 @@ export function ReviewConsole({
       <PageHeader
         eyebrow="HUMAN REVIEW"
         title="승인 검토"
-        description="실제 검증을 통과해 reviewed 상태가 된 revision만 현재 내용과 비교하고 결정합니다."
-        actions={<div className="workflow-header-actions"><span className="role-pill">{roleLabel(capabilities.role)}</span><span className="count-pill">검토 대기 {workspace.revisions.length}건</span></div>}
+        description={viewerMode ? "Owner 화면과 같은 검토 큐·diff 패널에서 승인 검토 DB의 구성을 설명합니다. 실제 변경 내용과 작성자는 표시하지 않습니다." : "실제 검증을 통과해 reviewed 상태가 된 revision만 현재 내용과 비교하고 결정합니다."}
+        actions={<div className="workflow-header-actions"><span className="role-pill">{roleLabel(capabilities.role)}</span><span className="count-pill">{viewerMode ? "검토 구성 안내" : `검토 대기 ${workspace.revisions.length}건`}</span></div>}
       />
 
       {demo ? (
@@ -118,7 +120,7 @@ export function ReviewConsole({
       {workspace.revisions.length ? (
         <section className="review-layout actual-review-layout">
           <aside className="panel review-queue">
-            <div className="panel-heading compact-heading"><div><p className="eyebrow">REVIEW QUEUE</p><h2>검토 대기</h2></div><span className="count-pill">{workspace.revisions.length}</span></div>
+            <div className="panel-heading compact-heading"><div><p className="eyebrow">REVIEW QUEUE</p><h2>검토 대기</h2></div><span className="count-pill">{viewerMode ? "구성" : workspace.revisions.length}</span></div>
             <div className="actual-review-queue">
               {workspace.revisions.map((revision) => (
                 <button
@@ -128,7 +130,7 @@ export function ReviewConsole({
                   onClick={() => { setSelectedId(revision.revisionId); setComment(""); setMessage(""); }}
                 >
                   <div><span className="mono-id">{revision.entityKey}</span><RevisionStateBadge state={revision.state} /></div>
-                  <strong>{entityLabel(revision.entityType)} revision #{revision.revisionNumber}</strong>
+                  <strong>{viewerMode ? `${entityLabel(revision.entityType)} revision 구성` : `${entityLabel(revision.entityType)} revision #${revision.revisionNumber}`}</strong>
                   <p>{revision.changeReason || "변경 사유 없음"}</p>
                   <span>검증 통과 <Check size={13} /></span>
                 </button>
@@ -142,7 +144,7 @@ export function ReviewConsole({
                 <div className="review-detail-header">
                   <div>
                     <div className="editor-id-line"><span className="mono-id">{selected.entityKey}</span><RevisionStateBadge state={selected.state} /></div>
-                    <h2>{entityLabel(selected.entityType)} revision #{selected.revisionNumber}</h2>
+                    <h2>{viewerMode ? `${entityLabel(selected.entityType)} revision 구성` : `${entityLabel(selected.entityType)} revision #${selected.revisionNumber}`}</h2>
                     <p>{selected.changeReason || "변경 사유 없음"} · {formatWorkflowDate(selected.createdAt)}</p>
                   </div>
                   {validation ? <ValidationStatusBadge status={validation.status} /> : null}
@@ -150,7 +152,7 @@ export function ReviewConsole({
 
                 <div className="review-integrity-strip">
                   <CheckCircle2 size={16} />
-                  <div><strong>검증 통과 revision</strong><p>{validation?.validatorName ?? "검증기"} · {validation?.checksPassed ?? 0}/{validation?.checksTotal ?? 0} checks</p></div>
+                  <div><strong>검증 통과 revision</strong><p>{viewerMode ? "검증기와 통과 검사 수가 표시되는 위치" : `${validation?.validatorName ?? "검증기"} · ${validation?.checksPassed ?? 0}/${validation?.checksTotal ?? 0} checks`}</p></div>
                   <code>{selected.contentHash.slice(0, 14)}…</code>
                 </div>
 

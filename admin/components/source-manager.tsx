@@ -40,7 +40,7 @@ function sourceMimeType(file: File): string | null {
   return SOURCE_MIME_BY_EXTENSION[extension] ?? null;
 }
 
-export function SourceManager({ initialSources, readOnly }: { initialSources: SourceItem[]; readOnly: boolean }) {
+export function SourceManager({ initialSources, readOnly, viewerMode = false }: { initialSources: SourceItem[]; readOnly: boolean; viewerMode?: boolean }) {
   const [sources, setSources] = useState(initialSources);
   const [staged, setStaged] = useState<StagedFile[]>([]);
   const [dragActive, setDragActive] = useState(false);
@@ -60,6 +60,7 @@ export function SourceManager({ initialSources, readOnly }: { initialSources: So
   }, [sources, query, kind]);
 
   function stageFiles(files: FileList | File[]) {
+    if (readOnly) return;
     const candidates = Array.from(files);
     const accepted = candidates.filter((file) => sourceMimeType(file) && file.size > 0 && file.size <= MAX_SOURCE_BYTES);
     const rejectedCount = candidates.length - accepted.length;
@@ -198,19 +199,21 @@ export function SourceManager({ initialSources, readOnly }: { initialSources: So
       <PageHeader
         eyebrow="SOURCE LIBRARY"
         title="원본 자료"
-        description={readOnly
+        description={viewerMode
+          ? "Owner 화면과 같은 등록·목록 배치에서 원본 자료 DB의 구성 필드만 설명합니다. 실제 파일과 URL은 표시하지 않습니다."
+          : readOnly
           ? "등록된 파일·웹 근거 자료와 연결 상태를 조회합니다."
           : "파일 탐색기, 드래그앤드롭 또는 URL로 근거 자료를 등록하고 개념 요소와 연결합니다."}
-        actions={<span className="count-pill">현재 원본 {sources.length}건</span>}
+        actions={<span className="count-pill">{viewerMode ? "원본 구성 안내" : `현재 원본 ${sources.length}건`}</span>}
       />
 
-      {!readOnly ? <section className="source-ingest-grid">
+      {!readOnly || viewerMode ? <section className="source-ingest-grid">
         <article className="panel upload-panel">
           <div className="panel-heading compact-heading">
             <div><p className="eyebrow">FILES</p><h2>파일 가져오기</h2></div>
             <span className="file-support">PDF · DOCX · XLSX · CSV · MD</span>
           </div>
-          <input ref={inputRef} className="visually-hidden" type="file" accept=".pdf,.docx,.xlsx,.csv,.md,.txt" multiple onChange={onFileInput} />
+          <input ref={inputRef} className="visually-hidden" type="file" accept=".pdf,.docx,.xlsx,.csv,.md,.txt" multiple onChange={onFileInput} disabled={readOnly} />
           <div
             className={`drop-zone ${dragActive ? "drop-zone-active" : ""}`}
             onDragEnter={(event) => { event.preventDefault(); setDragActive(true); }}
@@ -221,7 +224,7 @@ export function SourceManager({ initialSources, readOnly }: { initialSources: So
             <span className="drop-icon"><UploadCloud size={25} /></span>
             <strong>여기에 원본 파일을 놓으세요</strong>
             <p>또는 컴퓨터에서 직접 선택할 수 있습니다.</p>
-            <button className="button button-secondary" type="button" onClick={() => inputRef.current?.click()}>
+            <button className="button button-secondary" type="button" onClick={() => inputRef.current?.click()} disabled={readOnly}>
               파일 탐색기 열기
             </button>
           </div>
@@ -250,8 +253,8 @@ export function SourceManager({ initialSources, readOnly }: { initialSources: So
           <form className="url-form" onSubmit={addUrl}>
             <label htmlFor="source-url">원본 URL</label>
             <div className="url-input-row">
-              <div className="input-with-icon"><Link2 size={17} /><input id="source-url" type="url" value={url} onChange={(event) => setUrl(event.target.value)} placeholder="https://…" required /></div>
-              <button className="button button-primary" type="submit" disabled={submitting}><Plus size={16} /> 등록</button>
+              <div className="input-with-icon"><Link2 size={17} /><input id="source-url" type="url" value={url} onChange={(event) => setUrl(event.target.value)} placeholder={viewerMode ? "공개 URL 또는 PDF 주소가 들어가는 자리" : "https://…"} required disabled={readOnly} /></div>
+              <button className="button button-primary" type="submit" disabled={submitting || readOnly}><Plus size={16} /> 등록</button>
             </div>
           </form>
           <div className="ingest-notes">
@@ -280,7 +283,7 @@ export function SourceManager({ initialSources, readOnly }: { initialSources: So
               <span className={`source-kind-icon kind-${source.kind}`}>{source.kind === "url" ? <Globe2 size={19} /> : source.kind === "spreadsheet" ? <FileSpreadsheet size={19} /> : <FileText size={19} />}</span>
               <div className="source-main"><strong>{source.label}</strong><span>{source.locator}</span></div>
               <span className={`source-state source-${source.status}`}><i />{SOURCE_STATUS_LABELS[source.status]}</span>
-              <span className="source-links"><strong>{source.linkedElements}</strong><small>연결 요소</small></span>
+              <span className="source-links"><strong>{viewerMode ? "연결" : source.linkedElements}</strong><small>{viewerMode ? "기준 설명" : "연결 요소"}</small></span>
               {source.locator.startsWith("http") ? <a className="icon-button" href={source.locator} target="_blank" rel="noreferrer" aria-label={`${source.label} 열기`}><ArrowUpRight size={17} /></a> : <span className="icon-button-placeholder" />}
             </article>
           ))}

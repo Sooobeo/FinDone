@@ -25,6 +25,7 @@ type EditorTab = "concept" | "formula" | "source";
 interface ConceptDatabaseProps {
   initialElements: ConceptElement[];
   readOnly: boolean;
+  viewerMode?: boolean;
 }
 
 const fieldLabels: Partial<Record<keyof ConceptElement, string>> = {
@@ -47,7 +48,7 @@ function textPreview(value: string, limit = 88) {
   return clean.length > limit ? `${clean.slice(0, limit)}…` : clean;
 }
 
-export function ConceptDatabase({ initialElements, readOnly }: ConceptDatabaseProps) {
+export function ConceptDatabase({ initialElements, readOnly, viewerMode = false }: ConceptDatabaseProps) {
   const [elements, setElements] = useState(initialElements);
   const [query, setQuery] = useState("");
   const [domain, setDomain] = useState("all");
@@ -204,12 +205,18 @@ export function ConceptDatabase({ initialElements, readOnly }: ConceptDatabasePr
       <PageHeader
         eyebrow="CONTENT DATABASE"
         title="개념 DB"
-        description={readOnly
+        description={viewerMode
+          ? "Owner 화면과 같은 표·상세 패널에서 개념 DB를 구성하는 필드만 설명합니다. 실제 DB 값은 표시하지 않습니다."
+          : readOnly
           ? "현재 앱의 모든 요소와 설명을 검색하고 조회합니다."
           : "현재 앱의 모든 요소와 설명을 스프레드시트처럼 찾고, 수정하고, 검수합니다."}
         actions={
           <>
-            {!readOnly ? (
+            {viewerMode ? (
+              <button className="button button-secondary" type="button" disabled>
+                <Upload size={16} /> Excel CSV 가져오기
+              </button>
+            ) : !readOnly ? (
               <>
                 <input
                   ref={importRef}
@@ -224,7 +231,11 @@ export function ConceptDatabase({ initialElements, readOnly }: ConceptDatabasePr
                 </button>
               </>
             ) : null}
-            {!readOnly ? (
+            {viewerMode ? (
+              <button className="button button-primary" type="button" disabled>
+                <Download size={16} /> 내보내기
+              </button>
+            ) : !readOnly ? (
               <button className="button button-primary" type="button" onClick={exportCsv}>
                 <Download size={16} /> 내보내기
               </button>
@@ -282,7 +293,7 @@ export function ConceptDatabase({ initialElements, readOnly }: ConceptDatabasePr
           </div>
 
           <div className="table-summary">
-            <span><strong>{filtered.length}</strong> / {elements.length}개 요소</span>
+            <span>{viewerMode ? <><strong>{filtered.length}</strong>개 구성 필드 설명</> : <><strong>{filtered.length}</strong> / {elements.length}개 요소</>}</span>
             {selectedIds.size ? <span className="selected-summary">{selectedIds.size}개 선택됨</span> : null}
             {message ? <span className="table-message" role="status">{message}</span> : null}
           </div>
