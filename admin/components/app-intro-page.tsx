@@ -128,7 +128,7 @@ export async function AppIntroPage({ slug }: { slug: IntroSlug }) {
 
         <article className="intro-content">
           <section className="intro-copy-panel">
-            <p className="eyebrow">{section.eyebrow}</p>
+            {section.eyebrow ? <p className="eyebrow">{section.eyebrow}</p> : null}
             <h1>{section.title}</h1>
             <p className="intro-summary">{section.summary}</p>
             <MarkdownCopy source={section.body} />

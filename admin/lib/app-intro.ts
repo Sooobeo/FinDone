@@ -9,7 +9,7 @@ export type IntroSlug = (typeof introSlugs)[number];
 export interface IntroSection {
   slug: IntroSlug;
   navLabel: string;
-  eyebrow: string;
+  eyebrow: string | null;
   title: string;
   summary: string;
   body: string;
@@ -39,7 +39,7 @@ export async function getIntroSection(slug: IntroSlug): Promise<IntroSection> {
   return {
     slug,
     navLabel: metadata.navLabel ?? slug,
-    eyebrow: metadata.eyebrow ?? "FINDONE APP",
+    eyebrow: metadata.eyebrow?.trim() || null,
     title: metadata.title ?? "FinDone",
     summary: metadata.summary ?? "",
     body: match[2].trim(),
