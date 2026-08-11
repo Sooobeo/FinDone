@@ -34,7 +34,7 @@ class TrainingRecordTest(unittest.TestCase):
             {"fragment": {"locator": {"page": 1}, "content_text": "source quote"}},
         )
 
-        self.assertEqual("findone-content-training-v1", record["schema"])
+        self.assertEqual("findone-content-rule-feedback-v1", record["schema"])
         self.assertEqual("source quote", record["input"]["sourceEvidence"][0]["text"])
         self.assertEqual("after", record["idealOutput"]["generatedSnapshot"]["definition_markdown"])
         self.assertEqual("revision", record["metadata"]["revisionId"])

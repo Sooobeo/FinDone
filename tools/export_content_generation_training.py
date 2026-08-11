@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export only human-approved, released generation examples as JSONL."""
+"""Export approved local-transformer feedback for offline rule evaluation."""
 
 from __future__ import annotations
 
@@ -16,12 +16,12 @@ from tools.admin_release_worker import SupabaseReleaseClient, canonical_json_byt
 
 
 class TrainingExportError(RuntimeError):
-    """Raised when approved training examples cannot be exported safely."""
+    """Legacy name for errors while exporting approved rule feedback."""
 
 
 def _in_filter(values: Sequence[str]) -> str:
     if not values:
-        raise TrainingExportError("training export filter cannot be empty")
+        raise TrainingExportError("feedback export filter cannot be empty")
     return "in.(" + ",".join(values) + ")"
 
 
@@ -51,7 +51,7 @@ def build_training_record(
     if not evidence_rows:
         raise TrainingExportError("approved generation item has no field evidence")
     return {
-        "schema": "findone-content-training-v1",
+        "schema": "findone-content-rule-feedback-v1",
         "input": {
             "entityType": item.get("entity_type"),
             "entityKey": item.get("entity_key"),
@@ -166,4 +166,4 @@ if __name__ == "__main__":
     try:
         raise SystemExit(main())
     except (TrainingExportError, ValueError, OSError) as error:
-        raise SystemExit(f"Training export stopped: {error}") from error
+        raise SystemExit(f"Local rule feedback export stopped: {error}") from error

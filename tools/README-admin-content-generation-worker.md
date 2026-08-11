@@ -1,78 +1,91 @@
-# Admin 콘텐츠 DB 자동 생성 Worker
+# 로컬 앱 콘텐츠 컴파일러
 
-`admin_content_generation_worker.py`는 기존 앱 콘텐츠 DB를 baseline으로 읽고, Source Worker가 만든 불변 원문 fragment를 근거로 앱용 콘텐츠 변경 후보를 자동 생성한다. 후보는 최종 승인 전까지 authoring 테이블이나 앱 SQLite에 반영되지 않는다.
+`admin_content_generation_worker.py`는 원본 fragment와 현재 앱 콘텐츠를 읽어 최종 검토 후보를 만드는 **결정론적 로컬 Worker**다. 외부 LLM API, API key, 토큰 과금이 없으며 Admin은 변환을 실행하지 않고 결과 검토와 승인만 담당한다.
 
-## 자동 처리 흐름
+변환 규칙은 다음 파일에 버전으로 고정한다.
 
-초기 앱 DB에 URL만 있던 웹 출처도 Source Worker가 실행당 4건씩 자동 snapshot·가공하므로 별도 관리자 단계가 필요 없다.
+- `content/model/local-content-model.json`: 요소 ID·필드 별칭, 품질 게이트와 준비도 가중치
+- `tools/local_content_model.py`: JSON·CSV·TSV·라벨형 텍스트 파서, 충돌 차단, 안전 복원 로직
+- `content/model/golden-set.json`: 운영 코드와 별도로 유지하는 회귀 평가 케이스
 
-1. 아직 생성 배치에 포함되지 않은 `ready` 원본 버전을 최대 50개씩 자동 묶음
-2. 원본의 결정론적 요소 후보와 기존 `element_sources` 연결로 대상 요소 선택
-3. 긴 문서는 앞부분만 자르지 않고 전체 fragment에서 균등 표본을 만든 뒤 요소별 관련도 재정렬
-4. 기존 `elements`, `concepts`, primary `formulas`를 immutable baseline으로 고정
-5. OpenAI Responses API의 strict JSON Schema로 변경 후보와 필드별 fragment ID 생성
-6. 기존 Admin 검증기(`admin-v2`)로 Markdown, LaTeX, stable ID, 학습 카드 품질 검사
-7. 오류 또는 근거 누락 시 같은 schema로 최대 2회 자동 수정
-8. 변경된 모든 필드에 배치 범위 내 source fragment가 있는지 재확인
-9. 후보·before/after·근거·모델/프롬프트 hash·token 사용량을 최종 검토 배치에 봉인
+## 자동 처리 범위
 
-모델이 근거 없는 내용을 추가하거나 검증을 통과하지 못하면 해당 요소는 저장하지 않는다. 모든 요소가 실패하면 배치를 재시도하고, 최대 3회 후 `failed`로 종료한다. 모델이 baseline을 유지한 경우에는 `no_changes`로 끝난다.
+다음처럼 요소 ID와 앱 필드가 명시된 원본만 자동 반영한다.
 
-## 최종 승인 이후
+- 중첩/평면 JSON 및 JSON 배열
+- 헤더가 있는 CSV·TSV
+- `요소ID: ACC-01`, `정의: ...` 형태의 라벨형 문서
+- 한국어·영어 필드 별칭
+- 제목 동기화, 실무 사용 사례의 concept/formula 동시 반영
 
-Owner가 Admin의 **최종 검토**에서 한 번 승인하면 `approve_content_generation_batch` RPC가 한 트랜잭션 안에서 다음을 수행한다.
+일반 웹 문장, 요소 ID가 없는 문서, 서로 다른 값이 충돌하는 필드는 재작성하거나 추측하지 않는다. 기존 검토 콘텐츠를 그대로 유지하고, 새 스키마가 반복되면 Codex 작업에서 별칭·변환 규칙과 골든셋을 추가한다. 이렇게 한 번 코드화한 스키마는 이후 같은 구조의 DB에 자동 적용된다.
 
-- baseline이 검토 중 바뀌지 않았는지 재검사
-- 생성 후보를 normalized authoring 테이블에 적용
-- append-only revision 생성
-- 저장된 검증 결과를 queued → running → passed로 기록
-- approval snapshot 생성
-- 해당 배치 revision만 포함한 release 생성
-- 클린 SQLite 빌드 작업 등록
+## 실행 흐름
 
-Release Worker가 새 schema에 canonical row만 다시 적재하고 FTS를 재생성한 뒤 해시·무결성·135개 요소를 검증한다. 통과한 결과만 `stable`에 자동 공개된다.
+1. Source Worker가 파일·URL의 실제 본문, 표, 수식, OCR fragment를 저장한다.
+2. 로컬 Worker가 현재 앱 DB와 요소별 근거 fragment를 읽는다.
+3. 명시적 구조 필드를 로컬 규칙으로 매핑한다.
+4. 모든 변경 필드에 원본 fragment ID를 연결한다.
+5. Admin과 동일한 validator를 실행한다.
+6. 실패 필드는 창작해서 고치지 않고 검토된 baseline으로 되돌린다.
+7. 통과한 변경만 격리된 최종 검토 배치로 저장한다.
+8. Owner가 한 번 승인하면 클린 SQLite 빌드·검증·stable 공개가 이어진다.
 
-## 운영 설정
+## 운영 Worker 실행
 
-필수 GitHub secrets:
+필요한 환경변수는 자체 백엔드 큐를 읽고 쓰기 위한 다음 두 개뿐이다.
 
 - `SUPABASE_URL`
 - `SUPABASE_SECRET_KEY`
-- `OPENAI_API_KEY`
-
-필수 repository variables:
-
-- `OPENAI_CONTENT_MODEL`: 운영에서 고정할 Structured Outputs 지원 모델 ID
-- `ADMIN_CONTENT_GENERATION_WORKER_ENABLED=true`
-
-로컬 실행 예시:
 
 ```powershell
-$env:SUPABASE_URL = 'https://<project-ref>.supabase.co'
-$env:SUPABASE_SECRET_KEY = '<secret key>'
-$env:OPENAI_API_KEY = '<OpenAI API key>'
-$env:OPENAI_CONTENT_MODEL = '<structured-output model>'
-python tools/admin_content_generation_worker.py --worker-id 'generation:local-01'
+$env:SUPABASE_URL = 'https://<project>.supabase.co'
+$env:SUPABASE_SECRET_KEY = '<service-role key>'
+python tools/admin_content_generation_worker.py `
+  --worker-id 'local-compiler:local-01' `
+  --model-config content/model/local-content-model.json
 Remove-Item Env:SUPABASE_SECRET_KEY
-Remove-Item Env:OPENAI_API_KEY
+Remove-Item Env:SUPABASE_URL
 ```
 
-API key는 환경변수와 HTTPS Authorization header에만 사용하고 DB, model input, 로그, 오류 메시지에는 기록하지 않는다.
+Supabase REST는 큐 상태·원본·검토 후보를 전달하는 저장소 통신일 뿐 콘텐츠 판단을 수행하지 않는다. 변환 판단은 모두 이 저장소의 Python 코드에서 이뤄진다.
 
-## 승인 데이터의 모델 학습 준비
-
-기존 DB와 웹 문서만으로 만든 미검토 후보를 정답으로 학습시키지 않는다. `released` 배치에서 사람 승인을 받아 revision과 원문 근거가 모두 고정된 항목만 학습·평가용 JSONL로 내보낸다.
+## 앱 DB 컴파일·학습률·성능 측정
 
 ```powershell
-python tools/export_content_generation_training.py --output artifacts/content-training.jsonl
+python tools/compile_app_content.py --benchmark-rounds 3
 ```
 
-각 레코드는 baseline snapshot, 필드별 source fragment, 승인된 generated snapshot, 모델·프롬프트 버전과 release/revision ID를 포함한다. 이 데이터가 충분히 쌓인 뒤 별도 holdout 평가를 통과한 모델만 운영 Worker의 `OPENAI_CONTENT_MODEL`로 교체한다.
+명령은 다음 순서로 진행률을 표시한다.
 
-## 검증
+- 규칙과 품질 게이트 로드
+- 독립 앱 DB 반복 빌드
+- SQLite 무결성·필수 필드·출처 추적 검사
+- 골든셋 평가
+- 준비도와 처리 성능 계산
+- 품질 게이트 통과 시에만 앱 asset 승격
+
+측정 결과는 `admin/data/local-content-model-report.generated.json`에 저장되고 Admin의 **로컬 모델 현황** 화면에서 표시된다. 현재의 “학습률”은 신경망 파라미터 학습률이 아니다. 검토 코퍼스 커버리지, 앱 필수 필드 완성률, 출처 추적률, 골든셋 정확도, 결정론 빌드를 가중 합산한 **규칙 모델 준비도**다.
+
+CI에서는 앱 asset을 바꾸지 않고 다음처럼 검사한다.
 
 ```powershell
+python tools/compile_app_content.py --check --benchmark-rounds 3 `
+  --report build/local-content-model-report.json
+```
+
+## 사람 승인 피드백
+
+`export_content_generation_training.py`는 기존 파일명 호환을 유지하지만 ML API 학습을 실행하지 않는다. 승인·릴리스된 before/after와 근거만 내보내므로, 새 규칙과 골든 회귀 케이스를 추가할 때 사용하는 오프라인 피드백 자료다.
+
+```powershell
+python tools/export_content_generation_training.py --output artifacts/content-feedback.jsonl
+```
+
+## 테스트
+
+```powershell
+python -m unittest tools.test_local_content_model -v
 python -m unittest tools.test_admin_content_generation_worker -v
-python -m unittest tools.test_admin_release_worker -v
-python tools/validate_supabase_sql.py
+python -m unittest tools.test_build_content_db -v
 ```

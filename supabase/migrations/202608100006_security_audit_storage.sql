@@ -352,7 +352,8 @@ values
         false,
         104857600,
         array[
-            'application/pdf', 'application/json', 'application/msword',
+            'application/pdf', 'application/json', 'application/x-ndjson',
+            'application/vnd.sqlite3', 'application/x-sqlite3', 'application/msword',
             'application/vnd.ms-excel', 'application/vnd.ms-powerpoint',
             'application/vnd.openxmlformats-officedocument.presentationml.presentation',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

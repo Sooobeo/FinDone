@@ -507,6 +507,7 @@ begin
                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+               'application/json', 'application/x-ndjson',
                'text/csv', 'text/html', 'text/markdown', 'text/plain',
                'image/png', 'image/jpeg', 'image/webp'
            )
@@ -728,6 +729,7 @@ begin
                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                   'application/json', 'application/x-ndjson',
                    'text/csv', 'text/html', 'text/markdown', 'text/plain',
                    'image/png', 'image/jpeg', 'image/webp'
                ) then

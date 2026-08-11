@@ -416,7 +416,7 @@ export function ConceptDatabase({ initialElements, readOnly, viewerMode = false 
                   />
                   <EditorField
                     label="원본 핵심 관계"
-                    hint="콘텐츠 생성·검증에 쓰는 원본 관계입니다. 앱에는 아래 공식 필드가 표시됩니다."
+                    hint="로컬 콘텐츠 변환·검증에 쓰는 원본 관계입니다. 앱에는 아래 공식 필드가 표시됩니다."
                     field="coreRelation"
                     value={draft.coreRelation}
                     onChange={updateField}

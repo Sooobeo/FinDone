@@ -4,7 +4,7 @@
 
 ## 자동 가공 범위
 
-- 파일: PDF/스캔 PDF, DOCX, XLSX, PPTX, CSV, Markdown, TXT, HTML, PNG/JPG/WEBP
+- 파일: SQLite DB, JSON/JSONL, PDF/스캔 PDF, DOCX, XLSX, PPTX, CSV, Markdown, TXT, HTML, PNG/JPG/WEBP
 - URL: 공개 HTTP(S) HTML, PDF 및 위 지원 문서 형식
 - 초기 앱 DB에 공개 URL만 등록된 웹·PDF·문서 출처는 Worker 실행마다 기본 4건씩 자동으로 수집 대기열에 추가
 - Storage 또는 HTTP 응답을 임시 sandbox로 stream 처리하고 크기 상한 적용
@@ -12,14 +12,15 @@
 - ZIP entry 수·압축 해제 크기·압축률, PDF 페이지 수, 이미지 pixel 수 제한
 - PDF는 native text를 먼저 추출하고 텍스트가 부족한 페이지만 `kor+eng` OCR
 - 본문·표·수식·OCR fragment와 page/slide/sheet/row/selector locator 저장
+- SQLite는 `immutable=1`, `mode=ro`, `query_only`, `trusted_schema=OFF`로 열고 사용자 테이블의 헤더·행을 구조화 fragment로 변환
 - `simple` FTS용 정규화 text와 fragment SHA-256 생성
 - 업로드 전 동일 SHA-256 private object를 찾으면 바이트를 다시 전송하지 않고 alias를 만들며, 가공 시 기존 immutable fragment도 재사용
-- 요소·개념·공식 텍스트를 결정론적으로 대조해 후보와 점수만 저장
+- 명시된 `ACC-01` 같은 요소 ID는 정확 일치로 연결하고, 그 외 요소·개념·공식 텍스트는 결정론적으로 대조해 후보와 점수만 저장
 - top score 0.92 이상·2위와 gap 0.12 이상인 R0 결과만 source lineage를 자동 연결
 - OCR 신뢰도 0.90 미만, 요소 후보 불명확, 추출 상한 도달은 자동 승인하지 않고 `needs_review`
 - Worker 오류, lease 만료, retry 소진은 `failed`로 봉인해 UI가 영원히 로딩되지 않게 처리
 
-이 Worker 자체는 개념 콘텐츠를 승인하거나 Android DB를 수정하지 않는다. 다만 `ready`로 봉인한 fragment는 Content Generation Worker가 자동으로 이어받아 구조화 후보·근거·자동 검증 결과를 만들며, Owner의 최종 검토 한 번을 통과한 배치만 앱 SQLite 릴리스로 이어진다.
+이 Worker 자체는 개념 콘텐츠를 승인하거나 Android DB를 수정하지 않는다. 다만 `ready`로 봉인한 fragment는 로컬 콘텐츠 컴파일러가 자동으로 이어받아 구조화 후보·근거·자동 검증 결과를 만들며, Owner의 최종 검토 한 번을 통과한 배치만 앱 SQLite 릴리스로 이어진다.
 
 ## URL fetch 보안
 
@@ -37,7 +38,7 @@ URL은 브라우저 cookie나 인증정보를 사용하지 않는다.
 
 ## 사전 조건과 실행
 
-Supabase migration `202608110005_content_generation_pipeline.sql`까지 적용해야 한다. 가공 RPC와 기존 URL 자동 등록은 `service_role` Worker가 실행한다. Secret은 파일이나 명령행에 넣지 않고 프로세스 환경변수로만 전달한다.
+Supabase migration `202608110006_local_content_model.sql`까지 적용해야 한다. 가공 RPC와 기존 URL 자동 등록은 `service_role` Worker가 실행한다. Secret은 파일이나 명령행에 넣지 않고 프로세스 환경변수로만 전달한다.
 
 ```powershell
 python -m pip install --requirement tools/requirements-source-worker.txt

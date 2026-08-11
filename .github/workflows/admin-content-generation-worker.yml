@@ -1,4 +1,4 @@
-name: Admin Content Generation Worker
+name: Local Content Compiler Worker
 
 on:
   workflow_dispatch:
@@ -29,23 +29,18 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_CONTENT_MODEL: ${{ vars.OPENAI_CONTENT_MODEL }}
         run: |
           test -n "$SUPABASE_URL" || { echo "SUPABASE_URL secret is missing"; exit 1; }
           test -n "$SUPABASE_SECRET_KEY" || { echo "SUPABASE_SECRET_KEY secret is missing"; exit 1; }
-          test -n "$OPENAI_API_KEY" || { echo "OPENAI_API_KEY secret is missing"; exit 1; }
-          test -n "$OPENAI_CONTENT_MODEL" || { echo "OPENAI_CONTENT_MODEL variable is missing"; exit 1; }
 
-      - name: Generate, validate, and auto-repair review candidates
+      - name: Map, validate, and safely repair review candidates locally
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_CONTENT_MODEL: ${{ vars.OPENAI_CONTENT_MODEL }}
         run: >-
           python tools/admin_content_generation_worker.py
-          --worker-id "github:${{ github.run_id }}:${{ github.run_attempt }}"
+          --worker-id "local-compiler:${{ github.run_id }}:${{ github.run_attempt }}"
+          --model-config content/model/local-content-model.json
           --max-batches 1
           --max-elements 135
           --auto-enqueue-sources 50

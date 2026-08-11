@@ -1,0 +1,141 @@
+{
+  "goldenSetVersion": 1,
+  "description": "운영 변환 규칙과 분리해 둔 소규모 회귀 평가셋. ML 학습 데이터가 아니라 스키마 매핑·충돌 처리 정확도를 측정한다.",
+  "cases": [
+    {
+      "id": "nested-json-definition",
+      "elementId": "ACC-01",
+      "fragments": [
+        {
+          "kind": "table",
+          "text": "{\"element_id\":\"ACC-01\",\"concept\":{\"definition_markdown\":\"회계등식은 자산과 이를 조달한 부채 및 자본의 관계를 나타낸다.\"}}"
+        }
+      ],
+      "expectedChanges": {
+        "concept.definition_markdown": "회계등식은 자산과 이를 조달한 부채 및 자본의 관계를 나타낸다."
+      }
+    },
+    {
+      "id": "flat-korean-aliases",
+      "elementId": "CF-01",
+      "fragments": [
+        {
+          "kind": "table",
+          "text": "{\"요소ID\":\"CF-01\",\"정의\":\"현재가치는 미래 현금흐름을 적절한 할인율로 현재 시점에 환산한 값이다.\",\"직관설명\":\"같은 금액이라도 더 일찍 받을수록 다시 운용할 시간이 길어 현재의 가치가 더 크다.\"}"
+        }
+      ],
+      "expectedChanges": {
+        "concept.definition_markdown": "현재가치는 미래 현금흐름을 적절한 할인율로 현재 시점에 환산한 값이다.",
+        "concept.intuition_markdown": "같은 금액이라도 더 일찍 받을수록 다시 운용할 시간이 길어 현재의 가치가 더 크다."
+      }
+    },
+    {
+      "id": "json-list-selects-element",
+      "elementId": "INV-01",
+      "fragments": [
+        {
+          "kind": "table",
+          "text": "[{\"elementId\":\"INV-02\",\"definition\":\"선택되면 안 되는 값\"},{\"elementId\":\"INV-01\",\"definition\":\"수익률은 투자 원금에 비해 가치가 얼마나 변했는지를 비율로 나타낸다.\"}]"
+        }
+      ],
+      "expectedChanges": {
+        "concept.definition_markdown": "수익률은 투자 원금에 비해 가치가 얼마나 변했는지를 비율로 나타낸다."
+      }
+    },
+    {
+      "id": "csv-column-mapping",
+      "elementId": "FI-01",
+      "fragments": [
+        {
+          "kind": "table",
+          "text": "element_id,title,definition\nFI-01,채권 가격,채권 가격은 약정 현금흐름을 시장 수익률로 할인한 현재가치의 합이다."
+        }
+      ],
+      "expectedChanges": {
+        "element.title": "채권 가격",
+        "concept.title": "채권 가격",
+        "formula.title": "채권 가격",
+        "concept.definition_markdown": "채권 가격은 약정 현금흐름을 시장 수익률로 할인한 현재가치의 합이다."
+      }
+    },
+    {
+      "id": "tsv-column-mapping",
+      "elementId": "DER-01",
+      "fragments": [
+        {
+          "kind": "table",
+          "text": "element_code\tcore_relation\t적용범위\nDER-01\t선도계약의 가치는 계약가격과 현재의 공정 선도가격 차이에서 발생한다.\t동일한 기초자산과 만기를 전제로 비교한다."
+        }
+      ],
+      "expectedChanges": {
+        "element.core_relation": "선도계약의 가치는 계약가격과 현재의 공정 선도가격 차이에서 발생한다.",
+        "element.scope_notes": "동일한 기초자산과 만기를 전제로 비교한다."
+      }
+    },
+    {
+      "id": "labeled-text-mapping",
+      "elementId": "EQV-01",
+      "fragments": [
+        {
+          "kind": "text",
+          "text": "요소ID: EQV-01\n정의: 기업가치는 영업자산이 만들어낼 미래 현금흐름의 현재가치를 나타낸다.\n가정: 현금흐름과 할인율은 같은 기준 시점과 통화로 측정한다."
+        }
+      ],
+      "expectedChanges": {
+        "concept.definition_markdown": "기업가치는 영업자산이 만들어낼 미래 현금흐름의 현재가치를 나타낸다.",
+        "formula.assumptions_markdown": "현금흐름과 할인율은 같은 기준 시점과 통화로 측정한다."
+      }
+    },
+    {
+      "id": "checklist-is-mirrored",
+      "elementId": "IBT-01",
+      "fragments": [
+        {
+          "kind": "table",
+          "text": "{\"element_id\":\"IBT-01\",\"uses\":[\"거래 전후 기업가치와 지분가치의 연결을 점검할 때 사용한다.\",\"인수대금의 조달 방식이 주주가치에 미치는 영향을 비교할 때 사용한다.\"]}"
+        }
+      ],
+      "expectedChanges": {
+        "concept.checklist_markdown": "- 거래 전후 기업가치와 지분가치의 연결을 점검할 때 사용한다.\n- 인수대금의 조달 방식이 주주가치에 미치는 영향을 비교할 때 사용한다.",
+        "formula.notes_markdown": "- 거래 전후 기업가치와 지분가치의 연결을 점검할 때 사용한다.\n- 인수대금의 조달 방식이 주주가치에 미치는 영향을 비교할 때 사용한다."
+      }
+    },
+    {
+      "id": "unstructured-prose-is-not-invented",
+      "elementId": "ACC-02",
+      "fragments": [
+        {
+          "kind": "text",
+          "text": "이 문서는 회계와 재무제표를 폭넓게 설명하지만 앱 필드나 요소 ID를 명시하지 않는다."
+        }
+      ],
+      "expectedChanges": {}
+    },
+    {
+      "id": "conflicting-values-are-skipped",
+      "elementId": "CF-02",
+      "fragments": [
+        {
+          "kind": "table",
+          "text": "{\"element_id\":\"CF-02\",\"definition\":\"서로 다른 첫 번째 정의가 들어왔다.\"}"
+        },
+        {
+          "kind": "table",
+          "text": "{\"element_id\":\"CF-02\",\"definition\":\"서로 다른 두 번째 정의가 들어왔다.\"}"
+        }
+      ],
+      "expectedChanges": {}
+    },
+    {
+      "id": "conflicting-aliases-in-one-record-are-skipped",
+      "elementId": "ACC-03",
+      "fragments": [
+        {
+          "kind": "table",
+          "text": "{\"element_id\":\"ACC-03\",\"definition\":\"첫 번째 정의가 들어왔다.\",\"정의\":\"충돌하는 두 번째 정의가 들어왔다.\"}"
+        }
+      ],
+      "expectedChanges": {}
+    }
+  ]
+}

@@ -8,6 +8,7 @@
 - 분야·요소·개념 설명·수식·변수 설명·개념형 오답 후보
 - URL/파일 출처, 출처 버전, 비공개 Storage 파일, 근거 위치
 - 파일·URL snapshot의 실제 parser/OCR fragment, FTS와 결정론적 요소 후보
+- SQLite/JSON/CSV 구조를 외부 LLM 없이 앱 필드로 매핑하는 로컬 콘텐츠 모델과 최종 검토 배치
 - 모든 개념 변경의 자동 immutable revision과 상태 이력
 - validation run/issue, 사람의 승인·반려와 승인 snapshot
 - 승인 revision만 포함할 수 있는 SQLite 릴리스와 원자적 active channel
@@ -34,6 +35,8 @@
 13. `202608110002_viewer_catalog_only.sql`: viewer에게 실제 DB 행 대신 카탈로그 설명만 노출
 14. `202608110003_resumable_source_uploads.sql`: 원본의 100 MiB 개별 제한 제거와 대용량 등록 RPC
 15. `202608110004_source_ingestion_worker.sql`: 파일·URL 가공 Worker RPC, immutable fragment/FTS, 요소 후보와 실제 진행 상태 view
+16. `202608110005_content_generation_pipeline.sql`: 격리된 로컬 변환 후보, 필드별 근거, 최종 승인·릴리스 연결
+17. `202608110006_local_content_model.sql`: Admin 변환 시작 권한 제거, 로컬 규칙 기본값과 SQLite/JSON Storage 허용
 
 ## 로컬 실행
 
@@ -165,7 +168,7 @@ DB trigger는 자격증명 포함 URL, 로컬 host, IP literal을 거부한다. 
 
 등록 RPC가 만든 `file_extract`/`url_fetch` 작업은 `tools/admin_source_ingestion_worker.py`가 원자적으로 claim한다. 파일은 private Storage 원본의 크기·SHA-256·MIME signature를 재검증한다. URL은 최초 요청과 매 redirect의 DNS 결과를 검사하고 public IP에 pin해 수집하며, raw response를 `source-private`의 immutable snapshot으로 보존한다.
 
-Worker는 PDF/스캔 PDF, DOCX, XLSX, PPTX, CSV, Markdown/TXT, HTML, PNG/JPG/WEBP를 처리한다. PDF는 native text를 먼저 읽고 부족한 페이지만 OCR한다. 결과는 다음에 저장된다.
+Worker는 SQLite DB, JSON/JSONL, PDF/스캔 PDF, DOCX, XLSX, PPTX, CSV, Markdown/TXT, HTML, PNG/JPG/WEBP를 처리한다. SQLite는 읽기 전용·immutable 모드로 사용자 테이블을 헤더가 보존된 fragment로 만들고, PDF는 native text를 먼저 읽고 부족한 페이지만 OCR한다. 결과는 다음에 저장된다.
 
 | 저장 위치 | 내용 |
 | --- | --- |
@@ -178,6 +181,12 @@ Worker는 PDF/스캔 PDF, DOCX, XLSX, PPTX, CSV, Markdown/TXT, HTML, PNG/JPG/WEB
 top score 0.92 이상이면서 2위와 gap이 0.12 이상인 R0 결과만 `element_sources` lineage를 자동 연결한다. 명확한 결정론적 결과는 `ready`, OCR 신뢰도 0.90 미만이나 요소 연결이 애매한 결과는 `needs_review`, 손상·미지원·인프라 오류는 `failed`가 된다. Worker lease가 끊기면 20분 뒤 retry budget 안에서 회수하고, 소진 시 실패로 봉인해 `processing` 상태가 무기한 남지 않는다. `source_catalog_overview`는 최신 job 단계·진행률·오류·top 후보를 Admin UI에 제공한다.
 
 자동 실행과 URL SSRF 방어 계약은 [Source Worker 문서](../tools/README-admin-source-worker.md)를 따른다.
+
+### 로컬 앱 콘텐츠 변환
+
+원본 가공이 끝나면 `tools/admin_content_generation_worker.py`가 `content/model/local-content-model.json`의 별칭·품질 규칙으로 명시적인 요소 ID와 필드를 매핑한다. 외부 LLM API나 모델 key는 사용하지 않는다. 일반 문장을 새 콘텐츠로 추측하지 않으며 구조가 불명확하거나 값이 충돌하면 기존 검토 콘텐츠를 유지한다.
+
+Admin에는 변환 시작 버튼이 없다. `service_role` 로컬 Worker만 배치를 만들고, Owner/Reviewer는 before/after·원문 근거를 최종 검토한다. Owner가 승인하면 동일 트랜잭션에서 revision 승인과 release build가 연결된다. 규칙 커버리지·골든셋 정확도·빌드 성능은 `tools/compile_app_content.py`가 측정하고 Admin의 **로컬 모델 현황** 화면에 표시한다.
 
 ## Revision, 검증, 승인
 

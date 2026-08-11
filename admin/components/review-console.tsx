@@ -9,7 +9,6 @@ import {
   FileText,
   LoaderCircle,
   MessageSquareText,
-  RefreshCw,
   Rocket,
   ShieldCheck,
   Sparkles,
@@ -29,7 +28,7 @@ import type {
   ContentGenerationStatus,
 } from "@/lib/types";
 
-type GenerationAction = "create" | "approve" | "reject";
+type GenerationAction = "approve" | "reject";
 
 const fieldNames: Record<string, string> = {
   title: "제목",
@@ -47,12 +46,14 @@ const fieldNames: Record<string, string> = {
 };
 
 const stageLabels: Record<string, string> = {
-  queued: "생성 Worker 대기 중",
+  queued: "로컬 변환 Worker 대기 중",
   retry_queued: "자동 재시도 대기 중",
   baseline_loading: "기존 앱 DB 읽는 중",
   evidence_matching: "원문 근거와 학습 요소 연결 중",
-  structured_generation: "앱용 콘텐츠 구조화 생성 중",
-  automatic_repair: "검증 오류 자동 수정 중",
+  local_schema_mapping: "로컬 규칙으로 앱 필드 매핑 중",
+  deterministic_repair: "검증 실패 필드 안전 복원 중",
+  structured_generation: "이전 버전 앱용 콘텐츠 구조화 중",
+  automatic_repair: "이전 버전 검증 오류 수정 중",
   final_validation: "근거·형식 최종 자동 검증 중",
   final_review_ready: "최종 검토 준비 완료",
   no_supported_changes: "근거로 뒷받침되는 변경 없음",
@@ -94,7 +95,6 @@ export function ReviewConsole({
     ?? batchItems[0]
     ?? null;
   const [comment, setComment] = useState("");
-  const [releaseNotes, setReleaseNotes] = useState("");
   const [submitting, setSubmitting] = useState<GenerationAction | null>(null);
   const [message, setMessage] = useState("");
   const requestKeys = useRef<Record<string, string>>({});
@@ -114,12 +114,12 @@ export function ReviewConsole({
   }, [activeCount, router]);
 
   async function runAction(action: GenerationAction) {
-    if (action !== "create" && !selectedBatch) return;
+    if (!selectedBatch) return;
     if (action === "reject" && !comment.trim()) {
       setMessage("반려 사유를 입력해 주세요.");
       return;
     }
-    const keyTarget = action === "create" ? "create" : selectedBatch?.batchId ?? "batch";
+    const keyTarget = selectedBatch.batchId;
     if (!requestKeys.current[keyTarget]) requestKeys.current[keyTarget] = crypto.randomUUID();
     setSubmitting(action);
     setMessage("");
@@ -132,7 +132,6 @@ export function ReviewConsole({
           batchId: selectedBatch?.batchId,
           requestKey: requestKeys.current[keyTarget],
           comment,
-          releaseNotes,
           minimumAppVersion: 1,
         }),
       });
@@ -142,13 +141,12 @@ export function ReviewConsole({
         batchId?: string;
       };
       if (!response.ok) {
-        setMessage(result.error ?? "자동 생성 작업을 처리하지 못했습니다.");
+        setMessage(result.error ?? "로컬 변환 검토 작업을 처리하지 못했습니다.");
         return;
       }
       setMessage(result.message ?? "작업을 등록했습니다.");
       if (result.batchId) setSelectedBatchId(result.batchId);
       if (action === "reject") setComment("");
-      if (action === "create") setReleaseNotes("");
       requestKeys.current[keyTarget] = "";
       router.refresh();
     } catch {
@@ -164,8 +162,8 @@ export function ReviewConsole({
         eyebrow="APP CONTENT PIPELINE"
         title="앱 DB 최종 검토"
         description={viewerMode
-          ? "원본 근거부터 자동 생성·검증, 최종 승인과 앱 DB 공개까지 한 화면에서 확인하는 구성을 설명합니다."
-          : "원본에서 생성된 변경과 근거만 마지막으로 확인하세요. 승인 한 번이면 클린 SQLite 빌드·검증·stable 공개까지 자동 진행됩니다."}
+          ? "원본 근거부터 로컬 규칙 변환·검증, 최종 승인과 앱 DB 공개까지 한 화면에서 확인하는 구성을 설명합니다."
+          : "코드의 로컬 변환 모델이 만든 변경과 근거만 마지막으로 확인하세요. 승인 한 번이면 클린 SQLite 빌드·검증·stable 공개까지 자동 진행됩니다."}
         actions={
           <div className="workflow-header-actions">
             <span className="role-pill">{roleLabel(capabilities.role)}</span>
@@ -177,7 +175,7 @@ export function ReviewConsole({
       <section className="panel generation-flow" aria-label="앱 콘텐츠 자동화 흐름">
         <div className="generation-flow-step complete"><span><FileText size={18} /></span><div><strong>원본 가공</strong><p>본문·표·수식·OCR fragment</p></div></div>
         <ChevronRight size={18} />
-        <div className="generation-flow-step complete"><span><Sparkles size={18} /></span><div><strong>자동 생성·수정</strong><p>근거 연결 + 검증 통과</p></div></div>
+        <div className="generation-flow-step complete"><span><Sparkles size={18} /></span><div><strong>로컬 규칙 변환</strong><p>DB 필드 매핑 + 검증</p></div></div>
         <ChevronRight size={18} />
         <div className="generation-flow-step current"><span><ShieldCheck size={18} /></span><div><strong>최종 검토 1회</strong><p>before/after와 원문 확인</p></div></div>
         <ChevronRight size={18} />
@@ -187,21 +185,7 @@ export function ReviewConsole({
       {demo ? (
         <section className="workflow-baseline panel">
           <span className="large-state-icon state-success"><ShieldCheck size={25} /></span>
-          <div><p className="eyebrow">READ-ONLY PACKAGED BASELINE</p><h2>content-v{packagedContentInfo.version} · 검증된 내장 DB</h2><p>Supabase가 연결되면 실제 생성 배치와 원문 근거가 이 화면에 표시됩니다.</p></div>
-        </section>
-      ) : null}
-
-      {!demo && !viewerMode && !activeCount && !readyCount ? (
-        <section className="panel generation-start-panel">
-          <div><p className="eyebrow">READY SOURCES</p><h2>준비된 원본을 지금 앱 콘텐츠로 변환</h2><p>자동 Worker가 새 원본을 정기적으로 가져갑니다. 즉시 시작이 필요할 때만 이 버튼을 사용하세요.</p></div>
-          <div className="generation-start-actions">
-            <label>릴리스 메모 <input value={releaseNotes} onChange={(event) => setReleaseNotes(event.target.value)} maxLength={4000} placeholder="비우면 자동 메모 사용" disabled={Boolean(submitting)} /></label>
-            <button className="button button-primary" type="button" onClick={() => runAction("create")} disabled={!capabilities.canEdit || Boolean(submitting)}>
-              {submitting === "create" ? <LoaderCircle className="spin" size={16} /> : <RefreshCw size={16} />}
-              {submitting === "create" ? "생성 배치 등록 중…" : "준비된 원본으로 생성 시작"}
-            </button>
-            {submitting === "create" ? <ActionProgress label="생성 요청 등록 중" /> : null}
-          </div>
+          <div><p className="eyebrow">READ-ONLY PACKAGED BASELINE</p><h2>content-v{packagedContentInfo.version} · 검증된 내장 DB</h2><p>로컬 모델이 만든 검토 후보가 동기화되면 실제 변경과 원문 근거가 이 화면에 표시됩니다.</p></div>
         </section>
       ) : null}
 
@@ -210,7 +194,7 @@ export function ReviewConsole({
       {workspace.batches.length ? (
         <section className="generation-review-layout">
           <aside className="panel generation-batch-list">
-            <div className="panel-heading compact-heading"><div><p className="eyebrow">GENERATION BATCHES</p><h2>자동 생성 이력</h2></div><span className="count-pill">{workspace.batches.length}</span></div>
+            <div className="panel-heading compact-heading"><div><p className="eyebrow">LOCAL TRANSFORM BATCHES</p><h2>로컬 변환 이력</h2></div><span className="count-pill">{workspace.batches.length}</span></div>
             <div className="generation-batch-scroll">
               {workspace.batches.map((batch) => (
                 <button
@@ -219,8 +203,8 @@ export function ReviewConsole({
                   onClick={() => setSelectedBatchId(batch.batchId)}
                   key={batch.batchId}
                 >
-                  <div><GenerationStatusBadge status={batch.status} /><small>{viewerMode ? "생성 시각" : formatWorkflowDate(batch.createdAt)}</small></div>
-                  <strong>{viewerMode ? "자동 생성 배치" : `${batch.changedElementCount || "—"}개 요소 · 원본 ${batch.sourceCount}건`}</strong>
+                  <div><GenerationStatusBadge status={batch.status} /><small>{viewerMode ? "변환 시각" : formatWorkflowDate(batch.createdAt)}</small></div>
+                  <strong>{viewerMode ? "로컬 변환 배치" : `${batch.changedElementCount || "—"}개 요소 · 원본 ${batch.sourceCount}건`}</strong>
                   <p>{stageLabels[batch.processingStage] ?? batch.processingStage}</p>
                   {activeStatuses.has(batch.status) ? <MiniProgress batch={batch} /> : null}
                 </button>
@@ -250,8 +234,8 @@ export function ReviewConsole({
       ) : (
         <section className="panel workflow-empty-state">
           <MessageSquareText size={28} />
-          <h2>{demo ? "Supabase 생성 데이터가 없습니다" : "아직 앱 콘텐츠 생성 배치가 없습니다"}</h2>
-          <p>{demo ? "환경변수를 연결하면 실제 배치를 읽습니다." : "원본 가공이 완료되면 생성 Worker가 자동으로 배치를 만듭니다."}</p>
+          <h2>{demo ? "동기화된 로컬 변환 후보가 없습니다" : "아직 최종 검토할 로컬 변환 배치가 없습니다"}</h2>
+          <p>{demo ? "모델 현황 화면에서 현재 로컬 컴파일 결과를 확인할 수 있습니다." : "원본 가공 후 코드의 로컬 Worker가 구조화 필드를 매핑하면 후보가 자동 등록됩니다."}</p>
         </section>
       )}
     </div>
@@ -296,8 +280,8 @@ function BatchDetail({
       <div className="generation-processing-state" role="status" aria-live="polite">
         <LoaderCircle className="spin" size={34} />
         <p className="eyebrow">AUTOMATED PIPELINE</p>
-        <h2>{batch.status === "releasing" ? "검토 승인본으로 클린 앱 DB를 만드는 중입니다" : stageLabels[batch.processingStage] ?? "앱 콘텐츠를 자동 생성하는 중입니다"}</h2>
-        <p>{batch.status === "queued" ? "Worker가 시작되면 기존 DB와 원문 근거를 읽습니다." : `${batch.modelName} · 시도 ${batch.attemptCount}/${batch.maxAttempts}`}</p>
+        <h2>{batch.status === "releasing" ? "검토 승인본으로 클린 앱 DB를 만드는 중입니다" : stageLabels[batch.processingStage] ?? "로컬 규칙으로 앱 콘텐츠를 변환하는 중입니다"}</h2>
+        <p>{batch.status === "queued" ? "로컬 Worker가 시작되면 기존 DB와 구조화 원문 근거를 읽습니다." : `${batch.modelName} · 시도 ${batch.attemptCount}/${batch.maxAttempts}`}</p>
         <div className={`generation-main-progress ${progress <= 1 ? "is-indeterminate" : ""}`} role="progressbar" aria-label="앱 콘텐츠 자동화 진행률" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress <= 1 ? undefined : progress}>
           <span style={progress <= 1 ? undefined : { width: `${progress}%` }} />
         </div>
@@ -342,7 +326,7 @@ function BatchDetail({
   return (
     <>
       <div className="generation-review-header">
-        <div><p className="eyebrow">FINAL REVIEW READY</p><h2>{viewerMode ? "근거 기반 변경 후보" : `${batch.changedElementCount}개 요소 · ${batch.itemCount}개 변경 묶음`}</h2><p>{batch.releaseNotes || "원본 근거 기반 자동 콘텐츠 생성"}</p></div>
+        <div><p className="eyebrow">FINAL REVIEW READY</p><h2>{viewerMode ? "근거 기반 변경 후보" : `${batch.changedElementCount}개 요소 · ${batch.itemCount}개 변경 묶음`}</h2><p>{batch.releaseNotes || "로컬 규칙과 원본 근거 기반 콘텐츠 변환"}</p></div>
         <GenerationStatusBadge status={batch.status} />
       </div>
       <div className="generation-integrity-strip">
@@ -385,7 +369,7 @@ function BatchDetail({
                       <div className="actual-diff-title"><FileDiff size={14} /><strong>{fieldNames[field] ?? field}</strong><span>근거 {fieldEvidence.length}</span></div>
                       <div className="diff-grid compact-diff-grid">
                         <section className="diff-pane diff-before"><div className="diff-label">기존 앱 DB</div><pre>{formatValue(selectedItem.baselineSnapshot[field])}</pre></section>
-                        <section className="diff-pane diff-after"><div className="diff-label">자동 생성 후보</div><pre>{formatValue(selectedItem.generatedSnapshot[field])}</pre></section>
+                        <section className="diff-pane diff-after"><div className="diff-label">로컬 변환 후보</div><pre>{formatValue(selectedItem.generatedSnapshot[field])}</pre></section>
                       </div>
                       <div className="generation-evidence-list">
                         {fieldEvidence.map((row) => (
@@ -436,7 +420,7 @@ function MiniProgress({ batch }: { batch: ContentGenerationBatch }) {
 function GenerationStatusBadge({ status }: { status: ContentGenerationStatus }) {
   const labels: Record<ContentGenerationStatus, string> = {
     queued: "대기",
-    running: "자동 생성 중",
+    running: "로컬 변환 중",
     ready_for_review: "최종 검토 대기",
     no_changes: "변경 없음",
     rejected: "반려",

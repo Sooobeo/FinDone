@@ -15,8 +15,8 @@ create table public.content_generation_batches (
     batch_id uuid primary key default gen_random_uuid(),
     request_key uuid not null unique,
     status public.content_generation_status not null default 'queued',
-    model_name text not null default 'worker-default',
-    prompt_version text not null default 'findone-content-v1',
+    model_name text not null default 'findone-local-content-v1',
+    prompt_version text not null default 'findone-local-schema-v1',
     baseline_content_version integer not null default 5 check (baseline_content_version > 0),
     version_name text,
     release_notes text not null default '',
@@ -363,8 +363,8 @@ $$;
 
 create or replace function public.create_content_generation_batch(
     p_request_key uuid,
-    p_model_name text default 'worker-default',
-    p_prompt_version text default 'findone-content-v1',
+    p_model_name text default 'findone-local-content-v1',
+    p_prompt_version text default 'findone-local-schema-v1',
     p_release_notes text default '',
     p_minimum_app_version integer default 1,
     p_source_version_ids uuid[] default null,
@@ -518,7 +518,7 @@ begin
         release_notes, created_by
     ) values (
         batch_request_key, btrim(p_model_name), btrim(p_prompt_version), baseline_version,
-        '원본 근거 기반 자동 콘텐츠 생성', actor_id
+        '원본 근거 기반 로컬 규칙 콘텐츠 변환', actor_id
     ) returning * into result;
 
     insert into public.content_generation_batch_sources (
@@ -1102,7 +1102,7 @@ begin
         raise exception using errcode = '55000', message = 'only a non-empty final-review batch can be approved';
     end if;
 
-    perform set_config('app.change_reason', '자동 생성 배치 ' || p_batch_id::text, true);
+    perform set_config('app.change_reason', '로컬 변환 배치 ' || p_batch_id::text, true);
     for item_row in
         select item.* from public.content_generation_items as item
         where item.batch_id = p_batch_id
@@ -1187,7 +1187,7 @@ begin
         insert into public.review_decisions (revision_id, decision, comment, reviewer_id)
         values (
             revision_row.revision_id, 'approved',
-            coalesce(nullif(comment_value, ''), '자동 생성 배치 최종 검토 승인'), auth.uid()
+            coalesce(nullif(comment_value, ''), '로컬 변환 배치 최종 검토 승인'), auth.uid()
         );
         item_count_value := item_count_value + 1;
     end loop;

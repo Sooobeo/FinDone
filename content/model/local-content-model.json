@@ -1,0 +1,46 @@
+{
+  "modelVersion": "findone-local-content-v1",
+  "schemaVersion": 1,
+  "description": "FinDone의 원본 DB·구조화 파일을 외부 LLM API 없이 앱 콘텐츠 후보로 변환하는 결정론적 규칙 모델",
+  "elementIdAliases": [
+    "element_id",
+    "elementId",
+    "element_code",
+    "content_id",
+    "code",
+    "요소_id",
+    "요소ID",
+    "콘텐츠ID"
+  ],
+  "fieldAliases": {
+    "element.title": ["element.title", "title", "name", "concept_name", "topic", "제목", "개념명"],
+    "element.core_relation": ["element.core_relation", "core_relation", "coreRelation", "relation", "핵심관계", "핵심_관계"],
+    "element.scope_notes": ["element.scope_notes", "scope_notes", "scope", "coverage", "적용범위", "범위"],
+    "concept.title": ["concept.title", "concept_title", "개념제목"],
+    "concept.definition_markdown": ["concept.definition_markdown", "definition_markdown", "definition", "description", "정의", "개념정의"],
+    "concept.intuition_markdown": ["concept.intuition_markdown", "intuition_markdown", "intuition", "plain_explanation", "직관", "직관설명", "쉬운설명"],
+    "concept.learning_notes_markdown": ["concept.learning_notes_markdown", "learning_notes_markdown", "learning_notes", "details", "학습설명", "상세설명"],
+    "concept.checklist_markdown": ["concept.checklist_markdown", "checklist_markdown", "checklist", "uses", "applications", "사용사례", "활용"],
+    "concept.glossary_terms": ["concept.glossary_terms", "glossary_terms", "glossary", "terms", "용어", "용어집"],
+    "formula.title": ["formula.title", "formula_title", "수식제목"],
+    "formula.expression_markdown": ["formula.expression_markdown", "expression_markdown", "formula", "expression", "수식", "계산식"],
+    "formula.assumptions_markdown": ["formula.assumptions_markdown", "assumptions_markdown", "assumptions", "constraints", "가정", "전제"],
+    "formula.notes_markdown": ["formula.notes_markdown", "formula_notes", "formula_uses", "수식사용사례"],
+    "formula.variables": ["formula.variables", "variables", "symbols", "변수", "변수정의"]
+  },
+  "qualityGates": {
+    "minimumCorpusCoverage": 1.0,
+    "minimumRequiredFieldCoverage": 1.0,
+    "minimumSourceTraceability": 1.0,
+    "minimumGoldenFieldAccuracy": 0.95,
+    "requireDeterministicBuild": true,
+    "maximumUnresolvedConflictRate": 0.0
+  },
+  "readinessWeights": {
+    "corpusCoverage": 0.25,
+    "requiredFieldCoverage": 0.25,
+    "sourceTraceability": 0.2,
+    "goldenFieldAccuracy": 0.2,
+    "deterministicBuild": 0.1
+  }
+}

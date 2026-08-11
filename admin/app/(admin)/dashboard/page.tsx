@@ -13,6 +13,7 @@ import { PageHeader } from "@/components/page-header";
 import { getAdminContext } from "@/lib/auth";
 import { getConceptElements, getReviewWorkspace, getSources } from "@/lib/data";
 import { packagedContentInfo } from "@/lib/packaged-info";
+import { localModelReport } from "@/lib/local-model-report";
 import { viewerConceptElements, viewerReviewWorkspace, viewerSources } from "@/lib/viewer-placeholders";
 
 export const metadata: Metadata = { title: "대시보드" };
@@ -84,7 +85,7 @@ export default async function DashboardPage() {
           <div className="metric-icon icon-coral"><CircleAlert size={20} /></div>
           <div className="metric-label">최종 검토 대기</div>
           <div className="metric-value">{viewer ? "배치 수" : finalReviewCount}<small>{viewer ? "" : "건"}</small></div>
-          <p>{viewer ? "자동 생성·검증을 끝낸 앱 DB 후보 수" : issueCount ? `기존 편집 이슈 ${issueCount}건 · 자동 배치는 별도 검증` : "근거·형식 자동 검증을 통과한 배치"}</p>
+          <p>{viewer ? "로컬 변환·검증을 끝낸 앱 DB 후보 수" : issueCount ? `기존 편집 이슈 ${issueCount}건 · 로컬 배치는 별도 검증` : "근거·형식 자동 검증을 통과한 배치"}</p>
           <Link className="metric-link" href="/review">최종 검토 보기 <ArrowRight size={14} /></Link>
         </article>
       </section>
@@ -128,7 +129,7 @@ export default async function DashboardPage() {
             </li>
             <li className="workflow-current">
               <span>2</span>
-              <div><strong>원본 자동 가공·콘텐츠 생성</strong><p>fragment 추출, 근거 연결, 구조화 생성과 자동 수정</p></div>
+              <div><strong>원본 가공·로컬 모델 변환</strong><p>fragment 추출, 스키마 매핑, 결정론 검증 · 준비도 {localModelReport.training.readinessScore.toFixed(1)}%</p></div>
             </li>
             <li>
               <span>3</span>
@@ -147,7 +148,7 @@ export default async function DashboardPage() {
             <p>{viewer ? "기준 DB, revision 이력과 다음 릴리스 포함 여부를 설명하는 영역입니다." : "향후 수정은 원본을 덮어쓰지 않고 새 revision으로 남기며, 승인된 변경만 다음 콘텐츠 버전에 포함합니다."}</p>
           </div>
         </div>
-        <Link className="button button-secondary" href="/releases">릴리스 기준 보기 <ArrowRight size={16} /></Link>
+        <Link className="button button-secondary" href="/model">모델 성능 보기 <ArrowRight size={16} /></Link>
       </section>
     </div>
   );

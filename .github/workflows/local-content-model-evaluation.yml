@@ -1,0 +1,43 @@
+name: Local Content Model Evaluation
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "content/**"
+      - "finance_interview_app_final_spec.md"
+      - "tools/build_content_db.py"
+      - "tools/local_content_model.py"
+      - "tools/compile_app_content.py"
+      - "tools/test_local_content_model.py"
+
+permissions:
+  contents: read
+
+jobs:
+  evaluate-offline-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Run local model regression tests
+        run: python -m unittest tools.test_local_content_model tools.test_build_content_db -v
+
+      - name: Build twice and measure quality/performance
+        run: >-
+          python tools/compile_app_content.py
+          --check
+          --benchmark-rounds 3
+          --report build/local-content-model-report.json
+
+      - name: Upload measured model report
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-content-model-report
+          path: build/local-content-model-report.json
+          if-no-files-found: error

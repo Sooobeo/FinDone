@@ -1,0 +1,135 @@
+{
+  "content": {
+    "changedFromPackagedBaseline": false,
+    "contentDbVersion": 6,
+    "multipleSourceElementCount": 113,
+    "previousDatabaseSha256": "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198",
+    "requiredFieldCount": 2160,
+    "resolvedRequiredFieldCount": 2160,
+    "rowCounts": {
+      "concept_cards": 135,
+      "domains": 7,
+      "element_sources": 309,
+      "elements": 135,
+      "formula_cards": 135,
+      "knowledge_fts": 135,
+      "sources": 174
+    },
+    "schemaVersion": 1,
+    "sourceTypes": {
+      "api": 9,
+      "book": 13,
+      "license": 15,
+      "local_spec": 1,
+      "pdf": 22,
+      "web": 114
+    },
+    "tracedElementCount": 135
+  },
+  "evaluation": {
+    "buildHashes": [
+      "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198",
+      "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198",
+      "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198",
+      "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198",
+      "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198"
+    ],
+    "caseAccuracy": 1.0,
+    "caseAccuracyWilson95LowerBound": 0.72246,
+    "caseCount": 10,
+    "deterministicBuild": true,
+    "failures": [],
+    "fieldAccuracy": 1.0,
+    "fieldAccuracyWilson95LowerBound": 0.815676,
+    "fieldAssertionCount": 17,
+    "passedCases": 10,
+    "passedFieldAssertions": 17,
+    "qualityGates": [
+      {
+        "id": "corpus-coverage",
+        "label": "검토된 콘텐츠 코퍼스 커버리지",
+        "measured": 1.0,
+        "passed": true,
+        "threshold": 1.0
+      },
+      {
+        "id": "required-fields",
+        "label": "앱 필수 필드 완성률",
+        "measured": 1.0,
+        "passed": true,
+        "threshold": 1.0
+      },
+      {
+        "id": "source-traceability",
+        "label": "요소별 출처 추적률",
+        "measured": 1.0,
+        "passed": true,
+        "threshold": 1.0
+      },
+      {
+        "id": "golden-field-accuracy",
+        "label": "골든셋 필드 매핑 정확도",
+        "measured": 1.0,
+        "passed": true,
+        "threshold": 0.95
+      },
+      {
+        "id": "deterministic-build",
+        "label": "반복 빌드 SHA-256 일치",
+        "measured": true,
+        "passed": true,
+        "threshold": true
+      }
+    ]
+  },
+  "generatedAt": "2026-08-11T11:31:00.617827+00:00",
+  "model": {
+    "externalLlmApiCalls": 0,
+    "name": "FinDone Local Content Model",
+    "schemaVersion": 1,
+    "supportedAdapters": [
+      "sqlite-table",
+      "json",
+      "json-list",
+      "jsonl",
+      "csv",
+      "tsv",
+      "labelled-text"
+    ],
+    "type": "deterministic-rule-model",
+    "version": "findone-local-content-v1"
+  },
+  "performance": {
+    "benchmarkRounds": 5,
+    "buildDurationsMs": [
+      185.35,
+      185.98,
+      179.22,
+      198.22,
+      194.27
+    ],
+    "databaseByteSize": 921600,
+    "databaseSha256": "437035842685b17a70eb2ec397ea0d538b6a2be65cb3e91c63b6051a6c54c198",
+    "elementsPerSecond": 725.89,
+    "maximumBuildMs": 198.22,
+    "medianBuildMs": 185.98,
+    "minimumBuildMs": 179.22
+  },
+  "reportVersion": 1,
+  "status": "passed",
+  "training": {
+    "cataloguedSourceCount": 174,
+    "cataloguedWebSourceCount": 114,
+    "corpusCoverage": 1.0,
+    "domainCount": 7,
+    "metricDefinition": "ML 가중치 학습률이 아니라 검토 코퍼스·규칙·평가 통과 비율을 합성한 로컬 모델 준비도",
+    "multipleSourceCoverage": 0.837037,
+    "readinessScore": 100.0,
+    "requiredFieldCoverage": 1.0,
+    "reviewedContentDatabaseCount": 1,
+    "reviewedElementCount": 135,
+    "sourceReferenceCount": 309,
+    "sourceTraceability": 1.0,
+    "structuredLearningCopyFileCount": 8
+  }
+}

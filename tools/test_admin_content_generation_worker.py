@@ -149,20 +149,6 @@ class FakeSupabase:
         return {"ok": True}
 
 
-class Response:
-    def __init__(self, value):
-        self.body = json.dumps(value).encode("utf-8")
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, *args):
-        return False
-
-    def read(self, size):
-        return self.body[:size]
-
-
 class CandidateValidationTest(unittest.TestCase):
     def test_changed_field_requires_allowed_fragment_and_passes_shared_validator(self):
         items, evidence_rows, errors = worker.validate_candidate(context(), candidate())
@@ -231,46 +217,57 @@ class GenerationWorkerTest(unittest.TestCase):
             for name, payload in client.calls
             if name == worker.PROGRESS_RPC
         ]
-        self.assertIn("structured_generation", stages)
+        self.assertIn("local_schema_mapping", stages)
         self.assertIn("final_validation", stages)
 
 
-class OpenAIResponsesModelTest(unittest.TestCase):
-    @mock.patch("urllib.request.urlopen")
-    def test_api_key_is_header_only_and_structured_output_is_parsed(self, urlopen):
-        payload = candidate()
-        urlopen.return_value = Response(
+class LocalRulesContentModelTest(unittest.TestCase):
+    def test_explicit_json_field_is_mapped_without_network_or_tokens(self):
+        document = worker.model_document(context())
+        document["sourceEvidence"][0]["text"] = json.dumps(
             {
-                "id": "resp_test",
-                "status": "completed",
-                "output": [
-                    {
-                        "type": "message",
-                        "content": [{"type": "output_text", "text": json.dumps(payload)}],
-                    }
-                ],
-                "usage": {"input_tokens": 12, "output_tokens": 34},
-            }
+                "element_id": "ACC-01",
+                "definition": (
+                    "회계등식은 기업이 통제하는 자산과 이를 조달한 부채 및 자본의 원천이 "
+                    "항상 연결된다는 구조를 설명한다."
+                ),
+            },
+            ensure_ascii=False,
         )
-        model = worker.OpenAIResponsesModel("openai-secret", "test-model")
+        model = worker.LocalRulesContentModel()
 
         result = model.generate(
-            {"baseline": {}},
+            document,
             run_kind="generate",
             run_number=1,
             idempotency_key=str(uuid.uuid4()),
         )
 
-        request = urlopen.call_args.args[0]
-        self.assertEqual("Bearer openai-secret", request.headers["Authorization"])
-        self.assertNotIn("openai-secret", request.full_url)
-        self.assertNotIn(b"openai-secret", request.data)
-        request_json = json.loads(request.data)
-        self.assertEqual("json_schema", request_json["text"]["format"]["type"])
-        self.assertTrue(request_json["text"]["format"]["strict"])
-        self.assertEqual(payload, result.payload)
-        self.assertEqual(12, result.input_tokens)
-        self.assertEqual(34, result.output_tokens)
+        self.assertTrue(result.response_id.startswith("local:"))
+        self.assertEqual(0, result.input_tokens)
+        self.assertEqual(0, result.output_tokens)
+        self.assertNotEqual(
+            context().concept["definition_markdown"],
+            result.payload["concept"]["definition_markdown"],
+        )
+        self.assertEqual(FRAGMENT_ID, result.payload["evidence"][0]["source_fragment_ids"][0])
+
+    def test_unstructured_prose_preserves_the_reviewed_baseline(self):
+        document = worker.model_document(context())
+        model = worker.LocalRulesContentModel()
+
+        result = model.generate(
+            document,
+            run_kind="generate",
+            run_number=1,
+            idempotency_key=str(uuid.uuid4()),
+        )
+
+        self.assertEqual([], result.payload["evidence"])
+        self.assertEqual(
+            context().concept["definition_markdown"],
+            result.payload["concept"]["definition_markdown"],
+        )
 
 
 if __name__ == "__main__":

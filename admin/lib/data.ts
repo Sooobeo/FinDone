@@ -84,6 +84,66 @@ export interface ReleaseWorkspace {
   jobs: WorkflowJob[];
 }
 
+export interface LocalModelOperationalMetrics {
+  connected: boolean;
+  measurementAvailable: boolean;
+  structuredSourceFileCount: number;
+  processedBatchCount: number;
+  transformedItemCount: number;
+  approvedFeedbackCount: number;
+  localExecutionCount: number;
+}
+
+export async function getLocalModelOperationalMetrics(): Promise<LocalModelOperationalMetrics> {
+  const empty: LocalModelOperationalMetrics = {
+    connected: false,
+    measurementAvailable: false,
+    structuredSourceFileCount: 0,
+    processedBatchCount: 0,
+    transformedItemCount: 0,
+    approvedFeedbackCount: 0,
+    localExecutionCount: 0,
+  };
+  const supabase = await getServerSupabase();
+  if (!supabase) return empty;
+
+  const [files, batches, items, approved, runs] = await Promise.all([
+    supabase
+      .from("source_files")
+      .select("source_version_id,original_filename,file_role")
+      .eq("file_role", "original")
+      .limit(5000),
+    supabase
+      .from("content_generation_batches")
+      .select("batch_id", { count: "exact", head: true })
+      .eq("model_name", "findone-local-content-v1"),
+    supabase
+      .from("content_generation_items")
+      .select("generation_item_id", { count: "exact", head: true }),
+    supabase
+      .from("content_generation_items")
+      .select("generation_item_id", { count: "exact", head: true })
+      .not("revision_id", "is", null),
+    supabase
+      .from("content_model_runs")
+      .select("model_run_id", { count: "exact", head: true }),
+  ]);
+  const failed = [files.error, batches.error, items.error, approved.error, runs.error].some(Boolean);
+  const structuredExtension = /\.(?:csv|json|jsonl|ndjson|xlsx|db|sqlite|sqlite3)$/i;
+  const structuredSourceFileCount = (files.data ?? []).filter((row) =>
+    structuredExtension.test(typeof row.original_filename === "string" ? row.original_filename : "")
+  ).length;
+  return {
+    connected: true,
+    measurementAvailable: !failed,
+    structuredSourceFileCount,
+    processedBatchCount: batches.count ?? 0,
+    transformedItemCount: items.count ?? 0,
+    approvedFeedbackCount: approved.count ?? 0,
+    localExecutionCount: runs.count ?? 0,
+  };
+}
+
 export async function getAdminCapabilities(): Promise<AdminCapabilities> {
   const supabase = await getServerSupabase();
   if (!supabase) return capabilitiesForRole(null);
@@ -302,7 +362,7 @@ export async function getReviewWorkspace(): Promise<ReviewWorkspace> {
     .select("*")
     .order("created_at", { ascending: false })
     .limit(30);
-  if (batchError) throw new Error(`콘텐츠 생성 배치를 불러오지 못했습니다: ${batchError.message}`);
+  if (batchError) throw new Error(`로컬 콘텐츠 변환 배치를 불러오지 못했습니다: ${batchError.message}`);
   const batches = ((batchRows ?? []) as Row[]).map(mapGenerationBatch);
   const batchIds = batches.map((batch) => batch.batchId);
   if (!batchIds.length) return { batches, items: [], evidence: [], jobs: [] };

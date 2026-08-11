@@ -67,13 +67,13 @@ macOS 또는 Linux에서는 `.\gradlew.bat` 대신 `./gradlew`을 사용합니�
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-원본 명세를 변경한 경우에만 콘텐츠 자산을 다시 생성합니다.
+원본 명세·검토 JSON·로컬 변환 규칙을 변경한 경우 콘텐츠 자산을 다시 컴파일합니다.
 
 ```powershell
-python .\tools\build_content_db.py
+python .\tools\compile_app_content.py --benchmark-rounds 3
 ```
 
-생성기는 분야/요소 수와 ID 연속성, FTS row, 참조 무결성을 확인하고 `app/src/main/assets/content.sqlite3`와 `content-manifest.json`을 갱신합니다. 생성 결과가 있다는 것과 1,461개 claim 승인 게이트를 통과했다는 것은 별개입니다.
+컴파일러는 기존 생성기의 분야/요소 수·ID 연속성·FTS·참조 무결성 검사에 더해 반복 빌드 SHA 일치, 필수 필드·출처 추적률, 로컬 스키마 매핑 골든셋과 처리 성능을 측정합니다. 모든 품질 게이트를 통과한 경우에만 `app/src/main/assets/content.sqlite3`와 `content-manifest.json`을 갱신하고, 측정값은 Admin의 **로컬 모델 현황**에 표시합니다. 생성 결과가 있다는 것과 1,461개 claim 승인 게이트를 통과했다는 것은 별개입니다.
 
 ## 개인 서명 릴리스와 OneDrive 설치
 

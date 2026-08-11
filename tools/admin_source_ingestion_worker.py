@@ -24,6 +24,7 @@ import mimetypes
 import os
 import re
 import socket
+import sqlite3
 import ssl
 import sys
 import tempfile
@@ -68,6 +69,9 @@ MAX_FRAGMENT_CHARS = 96_000
 MAX_FRAGMENT_UTF8_BYTES = 100 * 1024
 MAX_FRAGMENTS = 3_500
 MAX_TEXT_SOURCE_BYTES = 64 * 1024 * 1024
+MAX_SQLITE_TABLES = 200
+MAX_SQLITE_COLUMNS = 500
+MAX_SQLITE_ROWS = 1_000_000
 MAX_ARCHIVE_ENTRIES = 20_000
 MAX_ARCHIVE_MEMBER_BYTES = 128 * 1024 * 1024
 MAX_ARCHIVE_UNCOMPRESSED_BYTES = 512 * 1024 * 1024
@@ -86,6 +90,12 @@ SUPPORTED_EXTENSIONS = {
     ".xlsx": "xlsx",
     ".pptx": "pptx",
     ".csv": "csv",
+    ".json": "json",
+    ".jsonl": "jsonl",
+    ".ndjson": "jsonl",
+    ".db": "sqlite",
+    ".sqlite": "sqlite",
+    ".sqlite3": "sqlite",
     ".md": "markdown",
     ".markdown": "markdown",
     ".txt": "text",
@@ -103,6 +113,8 @@ URL_MIME_EXTENSIONS = {
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ".xlsx",
     "application/vnd.openxmlformats-officedocument.presentationml.presentation": ".pptx",
     "text/csv": ".csv",
+    "application/json": ".json",
+    "application/x-ndjson": ".jsonl",
     "text/html": ".html",
     "application/xhtml+xml": ".html",
     "text/markdown": ".md",
@@ -293,8 +305,18 @@ def _truncate_utf8(value: str, max_bytes: int) -> str:
     return encoded[:max_bytes].decode("utf-8", errors="ignore")
 
 
-def _split_fragment_text(value: str) -> list[str]:
-    remaining = normalize_text(value)
+def _normalize_table_text(value: str) -> str:
+    normalized = unicodedata.normalize("NFKC", value).replace("\x00", " ")
+    lines: list[str] = []
+    for line in normalized.splitlines():
+        cells = [re.sub(r"[ \f\v]+", " ", cell).strip() for cell in line.split("\t")]
+        if any(cells):
+            lines.append("\t".join(cells))
+    return "\n".join(lines).strip()
+
+
+def _split_fragment_text(value: str, *, preserve_tabs: bool = False) -> list[str]:
+    remaining = _normalize_table_text(value) if preserve_tabs else normalize_text(value)
     chunks: list[str] = []
     while remaining:
         chunk = _truncate_utf8(remaining[:MAX_FRAGMENT_CHARS], MAX_FRAGMENT_UTF8_BYTES)
@@ -383,7 +405,9 @@ def _bounded_result(result: ExtractionResult) -> ExtractionResult:
     total_bytes = 0
     truncated = False
     for fragment in result.fragments:
-        for part_index, text in enumerate(_split_fragment_text(fragment.text)):
+        for part_index, text in enumerate(
+            _split_fragment_text(fragment.text, preserve_tabs=fragment.kind == "table")
+        ):
             if len(bounded) >= MAX_FRAGMENTS or total_chars >= MAX_EXTRACTED_CHARS or total_bytes >= MAX_EXTRACTED_UTF8_BYTES:
                 truncated = True
                 break
@@ -593,6 +617,166 @@ def extract_csv(path: Path) -> ExtractionResult:
                 "maxColumnCount": max_columns,
                 "delimiter": getattr(dialect, "delimiter", ","),
             },
+        )
+    )
+
+
+def _json_input_records(value: Any) -> list[Any]:
+    if isinstance(value, list):
+        return value
+    if isinstance(value, dict):
+        for key in ("records", "items", "content", "elements", "rows", "data"):
+            child = value.get(key)
+            if isinstance(child, list):
+                return child
+        return [value]
+    raise SourceWorkerError("JSON 원본은 객체 또는 배열이어야 합니다")
+
+
+def extract_json(path: Path, *, json_lines: bool = False) -> ExtractionResult:
+    body = _read_bounded_text_source(path)
+    text, encoding = decode_document_text(body)
+    records: list[Any] = []
+    try:
+        if json_lines:
+            for line_number, line in enumerate(text.splitlines(), start=1):
+                if not line.strip():
+                    continue
+                records.append(json.loads(line))
+                if len(records) > MAX_SQLITE_ROWS:
+                    raise SourceWorkerError("JSONL 레코드 수가 안전 제한을 초과했습니다")
+        else:
+            records = _json_input_records(json.loads(text))
+    except (json.JSONDecodeError, UnicodeError, RecursionError) as error:
+        raise SourceWorkerError("JSON 구조를 안전하게 해석할 수 없습니다") from error
+
+    fragments: list[SourceFragment] = []
+    batch: list[Any] = []
+    batch_chars = 0
+    batch_start = 1
+    for index, record in enumerate(records, start=1):
+        serialized = json.dumps(record, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
+        if batch and (len(batch) >= 50 or batch_chars + len(serialized) > 32_000):
+            fragments.append(
+                SourceFragment(
+                    "table",
+                    json.dumps(batch, ensure_ascii=False, separators=(",", ":")),
+                    {"type": "jsonl" if json_lines else "json", "recordStart": batch_start, "recordEnd": index - 1},
+                )
+            )
+            batch = []
+            batch_chars = 0
+            batch_start = index
+        batch.append(record)
+        batch_chars += len(serialized)
+    if batch:
+        payload: Any = batch[0] if len(batch) == 1 else batch
+        fragments.append(
+            SourceFragment(
+                "table",
+                json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
+                {"type": "jsonl" if json_lines else "json", "recordStart": batch_start, "recordEnd": len(records)},
+            )
+        )
+    return _bounded_result(
+        ExtractionResult(
+            fragments=fragments,
+            metadata={
+                "parser": "jsonl" if json_lines else "json",
+                "encoding": encoding,
+                "recordCount": len(records),
+            },
+        )
+    )
+
+
+def _sqlite_identifier(value: str) -> str:
+    return '"' + value.replace('"', '""') + '"'
+
+
+def _sqlite_cell(value: Any) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, bytes):
+        return f"[BLOB {len(value)} bytes sha256={hashlib.sha256(value).hexdigest()}]"
+    return normalize_text(str(value))[:32_000]
+
+
+def extract_sqlite(path: Path) -> ExtractionResult:
+    with path.open("rb") as stream:
+        if stream.read(16) != b"SQLite format 3\x00":
+            raise SourceWorkerError("SQLite 확장자와 실제 파일 서명이 일치하지 않습니다")
+    uri = f"file:{urllib.parse.quote(path.resolve().as_posix(), safe='/:')}?mode=ro&immutable=1"
+    try:
+        database = sqlite3.connect(uri, uri=True)
+    except sqlite3.Error as error:
+        raise SourceWorkerError("SQLite DB를 읽기 전용으로 열 수 없습니다") from error
+    fragments: list[SourceFragment] = []
+    total_rows = 0
+    table_count = 0
+    try:
+        database.enable_load_extension(False)
+        database.execute("PRAGMA query_only = ON")
+        database.execute("PRAGMA trusted_schema = OFF")
+        integrity = database.execute("PRAGMA quick_check(1)").fetchone()
+        if not integrity or integrity[0] != "ok":
+            raise SourceWorkerError("SQLite quick_check를 통과하지 못했습니다")
+        tables = database.execute(
+            "SELECT name, coalesce(sql, '') FROM sqlite_schema "
+            "WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
+        ).fetchall()
+        if len(tables) > MAX_SQLITE_TABLES:
+            raise SourceWorkerError("SQLite 테이블 수가 안전 제한을 초과했습니다")
+        for raw_table_name, create_sql in tables:
+            table_name = str(raw_table_name)
+            if str(create_sql).lstrip().upper().startswith("CREATE VIRTUAL TABLE"):
+                continue
+            table_count += 1
+            identifier = _sqlite_identifier(table_name)
+            try:
+                cursor = database.execute(f"SELECT * FROM {identifier}")
+            except sqlite3.Error as error:
+                raise SourceWorkerError(f"SQLite 테이블을 읽을 수 없습니다: {table_name[:120]}") from error
+            columns = [str(item[0]) for item in (cursor.description or [])]
+            if not columns or len(columns) > MAX_SQLITE_COLUMNS:
+                raise SourceWorkerError("SQLite 열 개수가 안전 제한을 초과했습니다")
+            batch_rows: list[str] = []
+            batch_start = 1
+            table_row = 0
+            for row in cursor:
+                table_row += 1
+                total_rows += 1
+                if total_rows > MAX_SQLITE_ROWS:
+                    raise SourceWorkerError("SQLite 전체 행 수가 안전 제한을 초과했습니다")
+                batch_rows.append("\t".join(_sqlite_cell(value) for value in row))
+                if len(batch_rows) >= 100 or sum(map(len, batch_rows)) >= 32_000:
+                    fragments.append(
+                        SourceFragment(
+                            "table",
+                            "\t".join(columns) + "\n" + "\n".join(batch_rows),
+                            {"type": "sqlite", "table": table_name[:300], "rowStart": batch_start, "rowEnd": table_row},
+                        )
+                    )
+                    batch_rows = []
+                    batch_start = table_row + 1
+            if batch_rows:
+                fragments.append(
+                    SourceFragment(
+                        "table",
+                        "\t".join(columns) + "\n" + "\n".join(batch_rows),
+                        {"type": "sqlite", "table": table_name[:300], "rowStart": batch_start, "rowEnd": table_row},
+                    )
+                )
+    except sqlite3.Error as error:
+        raise SourceWorkerError("SQLite DB 구조를 안전하게 해석할 수 없습니다") from error
+    finally:
+        database.close()
+    if not fragments:
+        raise SourceWorkerError("SQLite DB에 읽을 수 있는 사용자 테이블 행이 없습니다")
+    return _bounded_result(
+        ExtractionResult(
+            fragments=fragments,
+            metadata={"parser": "sqlite3-readonly", "tableCount": table_count, "rowCount": total_rows},
         )
     )
 
@@ -931,7 +1115,9 @@ def detect_source_format(path: Path, original_filename: str, mime_type: str) -> 
         )
         if not valid:
             raise SourceWorkerError("이미지 확장자와 실제 파일 서명이 일치하지 않습니다")
-    if source_format in {"text", "markdown", "csv", "html"} and b"\x00" in prefix:
+    if source_format == "sqlite" and prefix != b"SQLite format 3\x00":
+        raise SourceWorkerError("SQLite 확장자와 실제 파일 서명이 일치하지 않습니다")
+    if source_format in {"text", "markdown", "csv", "json", "jsonl", "html"} and b"\x00" in prefix:
         raise SourceWorkerError("텍스트 파일에서 바이너리 서명이 감지되었습니다")
     if not mime_type.strip():
         raise SourceWorkerError("등록된 MIME 형식이 없습니다")
@@ -955,6 +1141,12 @@ def extract_source(
         return extract_pptx(path)
     if source_format == "csv":
         return extract_csv(path)
+    if source_format == "json":
+        return extract_json(path)
+    if source_format == "jsonl":
+        return extract_json(path, json_lines=True)
+    if source_format == "sqlite":
+        return extract_sqlite(path)
     if source_format == "image":
         return extract_image(path)
     return extract_plain_text(path, source_format)
@@ -1014,8 +1206,16 @@ def match_elements(source_text: str, catalog: Sequence[Mapping[str, Any]]) -> li
         ngram_score = max(segment_scores, default=0.0)
         title = normalize_text(str(row.get("title", ""))).casefold()
         title_exact = bool(len(title) >= 4 and title in normalized_source)
+        element_id_exact = bool(
+            re.search(
+                rf"(?<![0-9a-z]){re.escape(element_id.casefold())}(?![0-9a-z])",
+                normalized_source,
+            )
+        )
         score = min(1.0, 0.25 * token_score + 0.75 * ngram_score)
-        if title_exact:
+        if element_id_exact:
+            score = 1.0
+        elif title_exact:
             score = max(score, 0.96)
         scored.append((score, element_id, tuple(matched[:12])))
     scored.sort(key=lambda item: (-item[0], item[1]))
@@ -1024,7 +1224,9 @@ def match_elements(source_text: str, catalog: Sequence[Mapping[str, Any]]) -> li
         if score < MATCH_MINIMUM_SCORE and result:
             continue
         reason = (
-            f"정규화 용어 {len(matched)}개와 문자 패턴을 결정론적으로 대조했습니다"
+            "원본의 명시적 요소 ID와 카탈로그 ID가 정확히 일치합니다"
+            if re.search(rf"(?<![0-9a-z]){re.escape(element_id.casefold())}(?![0-9a-z])", normalized_source)
+            else f"정규화 용어 {len(matched)}개와 문자 패턴을 결정론적으로 대조했습니다"
             if matched
             else "직접 일치 용어가 적어 낮은 점수의 후보입니다"
         )

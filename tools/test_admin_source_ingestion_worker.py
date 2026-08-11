@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import shutil
+import sqlite3
 import tempfile
 import unittest
 import zipfile
@@ -41,6 +42,44 @@ class SourceParserTests(unittest.TestCase):
         self.assertEqual(2, result.metadata["maxColumnCount"])
         self.assertEqual("table", result.fragments[0].kind)
         self.assertIn("매출 100", result.extracted_text)
+
+    def test_json_extracts_structured_records_without_losing_element_id(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "source.json"
+            path.write_text(
+                json.dumps(
+                    {"records": [{"element_id": "ACC-01", "definition": "구조화된 정의"}]},
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            result = worker.extract_source(path, path.name, "application/json")
+        self.assertEqual("json", result.metadata["parser"])
+        self.assertEqual(1, result.metadata["recordCount"])
+        self.assertIn("ACC-01", result.fragments[0].text)
+        self.assertEqual("table", result.fragments[0].kind)
+
+    def test_sqlite_extracts_read_only_tables_with_headers(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "source.sqlite3"
+            database = sqlite3.connect(path)
+            database.execute("CREATE TABLE content(element_id TEXT, definition TEXT)")
+            database.execute(
+                "INSERT INTO content VALUES (?, ?)",
+                ("ACC-01", "회계등식의 구조화된 정의"),
+            )
+            database.commit()
+            database.close()
+
+            before = hashlib.sha256(path.read_bytes()).hexdigest()
+            result = worker.extract_source(path, path.name, "application/vnd.sqlite3")
+            after = hashlib.sha256(path.read_bytes()).hexdigest()
+        self.assertEqual(before, after)
+        self.assertEqual("sqlite3-readonly", result.metadata["parser"])
+        self.assertEqual(1, result.metadata["tableCount"])
+        self.assertEqual(1, result.metadata["rowCount"])
+        self.assertIn("element_id\tdefinition", result.fragments[0].text)
+        self.assertIn("ACC-01", result.fragments[0].text)
 
     def test_docx_extracts_paragraphs_and_tables_without_unzipping_to_disk(self) -> None:
         document_xml = """<?xml version="1.0" encoding="UTF-8"?>
@@ -138,6 +177,21 @@ class SourceParserTests(unittest.TestCase):
         )
         self.assertEqual("CF-01", candidates[0].element_id)
         self.assertGreater(candidates[0].score, 0.9)
+
+    def test_explicit_element_id_in_new_database_forces_exact_routing(self) -> None:
+        catalog = [
+            {"element_id": "ACC-01", "title": "회계등식", "definition_markdown": "기존 설명"},
+            {"element_id": "CF-01", "title": "현재가치", "definition_markdown": "기존 설명"},
+        ]
+
+        candidates = worker.match_elements(
+            "element_id\tdefinition\nACC-01\t완전히 새로 작성된 구조화 설명",
+            catalog,
+        )
+
+        self.assertEqual("ACC-01", candidates[0].element_id)
+        self.assertEqual(1.0, candidates[0].score)
+        self.assertIn("요소 ID", candidates[0].reason)
 
 
 class FakeHTTPResponse:

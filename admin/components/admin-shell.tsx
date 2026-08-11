@@ -2,6 +2,7 @@
 
 import {
   BookOpenText,
+  Cpu,
   Database,
   FileArchive,
   FileSearch,
@@ -24,6 +25,7 @@ const navItems = [
   { href: "/dashboard", label: "대시보드", icon: LayoutDashboard },
   { href: "/concepts", label: "개념 DB", icon: Database },
   { href: "/sources", label: "원본 자료", icon: FileSearch },
+  { href: "/model", label: "로컬 모델 현황", icon: Cpu },
   { href: "/review", label: "앱 DB 최종 검토", icon: Sparkles },
   { href: "/releases", label: "릴리스 이력", icon: FileArchive },
 ] as const;

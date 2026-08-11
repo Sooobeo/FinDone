@@ -280,7 +280,7 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
         setMessage(result.error ?? "기존 웹 출처를 수집 대기열에 넣지 못했습니다.");
         return;
       }
-      setMessage(`${result.message ?? "기존 웹 출처 수집을 등록했습니다."} 완료된 원본은 콘텐츠 생성 Worker가 자동으로 이어서 처리합니다.`);
+      setMessage(`${result.message ?? "기존 웹 출처 수집을 등록했습니다."} 완료된 원본은 코드의 로컬 변환 Worker가 자동으로 이어서 처리합니다.`);
     } catch {
       setMessage("기존 웹 출처 수집 요청의 네트워크 응답을 확인하지 못했습니다.");
     } finally {
@@ -436,7 +436,7 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
       uploaded.push({
         id: sourceId,
         label: item.file.name,
-        kind: item.file.name.toLowerCase().endsWith(".pdf") ? "pdf" : /\.(xlsx|xls|csv)$/i.test(item.file.name) ? "spreadsheet" : "document",
+        kind: item.file.name.toLowerCase().endsWith(".pdf") ? "pdf" : /\.(xlsx|xls|csv|db|sqlite|sqlite3)$/i.test(item.file.name) ? "spreadsheet" : "document",
         locator: objectPath,
         status: "processing",
         linkedElements: 0,
@@ -469,7 +469,7 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
           ? "Owner 화면과 같은 등록·목록 배치에서 원본 자료 DB의 구성 필드만 설명합니다. 실제 파일과 URL은 표시하지 않습니다."
           : readOnly
           ? "등록된 파일·웹 근거 자료와 연결 상태를 조회합니다."
-          : "파일 탐색기, 드래그앤드롭 또는 URL로 근거 자료를 등록하고 개념 요소와 연결합니다."}
+          : "SQLite DB, JSON, CSV, 문서 또는 URL을 등록하면 실제 내용을 추출하고 로컬 변환 모델에 연결합니다."}
         actions={<span className="count-pill">{viewerMode ? "원본 구성 안내" : `현재 원본 ${sources.length}건`}</span>}
       />
 
@@ -560,7 +560,7 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
           <div className="ingest-notes">
             <div><span>1</span><p><strong>원본 보관</strong>본문과 접근 시점을 snapshot으로 남깁니다.</p></div>
             <div><span>2</span><p><strong>안전한 수집</strong>내부 주소와 위험한 redirect는 차단합니다.</p></div>
-            <div><span>3</span><p><strong>근거 연결</strong>추출한 구절을 요소별 출처로 연결합니다.</p></div>
+            <div><span>3</span><p><strong>로컬 변환</strong>명시된 요소 ID와 앱 필드를 코드 규칙으로 연결합니다.</p></div>
           </div>
           {!viewerMode ? (
             <div className="catalog-source-action">

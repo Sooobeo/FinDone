@@ -1,7 +1,7 @@
 begin;
 
 create extension if not exists pgtap with schema extensions;
-select plan(31);
+select plan(32);
 
 select has_table('public', 'content_generation_batches', 'content generation batches table exists');
 select has_table('public', 'content_generation_batch_sources', 'generation source scope table exists');
@@ -40,6 +40,14 @@ select ok(
         'EXECUTE'
     ),
     'source worker can automatically queue initial catalog URLs'
+);
+select ok(
+    not has_function_privilege(
+        'authenticated',
+        'public.create_content_generation_batch(uuid,text,text,text,integer,uuid[],integer)',
+        'EXECUTE'
+    ),
+    'Admin users cannot start content conversion; the checked-in local worker owns it'
 );
 select ok(
     not has_function_privilege(
@@ -161,7 +169,7 @@ select is(
         public.create_content_generation_batch(
             'a3000000-0000-0000-0000-000000000001',
             'generation-test-model',
-            'findone-content-v1',
+            'findone-local-schema-v1',
             'pgTAP no-change generation',
             1,
             array['a1000000-0000-0000-0000-000000000001']::uuid[],
@@ -175,7 +183,7 @@ select is(
 select is(
     (
         public.claim_content_generation_batch(
-            'generation:test:1', 'generation-test-model', 'findone-content-v1'
+            'generation:test:1', 'generation-test-model', 'findone-local-schema-v1'
         )
     ).status::text,
     'running',
@@ -201,7 +209,7 @@ select is(
         public.update_content_generation_progress(
             (select batch_id from public.content_generation_batches
              where request_key = 'a3000000-0000-0000-0000-000000000001'),
-            'generation:test:1', 40, 'structured_generation',
+            'generation:test:1', 40, 'local_schema_mapping',
             '{"processedElementCount":0}'::jsonb
         )
     ).progress_percent,
