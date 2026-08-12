@@ -446,9 +446,15 @@ private fun HomeScreen(vm: AppViewModel) {
                     Icon(Icons.Outlined.Shield, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
                     Spacer(Modifier.width(12.dp))
                     Column {
-                        Text("검증된 로컬 콘텐츠", fontWeight = FontWeight.Bold)
+                        Text("무결성 검증된 로컬 콘텐츠", fontWeight = FontWeight.Bold)
                         Text(
-                            "DB v${vm.contentManifest?.contentDbVersion ?: "-"} · SHA-256 검증 · FTS5 검색",
+                            buildString {
+                                append("DB v${vm.contentManifest?.contentDbVersion ?: "-"}")
+                                append(" · 개념문항 ${vm.activeConceptQuestionCount}개 출제")
+                                if (vm.heldConceptQuestionCount > 0) {
+                                    append(" · ${vm.heldConceptQuestionCount}개 검수 보류")
+                                }
+                            },
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -1116,7 +1122,15 @@ private fun QuizSessionScreen(vm: AppViewModel, requestLeave: () -> Unit) {
                         Text(if (showSolution) "풀이 접기" else "풀이")
                     }
                 }
-                if (showSolution) item { SolutionContent(question, questionElement) }
+                if (showSolution) {
+                    item {
+                        SolutionContent(
+                            question = question,
+                            questionElement = questionElement,
+                            selectedChoiceId = session.userAnswer,
+                        )
+                    }
+                }
             }
             item {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -1525,7 +1539,11 @@ private fun ChoiceButton(
 }
 
 @Composable
-private fun SolutionContent(question: QuizQuestion, questionElement: ContentElement?) {
+private fun SolutionContent(
+    question: QuizQuestion,
+    questionElement: ContentElement?,
+    selectedChoiceId: String?,
+) {
     val canonicalFormula = questionElement
         ?.takeIf { element ->
             question.mode == QuizMode.CONCEPT &&
@@ -1558,6 +1576,23 @@ private fun SolutionContent(question: QuizQuestion, questionElement: ContentElem
                 )
             }
             ExplanationLine("정답", question.explanationSteps.answer)
+            val choicesWithRationale = question.choices.orEmpty().filter { !it.explanation.isNullOrBlank() }
+            if (choicesWithRationale.isNotEmpty()) {
+                Text("선택지별 근거", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+                choicesWithRationale.forEach { choice ->
+                    val markers = buildList {
+                        if (choice.id == question.canonicalAnswer) add("정답")
+                        if (choice.id.equals(selectedChoiceId, ignoreCase = true)) add("내 선택")
+                    }
+                    val markerText = markers.takeIf { it.isNotEmpty() }
+                        ?.joinToString(prefix = " · ", separator = " · ")
+                        .orEmpty()
+                    ExplanationLine(
+                        label = "${choice.id}. ${choice.text}$markerText",
+                        value = choice.explanation.orEmpty(),
+                    )
+                }
+            }
             ExplanationLine("해석", interpretation)
             Text(
                 "snapshot ${question.snapshot.id.take(12)}… · seed ${question.snapshot.generationSeed}",
@@ -1823,6 +1858,18 @@ private fun DataSettingsCard(
                 Text("앱 정보", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Text("FinDone ${BuildConfig.VERSION_NAME} · 개인 Android 사이드로드")
                 Text("콘텐츠 DB v${vm.contentManifest?.contentDbVersion ?: "-"} · 사용자 DB schema 5")
+                Text(
+                    buildString {
+                        append("개념문항 ${vm.activeConceptQuestionCount}개 출제")
+                        if (vm.heldConceptQuestionCount > 0) {
+                            append(" · ${vm.heldConceptQuestionCount}개 검수 보류")
+                        }
+                    }
+                )
+                Text(
+                    "AI 자동검수 통과 또는 Owner 승인 문항만 출제합니다.",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
                 Text("특정 학회 공식 기출이 아닌 자체 제작 문제입니다. 실시간 투자정보나 투자 조언을 제공하지 않습니다.", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 HorizontalDivider()
                 Row(verticalAlignment = Alignment.CenterVertically) {

@@ -167,6 +167,12 @@ class AppViewModel(
         private set
     var contentManifest by mutableStateOf<ContentManifest?>(null)
         private set
+    var activeConceptQuestionCount by mutableStateOf(0)
+        private set
+
+    val heldConceptQuestionCount: Int
+        get() = ((contentManifest?.rowCounts?.get("concept_questions") ?: 0) -
+            activeConceptQuestionCount).coerceAtLeast(0)
 
     var contentError by mutableStateOf<String?>(null)
         private set
@@ -257,6 +263,7 @@ class AppViewModel(
         domains = loadedDomains
         allElements = loadedElements
         conceptQuestionsByElement = loadedConceptQuestions.groupBy { it.elementId }
+        activeConceptQuestionCount = loadedConceptQuestions.size
         contentManifest = loadedManifest
         studyDomainId = studyDomainId?.takeIf { id -> domains.any { it.id == id } }
         if (studyDomainId == null) savedStateHandle.remove<String>(STUDY_DOMAIN_STATE)
@@ -329,6 +336,7 @@ class AppViewModel(
                         domains = loaded.domains
                         allElements = loaded.elements
                         conceptQuestionsByElement = loaded.conceptQuestions.groupBy { it.elementId }
+                        activeConceptQuestionCount = loaded.conceptQuestions.size
                         contentManifest = loaded.manifest
                         previous?.close()
                         normalizeContentSelections()
@@ -1224,6 +1232,7 @@ class AppViewModel(
                         put("id", choice.id)
                         put("text", choice.text)
                         put("sourceElementId", choice.sourceElementId ?: JSONObject.NULL)
+                        put("explanation", choice.explanation ?: JSONObject.NULL)
                     })
                 }
             })
@@ -1329,6 +1338,11 @@ class AppViewModel(
                 id = item.getString("id"),
                 text = item.getString("text"),
                 sourceElementId = item.optString("sourceElementId").takeIf { it.isNotBlank() },
+                explanation = if (item.isNull("explanation")) {
+                    null
+                } else {
+                    item.optString("explanation").takeIf { it.isNotBlank() }
+                },
             )
         } else null
         val explanationJson = root.getJSONObject("explanation")

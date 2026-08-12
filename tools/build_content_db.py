@@ -27,6 +27,11 @@ DEFAULT_ASSET_DIR = ROOT / "app" / "src" / "main" / "assets"
 LEARNING_COPY_DIR = ROOT / "content" / "learning-copy"
 DEFAULT_QUESTION_BANK = ROOT / "content" / "model" / "concept-question-bank.generated.json"
 
+VALID_QUESTION_REVIEW_STATUSES = {
+    "automated_pass", "needs_owner_review", "blocked", "owner_approved",
+}
+APP_ELIGIBLE_QUESTION_REVIEW_STATUSES = {"automated_pass", "owner_approved"}
+
 SCHEMA_VERSION = 2
 CONTENT_DB_VERSION = 7
 DOMAIN_ORDER = ("ACC", "CF", "INV", "FI", "DER", "EQV", "IBT")
@@ -348,6 +353,11 @@ def load_concept_question_bank(
         for field in ("questionType", "stem", "explanation", "modelVersion", "reviewStatus"):
             if not isinstance(raw_question.get(field), str) or not raw_question[field].strip():
                 raise ValueError(f"{question_id} has an empty {field}")
+        if raw_question["reviewStatus"] not in VALID_QUESTION_REVIEW_STATUSES:
+            raise ValueError(
+                f"{question_id} has an invalid review status: "
+                f"{raw_question['reviewStatus']}"
+            )
         difficulty = raw_question.get("difficulty")
         if not isinstance(difficulty, int) or difficulty not in (1, 2, 3):
             raise ValueError(f"{question_id} has an invalid difficulty")
@@ -391,6 +401,17 @@ def load_concept_question_bank(
         raise ValueError("Concept question coverage differs from canonical elements")
     if set(questions_per_element.values()) != {3}:
         raise ValueError("Every element must have exactly three concept questions")
+    if payload["releaseStatus"] == "release_ready":
+        unsafe_question_ids = [
+            question["questionId"]
+            for question in questions
+            if question["reviewStatus"] not in APP_ELIGIBLE_QUESTION_REVIEW_STATUSES
+        ]
+        if unsafe_question_ids:
+            raise ValueError(
+                "A release-ready bank contains questions that are not app-eligible: "
+                f"{unsafe_question_ids[:3]}"
+            )
     return payload
 
 
@@ -2363,6 +2384,49 @@ def validate_database(path: Path) -> dict[str, int]:
             "bootstrap_not_reviewed", "candidate", "release_ready"
         }:
             raise ValueError("Concept question bank release metadata is invalid")
+        invalid_review_statuses = database.execute(
+            """
+            SELECT DISTINCT review_status
+            FROM concept_questions
+            WHERE review_status NOT IN (
+                'automated_pass', 'needs_owner_review', 'blocked', 'owner_approved'
+            )
+            """
+        ).fetchall()
+        if invalid_review_statuses:
+            raise ValueError(
+                f"Concept question review statuses are invalid: {invalid_review_statuses}"
+            )
+        if metadata["concept_question_release_status"] == "release_ready":
+            ineligible_release_questions = database.execute(
+                """
+                SELECT question_id
+                FROM concept_questions
+                WHERE review_status NOT IN ('automated_pass', 'owner_approved')
+                LIMIT 3
+                """
+            ).fetchall()
+            if ineligible_release_questions:
+                raise ValueError(
+                    "Release-ready content contains non-eligible questions: "
+                    f"{ineligible_release_questions}"
+                )
+        missing_app_question_coverage = database.execute(
+            """
+            SELECT e.element_id
+            FROM elements e
+            LEFT JOIN concept_questions q
+                ON q.element_id = e.element_id
+               AND q.review_status IN ('automated_pass', 'owner_approved')
+            GROUP BY e.element_id
+            HAVING COUNT(q.question_id) = 0
+            """
+        ).fetchall()
+        if missing_app_question_coverage:
+            raise ValueError(
+                "Every element needs at least one app-eligible concept question: "
+                f"{missing_app_question_coverage[:3]}"
+            )
         malformed_question_groups = database.execute(
             """
             SELECT q.question_id

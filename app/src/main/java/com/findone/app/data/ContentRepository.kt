@@ -130,6 +130,7 @@ class ContentRepository(context: Context) : Closeable {
             FROM concept_questions q
             JOIN elements e ON e.element_id = q.element_id
             JOIN concept_question_choices c ON c.question_id = q.question_id
+            WHERE q.review_status IN ('automated_pass', 'owner_approved')
             ORDER BY q.display_order, c.choice_order
             """.trimIndent()
         ) { statement ->
@@ -450,6 +451,49 @@ class ContentRepository(context: Context) : Closeable {
                 )
                 if (bankStatus != manifest.conceptQuestionReleaseStatus) {
                     throw ContentIntegrityException("Database concept-question status mismatch")
+                }
+                val invalidReviewStatuses = connection.scalarLong(
+                    """
+                    SELECT COUNT(*) FROM concept_questions
+                    WHERE review_status NOT IN (
+                        'automated_pass', 'needs_owner_review', 'blocked', 'owner_approved'
+                    )
+                    """.trimIndent()
+                )
+                if (invalidReviewStatuses != 0L) {
+                    throw ContentIntegrityException("Database concept-question review status is invalid")
+                }
+                if (bankStatus == "release_ready") {
+                    val ineligibleReleaseQuestions = connection.scalarLong(
+                        """
+                        SELECT COUNT(*) FROM concept_questions
+                        WHERE review_status NOT IN ('automated_pass', 'owner_approved')
+                        """.trimIndent()
+                    )
+                    if (ineligibleReleaseQuestions != 0L) {
+                        throw ContentIntegrityException(
+                            "Release-ready database contains non-eligible concept questions"
+                        )
+                    }
+                }
+                val missingEligibleCoverage = connection.scalarLong(
+                    """
+                    SELECT COUNT(*)
+                    FROM (
+                        SELECT e.element_id
+                        FROM elements e
+                        LEFT JOIN concept_questions q
+                            ON q.element_id = e.element_id
+                           AND q.review_status IN ('automated_pass', 'owner_approved')
+                        GROUP BY e.element_id
+                        HAVING COUNT(q.question_id) = 0
+                    )
+                    """.trimIndent()
+                )
+                if (missingEligibleCoverage != 0L) {
+                    throw ContentIntegrityException(
+                        "Database has elements without an eligible concept question"
+                    )
                 }
                 val foreignKeyError = connection.query("PRAGMA foreign_key_check") { it.step() }
                 if (foreignKeyError) throw ContentIntegrityException("SQLite foreign_key_check failed")

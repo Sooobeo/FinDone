@@ -31,7 +31,7 @@ class QuizEngineTest {
             second.snapshot.canonicalPayload.toByteArray(Charsets.UTF_8),
         )
         assertEquals(QuizEngine.SNAPSHOT_VERSION, first.snapshotVersion)
-        assertTrue(first.snapshotId.startsWith("snapshot-v1-"))
+        assertTrue(first.snapshotId.startsWith("snapshot-v2-"))
         assertEquals("quiz-${first.snapshotId}", first.instanceId)
     }
 
@@ -63,7 +63,7 @@ class QuizEngineTest {
             coreRelation = target.coreRelation,
             difficulty = 1,
             modelVersion = "test-ranker-v1",
-            reviewStatus = "bootstrap",
+            reviewStatus = "automated_pass",
             sourceFactIds = listOf("${target.id}:definition:01"),
             choices = curriculum.take(5).mapIndexed { index, element ->
                 CuratedConceptChoice(
@@ -86,6 +86,9 @@ class QuizEngineTest {
             target.id,
             first.choices.orEmpty().single { it.id == first.canonicalAnswer }.sourceElementId,
         )
+        first.choices.orEmpty().forEach { choice ->
+            assertEquals("${choice.text}의 검토된 정의입니다.", choice.explanation)
+        }
         assertTrue(first.audit.passed)
     }
 

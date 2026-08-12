@@ -21,6 +21,20 @@ class FormulaMarkdownGeneratorTest(unittest.TestCase):
         self.assertIn(bank["releaseStatus"], {"candidate", "release_ready"})
         self.assertEqual(405, len(bank["questions"]))
         self.assertTrue(all(len(question["choices"]) == 5 for question in bank["questions"]))
+        self.assertTrue(
+            all(
+                question["reviewStatus"] in generator.VALID_QUESTION_REVIEW_STATUSES
+                for question in bank["questions"]
+            )
+        )
+        if bank["releaseStatus"] == "release_ready":
+            self.assertTrue(
+                all(
+                    question["reviewStatus"]
+                    in generator.APP_ELIGIBLE_QUESTION_REVIEW_STATUSES
+                    for question in bank["questions"]
+                )
+            )
 
     def test_parenthetical_concept_aliases_collide(self) -> None:
         self.assertFalse(
@@ -146,11 +160,31 @@ class FormulaMarkdownGeneratorTest(unittest.TestCase):
                    OR SUM(c.is_correct = 1 AND c.element_id = q.element_id) != 1
                 """
             ).fetchall()
+            app_eligible_question_count = database.execute(
+                """
+                SELECT COUNT(*) FROM concept_questions
+                WHERE review_status IN ('automated_pass', 'owner_approved')
+                """
+            ).fetchone()
+            uncovered_elements = database.execute(
+                """
+                SELECT e.element_id
+                FROM elements e
+                LEFT JOIN concept_questions q
+                    ON q.element_id = e.element_id
+                   AND q.review_status IN ('automated_pass', 'owner_approved')
+                GROUP BY e.element_id
+                HAVING COUNT(q.question_id) = 0
+                """
+            ).fetchall()
 
         self.assertEqual((str(generator.CONTENT_DB_VERSION),), version)
         self.assertEqual((generator.SCHEMA_VERSION,), schema_version)
         self.assertEqual((405,), question_count)
         self.assertEqual((2025,), choice_count)
+        self.assertGreater(app_eligible_question_count[0], 0)
+        self.assertLessEqual(app_eligible_question_count[0], question_count[0])
+        self.assertEqual([], uncovered_elements)
         self.assertEqual([], malformed_questions)
         self.assertEqual(135, len(rows))
         self.assertEqual(135, sum("$$" in expression for (expression,) in rows))

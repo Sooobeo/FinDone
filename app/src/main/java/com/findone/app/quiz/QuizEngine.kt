@@ -41,6 +41,7 @@ data class QuizChoice(
     val id: String,
     val text: String,
     val sourceElementId: String? = null,
+    val explanation: String? = null,
 )
 
 data class QuizAnswer(
@@ -149,8 +150,8 @@ private typealias CalculationFactory = (StableRandom, Int) -> CalculationDraft
  * referenced, which makes output reproducible in JVM tests and on-device.
  */
 object QuizEngine {
-    const val SNAPSHOT_VERSION: Int = 1
-    const val RENDERER_VERSION: String = "quiz-engine-1.1.0"
+    const val SNAPSHOT_VERSION: Int = 2
+    const val RENDERER_VERSION: String = "quiz-engine-1.2.0"
 
     private val calculationFactories: Map<String, CalculationFactory> = linkedMapOf(
         "ACC-01" to ::acc01,
@@ -223,7 +224,12 @@ object QuizEngine {
         val shuffled = random.shuffled(question.choices)
         val ids = listOf("A", "B", "C", "D", "E")
         val choices = shuffled.mapIndexed { index, choice ->
-            QuizChoice(ids[index], choice.text, choice.elementId)
+            QuizChoice(
+                id = ids[index],
+                text = choice.text,
+                sourceElementId = choice.elementId,
+                explanation = choice.explanation,
+            )
         }
         val correctIndex = shuffled.indexOfFirst { it.isCorrect }
         val canonicalAnswer = ids[correctIndex]
@@ -543,7 +549,8 @@ object QuizEngine {
         difficulty: Int,
     ): String {
         val choicePayload = choices.orEmpty().joinToString(separator = "") {
-            framed(it.id) + framed(it.text) + framed(it.sourceElementId.orEmpty())
+            framed(it.id) + framed(it.text) + framed(it.sourceElementId.orEmpty()) +
+                framed(it.explanation.orEmpty())
         }
         val operationPayload = audit.operations.joinToString(separator = "") {
             framed(it.expression) + framed(it.result.toString()) + framed(it.exact.toString())
