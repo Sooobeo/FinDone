@@ -24,3 +24,4 @@ secrets.properties
 .findone-release/
 .venv-concept/
 .cache-concept-model/
+.ruff_cache/

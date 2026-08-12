@@ -542,9 +542,11 @@ $configuration = [ordered]@{
 Write-Utf8JsonAtomically -Value $configuration -Path $configurationPath
 
 if (-not $SkipHookActivation) {
-    $trackedHook = (& git -C $repoRoot ls-files --error-unmatch -- '.githooks/post-commit' 2>$null).ToString().Trim()
-    if ($LASTEXITCODE -ne 0 -or $trackedHook -ne '.githooks/post-commit') {
-        throw 'The tracked .githooks/post-commit hook is missing. Commit the automation files before enabling it.'
+    foreach ($hookPath in @('.githooks/pre-commit', '.githooks/post-commit')) {
+        $trackedHook = (& git -C $repoRoot ls-files --error-unmatch -- $hookPath 2>$null).ToString().Trim()
+        if ($LASTEXITCODE -ne 0 -or $trackedHook -ne $hookPath) {
+            throw "The tracked $hookPath hook is missing. Commit the automation files before enabling it."
+        }
     }
     & git -C $repoRoot config --local core.hooksPath .githooks
     if ($LASTEXITCODE -ne 0) { throw 'Failed to enable the repository-local hooks path.' }
@@ -552,7 +554,7 @@ if (-not $SkipHookActivation) {
 
 Write-Host "DPAPI-protected release configuration saved locally: $configurationPath"
 if ($SkipHookActivation) {
-    Write-Host 'The post-commit hook was not enabled.'
+    Write-Host 'The repository hooks were not enabled.'
 } else {
-    Write-Host 'The synchronous post-commit release hook is enabled for this clone.'
+    Write-Host 'The pre-commit preflight and synchronous post-commit release hooks are enabled for this clone.'
 }

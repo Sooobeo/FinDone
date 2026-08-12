@@ -198,6 +198,20 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _resolve_repo_path(path: Path) -> Path:
+    """Resolve CLI paths consistently, independent of the caller's cwd."""
+    return path.resolve() if path.is_absolute() else (ROOT / path).resolve()
+
+
+def _report_path(path: Path) -> str:
+    """Render repo-local artifacts relatively without rejecting external paths."""
+    resolved = _resolve_repo_path(path)
+    try:
+        return resolved.relative_to(ROOT).as_posix()
+    except ValueError:
+        return resolved.as_posix()
+
+
 def _atomic_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     descriptor, temporary_name = tempfile.mkstemp(
@@ -1965,6 +1979,14 @@ def run_experiment(
     write_markdown_report: bool = False,
     progress: ProgressBar | None = None,
 ) -> dict[str, Any]:
+    config_path = _resolve_repo_path(config_path)
+    elements_path = _resolve_repo_path(elements_path)
+    labels_path = _resolve_repo_path(labels_path)
+    split_path = _resolve_repo_path(split_path)
+    bank_path = _resolve_repo_path(bank_path)
+    admin_report_path = _resolve_repo_path(admin_report_path)
+    build_dir = _resolve_repo_path(build_dir)
+    markdown_report_dir = _resolve_repo_path(markdown_report_dir)
     renderer = progress or ProgressBar(False)
     started_wall = datetime.now(timezone.utc)
     started = time.perf_counter()
@@ -2163,7 +2185,7 @@ def run_experiment(
                             "validation": validation,
                             "test": None,
                             "testEvaluated": False,
-                            "modelArtifact": str(artifact_path.relative_to(ROOT)).replace("\\", "/"),
+                            "modelArtifact": _report_path(artifact_path),
                             "modelSha256": artifact_sha,
                             "modelBytes": artifact_size,
                             "error": None,
@@ -2190,7 +2212,17 @@ def run_experiment(
                     )
     successful = [item for item in run_results if item["status"] == "completed"]
     if not successful:
-        raise ConceptModelError("Every ranker training run failed")
+        first_failures = "; ".join(
+            (
+                f"{item['embeddingId']}/{item['retrievalProfileId']}/{item['rankerId']}: "
+                f"{item['error']}"
+            )
+            for item in run_results[:3]
+        )
+        raise ConceptModelError(
+            "Every ranker training run failed"
+            + (f". First failures: {first_failures}" if first_failures else "")
+        )
 
     tolerance = float(config.get("embeddingSelectionTolerance", 0.01))
     selected = select_validation_run(
@@ -2421,15 +2453,13 @@ def run_experiment(
         "safety": safety,
         "qualityGates": gates,
         "artifacts": {
-            "questionBank": str(bank_path.relative_to(ROOT)).replace("\\", "/"),
+            "questionBank": _report_path(bank_path),
             "questionBankWritten": write_question_bank,
             "questionBankSha256": bank["bankSha256"],
-            "split": str(split_path.relative_to(ROOT)).replace("\\", "/"),
-            "facts": str((build_dir / "facts.jsonl").relative_to(ROOT)).replace("\\", "/"),
-            "candidates": str((build_dir / "candidates.jsonl").relative_to(ROOT)).replace("\\", "/"),
-            "markdownReport": str(
-                (markdown_report_dir / f"{experiment_id}.md").relative_to(ROOT)
-            ).replace("\\", "/"),
+            "split": _report_path(split_path),
+            "facts": _report_path(build_dir / "facts.jsonl"),
+            "candidates": _report_path(build_dir / "candidates.jsonl"),
+            "markdownReport": _report_path(markdown_report_dir / f"{experiment_id}.md"),
             "markdownReportWritten": write_markdown_report,
         },
         "environment": {

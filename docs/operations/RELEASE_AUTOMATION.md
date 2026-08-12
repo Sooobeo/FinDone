@@ -4,17 +4,18 @@
 
 ## 동작 방식
 
-1. `.githooks/post-commit`이 방금 생성된 40자리 커밋 SHA를 전달합니다.
-2. `scripts/invoke_post_commit_release.ps1`이 커밋된 `content-manifest.json`의 `conceptQuestionReleaseStatus`를 확인합니다.
-3. 상태가 `release_ready`가 아니면 커밋은 성공 상태로 끝내고 릴리스만 보류합니다.
-4. 상태가 `release_ready`이면 임시 detached worktree에 그 SHA만 체크아웃합니다.
-5. 현재 PC의 `local.properties`에서는 `sdk.dir` 한 줄만 임시 worktree로 복사합니다.
-6. Windows DPAPI 암호문을 현재 Windows 사용자 권한의 `SecureString`으로 복호화합니다.
-7. 서명 비밀번호가 전혀 없는 환경에서 정확한 커밋의 Gradle·플러그인·테스트를 실행해 unsigned APK를 만듭니다.
-8. setup에서 SHA-256을 고정한 활성 clone의 로컬 래퍼가 SDK `zipalign`을 실행한 뒤, 비밀번호 환경 변수를 `apksigner` 실행 순간에만 만들고 즉시 제거합니다.
-9. 서명, 정렬, APK checksum, 인터넷 권한과 콘텐츠 release endpoint 주입을 다시 검증합니다.
-10. 검증된 릴리스를 `dist/findone-*`에 원자적으로 게시하고 최신 두 개만 남깁니다.
-11. 선택한 mirror가 있으면 완성된 폴더를 복사·재검증한 뒤 그곳도 최신 두 개만 남깁니다.
+1. `.githooks/pre-commit`이 staged 변경 범위에 맞는 공통 preflight를 먼저 실행합니다.
+2. `.githooks/post-commit`이 방금 생성된 40자리 커밋 SHA를 전달합니다.
+3. `scripts/invoke_post_commit_release.ps1`이 커밋된 `content-manifest.json`의 `conceptQuestionReleaseStatus`를 확인합니다.
+4. 상태가 `release_ready`가 아니면 커밋은 성공 상태로 끝내고 릴리스만 보류합니다.
+5. 상태가 `release_ready`이면 임시 detached worktree에 그 SHA만 체크아웃합니다.
+6. 현재 PC의 `local.properties`에서는 `sdk.dir` 한 줄만 임시 worktree로 복사합니다.
+7. Windows DPAPI 암호문을 현재 Windows 사용자 권한의 `SecureString`으로 복호화합니다.
+8. 서명 비밀번호가 전혀 없는 환경에서 정확한 커밋의 Gradle·플러그인·테스트를 실행해 unsigned APK를 만듭니다.
+9. setup에서 SHA-256을 고정한 활성 clone의 로컬 래퍼가 SDK `zipalign`을 실행한 뒤, 비밀번호 환경 변수를 `apksigner` 실행 순간에만 만들고 즉시 제거합니다.
+10. 서명, 정렬, APK checksum, 인터넷 권한과 콘텐츠 release endpoint 주입을 다시 검증합니다.
+11. 검증된 릴리스를 `dist/findone-*`에 원자적으로 게시하고 최신 두 개만 남깁니다.
+12. 선택한 mirror가 있으면 완성된 폴더를 복사·재검증한 뒤 그곳도 최신 두 개만 남깁니다.
 
 앱은 APK를 스스로 설치하지 않으며 OneDrive API·로그인·동기화도 사용하지 않습니다. 다만 콘텐츠는 설정된 HTTPS stable endpoint를 실행 때 확인해 새 버전만 검증 후 교체합니다. 앱 코드/UI APK는 이전처럼 OneDrive에서 직접 열어 Android 시스템 설치 화면으로 업데이트합니다.
 
@@ -65,7 +66,7 @@ New-Item -ItemType Directory -Path 'C:\Users\Insun\OneDrive\FinDone-Releases'
 
 `ContentReleaseEndpoint`는 사용자 인증정보·query·fragment가 없는 공개 HTTPS URL이어야 하며, Admin의 `/api/content/stable`을 가리킵니다. mirror가 필요 없으면 `-MirrorRoot`를 생략합니다. 설정만 저장하고 훅은 아직 켜지 않으려면 `-SkipHookActivation`을 추가합니다.
 
-설정 스크립트는 저장 전에 PATH의 JDK `keytool -certreq`를 실행해 keystore 비밀번호, private-key 비밀번호와 alias가 실제로 함께 동작하는지 검증합니다. 이어서 signing certificate DER의 SHA-256이 [tracked 공개 pin](../config/release-signing-certificate.sha256) 및 최신 검증 가능 릴리스 기록과 일치하는지 확인합니다. 비밀번호는 keytool의 `-storepass:env`·`-keypass:env` modifier로만 전달되어 명령줄에 나타나지 않으며, 임시 CSR·인증서·환경 변수는 즉시 제거됩니다. 검증 실패 또는 keytool 부재 시 설정 파일과 훅을 만들거나 활성화하지 않습니다.
+설정 스크립트는 저장 전에 PATH의 JDK `keytool -certreq`를 실행해 keystore 비밀번호, private-key 비밀번호와 alias가 실제로 함께 동작하는지 검증합니다. 이어서 signing certificate DER의 SHA-256이 [tracked 공개 pin](../../config/release-signing-certificate.sha256) 및 최신 검증 가능 릴리스 기록과 일치하는지 확인합니다. 비밀번호는 keytool의 `-storepass:env`·`-keypass:env` modifier로만 전달되어 명령줄에 나타나지 않으며, 임시 CSR·인증서·환경 변수는 즉시 제거됩니다. 검증 실패 또는 keytool 부재 시 설정 파일과 훅을 만들거나 활성화하지 않습니다.
 
 설정 파일은 이 clone의 `.git/findone-release/credentials.json`에 저장됩니다. 비밀번호 필드는 별도 key를 코드나 파일에 저장하지 않는 Windows DPAPI current-user ciphertext입니다. 다른 Windows 계정이나 다른 PC에서는 복호화되지 않습니다. 공개 콘텐츠 endpoint, 검증된 인증서 SHA-256과 setup 당시 `build_private_release.ps1` SHA-256도 함께 고정됩니다. builder가 바뀌면 DPAPI 복호화 전에 자동 빌드를 중단하므로 변경을 검토한 뒤 setup을 다시 실행해야 합니다. keystore 자체는 계속 저장소 밖에 보관해야 합니다.
 

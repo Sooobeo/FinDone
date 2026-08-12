@@ -85,7 +85,7 @@ try {
 }
 ```
 
-[scripts/build_private_release.ps1](../scripts/build_private_release.ps1)는 비밀번호가 없는 환경에서 `clean test lintRelease assembleRelease`를 실행하고, SDK `zipalign`과 `apksigner`로 외부 서명한 뒤 서명·정렬을 재검증합니다. 그 다음 새 `dist/findone-<version>-<timestamp>/`에 APK·외부 release manifest·checksum을 만듭니다.
+[scripts/build_private_release.ps1](../../scripts/build_private_release.ps1)는 비밀번호가 없는 환경에서 `clean test lintRelease assembleRelease`를 실행하고, SDK `zipalign`과 `apksigner`로 외부 서명한 뒤 서명·정렬을 재검증합니다. 그 다음 새 `dist/findone-<version>-<timestamp>/`에 APK·외부 release manifest·checksum을 만듭니다.
 
 - [ ] 스크립트가 오류 없이 종료되었다.
 - [ ] 비밀번호 환경 변수가 제거되었는지 확인했다.

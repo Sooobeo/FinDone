@@ -13,9 +13,15 @@ on:
       - "tools/train_concept_question_model.py"
       - "tools/test_train_concept_question_model.py"
       - "tools/requirements-concept-model-core.txt"
+      - "tools/repo_preflight.py"
+      - "tools/test_repo_preflight.py"
       - "content/model/concept-model-config.json"
       - "content/model/concept-question-bank.generated.json"
       - "admin/data/concept-model-experiments.generated.json"
+      - "AGENTS.md"
+      - ".githooks/pre-commit"
+      - ".github/workflows/repository-preflight.yml"
+      - ".github/workflows/local-content-model-evaluation.yml"
 
 permissions:
   contents: read
@@ -34,29 +40,12 @@ jobs:
       - name: Install offline concept-model core
         run: python -m pip install --disable-pip-version-check -r tools/requirements-concept-model-core.txt
 
-      - name: Run local model regression tests
+      - name: Run local model CI-parity preflight
         run: >-
-          python -m unittest
-          tools.test_local_content_model
-          tools.test_build_content_db
-          tools.test_train_concept_question_model
-          -v
-
-      - name: Run deterministic concept-ranker baseline
-        run: >-
-          python tools/train_concept_question_model.py
-          --ranker pairwise-logistic
-          --quiet
-          --split build/concept-ci/split.json
-          --question-bank build/concept-ci/question-bank.json
-          --build-dir build/concept-ci
-
-      - name: Build twice and measure quality/performance
-        run: >-
-          python tools/compile_app_content.py
-          --check
-          --benchmark-rounds 3
-          --report build/local-content-model-report.json
+          python tools/repo_preflight.py verify
+          --scope model
+          --changes head
+          --ci
 
       - name: Upload measured model report
         uses: actions/upload-artifact@v4

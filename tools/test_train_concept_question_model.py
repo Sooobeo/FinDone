@@ -1,6 +1,7 @@
 import json
 import unittest
 from collections import Counter
+from pathlib import Path
 
 from tools import train_concept_question_model as model
 
@@ -76,6 +77,15 @@ class ConceptQuestionModelTest(unittest.TestCase):
             )
         self.assertEqual(60, self.config["fusionBaseline"]["rrfK"])
         self.assertEqual([0.1, 1.0, 10.0], self.config["pairwiseLogisticCValues"])
+
+    def test_cli_relative_paths_are_resolved_and_reported_from_repo_root(self) -> None:
+        relative = Path("build/concept-ci/probe.json")
+
+        self.assertEqual(
+            model.ROOT / "build" / "concept-ci" / "probe.json",
+            model._resolve_repo_path(relative),
+        )
+        self.assertEqual("build/concept-ci/probe.json", model._report_path(relative))
 
     def test_selection_uses_validation_and_cost_policy_only(self) -> None:
         def run(

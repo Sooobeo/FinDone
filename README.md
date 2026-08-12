@@ -58,7 +58,7 @@ APK
 기본 요구 사항은 JDK 17과 Android SDK API 35입니다. Windows에서는 저장소 루트에서 다음 명령을 실행합니다.
 
 ```powershell
-.\gradlew.bat test lintDebug assembleDebug --console=plain
+.\gradlew.bat testDebugUnitTest lintDebug assembleDebug --console=plain
 ```
 
 macOS 또는 Linux에서는 `.\gradlew.bat` 대신 `./gradlew`을 사용합니다. 디버그 APK는 다음 위치에 생성됩니다.
@@ -108,7 +108,7 @@ try {
 
 수동 릴리스라면 이 세 산출물만 개인 OneDrive로 전송합니다. 로컬 커밋 자동화를 설정하면 별도의 `FinDone-Releases` mirror에 검증된 산출물을 복사하고 최신 두 릴리스만 남깁니다. 앱은 OneDrive에 로그인하거나 릴리스 폴더를 읽지 않습니다. 휴대폰의 OneDrive에서 최신 `.apk`를 직접 열어 Android 시스템 설치 화면으로 업데이트하세요. 설치 전 체크섬·서명·권한을 확인하고, APK를 연 앱에 대한 Android의 “이 출처의 앱 설치 허용”은 설치할 때만 켰다가 다시 끄세요.
 
-키 준비부터 오프라인 기기 시험, upgrade와 사용자 백업 복원까지의 상세 절차는 [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md)를 따르세요. 커밋마다 정확한 HEAD 스냅샷을 자동 빌드하고 최신 두 릴리스만 보관하는 로컬 훅 설정은 [docs/RELEASE_AUTOMATION.md](docs/RELEASE_AUTOMATION.md)에 설명되어 있습니다.
+키 준비부터 오프라인 기기 시험, upgrade와 사용자 백업 복원까지의 상세 절차는 [릴리스 체크리스트](docs/operations/RELEASE_CHECKLIST.md)를 따르세요. 커밋마다 정확한 HEAD 스냅샷을 자동 빌드하고 최신 두 릴리스만 보관하는 로컬 훅 설정은 [릴리스 자동화 문서](docs/operations/RELEASE_AUTOMATION.md)에 설명되어 있습니다. 전체 문서 구조는 [문서 인덱스](docs/README.md)에서 확인할 수 있습니다.
 
 ## 개인정보와 용도
 

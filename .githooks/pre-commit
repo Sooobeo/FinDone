@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Verify the exact staged scope before Git creates a commit. The Python tool
+# rejects relevant unstaged files so a passing working tree cannot hide a
+# broken staged snapshot.
+repo_root=$(git rev-parse --show-toplevel) || exit 1
+
+if [ -x "$repo_root/.venv-concept/Scripts/python.exe" ]; then
+    python_command="$repo_root/.venv-concept/Scripts/python.exe"
+elif [ -x "$repo_root/.venv-concept/bin/python" ]; then
+    python_command="$repo_root/.venv-concept/bin/python"
+elif command -v python3 >/dev/null 2>&1; then
+    python_command=$(command -v python3)
+elif command -v python >/dev/null 2>&1; then
+    python_command=$(command -v python)
+else
+    echo "FinDone preflight requires Python 3." >&2
+    exit 1
+fi
+
+cd "$repo_root" || exit 1
+"$python_command" tools/repo_preflight.py verify --scope auto --changes staged

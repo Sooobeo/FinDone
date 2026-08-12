@@ -31,7 +31,7 @@ Pop-Location
 4. `supabase db push --linked --dry-run` 결과를 검토한 뒤 `supabase db push --linked`를 실행한다.
 5. Dashboard `Authentication > Users`에서 소유자 계정 한 개를 직접 생성한다.
 6. Dashboard에서 신규 회원가입, 이메일 signup, anonymous sign-in을 모두 끈다. 저장소의 `config.toml`은 hosted 설정을 자동으로 바꾸지 않는다.
-7. 생성한 Auth UUID를 `public.admin_users`에 `owner`로 등록한다. SQL은 [Supabase 안내](../supabase/README.md)의 예시를 사용한다.
+7. 생성한 Auth UUID를 `public.admin_users`에 `owner`로 등록한다. SQL은 [Supabase 안내](../../supabase/README.md)의 예시를 사용한다.
 8. Storage의 `source-private`, `exports-private`, `release-bundles`가 모두 private인지 확인한다.
 
 Admin 웹용 값:
@@ -60,7 +60,7 @@ Remove-Item Env:SUPABASE_SECRET_KEY
 
 ### 4.1 원본 파일·URL 가공
 
-`202608110004_source_ingestion_worker.sql`까지 적용한 뒤 GitHub repository secret에 `SUPABASE_URL`, `SUPABASE_SECRET_KEY`를 등록하고 repository variable `ADMIN_SOURCE_WORKER_ENABLED=true`를 설정한다. [Admin Source Worker](../.github/workflows/admin-source-worker.yml)는 5분마다 최대 4개의 `file_extract`/`url_fetch` 작업을 처리한다.
+`202608110004_source_ingestion_worker.sql`까지 적용한 뒤 GitHub repository secret에 `SUPABASE_URL`, `SUPABASE_SECRET_KEY`를 등록하고 repository variable `ADMIN_SOURCE_WORKER_ENABLED=true`를 설정한다. [Admin Source Worker](../../.github/workflows/admin-source-worker.yml)는 5분마다 최대 4개의 `file_extract`/`url_fetch` 작업을 처리한다.
 
 파일은 Storage에서 stream으로 내려받아 등록 크기와 SHA-256을 재검증한다. URL은 DNS 및 각 redirect의 public IP를 재검증하고 검증된 IP에 pin해서 fetch한 뒤 raw snapshot을 private Storage에 보존한다. 이후 PDF/Office/표/텍스트/HTML/image parser, 필요한 페이지만 `kor+eng` OCR, fragment/FTS 저장, 기존 요소·개념·공식 결정론적 대조가 자동 실행된다. 애매하거나 OCR 신뢰도 0.90 미만인 결과는 추측하지 않고 `needs_review`로 끝난다.
 
@@ -72,13 +72,13 @@ python tools/admin_source_ingestion_worker.py --worker-id 'source:local-01' --ma
 Remove-Item Env:SUPABASE_SECRET_KEY
 ```
 
-로컬 OCR에는 Tesseract 실행 파일과 `eng`, `kor` language data가 필요하다. GitHub workflow는 이 의존성을 자동 설치한다. 자세한 처리·보안·상한 계약은 [Source Ingestion Worker 문서](../tools/README-admin-source-worker.md)에 있다.
+로컬 OCR에는 Tesseract 실행 파일과 `eng`, `kor` language data가 필요하다. GitHub workflow는 이 의존성을 자동 설치한다. 자세한 처리·보안·상한 계약은 [Source Ingestion Worker 문서](../../tools/README-admin-source-worker.md)에 있다.
 
 Admin 원본 목록은 DB의 실제 job 상태를 3초마다 갱신한다. 업로드/hash/전송/URL 등록과 Worker의 대기·내려받기·검증·snapshot 보관·추출·OCR·정규화·요소 대조·저장 단계마다 스피너와 실제 진행률이 표시되며, 완료·검토필요·실패는 terminal 상태로 바뀐다.
 
 ### 4.2 Revision 검증
 
-`202608100010_validation_worker_rpc.sql`까지 적용한 뒤 GitHub repository secret에 `SUPABASE_URL`, `SUPABASE_SECRET_KEY`를 등록하고 repository variable `ADMIN_VALIDATION_WORKER_ENABLED=true`를 설정한다. [Admin Validation Worker](../.github/workflows/admin-validation-worker.yml)는 그때부터 5분마다 revision validation 작업 한 건을 원자적으로 claim해 검사한다. 같은 worker ID의 실행 중 작업은 먼저 복구하고, 15분 넘게 중단된 lease는 retry 예산 안에서 회수하며, 예산을 소진한 작업은 실패로 봉인한다. variable이 없으면 예약 실행은 건너뛰며, 같은 작업을 수동 또는 로컬에서 한 번 실행할 수도 있다.
+`202608100010_validation_worker_rpc.sql`까지 적용한 뒤 GitHub repository secret에 `SUPABASE_URL`, `SUPABASE_SECRET_KEY`를 등록하고 repository variable `ADMIN_VALIDATION_WORKER_ENABLED=true`를 설정한다. [Admin Validation Worker](../../.github/workflows/admin-validation-worker.yml)는 그때부터 5분마다 revision validation 작업 한 건을 원자적으로 claim해 검사한다. 같은 worker ID의 실행 중 작업은 먼저 복구하고, 15분 넘게 중단된 lease는 retry 예산 안에서 회수하며, 예산을 소진한 작업은 실패로 봉인한다. variable이 없으면 예약 실행은 건너뛰며, 같은 작업을 수동 또는 로컬에서 한 번 실행할 수도 있다.
 
 ```powershell
 $env:SUPABASE_URL = 'https://<project-ref>.supabase.co'
@@ -91,7 +91,7 @@ Revision Validation Worker는 원본 가공이나 `release_build`, `release_vali
 
 ### 4.3 릴리스 빌드·검증·stable 공개
 
-`202608100011_release_worker_rpc.sql`까지 적용한 뒤 같은 GitHub secrets를 사용하고 repository variable `ADMIN_RELEASE_WORKER_ENABLED=true`도 설정한다. [Admin Release Worker](../.github/workflows/admin-release-worker.yml)는 5분마다 승인 릴리스 작업을 claim하며 한 실행에서 최대 4건을 처리한다. 보통 한 번의 실행에서 SQLite 빌드가 검증 작업을 만들고, 이어서 검증을 통과하면 `stable` 채널 공개까지 완료한다.
+`202608100011_release_worker_rpc.sql`까지 적용한 뒤 같은 GitHub secrets를 사용하고 repository variable `ADMIN_RELEASE_WORKER_ENABLED=true`도 설정한다. [Admin Release Worker](../../.github/workflows/admin-release-worker.yml)는 5분마다 승인 릴리스 작업을 claim하며 한 실행에서 최대 4건을 처리한다. 보통 한 번의 실행에서 SQLite 빌드가 검증 작업을 만들고, 이어서 검증을 통과하면 `stable` 채널 공개까지 완료한다.
 
 ```powershell
 $env:SUPABASE_URL = 'https://<project-ref>.supabase.co'

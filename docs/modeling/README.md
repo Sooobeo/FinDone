@@ -3,7 +3,7 @@
 이 디렉터리는 오프라인 개념형 5지선다 모델링 실험의 사람이 읽을 수 있는 영구 기록이다.
 Admin 시각화는 `admin/data/concept-model-experiments.generated.json`을 사용하고, 이 MD들은 감사·비교·의사결정 이력으로 유지한다.
 
-- 설계 기준: [개념형 5지선다 오프라인 모델링 설계서](../CONCEPT_MCQ_MODELING_DESIGN.md)
+- 설계 기준: [개념형 5지선다 오프라인 모델링 설계서](CONCEPT_MCQ_MODELING_DESIGN.md)
 - 생성 명령: `python tools/train_concept_question_model.py --write-question-bank --write-admin-report --write-markdown-report`
 - 원칙: validation으로 조합을 선택하고 선택된 한 조합에만 test를 실행한다.
 

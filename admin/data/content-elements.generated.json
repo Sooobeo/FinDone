@@ -20,7 +20,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1063 · A. 회계 계산 문제 (ACC) > ACC-01. 회계등식과 차변·대변",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -44,7 +44,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1076 · A. 회계 계산 문제 (ACC) > ACC-02. 발생주의·현금주의와 결산조정",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -68,7 +68,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1087 · A. 회계 계산 문제 (ACC) > ACC-03. 매출채권·대손충당금",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -92,7 +92,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1099 · A. 회계 계산 문제 (ACC) > ACC-04. 재고자산·매출원가",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -116,7 +116,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1111 · A. 회계 계산 문제 (ACC) > ACC-05. 유형자산·감가상각·처분손익",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -140,7 +140,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1122 · A. 회계 계산 문제 (ACC) > ACC-06. 사채 회계·유효이자율법",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -164,7 +164,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1134 · A. 회계 계산 문제 (ACC) > ACC-07. 기본주당이익(EPS)·가중평균주식수",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -188,7 +188,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1146 · A. 회계 계산 문제 (ACC) > ACC-08. 운전자본과 순운전자본 증감",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -212,7 +212,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1157 · A. 회계 계산 문제 (ACC) > ACC-09. 현금흐름표(CFO·CFI·CFF)",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -236,7 +236,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1168 · A. 회계 계산 문제 (ACC) > ACC-10. 손익계산서·재무상태표·현금흐름표 연결",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -260,7 +260,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1180 · A. 회계 계산 문제 (ACC) > ACC-11. 수익성·효율성·레버리지 비율",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -284,7 +284,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1191 · A. 회계 계산 문제 (ACC) > ACC-12. ROA·ROE·DuPont 분해",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -308,7 +308,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1206 · B. 기업재무 계산 문제 (CF) > CF-01. 화폐의 시간가치 — 일시금 PV·FV",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -332,7 +332,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1216 · B. 기업재무 계산 문제 (CF) > CF-02. 연금·영구연금·성장영구연금",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -356,7 +356,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1228 · B. 기업재무 계산 문제 (CF) > CF-03. NPV와 투자안 채택",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -380,7 +380,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1240 · B. 기업재무 계산 문제 (CF) > CF-04. IRR",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -404,7 +404,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1252 · B. 기업재무 계산 문제 (CF) > CF-05. 배당할인모형(DDM)",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -428,7 +428,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1263 · B. 기업재무 계산 문제 (CF) > CF-06. CAPM·베타",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -452,7 +452,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1274 · B. 기업재무 계산 문제 (CF) > CF-07. WACC",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -476,7 +476,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1285 · B. 기업재무 계산 문제 (CF) > CF-08. 레버리지·자본구조",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -500,7 +500,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1297 · B. 기업재무 계산 문제 (CF) > CF-09. 증분 프로젝트 현금흐름",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -524,7 +524,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1309 · B. 기업재무 계산 문제 (CF) > CF-10. FCFF·FCFE",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -548,7 +548,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1320 · B. 기업재무 계산 문제 (CF) > CF-11. 계속가치(Terminal Value)",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -572,7 +572,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1331 · B. 기업재무 계산 문제 (CF) > CF-12. 기업가치(EV)·지분가치·주당가치 연결",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -596,7 +596,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1345 · C. 투자·포트폴리오 계산 문제 (INV) > INV-01. 보유기간수익률·로그수익률·산술평균·기하평균",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -620,7 +620,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1361 · C. 투자·포트폴리오 계산 문제 (INV) > INV-02. 기대수익률·분산·표준편차",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -644,7 +644,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1372 · C. 투자·포트폴리오 계산 문제 (INV) > INV-03. 공분산·상관계수",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -668,7 +668,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1383 · C. 투자·포트폴리오 계산 문제 (INV) > INV-04. 2자산 포트폴리오",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -692,7 +692,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1394 · C. 투자·포트폴리오 계산 문제 (INV) > INV-05. 베타",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -716,7 +716,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1405 · C. 투자·포트폴리오 계산 문제 (INV) > INV-06. CAPM 요구수익률·알파",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -740,7 +740,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1416 · C. 투자·포트폴리오 계산 문제 (INV) > INV-07. APT 다요인 기대수익률",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -764,7 +764,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1427 · C. 투자·포트폴리오 계산 문제 (INV) > INV-08. Sharpe·Treynor·Jensen 성과평가",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -788,7 +788,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1438 · C. 투자·포트폴리오 계산 문제 (INV) > INV-09. Tracking Error·Information Ratio",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -812,7 +812,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1451 · D. 채권·금리 계산 문제 (FI) > FI-01. 채권가격·YTM",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -836,7 +836,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1462 · D. 채권·금리 계산 문제 (FI) > FI-02. 현물이자율·선도금리",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -860,7 +860,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1473 · D. 채권·금리 계산 문제 (FI) > FI-03. Macaulay Duration·Modified Duration",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -884,7 +884,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1484 · D. 채권·금리 계산 문제 (FI) > FI-04. DV01·Convexity 가격변화",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -908,7 +908,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1495 · D. 채권·금리 계산 문제 (FI) > FI-05. Duration Immunization",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -932,7 +932,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1506 · D. 채권·금리 계산 문제 (FI) > FI-06. 금리위험 헤징·계약수",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -956,7 +956,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1517 · D. 채권·금리 계산 문제 (FI) > FI-07. Repo·Haircut",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -980,7 +980,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1528 · D. 채권·금리 계산 문제 (FI) > FI-08. 채권선물 Basis·CTD",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1004,7 +1004,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1539 · D. 채권·금리 계산 문제 (FI) > FI-09. 금리스왑 고정금리·현금흐름",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1028,7 +1028,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1550 · D. 채권·금리 계산 문제 (FI) > FI-10. 신용위험·Credit Spread·Expected Loss",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1052,7 +1052,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1563 · E. 파생상품 계산 문제 (DER) > DER-01. Forward·Futures 이론가격",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1076,7 +1076,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1574 · E. 파생상품 계산 문제 (DER) > DER-02. Forward·Futures 무차익거래",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1100,7 +1100,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1585 · E. 파생상품 계산 문제 (DER) > DER-03. 최소분산 Hedge Ratio·선물계약수",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1124,7 +1124,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1596 · E. 파생상품 계산 문제 (DER) > DER-04. Call·Put Payoff",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1148,7 +1148,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1607 · E. 파생상품 계산 문제 (DER) > DER-05. 옵션 Profit·손익분기점·전략손익",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1172,7 +1172,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1618 · E. 파생상품 계산 문제 (DER) > DER-06. Put–Call Parity·차익거래",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1196,7 +1196,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1629 · E. 파생상품 계산 문제 (DER) > DER-07. Binomial Option Pricing",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1220,7 +1220,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1640 · E. 파생상품 계산 문제 (DER) > DER-08. Black–Scholes–Merton",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1244,7 +1244,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1652 · E. 파생상품 계산 문제 (DER) > DER-09. Greeks·Delta Hedge·근사 P&L",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1268,7 +1268,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1663 · E. 파생상품 계산 문제 (DER) > DER-10. Swap Cash Flows·Netting",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1292,7 +1292,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1680 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-01",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1316,7 +1316,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1681 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-02",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1340,7 +1340,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1682 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-03",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1364,7 +1364,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1683 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-04",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1388,7 +1388,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1684 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-05",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1412,7 +1412,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1685 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-06",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1436,7 +1436,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1686 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-07",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1460,7 +1460,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1687 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-08",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1484,7 +1484,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1688 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-09",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1508,7 +1508,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1689 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-10",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1532,7 +1532,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1690 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-11",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1556,7 +1556,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1691 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-12",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1580,7 +1580,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1692 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-13",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1604,7 +1604,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1693 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-14",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1628,7 +1628,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1694 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-15",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1652,7 +1652,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1695 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-16",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1676,7 +1676,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1696 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-17",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1700,7 +1700,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1697 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-18",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1724,7 +1724,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1698 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명세 > EQV-19",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1748,7 +1748,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1715 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.1 매출 드라이버와 단위경제성 > EQV-20",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1772,7 +1772,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1716 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.1 매출 드라이버와 단위경제성 > EQV-21",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1796,7 +1796,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1717 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.1 매출 드라이버와 단위경제성 > EQV-22",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1820,7 +1820,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1718 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.1 매출 드라이버와 단위경제성 > EQV-23",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1844,7 +1844,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1719 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.1 매출 드라이버와 단위경제성 > EQV-24",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1868,7 +1868,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1720 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.1 매출 드라이버와 단위경제성 > EQV-25",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1892,7 +1892,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1721 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.1 매출 드라이버와 단위경제성 > EQV-26",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1916,7 +1916,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1722 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.1 매출 드라이버와 단위경제성 > EQV-27",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1940,7 +1940,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1723 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.1 매출 드라이버와 단위경제성 > EQV-28",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1964,7 +1964,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1731 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.2 이익의 질과 회계 조정 > EQV-29",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -1988,7 +1988,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1732 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.2 이익의 질과 회계 조정 > EQV-30",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2012,7 +2012,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1733 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.2 이익의 질과 회계 조정 > EQV-31",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2036,7 +2036,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1734 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.2 이익의 질과 회계 조정 > EQV-32",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2060,7 +2060,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1735 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.2 이익의 질과 회계 조정 > EQV-33",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2084,7 +2084,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1736 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.2 이익의 질과 회계 조정 > EQV-34",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2108,7 +2108,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1737 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.2 이익의 질과 회계 조정 > EQV-35",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2132,7 +2132,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1738 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.2 이익의 질과 회계 조정 > EQV-36",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2156,7 +2156,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1739 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.2 이익의 질과 회계 조정 > EQV-37",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2180,7 +2180,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1740 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.2 이익의 질과 회계 조정 > EQV-38",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2204,7 +2204,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1741 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.2 이익의 질과 회계 조정 > EQV-39",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2228,7 +2228,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1742 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.2 이익의 질과 회계 조정 > EQV-40",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2252,7 +2252,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1748 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.3 ROIC·ROE·성장·재투자 > EQV-41",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2276,7 +2276,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1749 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.3 ROIC·ROE·성장·재투자 > EQV-42",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2300,7 +2300,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1750 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.3 ROIC·ROE·성장·재투자 > EQV-43",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2324,7 +2324,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1751 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.3 ROIC·ROE·성장·재투자 > EQV-44",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2348,7 +2348,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1752 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.3 ROIC·ROE·성장·재투자 > EQV-45",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2372,7 +2372,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1753 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.3 ROIC·ROE·성장·재투자 > EQV-46",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2396,7 +2396,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1754 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.3 ROIC·ROE·성장·재투자 > EQV-47",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2420,7 +2420,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1760 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.4 실무 가치평가 > EQV-48",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2444,7 +2444,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1761 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.4 실무 가치평가 > EQV-49",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2468,7 +2468,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1762 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.4 실무 가치평가 > EQV-50",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2492,7 +2492,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1763 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.4 실무 가치평가 > EQV-51",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2516,7 +2516,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1764 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.4 실무 가치평가 > EQV-52",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2540,7 +2540,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1765 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.4 실무 가치평가 > EQV-53",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2564,7 +2564,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1766 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.4 실무 가치평가 > EQV-54",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2588,7 +2588,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1772 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.5 선택형 산업 모듈 > EQV-55",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2612,7 +2612,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1773 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.5 선택형 산업 모듈 > EQV-56",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2636,7 +2636,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1774 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.5 선택형 산업 모듈 > EQV-57",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2660,7 +2660,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1775 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.5 선택형 산업 모듈 > EQV-58",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2684,7 +2684,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1776 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.5 선택형 산업 모듈 > EQV-59",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2708,7 +2708,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1777 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.5 선택형 산업 모듈 > EQV-60",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2732,7 +2732,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1783 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.6 투자논리·촉매·위험·자본배분 > EQV-61",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2756,7 +2756,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1784 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.6 투자논리·촉매·위험·자본배분 > EQV-62",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2780,7 +2780,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1785 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.6 투자논리·촉매·위험·자본배분 > EQV-63",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2804,7 +2804,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1786 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소 (EQV-20~64) > F.3.6 투자논리·촉매·위험·자본배분 > EQV-64",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2828,7 +2828,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1803 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-01",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2852,7 +2852,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1804 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-02",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2876,7 +2876,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1805 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-03",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2900,7 +2900,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1806 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-04",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2924,7 +2924,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1807 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-05",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2948,7 +2948,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1808 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-06",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2972,7 +2972,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1809 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-07",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -2996,7 +2996,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1810 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-08",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -3020,7 +3020,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1811 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-09",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -3044,7 +3044,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1812 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-10",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -3068,7 +3068,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1813 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-11",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -3092,7 +3092,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1814 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-12",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -3116,7 +3116,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1815 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-13",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -3140,7 +3140,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1816 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-14",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -3164,7 +3164,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1817 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-15",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -3188,7 +3188,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1818 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-16",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -3212,7 +3212,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1819 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-17",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   },
   {
@@ -3236,7 +3236,7 @@
     "specSectionLocator": "finance_interview_app_final_spec.md:L1820 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 > IBT-18",
     "status": "published",
     "issueCount": 0,
-    "updatedAt": "packaged-v6",
+    "updatedAt": "packaged-v7",
     "updatedBy": "초기 가져오기"
   }
 ]

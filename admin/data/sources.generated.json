@@ -7,7 +7,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "AI-FILESEARCH",
@@ -17,7 +17,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "AI-LUNA",
@@ -27,7 +27,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "AI-PRICE",
@@ -37,7 +37,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "BOOK-ACC-01",
@@ -47,7 +47,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "BOOK-ACC-02",
@@ -57,7 +57,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "BOOK-CF-01",
@@ -67,7 +67,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "BOOK-CF-02",
@@ -77,7 +77,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "BOOK-DER-01",
@@ -98,7 +98,7 @@
         "displayOrder": 4
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "BOOK-DER-02",
@@ -108,7 +108,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "BOOK-EQV-01",
@@ -118,7 +118,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "BOOK-EQV-02",
@@ -128,7 +128,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "BOOK-FI-01",
@@ -144,7 +144,7 @@
         "displayOrder": 3
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "BOOK-IB-01",
@@ -154,7 +154,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "BOOK-INV-01",
@@ -164,7 +164,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "BOOK-INV-02",
@@ -174,7 +174,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "BOOK-RE-01",
@@ -184,7 +184,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-CFA-01",
@@ -194,7 +194,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-CME-01",
@@ -210,7 +210,7 @@
         "displayOrder": 4
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-DAMO-BOOK-01",
@@ -220,7 +220,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-DAMO-CF-01",
@@ -230,7 +230,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-DAMO-CF-02",
@@ -240,7 +240,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-DAMO-MA-01",
@@ -250,7 +250,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-DAMO-VAL-01",
@@ -266,7 +266,7 @@
         "displayOrder": 1
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-DAMO-VAL-02",
@@ -276,7 +276,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-MIT-ACC-01",
@@ -286,7 +286,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-MIT-ACC-02",
@@ -302,7 +302,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-MIT-ACC-03",
@@ -312,7 +312,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-MIT-ACC-04",
@@ -328,7 +328,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-MIT-ACC-05",
@@ -344,7 +344,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-MIT-CF2-01",
@@ -354,7 +354,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-MIT-FIN-01",
@@ -364,7 +364,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-MIT-FIN-02",
@@ -380,7 +380,7 @@
         "displayOrder": 1
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-MIT-FIN-03",
@@ -390,7 +390,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-MIT-INV-01",
@@ -400,7 +400,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-MIT-INV-02",
@@ -410,7 +410,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-MIT-RE-01",
@@ -420,7 +420,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-MIT-RE-02",
@@ -430,7 +430,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-OPENSTAX-ACC-01",
@@ -440,7 +440,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-OPENSTAX-FIN-01",
@@ -450,7 +450,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "EN-YALE-01",
@@ -466,7 +466,7 @@
         "displayOrder": 4
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-BIS-BASEL",
@@ -482,7 +482,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-CFA-QUALITY",
@@ -498,7 +498,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-DAMO-CYCLICAL",
@@ -514,7 +514,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-DAMO-DCF-CHECK",
@@ -530,7 +530,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-DAMO-SOTP",
@@ -546,7 +546,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-DAMO-TOOLKIT",
@@ -562,7 +562,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-DAMO-VAL",
@@ -578,7 +578,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-DART-API",
@@ -594,7 +594,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-EIA-API",
@@ -610,7 +610,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-FDIC-QBP",
@@ -626,7 +626,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-FED-BHCPR",
@@ -642,7 +642,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-IAS19",
@@ -658,7 +658,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-IFRS15",
@@ -674,7 +674,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-IFRS16",
@@ -690,7 +690,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-IFRS17",
@@ -706,7 +706,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-IFRS2",
@@ -722,7 +722,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-IFRS9",
@@ -738,7 +738,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-NAIC-PC",
@@ -754,7 +754,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-NAIC-RBC",
@@ -770,7 +770,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-SEC-EDGAR",
@@ -786,7 +786,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-SEC-FRM",
@@ -802,7 +802,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-SEC-NONGAAP",
@@ -818,7 +818,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-SEC-OILGAS",
@@ -834,7 +834,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "ER-SEC-SBC",
@@ -850,7 +850,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-ACC-01",
@@ -860,7 +860,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-CF-01",
@@ -870,7 +870,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-CF-02",
@@ -880,7 +880,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-DER-01",
@@ -890,7 +890,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-DER-02",
@@ -900,7 +900,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-DER-03",
@@ -910,7 +910,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-DER-04",
@@ -920,7 +920,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-DER-05",
@@ -930,7 +930,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-DER-06",
@@ -940,7 +940,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-EQV-01",
@@ -950,7 +950,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-EQV-02",
@@ -960,7 +960,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-FI-01",
@@ -970,7 +970,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-FI-02",
@@ -980,7 +980,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-INV-01",
@@ -990,7 +990,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-INV-02",
@@ -1000,7 +1000,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-INV-03",
@@ -1010,7 +1010,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-MKT-01",
@@ -1020,7 +1020,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KO-MKT-02",
@@ -1030,7 +1030,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KOCW-DERIVATIVES-COURSE",
@@ -1046,7 +1046,7 @@
         "displayOrder": 4
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "KOCW-FINANCE-COURSE",
@@ -1072,7 +1072,7 @@
         "displayOrder": 3
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-ACC",
@@ -1093,7 +1093,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-ACQ",
@@ -1109,7 +1109,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-ACQPDF",
@@ -1125,7 +1125,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-BIWS",
@@ -1141,7 +1141,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-CF",
@@ -1167,7 +1167,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-DCF",
@@ -1193,7 +1193,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-DCF25",
@@ -1209,7 +1209,7 @@
         "displayOrder": 5
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-FED",
@@ -1225,7 +1225,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-FEDPDF",
@@ -1241,7 +1241,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-IPO",
@@ -1257,7 +1257,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-MITFIN",
@@ -1293,7 +1293,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-MITINV",
@@ -1324,7 +1324,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-RE",
@@ -1340,7 +1340,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-REEXAM",
@@ -1356,7 +1356,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-REL",
@@ -1377,7 +1377,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-SECIPO",
@@ -1393,7 +1393,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-SECPDF",
@@ -1409,7 +1409,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "R-YIG",
@@ -1430,7 +1430,7 @@
         "displayOrder": 6
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-CFA",
@@ -1440,7 +1440,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-CME",
@@ -1450,7 +1450,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-DAMO",
@@ -1460,7 +1460,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-DART",
@@ -1470,7 +1470,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-FEDED",
@@ -1480,7 +1480,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-FRB",
@@ -1490,7 +1490,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-KOCW",
@@ -1500,7 +1500,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-MIT",
@@ -1510,7 +1510,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-NYFED",
@@ -1520,7 +1520,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-OPENSTAX-ACC",
@@ -1530,7 +1530,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-OPENSTAX-FIN",
@@ -1540,7 +1540,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-SECDATA",
@@ -1550,7 +1550,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-USGOV",
@@ -1560,7 +1560,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-YFL",
@@ -1570,7 +1570,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "RIGHT-YIG",
@@ -1580,7 +1580,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "SCOPE-YFL-01",
@@ -1590,7 +1590,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "SCOPE-YFL-02",
@@ -1600,7 +1600,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "SCOPE-YFL-03",
@@ -1610,7 +1610,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "SCOPE-YFL-04",
@@ -1620,7 +1620,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "SCOPE-YIG-01",
@@ -1630,7 +1630,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "SCOPE-YIG-02",
@@ -1640,7 +1640,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "SPEC-FINAL",
@@ -1650,7 +1650,7 @@
     "status": "ready",
     "linkedElements": 0,
     "domains": [],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-0080CBE28659",
@@ -1666,7 +1666,7 @@
         "displayOrder": 2
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-088AA90769BD",
@@ -1682,7 +1682,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-0FDED7B87E8E",
@@ -1698,7 +1698,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-10080547C609",
@@ -1714,7 +1714,7 @@
         "displayOrder": 3
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-10528B8074C9",
@@ -1730,7 +1730,7 @@
         "displayOrder": 1
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-11DF408F840A",
@@ -1751,7 +1751,7 @@
         "displayOrder": 1
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-1EE6E108C719",
@@ -1767,7 +1767,7 @@
         "displayOrder": 1
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-1F7A72FB5546",
@@ -1783,7 +1783,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-27F8FDFE660B",
@@ -1799,7 +1799,7 @@
         "displayOrder": 3
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-3BC5FD4258C3",
@@ -1815,7 +1815,7 @@
         "displayOrder": 2
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-4409BC91B766",
@@ -1831,7 +1831,7 @@
         "displayOrder": 1
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-445D1FAC8BDE",
@@ -1847,7 +1847,7 @@
         "displayOrder": 1
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-4511F9D320EF",
@@ -1863,7 +1863,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-4C9C2DB9FF68",
@@ -1879,7 +1879,7 @@
         "displayOrder": 3
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-4CF25E691F64",
@@ -1895,7 +1895,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-524CC1FF5A53",
@@ -1911,7 +1911,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-5FD4CAACDB6C",
@@ -1927,7 +1927,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-62CCFB535555",
@@ -1943,7 +1943,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-67BE6807A947",
@@ -1959,7 +1959,7 @@
         "displayOrder": 2
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-680EE8C2168A",
@@ -1975,7 +1975,7 @@
         "displayOrder": 3
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-6934FF07F63C",
@@ -1991,7 +1991,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-698CD3D5750B",
@@ -2007,7 +2007,7 @@
         "displayOrder": 3
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-713E8AB48F9C",
@@ -2023,7 +2023,7 @@
         "displayOrder": 4
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-803667D572A0",
@@ -2039,7 +2039,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-8B7DC4E0C382",
@@ -2055,7 +2055,7 @@
         "displayOrder": 4
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-913A9C08A42B",
@@ -2071,7 +2071,7 @@
         "displayOrder": 3
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-A4F332D4BB71",
@@ -2087,7 +2087,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-A7FBC57EB2A3",
@@ -2103,7 +2103,7 @@
         "displayOrder": 2
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-A89AF8711B91",
@@ -2119,7 +2119,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-B0FF9A398E7A",
@@ -2135,7 +2135,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-B31C7C9EF047",
@@ -2151,7 +2151,7 @@
         "displayOrder": 1
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-B76A5EABEB19",
@@ -2167,7 +2167,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-BAA032EFD549",
@@ -2193,7 +2193,7 @@
         "displayOrder": 4
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-C59C2755F58D",
@@ -2209,7 +2209,7 @@
         "displayOrder": 3
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-C921008DAA75",
@@ -2225,7 +2225,7 @@
         "displayOrder": 2
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-CDAC783F1207",
@@ -2241,7 +2241,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-D122CAFA3670",
@@ -2257,7 +2257,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-D34C097E8D2A",
@@ -2273,7 +2273,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-D79B50DC3B63",
@@ -2289,7 +2289,7 @@
         "displayOrder": 3
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-D7CBBBF0C4EC",
@@ -2305,7 +2305,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-DB4E466206AC",
@@ -2321,7 +2321,7 @@
         "displayOrder": 1
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-E4BF2C38691D",
@@ -2337,7 +2337,7 @@
         "displayOrder": 2
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-E6F274EB7B58",
@@ -2353,7 +2353,7 @@
         "displayOrder": 2
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-EAE80B7A9942",
@@ -2369,7 +2369,7 @@
         "displayOrder": 2
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-EC2FE86E9CF0",
@@ -2385,7 +2385,7 @@
         "displayOrder": 3
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-ED00561DACBB",
@@ -2401,7 +2401,7 @@
         "displayOrder": 3
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-F05F3CF2E684",
@@ -2417,7 +2417,7 @@
         "displayOrder": 3
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-F10923DAC45A",
@@ -2433,7 +2433,7 @@
         "displayOrder": 0
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   },
   {
     "id": "URL-FA7DF68E0611",
@@ -2449,6 +2449,6 @@
         "displayOrder": 3
       }
     ],
-    "createdAt": "packaged-v6"
+    "createdAt": "packaged-v7"
   }
 ]

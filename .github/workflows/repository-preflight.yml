@@ -1,0 +1,33 @@
+name: Repository Preflight
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repository-preflight-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  inspect-guardrails:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Test repository preflight
+        run: python -m unittest tools.test_repo_preflight -v
+
+      - name: Inspect all repository invariants
+        run: >-
+          python tools/repo_preflight.py inspect
+          --scope all
+          --changes head
+          --ci

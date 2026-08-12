@@ -9,8 +9,13 @@ on:
       - "tools/test_admin_*.py"
       - "tools/requirements-source-worker.txt"
       - "tools/validate_supabase_sql.py"
+      - "tools/repo_preflight.py"
+      - "tools/test_repo_preflight.py"
       - "scripts/refresh_admin_content.ps1"
+      - "AGENTS.md"
+      - ".githooks/pre-commit"
       - ".github/workflows/admin-ci.yml"
+      - ".github/workflows/repository-preflight.yml"
       - ".github/workflows/admin-source-worker.yml"
   push:
     branches: [main]
@@ -21,8 +26,13 @@ on:
       - "tools/test_admin_*.py"
       - "tools/requirements-source-worker.txt"
       - "tools/validate_supabase_sql.py"
+      - "tools/repo_preflight.py"
+      - "tools/test_repo_preflight.py"
       - "scripts/refresh_admin_content.ps1"
+      - "AGENTS.md"
+      - ".githooks/pre-commit"
       - ".github/workflows/admin-ci.yml"
+      - ".github/workflows/repository-preflight.yml"
       - ".github/workflows/admin-source-worker.yml"
 
 permissions:
@@ -48,24 +58,15 @@ jobs:
       - name: Install SQL parser
         run: python -m pip install pglast==7.10
 
-      - name: Verify packaged-content export and Supabase SQL
-        run: |
-          python -m unittest discover -s tools -p "test_admin*.py" -v
-          python tools/validate_supabase_sql.py
-          python tools/admin_export_content.py \
-            --frontend-json admin/data/content-elements.generated.json \
-            --frontend-sources-json admin/data/sources.generated.json
-          git diff --exit-code -- admin/data
-
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: npm
           cache-dependency-path: admin/package-lock.json
 
-      - name: Test and build Admin
-        working-directory: admin
-        run: |
-          npm ci
-          npm test
-          npm run build
+      - name: Run Admin CI-parity preflight
+        run: >-
+          python tools/repo_preflight.py verify
+          --scope admin
+          --changes head
+          --ci
