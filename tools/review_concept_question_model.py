@@ -6,17 +6,27 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import ssl
 import sys
 import tempfile
+import urllib.error
+import urllib.parse
+import urllib.request
 from collections.abc import Iterable, Mapping
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from tools.admin_import_supabase import normalize_supabase_url, resolve_supabase_url
+
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_REPORT = ROOT / "admin" / "data" / "concept-model-experiments.generated.json"
 DEFAULT_DECISIONS = ROOT / "content" / "model" / "concept-owner-decisions.jsonl"
+MAX_SYNC_RESPONSE_BYTES = 1024 * 1024
 
 
 class ReviewCommandError(ValueError):
@@ -203,6 +213,175 @@ def approve_batch(
     )
 
 
+def merge_remote_question_decisions(
+    experiment: Mapping[str, Any],
+    existing_rows: list[dict[str, Any]],
+    remote_rows: Iterable[Mapping[str, Any]],
+) -> tuple[list[dict[str, Any]], int]:
+    """Merge exact-fingerprint Supabase decisions without duplicating audit rows."""
+
+    current = {
+        (str(item.get("questionId")), str(item.get("questionFingerprint")))
+        for item in _queue(experiment)
+    }
+    seen_ids = {
+        str(row.get("sourceDecisionId"))
+        for row in existing_rows
+        if row.get("sourceDecisionId")
+    }
+    merged = list(existing_rows)
+    added = 0
+    review = experiment.get("automatedReview")
+    review_input_sha = str(review.get("reviewInputSha256", "")) if isinstance(review, Mapping) else ""
+    for remote in remote_rows:
+        source_id = str(remote.get("concept_question_review_decision_id", ""))
+        question_id = str(remote.get("question_id", ""))
+        fingerprint = str(remote.get("question_fingerprint", ""))
+        decision = str(remote.get("decision", ""))
+        if not source_id or source_id in seen_ids:
+            continue
+        if (question_id, fingerprint) not in current or decision not in {"approved", "rejected"}:
+            continue
+        merged.append(
+            {
+                "type": "question",
+                "questionId": question_id,
+                "questionFingerprint": fingerprint,
+                "reviewInputSha256": review_input_sha,
+                "decision": decision,
+                "reviewerId": str(remote.get("reviewer_id", "owner")),
+                "reviewedAt": str(remote.get("decided_at", "")),
+                "comment": str(remote.get("comment", "")),
+                "source": "supabase-admin",
+                "sourceDecisionId": source_id,
+            }
+        )
+        seen_ids.add(source_id)
+        added += 1
+    return merged, added
+
+
+def append_auto_batch_if_complete(
+    experiment: Mapping[str, Any], rows: list[dict[str, Any]]
+) -> tuple[list[dict[str, Any]], bool]:
+    """Bind batch approval once every current exception was explicitly approved."""
+
+    review = experiment.get("automatedReview")
+    review_input_sha = str(review.get("reviewInputSha256", "")) if isinstance(review, Mapping) else ""
+    queue = _queue(experiment)
+    latest_decisions = _latest_question_decisions(rows)
+    all_approved = bool(queue) and all(
+        latest_decisions.get(
+            (str(item.get("questionId")), str(item.get("questionFingerprint")))
+        )
+        == "approved"
+        for item in queue
+    )
+    already_approved = any(
+        row.get("type") == "batch"
+        and row.get("reviewInputSha256") == review_input_sha
+        and row.get("decision") == "approved"
+        for row in rows
+    )
+    if (
+        not all_approved
+        or any(item.get("severity") == "block" for item in queue)
+        or already_approved
+    ):
+        return rows, False
+    result = list(rows)
+    result.append(
+        {
+            "type": "batch",
+            "reviewInputSha256": review_input_sha,
+            "decision": "approved",
+            "reviewerId": "supabase-owner-review",
+            "reviewedAt": datetime.now(timezone.utc).isoformat(),
+            "comment": "Admin에서 현재 fingerprint의 모든 예외 승인 완료",
+            "source": "supabase-admin-auto-batch",
+        }
+    )
+    return result, True
+
+
+def sync_from_supabase(
+    experiment: Mapping[str, Any],
+    decisions_path: Path,
+    *,
+    base_url: str,
+    secret_key: str,
+    timeout_seconds: float,
+) -> None:
+    review = experiment.get("automatedReview")
+    review_input_sha = str(review.get("reviewInputSha256", "")) if isinstance(review, Mapping) else ""
+    if len(review_input_sha) != 64:
+        raise ReviewCommandError("Latest experiment has no valid review input fingerprint")
+    secret = secret_key.strip()
+    if not secret:
+        raise ReviewCommandError(
+            "SUPABASE_SECRET_KEY is missing; supply it through the process environment"
+        )
+    query = urllib.parse.urlencode(
+        {
+            "select": (
+                "concept_question_review_decision_id,question_id,question_fingerprint,"
+                "decision,comment,reviewer_id,decided_at"
+            ),
+            "review_input_sha256": f"eq.{review_input_sha}",
+            "order": "decided_at.asc",
+        }
+    )
+    url = (
+        normalize_supabase_url(base_url)
+        + "/rest/v1/concept_question_review_decisions?"
+        + query
+    )
+    request = urllib.request.Request(
+        url,
+        method="GET",
+        headers={"apikey": secret, "Accept": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(
+            request,
+            timeout=timeout_seconds,
+            context=ssl.create_default_context(),
+        ) as response:
+            body = response.read(MAX_SYNC_RESPONSE_BYTES + 1)
+    except urllib.error.HTTPError as error:
+        detail = error.read(2048).decode("utf-8", errors="replace")
+        raise ReviewCommandError(
+            f"Supabase review sync failed with HTTP {error.code}: {detail}"
+        ) from error
+    except (urllib.error.URLError, TimeoutError) as error:
+        raise ReviewCommandError(f"Could not reach Supabase review decisions: {error}") from error
+    if len(body) > MAX_SYNC_RESPONSE_BYTES:
+        raise ReviewCommandError("Supabase review decision response exceeded the safety limit")
+    try:
+        remote_rows = json.loads(body.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ReviewCommandError("Supabase review sync returned invalid JSON") from error
+    if not isinstance(remote_rows, list) or any(not isinstance(row, dict) for row in remote_rows):
+        raise ReviewCommandError("Supabase review sync returned an unexpected payload")
+    existing = _read_rows(decisions_path)
+    merged, added = merge_remote_question_decisions(experiment, existing, remote_rows)
+    merged, auto_batch_approved = append_auto_batch_if_complete(experiment, merged)
+    if added or auto_batch_approved:
+        _write_rows(decisions_path, merged)
+    print(
+        json.dumps(
+            {
+                "reviewInputSha256": review_input_sha,
+                "remoteDecisionCount": len(remote_rows),
+                "addedDecisionCount": added,
+                "autoBatchApproved": auto_batch_approved,
+                "decisionsPath": str(decisions_path),
+            },
+            ensure_ascii=False,
+        )
+    )
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT)
@@ -217,6 +396,8 @@ def _parser() -> argparse.ArgumentParser:
     batch = subparsers.add_parser("approve-batch")
     batch.add_argument("--reviewer", default="owner")
     batch.add_argument("--comment", default="자동 검수 예외 확인 완료")
+    sync = subparsers.add_parser("sync")
+    sync.add_argument("--timeout", type=float, default=30.0)
     return parser
 
 
@@ -241,6 +422,14 @@ def main(argv: Iterable[str] | None = None) -> int:
     elif args.command == "approve-batch":
         approve_batch(
             experiment, args.decisions, args.reviewer, args.comment
+        )
+    elif args.command == "sync":
+        sync_from_supabase(
+            experiment,
+            args.decisions,
+            base_url=resolve_supabase_url(),
+            secret_key=os.environ.get("SUPABASE_SECRET_KEY", ""),
+            timeout_seconds=args.timeout,
         )
     return 0
 

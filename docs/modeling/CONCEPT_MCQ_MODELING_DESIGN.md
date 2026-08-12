@@ -508,6 +508,8 @@ CI는 먼저 모델링 테스트를 실행하고, 질문 은행의 입력 해시
 
 각 요소와 문항에는 SHA-256 fingerprint를 저장한다. 다음 실행에서는 대상 요소나 선택지 요소가 바뀐 문항만 영향 문항으로 분류하고 나머지는 이전 자동 검수 결과를 재사용한다. Owner의 문항 결정은 정확한 문항 fingerprint에, 배치 승인은 전체 `reviewInputSha256`에 묶이므로 데이터·선택지·정책이 바뀌면 자동으로 무효화된다.
 
+Admin의 모델 현황 화면에서 Owner가 예외 문항별 승인 또는 사유를 포함한 반려를 기록한다. 결정은 Supabase의 append-only 감사 테이블에 저장되고, `python tools/review_concept_question_model.py sync`가 현재 `reviewInputSha256` 및 문항 fingerprint와 일치하는 결정만 로컬 JSONL로 동기화한다. 현재 예외가 모두 승인되면 동기화 과정에서 해당 검수 입력의 배치 승인도 자동 생성한다. CI는 Supabase URL 변수와 service secret이 설정된 경우 이 동기화를 모델 재실행 전에 수행한다.
+
 상태는 `automated_pass`, `needs_owner_review`, `blocked`, `owner_approved`로 구분한다. `blocked`는 Owner 승인으로 덮을 수 없고 수정 후 다시 실행해야 한다. `needs_owner_review`가 0건이고 자동 차단이 없으며 현재 검수 입력에 대한 Owner 배치 승인이 있을 때만 문항은행을 `release_ready`로 만든다.
 
 ## 21. 참고 구현 문서

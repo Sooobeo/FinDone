@@ -235,6 +235,70 @@ class ConceptQuestionModelTest(unittest.TestCase):
                     "",
                 )
 
+    def test_supabase_review_sync_keeps_only_current_fingerprint_and_is_idempotent(self) -> None:
+        fingerprint = "e" * 64
+        experiment = {
+            "automatedReview": {
+                "reviewInputSha256": "f" * 64,
+                "queue": [
+                    {
+                        "questionId": "Q-1",
+                        "questionFingerprint": fingerprint,
+                        "severity": "review",
+                    }
+                ],
+            }
+        }
+        remote = [
+            {
+                "concept_question_review_decision_id": "decision-1",
+                "question_id": "Q-1",
+                "question_fingerprint": fingerprint,
+                "decision": "approved",
+                "reviewer_id": "owner-id",
+                "decided_at": "2026-08-12T00:00:00+00:00",
+                "comment": "checked",
+            },
+            {
+                "concept_question_review_decision_id": "stale-decision",
+                "question_id": "Q-1",
+                "question_fingerprint": "0" * 64,
+                "decision": "rejected",
+            },
+        ]
+
+        merged, added = review_command.merge_remote_question_decisions(
+            experiment, [], remote
+        )
+        repeated, repeated_added = review_command.merge_remote_question_decisions(
+            experiment, merged, remote
+        )
+
+        self.assertEqual(1, added)
+        self.assertEqual("supabase-admin", merged[0]["source"])
+        self.assertEqual("approved", merged[0]["decision"])
+        self.assertEqual(0, repeated_added)
+        self.assertEqual(merged, repeated)
+
+        with_batch, batch_added = review_command.append_auto_batch_if_complete(
+            experiment, merged
+        )
+        repeated_batch, repeated_batch_added = review_command.append_auto_batch_if_complete(
+            experiment, with_batch
+        )
+        self.assertTrue(batch_added)
+        self.assertEqual("batch", with_batch[-1]["type"])
+        self.assertEqual("f" * 64, with_batch[-1]["reviewInputSha256"])
+        self.assertFalse(repeated_batch_added)
+        self.assertEqual(with_batch, repeated_batch)
+
+        rejected_rows = [{**merged[0], "decision": "rejected"}]
+        without_batch, rejected_batch_added = review_command.append_auto_batch_if_complete(
+            experiment, rejected_rows
+        )
+        self.assertFalse(rejected_batch_added)
+        self.assertEqual(rejected_rows, without_batch)
+
 
 if __name__ == "__main__":
     unittest.main()

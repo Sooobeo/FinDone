@@ -2477,6 +2477,63 @@ p {
 .model-history-status.ready { background: var(--teal-50); color: var(--teal-800); }
 .model-history-status.blocked { background: var(--red-soft); color: var(--red); }
 
+/* The model page carries dense diagnostics, but its explanatory copy must remain readable. */
+.local-model-dashboard .model-process-heading > div > p:last-child,
+.local-model-dashboard .model-section-heading > p,
+.local-model-dashboard .model-disclosure-copy > small,
+.local-model-dashboard .model-explanation-copy p,
+.local-model-dashboard .concept-model-warning > div p,
+.local-model-dashboard .model-panel-note,
+.local-model-dashboard .model-rule-detail-body > p { font-size: 12px; line-height: 1.7; }
+.local-model-dashboard .model-process-steps strong,
+.local-model-dashboard .model-disclosure-copy > strong,
+.local-model-dashboard .model-rule-details > summary strong { font-size: 13px; }
+.local-model-dashboard .model-process-copy,
+.local-model-dashboard .model-explanation-copy li,
+.local-model-dashboard .model-rule-details > summary small,
+.local-model-dashboard .model-metric-card > p,
+.local-model-dashboard .model-runtime-strip > div > p:last-child { font-size: 11px; line-height: 1.65; }
+.local-model-dashboard .model-metric-card > small,
+.local-model-dashboard .model-corpus-row > span,
+.local-model-dashboard .model-learning-list span,
+.local-model-dashboard .model-learning-list strong,
+.local-model-dashboard .model-gate-list strong,
+.local-model-dashboard .model-performance-list dt,
+.local-model-dashboard .model-performance-list dd { font-size: 11px; }
+.local-model-dashboard .model-gate-list small,
+.local-model-dashboard .concept-model-review-progress small,
+.local-model-dashboard .concept-model-run-meta small,
+.local-model-dashboard .concept-model-run-meta span,
+.local-model-dashboard .concept-embedding-list small,
+.local-model-dashboard .concept-embedding-list dt { font-size: 10px; }
+.local-model-dashboard .concept-embedding-list strong,
+.local-model-dashboard .concept-embedding-list dd,
+.local-model-dashboard .concept-model-review-progress > div:first-child { font-size: 11px; }
+.local-model-dashboard .model-disclosure td,
+.local-model-dashboard .model-disclosure th { font-size: 11px; line-height: 1.55; }
+.local-model-dashboard .model-disclosure td code { font-size: 10px; }
+
+.concept-review-queue { display: grid; gap: 10px; }
+.concept-review-queue-heading { padding: 3px 2px 5px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.concept-review-queue-heading h3 { margin: 0; font-size: 16px; }
+.concept-review-queue-heading p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+.concept-review-queue-heading > span { display: inline-flex; align-items: center; gap: 6px; color: #8b7049; font-size: 11px; }
+.concept-review-item > summary { grid-template-columns: auto minmax(0, 1fr) auto; }
+.concept-review-decision { padding: 5px 8px; font-size: 10px; white-space: nowrap; }
+.concept-review-decision.pending { background: var(--surface-soft); color: var(--muted); }
+.concept-review-decision.approved { background: var(--teal-50); color: var(--teal-800); }
+.concept-review-decision.rejected { background: var(--red-soft); color: var(--red); }
+.concept-review-detail { background: #fff; }
+.concept-review-stem { margin: 0; color: var(--ink); white-space: pre-line; }
+.concept-review-comment { display: grid; gap: 6px; }
+.concept-review-comment > span { color: #475651; font-size: 11px; font-weight: 750; }
+.concept-review-comment textarea { width: 100%; padding: 10px 11px; color: var(--ink); background: #fff; border: 1px solid var(--line-strong); border-radius: 8px; outline: 0; font: inherit; font-size: 12px; line-height: 1.6; resize: vertical; }
+.concept-review-comment textarea:focus { border-color: var(--teal-700); box-shadow: 0 0 0 3px rgba(36, 122, 105, .1); }
+.concept-review-actions { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 8px; }
+.concept-review-actions > code { overflow: hidden; color: var(--muted); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.concept-review-actions .button { min-height: 36px; font-size: 11px; }
+.concept-review-message { margin: -5px 0 0 !important; padding: 9px 11px; background: var(--surface-soft); color: var(--teal-800) !important; font-size: 11px !important; }
+
 .route-loading-state { min-height: 280px; padding: 28px; display: grid; place-items: center; align-content: center; gap: 12px; text-align: center; }
 .route-loading-state > svg { color: var(--teal-700); }
 .route-loading-state strong { font-size: 13px; }

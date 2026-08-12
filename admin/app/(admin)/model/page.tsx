@@ -17,6 +17,7 @@ import {
 import { PageHeader } from "@/components/page-header";
 import type { ReactNode } from "react";
 import { MarkdownCopy } from "@/components/markdown-copy";
+import { ConceptExceptionReview } from "@/components/concept-exception-review";
 import { ModelProcess } from "@/components/model-process";
 import {
   conceptModelExperiments,
@@ -24,6 +25,7 @@ import {
 } from "@/lib/concept-model-report";
 import { getLocalModelOperationalMetrics } from "@/lib/data";
 import { getAdminContext } from "@/lib/auth";
+import { getConceptQuestionDecisions } from "@/lib/concept-model-review-store";
 import { localModelReport } from "@/lib/local-model-report";
 import { getModelCopy } from "@/lib/model-copy";
 
@@ -99,6 +101,10 @@ export default async function ModelDashboardPage() {
   const conceptHistory = conceptModelExperiments;
   const latestConcept = conceptHistory.experiments[0];
   const conceptReview = latestConcept.automatedReview;
+  const conceptQuestionDecisions = await getConceptQuestionDecisions(
+    conceptReview.reviewInputSha256,
+    conceptReview.queue,
+  );
   const completedConceptRuns = latestConcept.rankerRuns.filter(
     (run) => run.status === "completed" && run.validation,
   );
@@ -261,24 +267,11 @@ export default async function ModelDashboardPage() {
           <article className="model-metric-card"><small>자동 차단</small><strong>{conceptReview.blockedCount}<em>문항</em></strong><p>수정 후 재실행 필요</p></article>
         </div>
         {conceptReview.queue.length > 0 ? (
-          <div className="model-rule-detail-body">
-            <h3>확인 대기 문항 {conceptReview.queue.length}개</h3>
-            {conceptReview.queue.map((item) => (
-              <details className="model-rule-details" key={item.questionId}>
-                <summary><ChevronDown size={17} /><span><strong>{item.severity === "block" ? "차단" : "확인"} · {item.questionId}</strong><small>{item.reasons.map((reason) => reason.label).join(" · ")}</small></span></summary>
-                <div className="model-rule-detail-body">
-                  <p>{item.stem}</p>
-                  <div className="table-scroll">
-                    <table className="data-table">
-                      <thead><tr><th>선택지</th><th>개념</th><th>판정</th></tr></thead>
-                      <tbody>{item.choices.map((choice) => <tr key={choice.key}><td>{choice.key}</td><td>{choice.text}</td><td>{choice.isCorrect ? "정답" : "오답"}</td></tr>)}</tbody>
-                    </table>
-                  </div>
-                  <p><code>{item.questionFingerprint}</code></p>
-                </div>
-              </details>
-            ))}
-          </div>
+          <ConceptExceptionReview
+            items={conceptReview.queue}
+            initialDecisions={conceptQuestionDecisions}
+            canReview={context.role === "owner"}
+          />
         ) : <p className="model-panel-note">확인할 예외가 없습니다. Owner 배치 승인만 남았습니다.</p>}
         <details className="model-rule-details">
           <summary><ChevronDown size={17} /><span><strong>검수 프로필 실험값</strong><small>선택 기준과 validation 예외율 보기</small></span></summary>

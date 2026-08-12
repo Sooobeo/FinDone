@@ -51,6 +51,17 @@ jobs:
       - name: Install tree ranker for full automated review
         run: python -m pip install --disable-pip-version-check xgboost==3.4.0
 
+      - name: Sync Owner decisions from Admin
+        env:
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+        run: |
+          if [ -n "$SUPABASE_SECRET_KEY" ] && [ -n "$SUPABASE_URL" ]; then
+            python tools/review_concept_question_model.py sync
+          else
+            echo "Supabase review sync skipped: repository secret or URL variable is not configured."
+          fi
+
       - name: Run incremental concept-question automated review
         run: >-
           python tools/train_concept_question_model.py
