@@ -98,6 +98,7 @@ export default async function ModelDashboardPage() {
   const performance = report.performance;
   const conceptHistory = conceptModelExperiments;
   const latestConcept = conceptHistory.experiments[0];
+  const conceptReview = latestConcept.automatedReview;
   const completedConceptRuns = latestConcept.rankerRuns.filter(
     (run) => run.status === "completed" && run.validation,
   );
@@ -146,7 +147,7 @@ export default async function ModelDashboardPage() {
         description={copy["page-intro"].lead}
         actions={
           <span className={`model-health-badge ${latestConcept.releaseReady ? "passed" : "failed"}`}>
-            <ShieldCheck size={15} /> {latestConcept.releaseReady ? "문항은행 릴리스 가능" : "사람 검토 전 · 릴리스 차단"}
+            <ShieldCheck size={15} /> {latestConcept.releaseReady ? "문항은행 릴리스 가능" : conceptReview.blockedCount > 0 ? "자동 검수 차단" : conceptReview.needsOwnerReviewCount > 0 ? "예외 확인 필요" : "Owner 배치 승인 필요"}
           </span>
         }
       />
@@ -163,16 +164,16 @@ export default async function ModelDashboardPage() {
           <span><Cpu size={24} /></span>
           <div>
             <p className="eyebrow">LATEST EXPERIMENT</p>
-            <h2>{latestConcept.releaseReady ? "릴리스 준비 완료" : "Bootstrap · 사람 test 필요"}</h2>
+            <h2>{latestConcept.releaseReady ? "릴리스 준비 완료" : conceptReview.blockedCount > 0 ? "자동 검수 차단" : conceptReview.needsOwnerReviewCount > 0 ? `예외 ${conceptReview.needsOwnerReviewCount}개 확인 필요` : "자동 검수 통과 · Owner 승인 대기"}</h2>
             <code>{latestConcept.experimentId}</code>
           </div>
         </div>
         <div className="concept-model-review-progress">
-          <div><span>독립 사람 test 커버리지</span><strong>{percent(latestConcept.labels.humanTestCoverage)}</strong></div>
-          <div className="model-readiness-track" role="progressbar" aria-label="독립 사람 test 커버리지" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(latestConcept.labels.humanTestCoverage * 100)}>
-            <span style={{ width: `${latestConcept.labels.humanTestCoverage * 100}%` }} />
+          <div><span>자동 검수 처리율</span><strong>{percent((conceptReview.autoPassedCount + conceptReview.ownerApprovedCount) / latestConcept.dataset.questionCount)}</strong></div>
+          <div className="model-readiness-track" role="progressbar" aria-label="자동 검수 처리율" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round((conceptReview.autoPassedCount + conceptReview.ownerApprovedCount) / latestConcept.dataset.questionCount * 100)}>
+            <span style={{ width: `${(conceptReview.autoPassedCount + conceptReview.ownerApprovedCount) / latestConcept.dataset.questionCount * 100}%` }} />
           </div>
-          <small>{latestConcept.labels.coveredTestQuestionCount}/{latestConcept.labels.testQuestionCount} test 문항 라벨 완료</small>
+          <small>자동 통과 {conceptReview.autoPassedCount} · Owner 승인 {conceptReview.ownerApprovedCount} · 확인 {conceptReview.needsOwnerReviewCount} · 차단 {conceptReview.blockedCount}</small>
         </div>
         <div className="concept-model-run-meta">
           <small>선택 구성</small>
@@ -203,15 +204,15 @@ export default async function ModelDashboardPage() {
         </article>
         <article className="panel model-metric-card">
           <span><FileCheck2 size={19} /></span>
-          <small>사람 라벨 학습률</small>
-          <strong>{percent(latestConcept.labels.humanLabelCompletion)}</strong>
-          <p>{latestConcept.labels.humanLabelCount.toLocaleString("ko-KR")}/{(latestConcept.labels.humanLabelCount + latestConcept.labels.weakLabelCount).toLocaleString("ko-KR")} 후보 라벨 · 현재 수치는 약지도 재현도</p>
+          <small>증분 재검수</small>
+          <strong>{conceptReview.affectedQuestionCount}<em>문항</em></strong>
+          <p>변경 요소 {conceptReview.changedElementCount}개 · 기존 결과 재사용 {conceptReview.reusedQuestionCount}개</p>
         </article>
       </section>
 
       <section className="panel concept-model-warning" role="status">
         <Activity size={20} />
-        <div><strong>100%에 가까운 수치를 실제 문제 품질 100%로 해석하면 안 됩니다.</strong><p>{latestConcept.labels.metricWarning ?? "독립 사람 test가 완료되기 전까지 약지도 규칙 재현 성능입니다."}</p></div>
+        <div><strong>랭킹 점수와 자동 검수 통과율은 교육 품질 정확도가 아닙니다.</strong><p>자동 검수는 랭커 합의도·선택 경계·약지도 타당성·변경 영향을 검사하고, 예외만 Owner 확인 대상으로 올립니다.</p></div>
         <span>{passedConceptGates}/{latestConcept.qualityGates.length} 게이트 통과</span>
       </section>
 
@@ -244,6 +245,55 @@ export default async function ModelDashboardPage() {
               );
             })}
           </div>
+      </ModelDisclosure>
+
+      <ModelDisclosure
+        eyebrow="AUTOMATED EXCEPTION REVIEW"
+        title="자동 검수와 Owner 예외 큐"
+        description="validation에서 검수 프로필을 선택하고 전체 문항을 자동 검사한 뒤, 불안정하거나 차단된 문항만 남깁니다."
+        meta={`${conceptReview.needsOwnerReviewCount + conceptReview.blockedCount}개 확인`}
+      >
+        <div className="model-metric-grid concept-model-metrics" aria-label="자동 검수 요약">
+          <article className="model-metric-card"><small>선택 프로필</small><strong>{conceptReview.selectedProfileId}</strong><p>{conceptReview.selectionReason}</p></article>
+          <article className="model-metric-card"><small>자동 통과</small><strong>{conceptReview.autoPassedCount}<em>문항</em></strong><p>Owner 확인 없이 재사용 가능</p></article>
+          <article className="model-metric-card"><small>Owner 확인</small><strong>{conceptReview.needsOwnerReviewCount}<em>문항</em></strong><p>불안정 경계·랭커 불일치</p></article>
+          <article className="model-metric-card"><small>자동 차단</small><strong>{conceptReview.blockedCount}<em>문항</em></strong><p>수정 후 재실행 필요</p></article>
+        </div>
+        <div className="table-scroll">
+          <table className="data-table">
+            <thead><tr><th>프로필</th><th>validation 예외</th><th>예외율</th><th>차단</th><th>근거</th></tr></thead>
+            <tbody>
+              {conceptReview.profileExperiments.map((profile) => (
+                <tr key={profile.profileId}>
+                  <td><code>{profile.profileId}</code>{profile.profileId === conceptReview.selectedProfileId ? " · 선택" : ""}</td>
+                  <td>{profile.validationReviewCount}/{profile.validationQuestionCount}</td>
+                  <td>{percent(profile.validationReviewRate)}</td>
+                  <td>{profile.validationBlockedCount}</td>
+                  <td>{profile.provenance}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {conceptReview.queue.length > 0 ? (
+          <div className="model-rule-detail-body">
+            {conceptReview.queue.map((item) => (
+              <details className="model-rule-details" key={item.questionId}>
+                <summary><ChevronDown size={17} /><span><strong>{item.severity === "block" ? "차단" : "확인"} · {item.questionId}</strong><small>{item.reasons.map((reason) => reason.label).join(" · ")}</small></span></summary>
+                <div className="model-rule-detail-body">
+                  <p>{item.stem}</p>
+                  <div className="table-scroll">
+                    <table className="data-table">
+                      <thead><tr><th>선택지</th><th>개념</th><th>판정</th></tr></thead>
+                      <tbody>{item.choices.map((choice) => <tr key={choice.key}><td>{choice.key}</td><td>{choice.text}</td><td>{choice.isCorrect ? "정답" : "오답"}</td></tr>)}</tbody>
+                    </table>
+                  </div>
+                  <p><code>{item.questionFingerprint}</code></p>
+                </div>
+              </details>
+            ))}
+          </div>
+        ) : <p className="model-panel-note">확인할 예외가 없습니다. Owner 배치 승인만 남았습니다.</p>}
       </ModelDisclosure>
 
       <ModelDisclosure

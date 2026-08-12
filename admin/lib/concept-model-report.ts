@@ -37,7 +37,7 @@ export interface ConceptExperiment {
   startedAt: string;
   finishedAt: string;
   durationSeconds: number;
-  status: "bootstrap" | "release_ready" | "failed";
+  status: "bootstrap" | "candidate" | "release_ready" | "failed";
   releaseReady: boolean;
   releaseBlockReason: string | null;
   dataset: {
@@ -57,6 +57,67 @@ export interface ConceptExperiment {
     testQuestionCount: number;
     humanApprovalRate: number;
     metricWarning: string | null;
+  };
+  automatedReview: {
+    policyVersion: string;
+    selectedProfileId: string;
+    selectionReason: string;
+    reviewInputSha256: string;
+    policyConfigSha256: string;
+    baselineMode: "initial" | "incremental";
+    changedElementCount: number;
+    changedElementIds: string[];
+    changedQuestionCount: number;
+    affectedQuestionCount: number;
+    reusedQuestionCount: number;
+    autoPassedCount: number;
+    ownerApprovedCount: number;
+    needsOwnerReviewCount: number;
+    blockedCount: number;
+    staleOwnerDecisionCount: number;
+    ownerBatchApproved: boolean;
+    ownerReviewComplete: boolean;
+    profileExperiments: Array<{
+      profileId: string;
+      thresholds: Record<string, number>;
+      provenance: string;
+      validationQuestionCount: number;
+      validationReviewCount: number;
+      validationReviewRate: number;
+      validationBlockedCount: number;
+      distanceFromTargetReviewRate: number;
+    }>;
+    queue: Array<{
+      questionId: string;
+      elementId: string;
+      split: string;
+      questionFingerprint: string;
+      severity: "review" | "block";
+      stem: string;
+      choices: Array<{
+        key: string;
+        elementId: string;
+        text: string;
+        explanation: string;
+        isCorrect: boolean;
+      }>;
+      reasons: Array<{
+        id: string;
+        label: string;
+        measured: number | boolean | string;
+        threshold: number | boolean | string;
+      }>;
+      metrics: {
+        meanTop4Agreement: number;
+        minimumSelectedCandidateSupport: number;
+        normalizedBoundaryMargin: number;
+        minimumDistractorRelevance: number;
+      };
+      change: {
+        affectedByChangedElement: boolean;
+        choiceSetChanged: boolean;
+      };
+    }>;
   };
   embeddings: Array<{
     candidateId: string;

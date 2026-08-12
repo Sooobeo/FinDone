@@ -46,6 +46,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = ROOT / "content" / "model" / "concept-model-config.json"
 DEFAULT_ELEMENTS = ROOT / "admin" / "data" / "content-elements.generated.json"
 DEFAULT_LABELS = ROOT / "content" / "model" / "concept-review-labels.jsonl"
+DEFAULT_OWNER_DECISIONS = ROOT / "content" / "model" / "concept-owner-decisions.jsonl"
 DEFAULT_SPLIT = ROOT / "content" / "model" / "concept-split.json"
 DEFAULT_BANK = ROOT / "content" / "model" / "concept-question-bank.generated.json"
 DEFAULT_ADMIN_REPORT = ROOT / "admin" / "data" / "concept-model-experiments.generated.json"
@@ -116,6 +117,25 @@ class HumanLabel:
     relevance: int
     reviewer_id: str
     review_status: str
+
+
+@dataclass(frozen=True)
+class OwnerQuestionDecision:
+    question_id: str
+    question_fingerprint: str
+    decision: str
+    reviewer_id: str
+    reviewed_at: str
+    comment: str
+
+
+@dataclass(frozen=True)
+class OwnerBatchDecision:
+    review_input_sha256: str
+    decision: str
+    reviewer_id: str
+    reviewed_at: str
+    comment: str
 
 
 @dataclass
@@ -515,19 +535,102 @@ def load_human_labels(path: Path = DEFAULT_LABELS) -> dict[tuple[str, str], Huma
     return result
 
 
+def load_owner_decisions(
+    path: Path = DEFAULT_OWNER_DECISIONS,
+) -> tuple[
+    dict[tuple[str, str], OwnerQuestionDecision],
+    dict[str, OwnerBatchDecision],
+]:
+    """Load append-only Owner decisions bound to exact review fingerprints."""
+    if not path.exists():
+        return {}, {}
+    question_decisions: dict[tuple[str, str], OwnerQuestionDecision] = {}
+    batch_decisions: dict[str, OwnerBatchDecision] = {}
+    with path.open("r", encoding="utf-8") as stream:
+        for line_number, line in enumerate(stream, start=1):
+            if not line.strip():
+                continue
+            try:
+                raw = json.loads(line)
+            except json.JSONDecodeError as error:
+                raise ConceptModelError(
+                    f"Invalid Owner decision JSONL at line {line_number}"
+                ) from error
+            if not isinstance(raw, Mapping):
+                raise ConceptModelError(
+                    f"Owner decision line {line_number} is not an object"
+                )
+            decision_type = str(raw.get("type", "question")).strip()
+            decision = str(raw.get("decision", "")).strip()
+            if decision not in {"approved", "rejected"}:
+                raise ConceptModelError(
+                    f"Owner decision line {line_number} has an invalid decision"
+                )
+            reviewer_id = str(raw.get("reviewerId", "owner")).strip() or "owner"
+            reviewed_at = str(raw.get("reviewedAt", "")).strip()
+            comment = str(raw.get("comment", "")).strip()
+            if decision_type == "question":
+                question_id = str(raw.get("questionId", "")).strip()
+                fingerprint = str(raw.get("questionFingerprint", "")).strip()
+                if not question_id or not re.fullmatch(r"[0-9a-f]{64}", fingerprint):
+                    raise ConceptModelError(
+                        f"Owner question decision line {line_number} is malformed"
+                    )
+                question_decisions[(question_id, fingerprint)] = OwnerQuestionDecision(
+                    question_id=question_id,
+                    question_fingerprint=fingerprint,
+                    decision=decision,
+                    reviewer_id=reviewer_id,
+                    reviewed_at=reviewed_at,
+                    comment=comment,
+                )
+            elif decision_type == "batch":
+                fingerprint = str(raw.get("reviewInputSha256", "")).strip()
+                if not re.fullmatch(r"[0-9a-f]{64}", fingerprint):
+                    raise ConceptModelError(
+                        f"Owner batch decision line {line_number} is malformed"
+                    )
+                batch_decisions[fingerprint] = OwnerBatchDecision(
+                    review_input_sha256=fingerprint,
+                    decision=decision,
+                    reviewer_id=reviewer_id,
+                    reviewed_at=reviewed_at,
+                    comment=comment,
+                )
+            else:
+                raise ConceptModelError(
+                    f"Owner decision line {line_number} has an invalid type"
+                )
+    return question_decisions, batch_decisions
+
+
 def _token_set(value: str) -> set[str]:
     return {token.casefold() for token in TOKEN_RE.findall(normalize_text(value))}
+
+
+def title_alias_keys(value: str) -> set[str]:
+    """Return conservative whole-title aliases, including parenthetical names."""
+    normalized = normalize_text(value)
+    keys = {normalized_key(normalized)}
+    without_parenthetical = re.sub(r"\([^)]*\)", "", normalized).strip()
+    if without_parenthetical:
+        keys.add(normalized_key(without_parenthetical))
+    for match in re.finditer(r"\(([^)]*)\)", normalized):
+        parenthetical = normalized_key(match.group(1))
+        if len(parenthetical) >= 2:
+            keys.add(parenthetical)
+    return {key for key in keys if key}
 
 
 def eligible_candidate_indices(
     elements: Sequence[ElementRecord], answer_index: int
 ) -> list[int]:
     """Exclude the answer element and title aliases that would create two correct labels."""
-    answer_key = normalized_key(elements[answer_index].title)
+    answer_keys = title_alias_keys(elements[answer_index].title)
     return [
         index
         for index, element in enumerate(elements)
-        if index != answer_index and normalized_key(element.title) != answer_key
+        if index != answer_index and title_alias_keys(element.title).isdisjoint(answer_keys)
     ]
 
 
@@ -1298,15 +1401,15 @@ def _question_bank(
     for question_index, question in enumerate(context.questions):
         target = context.elements[question.element_index]
         selected: list[tuple[int, float]] = []
-        seen_titles = {normalized_key(target.title)}
+        seen_titles = set(title_alias_keys(target.title))
         # A ranked candidate can still be an obviously weak distractor. Prefer the
         # weak/human relevance >= 2 pool, then fall back only when a question does
         # not have four distinct viable alternatives. This is an output safety
         # constraint; validation/test model selection remains untouched.
         for minimum_relevance in (2, 0):
             for candidate_index, score in ranked[question_index]:
-                title_key = normalized_key(context.elements[candidate_index].title)
-                if not title_key or title_key in seen_titles:
+                title_keys = title_alias_keys(context.elements[candidate_index].title)
+                if not title_keys or not seen_titles.isdisjoint(title_keys):
                     continue
                 if (
                     _effective_relevance(
@@ -1318,7 +1421,7 @@ def _question_bank(
                     < minimum_relevance
                 ):
                     continue
-                seen_titles.add(title_key)
+                seen_titles.update(title_keys)
                 selected.append((candidate_index, score))
                 if len(selected) == 4:
                     break
@@ -1363,12 +1466,17 @@ def _question_bank(
             {"key": CHOICE_KEYS[index], **choice}
             for index, choice in enumerate(raw_choices)
         ]
-        choice_keys = [normalized_key(choice["text"]) for choice in choices]
-        if len(set(choice_keys)) != 5:
-            duplicate_choices += 1
-        correct_key = normalized_key(target.title)
+        choice_aliases = [title_alias_keys(choice["text"]) for choice in choices]
         if any(
-            normalized_key(choice["text"]) == correct_key and not choice["isCorrect"]
+            not left.isdisjoint(right)
+            for index, left in enumerate(choice_aliases)
+            for right in choice_aliases[index + 1 :]
+        ):
+            duplicate_choices += 1
+        correct_keys = title_alias_keys(target.title)
+        if any(
+            not title_alias_keys(choice["text"]).isdisjoint(correct_keys)
+            and not choice["isCorrect"]
             for choice in choices
         ):
             answer_leaks += 1
@@ -1416,6 +1524,488 @@ def _question_bank(
         "ambiguousQuestionIds": ambiguous_question_ids,
     }
     return bank, safety
+
+
+def _element_fingerprints(
+    elements: Sequence[ElementRecord],
+) -> dict[str, str]:
+    return {
+        item.element_id: _sha256_bytes(_stable_json_bytes(asdict(item)))
+        for item in elements
+    }
+
+
+def _question_review_fingerprint(question: Mapping[str, Any]) -> str:
+    choices = question.get("choices")
+    payload = {
+        "questionId": question.get("questionId"),
+        "elementId": question.get("elementId"),
+        "questionType": question.get("questionType"),
+        "stem": question.get("stem"),
+        "explanation": question.get("explanation"),
+        "difficulty": question.get("difficulty"),
+        "sourceFactIds": question.get("sourceFactIds"),
+        "choices": [
+            {
+                "key": choice.get("key"),
+                "elementId": choice.get("elementId"),
+                "text": choice.get("text"),
+                "explanation": choice.get("explanation"),
+                "isCorrect": choice.get("isCorrect"),
+            }
+            for choice in choices
+            if isinstance(choice, Mapping)
+        ]
+        if isinstance(choices, list)
+        else [],
+    }
+    return _sha256_bytes(_stable_json_bytes(payload))
+
+
+def _load_previous_question_bank(path: Path) -> dict[str, Any] | None:
+    if not path.exists():
+        return None
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        return None
+    return value if isinstance(value, dict) else None
+
+
+def _review_reason(
+    reason_id: str,
+    label: str,
+    measured: float | int | bool | str,
+    threshold: float | int | bool | str,
+) -> dict[str, Any]:
+    return {
+        "id": reason_id,
+        "label": label,
+        "measured": measured,
+        "threshold": threshold,
+    }
+
+
+def _apply_automated_review_profile(
+    *,
+    bank: dict[str, Any],
+    context: FeatureContext,
+    selected_ranked: Sequence[Sequence[tuple[int, float]]],
+    ranking_outputs: Mapping[
+        tuple[str, str, str], Sequence[Sequence[tuple[int, float]]]
+    ],
+    previous_bank: Mapping[str, Any] | None,
+    review_config: Mapping[str, Any],
+    owner_question_decisions: Mapping[
+        tuple[str, str], OwnerQuestionDecision
+    ],
+    owner_batch_decisions: Mapping[str, OwnerBatchDecision],
+) -> dict[str, Any]:
+    """Classify every generated question and emit only unresolved exceptions."""
+    policy_version = str(review_config.get("policyVersion", "concept-auto-review-v1"))
+    profile_id = str(review_config.get("id", "reference-balanced"))
+    minimum_agreement = float(review_config.get("minimumMeanTop4Agreement", 0.5))
+    minimum_support = float(review_config.get("minimumSelectedCandidateSupport", 0.35))
+    minimum_margin = float(review_config.get("minimumNormalizedBoundaryMargin", 0.01))
+    minimum_relevance = int(review_config.get("minimumDistractorRelevance", 2))
+    review_changed_choices = bool(review_config.get("reviewChangedChoiceSet", True))
+
+    previous_element_fingerprints = (
+        previous_bank.get("elementFingerprints")
+        if isinstance(previous_bank, Mapping)
+        and isinstance(previous_bank.get("elementFingerprints"), Mapping)
+        else {}
+    )
+    current_element_fingerprints = _element_fingerprints(context.elements)
+    changed_element_ids = sorted(
+        element_id
+        for element_id, fingerprint in current_element_fingerprints.items()
+        if previous_element_fingerprints.get(element_id) != fingerprint
+    )
+    changed_element_set = set(changed_element_ids)
+    previous_questions = {
+        str(item.get("questionId")): item
+        for item in (
+            previous_bank.get("questions", [])
+            if isinstance(previous_bank, Mapping)
+            and isinstance(previous_bank.get("questions"), list)
+            else []
+        )
+        if isinstance(item, Mapping) and item.get("questionId")
+    }
+    previous_question_fingerprints = (
+        previous_bank.get("questionFingerprints")
+        if isinstance(previous_bank, Mapping)
+        and isinstance(previous_bank.get("questionFingerprints"), Mapping)
+        else {}
+    )
+    element_indices = {
+        element.element_id: index for index, element in enumerate(context.elements)
+    }
+    all_rankings = list(ranking_outputs.values())
+    question_fingerprints: dict[str, str] = {}
+    pending_items: list[dict[str, Any]] = []
+    resolved_items: list[dict[str, Any]] = []
+    status_counts: Counter[str] = Counter()
+    changed_question_count = 0
+    affected_question_count = 0
+    stale_decision_count = 0
+
+    for question_index, raw_question in enumerate(bank.get("questions", [])):
+        if not isinstance(raw_question, dict):
+            continue
+        question_id = str(raw_question["questionId"])
+        fingerprint = _question_review_fingerprint(raw_question)
+        question_fingerprints[question_id] = fingerprint
+        question_changed = previous_question_fingerprints.get(question_id) != fingerprint
+        if question_changed:
+            changed_question_count += 1
+
+        selected_choice_ids = [
+            str(choice["elementId"])
+            for choice in raw_question.get("choices", [])
+            if isinstance(choice, Mapping) and not bool(choice.get("isCorrect"))
+        ]
+        selected_indices = {
+            element_indices[element_id]
+            for element_id in selected_choice_ids
+            if element_id in element_indices
+        }
+        target_id = str(raw_question["elementId"])
+        affected = question_changed or target_id in changed_element_set or any(
+            element_id in changed_element_set for element_id in selected_choice_ids
+        )
+        affected_question_count += int(affected)
+        previous_question = previous_questions.get(question_id)
+        previous_choice_ids = [
+            str(choice.get("elementId"))
+            for choice in (
+                previous_question.get("choices", [])
+                if isinstance(previous_question, Mapping)
+                and isinstance(previous_question.get("choices"), list)
+                else []
+            )
+            if isinstance(choice, Mapping) and not bool(choice.get("isCorrect"))
+        ]
+        choice_set_changed = bool(previous_question) and set(previous_choice_ids) != set(
+            selected_choice_ids
+        )
+
+        agreements: list[float] = []
+        candidate_support_values: list[float] = []
+        if all_rankings:
+            top_sets = [
+                {candidate_index for candidate_index, _ in run[question_index][:4]}
+                for run in all_rankings
+            ]
+            agreements = [
+                len(selected_indices & top_set) / max(1, len(selected_indices | top_set))
+                for top_set in top_sets
+            ]
+            for candidate_index in selected_indices:
+                candidate_support_values.append(
+                    sum(candidate_index in top_set for top_set in top_sets) / len(top_sets)
+                )
+        mean_agreement = round(float(np.mean(agreements)), 6) if agreements else 1.0
+        minimum_candidate_support = (
+            round(float(min(candidate_support_values)), 6)
+            if candidate_support_values
+            else 1.0
+        )
+
+        ranked_row = list(selected_ranked[question_index])
+        selected_scores = [
+            score for candidate_index, score in ranked_row if candidate_index in selected_indices
+        ]
+        unselected_scores = [
+            score for candidate_index, score in ranked_row if candidate_index not in selected_indices
+        ]
+        score_span = (
+            max(score for _, score in ranked_row) - min(score for _, score in ranked_row)
+            if ranked_row
+            else 0.0
+        )
+        boundary_margin = (
+            (min(selected_scores) - max(unselected_scores)) / score_span
+            if selected_scores and unselected_scores and score_span > 1e-12
+            else 0.0
+        )
+        boundary_margin = round(float(boundary_margin), 6)
+        weak_relevances = [
+            int(context.weak_relevance[question_index, candidate_index])
+            for candidate_index in selected_indices
+        ]
+        weakest_relevance = min(weak_relevances) if weak_relevances else 0
+
+        hard_reasons: list[dict[str, Any]] = []
+        review_reasons: list[dict[str, Any]] = []
+        if weakest_relevance < minimum_relevance:
+            hard_reasons.append(
+                _review_reason(
+                    "weak-distractor",
+                    "선택 오답의 자동 타당성 등급 미달",
+                    weakest_relevance,
+                    minimum_relevance,
+                )
+            )
+        if mean_agreement < minimum_agreement:
+            review_reasons.append(
+                _review_reason(
+                    "ranker-disagreement",
+                    "랭커 간 Top-4 합의도 낮음",
+                    mean_agreement,
+                    minimum_agreement,
+                )
+            )
+        if minimum_candidate_support < minimum_support:
+            review_reasons.append(
+                _review_reason(
+                    "candidate-support",
+                    "선택 오답의 실험 조합 지지율 낮음",
+                    minimum_candidate_support,
+                    minimum_support,
+                )
+            )
+        if boundary_margin < minimum_margin:
+            review_reasons.append(
+                _review_reason(
+                    "boundary-margin",
+                    "4위 선택 경계가 불안정함",
+                    boundary_margin,
+                    minimum_margin,
+                )
+            )
+        if review_changed_choices and choice_set_changed:
+            review_reasons.append(
+                _review_reason(
+                    "choice-set-changed",
+                    "이전 문항은행 대비 오답 구성이 변경됨",
+                    True,
+                    False,
+                )
+            )
+
+        matching_decision = owner_question_decisions.get((question_id, fingerprint))
+        if matching_decision is None and any(
+            key[0] == question_id for key in owner_question_decisions
+        ):
+            stale_decision_count += 1
+        if matching_decision and matching_decision.decision == "rejected":
+            hard_reasons.append(
+                _review_reason(
+                    "owner-rejected",
+                    "Owner가 문항을 차단함",
+                    "rejected",
+                    "approved",
+                )
+            )
+
+        if hard_reasons:
+            review_status = "blocked"
+        elif matching_decision and matching_decision.decision == "approved":
+            review_status = "owner_approved"
+        elif review_reasons:
+            review_status = "needs_owner_review"
+        else:
+            review_status = "automated_pass"
+        raw_question["reviewStatus"] = review_status
+        status_counts[review_status] += 1
+
+        item = {
+            "questionId": question_id,
+            "elementId": target_id,
+            "split": context.questions[question_index].split,
+            "questionFingerprint": fingerprint,
+            "severity": "block" if hard_reasons else "review",
+            "stem": raw_question.get("stem"),
+            "choices": raw_question.get("choices"),
+            "reasons": [*hard_reasons, *review_reasons],
+            "metrics": {
+                "meanTop4Agreement": mean_agreement,
+                "minimumSelectedCandidateSupport": minimum_candidate_support,
+                "normalizedBoundaryMargin": boundary_margin,
+                "minimumDistractorRelevance": weakest_relevance,
+            },
+            "change": {
+                "affectedByChangedElement": affected,
+                "choiceSetChanged": choice_set_changed,
+            },
+            "ownerDecision": asdict(matching_decision) if matching_decision else None,
+        }
+        if review_status in {"needs_owner_review", "blocked"}:
+            pending_items.append(item)
+        elif matching_decision:
+            resolved_items.append(item)
+
+    review_input = {
+        "policyVersion": policy_version,
+        "profileId": profile_id,
+        "policyConfigSha256": _sha256_bytes(_stable_json_bytes(dict(review_config))),
+        "contentFingerprint": bank.get("contentFingerprint"),
+        "selectedEmbedding": bank.get("selectedEmbedding"),
+        "selectedRetrievalProfile": bank.get("selectedRetrievalProfile"),
+        "selectedRanker": bank.get("selectedRanker"),
+        "questionFingerprints": question_fingerprints,
+    }
+    review_input_sha = _sha256_bytes(_stable_json_bytes(review_input))
+    batch_decision = owner_batch_decisions.get(review_input_sha)
+    owner_batch_approved = bool(
+        batch_decision and batch_decision.decision == "approved"
+    )
+    unresolved_count = status_counts["needs_owner_review"]
+    blocked_count = status_counts["blocked"]
+    owner_review_complete = (
+        unresolved_count == 0 and blocked_count == 0 and owner_batch_approved
+    )
+
+    bank["elementFingerprints"] = current_element_fingerprints
+    bank["questionFingerprints"] = question_fingerprints
+    bank["reviewInputSha256"] = review_input_sha
+    bank["automatedReviewPolicyVersion"] = policy_version
+    bank["automatedReviewProfileId"] = profile_id
+    bank["automatedReviewPolicySha256"] = review_input["policyConfigSha256"]
+    bank["automatedReview"] = {
+        "autoPassedCount": status_counts["automated_pass"],
+        "ownerApprovedCount": status_counts["owner_approved"],
+        "needsOwnerReviewCount": unresolved_count,
+        "blockedCount": blocked_count,
+        "ownerBatchApproved": owner_batch_approved,
+    }
+    return {
+        "policyVersion": policy_version,
+        "profileId": profile_id,
+        "baselineMode": "incremental" if previous_element_fingerprints else "initial",
+        "reviewInputSha256": review_input_sha,
+        "policyConfigSha256": review_input["policyConfigSha256"],
+        "previousBankSha256": previous_bank.get("bankSha256")
+        if isinstance(previous_bank, Mapping)
+        else None,
+        "changedElementCount": len(changed_element_ids),
+        "changedElementIds": changed_element_ids,
+        "changedQuestionCount": changed_question_count,
+        "affectedQuestionCount": affected_question_count,
+        "reusedQuestionCount": len(bank.get("questions", [])) - affected_question_count,
+        "autoPassedCount": status_counts["automated_pass"],
+        "ownerApprovedCount": status_counts["owner_approved"],
+        "needsOwnerReviewCount": unresolved_count,
+        "blockedCount": blocked_count,
+        "staleOwnerDecisionCount": stale_decision_count,
+        "ownerBatchApproved": owner_batch_approved,
+        "ownerBatchDecision": asdict(batch_decision) if batch_decision else None,
+        "ownerReviewComplete": owner_review_complete,
+        "queue": pending_items,
+        "resolvedItems": resolved_items,
+    }
+
+
+def automated_review_question_bank(
+    *,
+    bank: dict[str, Any],
+    context: FeatureContext,
+    selected_ranked: Sequence[Sequence[tuple[int, float]]],
+    ranking_outputs: Mapping[
+        tuple[str, str, str], Sequence[Sequence[tuple[int, float]]]
+    ],
+    previous_bank: Mapping[str, Any] | None,
+    review_config: Mapping[str, Any],
+    owner_question_decisions: Mapping[
+        tuple[str, str], OwnerQuestionDecision
+    ],
+    owner_batch_decisions: Mapping[str, OwnerBatchDecision],
+) -> dict[str, Any]:
+    """Select an automated-review profile on validation, then evaluate once."""
+    raw_profiles = review_config.get("profiles")
+    if not isinstance(raw_profiles, list) or not raw_profiles:
+        raise ConceptModelError("automatedReview.profiles must contain profiles")
+    profiles = [item for item in raw_profiles if isinstance(item, Mapping)]
+    if len(profiles) != len(raw_profiles):
+        raise ConceptModelError("Every automated review profile must be an object")
+    target_rate = float(review_config.get("targetValidationReviewRate", 0.1))
+    experiments: list[dict[str, Any]] = []
+    for index, profile in enumerate(profiles):
+        trial_config = {**dict(review_config), **dict(profile)}
+        trial_bank = json.loads(_stable_json_bytes(bank).decode("utf-8"))
+        trial = _apply_automated_review_profile(
+            bank=trial_bank,
+            context=context,
+            selected_ranked=selected_ranked,
+            ranking_outputs=ranking_outputs,
+            previous_bank=None,
+            review_config=trial_config,
+            owner_question_decisions={},
+            owner_batch_decisions={},
+        )
+        validation_items = [
+            item for item in trial["queue"] if item.get("split") == "validation"
+        ]
+        validation_question_count = sum(
+            question.split == "validation" for question in context.questions
+        )
+        validation_review_rate = (
+            len(validation_items) / validation_question_count
+            if validation_question_count
+            else 0.0
+        )
+        experiments.append(
+            {
+                "profileId": str(profile.get("id", f"profile-{index + 1}")),
+                "profileIndex": index,
+                "thresholds": {
+                    "minimumMeanTop4Agreement": float(
+                        trial_config.get("minimumMeanTop4Agreement", 0.5)
+                    ),
+                    "minimumSelectedCandidateSupport": float(
+                        trial_config.get("minimumSelectedCandidateSupport", 0.35)
+                    ),
+                    "minimumNormalizedBoundaryMargin": float(
+                        trial_config.get("minimumNormalizedBoundaryMargin", 0.01)
+                    ),
+                },
+                "provenance": str(profile.get("provenance", "")),
+                "validationQuestionCount": validation_question_count,
+                "validationReviewCount": len(validation_items),
+                "validationReviewRate": round(validation_review_rate, 6),
+                "validationBlockedCount": sum(
+                    item.get("severity") == "block" for item in validation_items
+                ),
+                "distanceFromTargetReviewRate": round(
+                    abs(validation_review_rate - target_rate), 6
+                ),
+            }
+        )
+    selected_experiment = min(
+        experiments,
+        key=lambda item: (
+            item["validationBlockedCount"],
+            item["distanceFromTargetReviewRate"],
+            item["profileIndex"],
+        ),
+    )
+    selected_profile = next(
+        profile
+        for profile in profiles
+        if str(profile.get("id")) == selected_experiment["profileId"]
+    )
+    selected_config = {**dict(review_config), **dict(selected_profile)}
+    result = _apply_automated_review_profile(
+        bank=bank,
+        context=context,
+        selected_ranked=selected_ranked,
+        ranking_outputs=ranking_outputs,
+        previous_bank=previous_bank,
+        review_config=selected_config,
+        owner_question_decisions=owner_question_decisions,
+        owner_batch_decisions=owner_batch_decisions,
+    )
+    result["profileExperiments"] = experiments
+    result["selectionRule"] = str(review_config.get("selectionRule", ""))
+    result["targetValidationReviewRate"] = target_rate
+    result["selectedProfileId"] = selected_experiment["profileId"]
+    result["selectionReason"] = (
+        f"validation 예외율 {selected_experiment['validationReviewRate']:.2%}가 "
+        f"목표 {target_rate:.2%}에 가장 가까운 프로필"
+    )
+    return result
 
 
 def _human_test_coverage(
@@ -1520,6 +2110,7 @@ def _render_experiment_markdown(experiment: Mapping[str, Any]) -> str:
     release_ready = bool(experiment.get("releaseReady", False))
     dataset = experiment.get("dataset") if isinstance(experiment.get("dataset"), Mapping) else {}
     labels = experiment.get("labels") if isinstance(experiment.get("labels"), Mapping) else {}
+    automated_review = experiment.get("automatedReview") if isinstance(experiment.get("automatedReview"), Mapping) else {}
     selection = experiment.get("selection") if isinstance(experiment.get("selection"), Mapping) else {}
     evaluation = experiment.get("evaluation") if isinstance(experiment.get("evaluation"), Mapping) else {}
     validation = evaluation.get("validation") if isinstance(evaluation.get("validation"), Mapping) else {}
@@ -1551,7 +2142,7 @@ def _render_experiment_markdown(experiment: Mapping[str, Any]) -> str:
         lines.extend(
             [
                 f"> **릴리스 차단:** {_md_cell(experiment.get('releaseBlockReason'))}",
-                "> bootstrap의 test 지표는 약지도 규칙 재현도이며 독립적인 교육 품질 성능이 아닙니다.",
+                "> 자동 검수 전의 test 지표는 약지도 규칙 재현도이며 독립적인 교육 품질 성능이 아닙니다.",
                 "",
             ]
         )
@@ -1571,6 +2162,8 @@ def _render_experiment_markdown(experiment: Mapping[str, Any]) -> str:
             f"| test NDCG@4 | {_md_cell(test.get('ndcgAt4'))} |",
             f"| test Precision@4 | {_md_cell(test.get('precisionAt4'))} |",
             f"| 사람 test 커버리지 | {_md_percent(labels.get('humanTestCoverage'))} |",
+            f"| 자동 검수 프로필 | `{_md_cell(automated_review.get('selectedProfileId'))}` |",
+            f"| 자동 통과/Owner 확인/차단 | {_md_cell(automated_review.get('autoPassedCount'))} / {_md_cell(automated_review.get('needsOwnerReviewCount'))} / {_md_cell(automated_review.get('blockedCount'))} |",
             f"| 외부 LLM API 호출 | {_md_cell(environment.get('externalLlmApiCalls'))}회 |",
             "",
             "선택 근거: " + _md_cell(selection.get("reason")),
@@ -1760,7 +2353,34 @@ def _render_experiment_markdown(experiment: Mapping[str, Any]) -> str:
             f"- 선택 허용 오차: {_md_cell(selection.get('selectionTolerance'))}",
             f"- 지표 경고: {_md_cell(labels.get('metricWarning'))}",
             "",
-            "## 9. 안전성 및 릴리스 게이트",
+            "## 9. 자동 검수 프로필 실험과 증분 영향",
+            "",
+            f"선택 근거: {_md_cell(automated_review.get('selectionReason'))}",
+            "",
+            "| 프로필 | validation 예외 | 예외율 | 차단 | 기준선/실험 근거 |",
+            "|---|---:|---:|---:|---|",
+        ]
+    )
+    for item in automated_review.get("profileExperiments", []):
+        if not isinstance(item, Mapping):
+            continue
+        lines.append(
+            f"| {_md_cell(item.get('profileId'))} | {_md_cell(item.get('validationReviewCount'))}/{_md_cell(item.get('validationQuestionCount'))} | {_md_percent(item.get('validationReviewRate'))} | {_md_cell(item.get('validationBlockedCount'))} | {_md_cell(item.get('provenance'))} |"
+        )
+    lines.extend(
+        [
+            "",
+            f"- 기준선 모드: `{_md_cell(automated_review.get('baselineMode'))}`",
+            f"- 변경 요소: {_md_cell(automated_review.get('changedElementCount'))}개",
+            f"- 영향 문항: {_md_cell(automated_review.get('affectedQuestionCount'))}개",
+            f"- 재사용 문항: {_md_cell(automated_review.get('reusedQuestionCount'))}개",
+            f"- Owner 확인 대기: {_md_cell(automated_review.get('needsOwnerReviewCount'))}개",
+            f"- 자동 차단: {_md_cell(automated_review.get('blockedCount'))}개",
+            f"- 검수 입력 SHA-256: `{_md_cell(automated_review.get('reviewInputSha256'))}`",
+            "",
+            "프로필 선택은 validation 예외율만 사용하며 test 문항의 검수 결과는 프로필 선택에 사용하지 않습니다.",
+            "",
+            "## 10. 안전성 및 릴리스 게이트",
             "",
             "| 안전성 검사 | 값 |",
             "|---|---:|",
@@ -1815,7 +2435,7 @@ def _render_markdown_index(experiments: Sequence[Mapping[str, Any]]) -> str:
         "이 디렉터리는 오프라인 개념형 5지선다 모델링 실험의 사람이 읽을 수 있는 영구 기록이다.",
         "Admin 시각화는 `admin/data/concept-model-experiments.generated.json`을 사용하고, 이 MD들은 감사·비교·의사결정 이력으로 유지한다.",
         "",
-        "- 설계 기준: [개념형 5지선다 오프라인 모델링 설계서](../CONCEPT_MCQ_MODELING_DESIGN.md)",
+        "- 설계 기준: [개념형 5지선다 오프라인 모델링 설계서](CONCEPT_MCQ_MODELING_DESIGN.md)",
         "- 생성 명령: `python tools/train_concept_question_model.py --write-question-bank --write-admin-report --write-markdown-report`",
         "- 원칙: validation으로 조합을 선택하고 선택된 한 조합에만 test를 실행한다.",
         "",
@@ -1843,7 +2463,7 @@ def _render_markdown_index(experiments: Sequence[Mapping[str, Any]]) -> str:
             "",
             "## 수치 해석 주의",
             "",
-            "`bootstrap` 실험은 사람이 독립적으로 라벨링한 test가 없으므로 test 수치를 실제 교육 품질이나 일반화 성능으로 해석하면 안 된다. 사람 test 커버리지가 100%이고 모든 릴리스 게이트를 통과한 실험만 `release_ready`가 될 수 있다.",
+            "자동 검수 전 test 수치는 약지도 규칙 재현도이므로 실제 교육 품질이나 일반화 성능으로 해석하면 안 된다. 자동 검수 차단 0건, 예외 확인 완료, Owner 배치 승인과 모든 릴리스 게이트를 통과한 실험만 `release_ready`가 될 수 있다.",
         ]
     )
     return "\n".join(lines)
@@ -1966,6 +2586,7 @@ def run_experiment(
     config_path: Path = DEFAULT_CONFIG,
     elements_path: Path = DEFAULT_ELEMENTS,
     labels_path: Path = DEFAULT_LABELS,
+    owner_decisions_path: Path = DEFAULT_OWNER_DECISIONS,
     split_path: Path = DEFAULT_SPLIT,
     bank_path: Path = DEFAULT_BANK,
     admin_report_path: Path = DEFAULT_ADMIN_REPORT,
@@ -1982,6 +2603,7 @@ def run_experiment(
     config_path = _resolve_repo_path(config_path)
     elements_path = _resolve_repo_path(elements_path)
     labels_path = _resolve_repo_path(labels_path)
+    owner_decisions_path = _resolve_repo_path(owner_decisions_path)
     split_path = _resolve_repo_path(split_path)
     bank_path = _resolve_repo_path(bank_path)
     admin_report_path = _resolve_repo_path(admin_report_path)
@@ -1993,6 +2615,7 @@ def run_experiment(
     renderer.update(2, "입력 설정과 콘텐츠 스냅샷 확인 중")
     config_hash = _sha256_file(config_path)
     config = _load_json_object(config_path)
+    previous_bank = _load_previous_question_bank(bank_path)
     elements = load_elements(elements_path)
     fingerprint = content_fingerprint(elements)
     assignments, split_manifest = build_split(elements, config)
@@ -2022,6 +2645,9 @@ def run_experiment(
         rrf_k,
     )
     human_labels = load_human_labels(labels_path)
+    owner_question_decisions, owner_batch_decisions = load_owner_decisions(
+        owner_decisions_path
+    )
     candidate_count = sum(
         len(eligible_candidate_indices(elements, question.element_index))
         for question in questions
@@ -2260,6 +2886,19 @@ def run_experiment(
         str(split_manifest["splitSha256"]),
         human_labels,
     )
+    review_config = config.get("automatedReview")
+    if not isinstance(review_config, Mapping):
+        raise ConceptModelError("automatedReview is missing from model config")
+    automated_review = automated_review_question_bank(
+        bank=bank,
+        context=context,
+        selected_ranked=selected_ranked,
+        ranking_outputs=ranking_outputs,
+        previous_bank=previous_bank,
+        review_config=review_config,
+        owner_question_decisions=owner_question_decisions,
+        owner_batch_decisions=owner_batch_decisions,
+    )
     serialized_once = _stable_json_bytes(bank)
     serialized_twice = _stable_json_bytes(json.loads(serialized_once.decode("utf-8")))
     deterministic_bank = serialized_once == serialized_twice
@@ -2310,18 +2949,25 @@ def run_experiment(
             test_metrics["precisionAt4"] >= float(gates_config["minimumTestPrecisionAt4"]),
         ),
         _gate(
-            "independent-human-test",
-            "독립 사람 test 라벨 커버리지",
-            human_coverage,
-            float(gates_config["minimumHumanTestCoverage"]),
-            human_coverage >= float(gates_config["minimumHumanTestCoverage"]),
+            "automated-review-blocks",
+            "자동 검수 차단 문항 수",
+            int(automated_review["blockedCount"]),
+            0,
+            int(automated_review["blockedCount"]) == 0,
         ),
         _gate(
-            "human-approval",
-            "사람 최종 승인률",
-            human_approval,
-            float(gates_config["minimumHumanApprovalRate"]),
-            human_approval >= float(gates_config["minimumHumanApprovalRate"]),
+            "owner-exception-review",
+            "Owner 미확인 예외 문항 수",
+            int(automated_review["needsOwnerReviewCount"]),
+            0,
+            int(automated_review["needsOwnerReviewCount"]) == 0,
+        ),
+        _gate(
+            "owner-batch-approval",
+            "Owner 자동검수 배치 승인",
+            bool(automated_review["ownerBatchApproved"]),
+            True,
+            bool(automated_review["ownerBatchApproved"]),
         ),
         _gate(
             "questions-per-element",
@@ -2359,9 +3005,11 @@ def run_experiment(
             deterministic_bank or not bool(gates_config["requireDeterministicBank"]),
         ),
     ]
-    release_ready = bool(human_labels) and all(item["passed"] for item in gates)
+    release_ready = bool(automated_review["ownerReviewComplete"]) and all(
+        item["passed"] for item in gates
+    )
     bank["releaseStatus"] = (
-        "release_ready" if release_ready else "candidate" if human_labels else "bootstrap_not_reviewed"
+        "release_ready" if release_ready else "candidate"
     )
     bank.pop("bankSha256", None)
     bank["bankSha256"] = _sha256_bytes(_stable_json_bytes(bank))
@@ -2376,13 +3024,11 @@ def run_experiment(
     report: dict[str, Any] = {
         "experimentId": experiment_id,
         "reportVersion": REPORT_VERSION,
-        "status": "release_ready" if release_ready else "bootstrap" if not human_labels else "candidate",
+        "status": "release_ready" if release_ready else "candidate",
         "releaseReady": release_ready,
         "releaseBlockReason": None
         if release_ready
-        else "독립 사람 test 라벨과 최종 검토가 필요합니다."
-        if not human_labels
-        else "하나 이상의 릴리스 품질 게이트가 미통과입니다.",
+        else "자동 검수 예외 확인 또는 Owner 배치 승인이 필요합니다.",
         "startedAt": started_wall.isoformat(),
         "finishedAt": finished_wall.isoformat(),
         "durationSeconds": round(time.perf_counter() - started, 3),
@@ -2391,7 +3037,7 @@ def run_experiment(
             "percent": 100,
             "processed": len(questions),
             "total": len(questions),
-            "message": "bootstrap 평가 완료" if not human_labels else "사람 라벨 평가 완료",
+            "message": "자동 검수와 예외 분류 완료",
         },
         "dataset": {
             "contentFingerprint": fingerprint,
@@ -2420,6 +3066,7 @@ def run_experiment(
             if not human_labels
             else None,
         },
+        "automatedReview": automated_review,
         "weightExperiments": {
             "weakSupervision": weak_sensitivity,
             "weakSupervisionProfiles": [dict(item) for item in weak_profiles],
@@ -2459,6 +3106,7 @@ def run_experiment(
             "split": _report_path(split_path),
             "facts": _report_path(build_dir / "facts.jsonl"),
             "candidates": _report_path(build_dir / "candidates.jsonl"),
+            "ownerDecisions": _report_path(owner_decisions_path),
             "markdownReport": _report_path(markdown_report_dir / f"{experiment_id}.md"),
             "markdownReportWritten": write_markdown_report,
         },
@@ -2505,7 +3153,7 @@ def run_experiment(
     renderer.update(
         100,
         "개념형 모델링 실험 완료",
-        "릴리스 가능" if release_ready else "bootstrap · 사람 test 필요",
+        "릴리스 가능" if release_ready else "자동 검수 완료 · Owner 확인 필요",
     )
     return report
 
@@ -2515,6 +3163,9 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--elements", type=Path, default=DEFAULT_ELEMENTS)
     parser.add_argument("--labels", type=Path, default=DEFAULT_LABELS)
+    parser.add_argument(
+        "--owner-decisions", type=Path, default=DEFAULT_OWNER_DECISIONS
+    )
     parser.add_argument("--split", type=Path, default=DEFAULT_SPLIT)
     parser.add_argument("--question-bank", type=Path, default=DEFAULT_BANK)
     parser.add_argument("--admin-report", type=Path, default=DEFAULT_ADMIN_REPORT)
@@ -2585,6 +3236,7 @@ def main(argv: Iterable[str] | None = None) -> int:
         config_path=args.config,
         elements_path=args.elements,
         labels_path=args.labels,
+        owner_decisions_path=args.owner_decisions,
         split_path=args.split,
         bank_path=args.question_bank,
         admin_report_path=args.admin_report,

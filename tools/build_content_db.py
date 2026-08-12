@@ -282,6 +282,21 @@ def stable_json_bytes(value: Any) -> bytes:
     ).encode("utf-8")
 
 
+def concept_title_alias_keys(value: str) -> set[str]:
+    def key(text: str) -> str:
+        return re.sub(r"[^0-9A-Za-z가-힣]+", "", text).casefold()
+
+    aliases = {key(value)}
+    without_parenthetical = re.sub(r"\([^)]*\)", "", value).strip()
+    if without_parenthetical:
+        aliases.add(key(without_parenthetical))
+    for match in re.finditer(r"\(([^)]*)\)", value):
+        parenthetical = key(match.group(1))
+        if len(parenthetical) >= 2:
+            aliases.add(parenthetical)
+    return {alias for alias in aliases if alias}
+
+
 def load_concept_question_bank(
     path: Path = DEFAULT_QUESTION_BANK,
     expected_element_ids: Iterable[str] | None = None,
@@ -347,6 +362,7 @@ def load_concept_question_bank(
         if [choice.get("key") for choice in choices if isinstance(choice, dict)] != list("ABCDE"):
             raise ValueError(f"{question_id} choice keys must be A through E")
         choice_texts: set[str] = set()
+        choice_aliases: list[set[str]] = []
         correct_choices: list[dict[str, Any]] = []
         for choice in choices:
             if not isinstance(choice, dict):
@@ -359,6 +375,10 @@ def load_concept_question_bank(
             if not isinstance(text, str) or not text.strip() or text in choice_texts:
                 raise ValueError(f"{question_id} has an empty or duplicate choice")
             choice_texts.add(text)
+            aliases = concept_title_alias_keys(text)
+            if any(not aliases.isdisjoint(existing) for existing in choice_aliases):
+                raise ValueError(f"{question_id} has an alias-duplicate choice")
+            choice_aliases.append(aliases)
             if not isinstance(explanation, str) or not explanation.strip():
                 raise ValueError(f"{question_id} choice explanation is empty")
             if not isinstance(choice.get("isCorrect"), bool):

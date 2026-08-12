@@ -11,6 +11,7 @@ on:
       - "tools/compile_app_content.py"
       - "tools/test_local_content_model.py"
       - "tools/train_concept_question_model.py"
+      - "tools/review_concept_question_model.py"
       - "tools/test_train_concept_question_model.py"
       - "tools/requirements-concept-model-core.txt"
       - "tools/repo_preflight.py"
@@ -46,6 +47,27 @@ jobs:
           --scope model
           --changes head
           --ci
+
+      - name: Install tree ranker for full automated review
+        run: python -m pip install --disable-pip-version-check xgboost==3.4.0
+
+      - name: Run incremental concept-question automated review
+        run: >-
+          python tools/train_concept_question_model.py
+          --ranker all
+          --quiet
+          --write-question-bank
+          --write-admin-report
+          --write-markdown-report
+
+      - name: Upload concept-question review packet
+        uses: actions/upload-artifact@v4
+        with:
+          name: concept-question-review
+          path: |
+            build/concept-model/latest-report.json
+            content/model/concept-question-bank.generated.json
+          if-no-files-found: error
 
       - name: Upload measured model report
         uses: actions/upload-artifact@v4

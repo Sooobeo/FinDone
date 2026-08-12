@@ -18,9 +18,16 @@ class FormulaMarkdownGeneratorTest(unittest.TestCase):
         )
 
         self.assertEqual(405, bank["questionCount"])
-        self.assertEqual("bootstrap_not_reviewed", bank["releaseStatus"])
+        self.assertIn(bank["releaseStatus"], {"candidate", "release_ready"})
         self.assertEqual(405, len(bank["questions"]))
         self.assertTrue(all(len(question["choices"]) == 5 for question in bank["questions"]))
+
+    def test_parenthetical_concept_aliases_collide(self) -> None:
+        self.assertFalse(
+            generator.concept_title_alias_keys("계속가치(Terminal Value)").isdisjoint(
+                generator.concept_title_alias_keys("계속가치")
+            )
+        )
 
     def test_explicit_formula_boundaries_keep_hangul_outside_math(self) -> None:
         source = "자산 `(A)` = 부채 `(L)` + 자본 `(E)`"

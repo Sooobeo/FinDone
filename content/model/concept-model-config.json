@@ -264,12 +264,48 @@
     "minimumRetrievalRecallAt20": 0.95,
     "minimumTestNdcgAt4": 0.8,
     "minimumTestPrecisionAt4": 0.9,
-    "minimumHumanTestCoverage": 1.0,
-    "minimumHumanApprovalRate": 0.95,
     "minimumQuestionsPerElement": 2,
     "maximumAnswerLeakCount": 0,
     "maximumDuplicateChoiceCount": 0,
     "maximumAmbiguousQuestionCount": 0,
     "requireDeterministicBank": true
+  },
+  "automatedReview": {
+    "policyVersion": "concept-auto-review-v1",
+    "minimumDistractorRelevance": 2,
+    "requireOwnerBatchApproval": true,
+    "reviewChangedChoiceSet": false,
+    "targetValidationReviewRate": 0.05,
+    "selectionRule": "validation 예외율이 목표 5%에 가장 가까운 프로필을 선택하고 동률이면 reference baseline을 우선한다. test는 선택에 사용하지 않는다.",
+    "profiles": [
+      {
+        "id": "reference-balanced",
+        "minimumMeanTop4Agreement": 0.5,
+        "minimumSelectedCandidateSupport": 0.35,
+        "minimumNormalizedBoundaryMargin": 0.01,
+        "provenance": "동일 가중 RRF 기준선과 다수결 0.5를 중심으로 둔 운영 reference baseline; 논문 기본값은 아님"
+      },
+      {
+        "id": "conservative-review",
+        "minimumMeanTop4Agreement": 0.6,
+        "minimumSelectedCandidateSupport": 0.45,
+        "minimumNormalizedBoundaryMargin": 0.02,
+        "provenance": "reference baseline에서 검토 민감도를 높인 단방향 ablation"
+      },
+      {
+        "id": "relaxed-review",
+        "minimumMeanTop4Agreement": 0.4,
+        "minimumSelectedCandidateSupport": 0.25,
+        "minimumNormalizedBoundaryMargin": 0.005,
+        "provenance": "reference baseline에서 검토량을 낮춘 단방향 ablation"
+      },
+      {
+        "id": "exception-only",
+        "minimumMeanTop4Agreement": 0.25,
+        "minimumSelectedCandidateSupport": 0.1,
+        "minimumNormalizedBoundaryMargin": -0.1,
+        "provenance": "자동 하드 게이트를 유지하면서 극단적 순위 불일치만 올리는 최소 검토량 ablation"
+      }
+    ]
   }
 }

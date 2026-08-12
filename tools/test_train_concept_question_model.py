@@ -1,9 +1,11 @@
 import json
+import tempfile
 import unittest
 from collections import Counter
 from pathlib import Path
 
 from tools import train_concept_question_model as model
+from tools import review_concept_question_model as review_command
 
 
 class ConceptQuestionModelTest(unittest.TestCase):
@@ -56,6 +58,13 @@ class ConceptQuestionModelTest(unittest.TestCase):
         self.assertNotIn(
             cf_wacc,
             model.eligible_candidate_indices(self.elements, eqv_wacc),
+        )
+        by_title = {element.title: index for index, element in enumerate(self.elements)}
+        terminal_value = by_title["계속가치(Terminal Value)"]
+        plain_terminal_value = by_title["계속가치"]
+        self.assertNotIn(
+            plain_terminal_value,
+            model.eligible_candidate_indices(self.elements, terminal_value),
         )
 
     def test_reference_weight_profiles_are_normalized(self) -> None:
@@ -127,18 +136,24 @@ class ConceptQuestionModelTest(unittest.TestCase):
         self.assertEqual("linear-high", selected["rankerId"])
         self.assertEqual("tfidf-word-char", selected["embeddingId"])
 
-    def test_checked_in_question_bank_is_five_choice_bootstrap(self) -> None:
+    def test_checked_in_question_bank_is_five_choice_candidate(self) -> None:
         bank = json.loads(model.DEFAULT_BANK.read_text(encoding="utf-8"))
 
         self.assertEqual(405, bank["questionCount"])
-        self.assertEqual("bootstrap_not_reviewed", bank["releaseStatus"])
+        self.assertIn(bank["releaseStatus"], {"candidate", "release_ready"})
         self.assertEqual(405, len(bank["questions"]))
+        self.assertRegex(bank["reviewInputSha256"], r"^[0-9a-f]{64}$")
+        self.assertEqual(135, len(bank["elementFingerprints"]))
+        self.assertEqual(405, len(bank["questionFingerprints"]))
         for question in bank["questions"]:
             choices = question["choices"]
             self.assertEqual(["A", "B", "C", "D", "E"], [item["key"] for item in choices])
             self.assertEqual(5, len({item["text"] for item in choices}))
             self.assertEqual(1, sum(bool(item["isCorrect"]) for item in choices))
-            self.assertEqual("bootstrap", question["reviewStatus"])
+            self.assertIn(
+                question["reviewStatus"],
+                {"automated_pass", "needs_owner_review", "blocked", "owner_approved"},
+            )
 
     def test_markdown_history_contains_runs_and_primary_references(self) -> None:
         history = json.loads(model.DEFAULT_ADMIN_REPORT.read_text(encoding="utf-8"))
@@ -156,6 +171,69 @@ class ConceptQuestionModelTest(unittest.TestCase):
         for run in latest["rankerRuns"]:
             self.assertEqual(bool(run["testEvaluated"]), run["test"] is not None)
         self.assertEqual(1, sum(bool(run["testEvaluated"]) for run in latest["rankerRuns"]))
+        review = latest["automatedReview"]
+        self.assertEqual(405, review["autoPassedCount"] + review["ownerApprovedCount"] + review["needsOwnerReviewCount"] + review["blockedCount"])
+        self.assertGreaterEqual(len(review["profileExperiments"]), 3)
+        self.assertIn(
+            review["selectedProfileId"],
+            {item["profileId"] for item in review["profileExperiments"]},
+        )
+
+    def test_owner_decisions_are_bound_to_exact_fingerprints(self) -> None:
+        fingerprint = "a" * 64
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "decisions.jsonl"
+            path.write_text(
+                json.dumps(
+                    {
+                        "type": "question",
+                        "questionId": "ACC-01-definition_to_term-01",
+                        "questionFingerprint": fingerprint,
+                        "decision": "approved",
+                        "reviewerId": "owner",
+                    }
+                )
+                + "\n"
+                + json.dumps(
+                    {
+                        "type": "batch",
+                        "reviewInputSha256": "b" * 64,
+                        "decision": "approved",
+                        "reviewerId": "owner",
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            question_decisions, batch_decisions = model.load_owner_decisions(path)
+
+        self.assertEqual(
+            "approved",
+            question_decisions[("ACC-01-definition_to_term-01", fingerprint)].decision,
+        )
+        self.assertEqual("approved", batch_decisions["b" * 64].decision)
+
+    def test_owner_batch_command_rejects_unresolved_queue(self) -> None:
+        experiment = {
+            "automatedReview": {
+                "reviewInputSha256": "c" * 64,
+                "queue": [
+                    {
+                        "questionId": "Q-1",
+                        "questionFingerprint": "d" * 64,
+                        "severity": "review",
+                    }
+                ],
+            }
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaises(review_command.ReviewCommandError):
+                review_command.approve_batch(
+                    experiment,
+                    Path(directory) / "decisions.jsonl",
+                    "owner",
+                    "",
+                )
 
 
 if __name__ == "__main__":

@@ -52,6 +52,7 @@ MODEL_PATTERNS = (
     "tools/test_local_content_model.py",
     "tools/test_build_content_db.py",
     "tools/train_concept_question_model.py",
+    "tools/review_concept_question_model.py",
     "tools/test_train_concept_question_model.py",
     "tools/requirements-concept-model*.txt",
     "admin/data/concept-model-experiments.generated.json",
