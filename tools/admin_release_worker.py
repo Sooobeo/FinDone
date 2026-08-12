@@ -603,58 +603,20 @@ def _refresh_concept_questions(
     database: sqlite3.Connection,
     changed_element_ids: set[str],
 ) -> tuple[str, str, str, int]:
-    """Refresh visible question copy while preserving an already approved bank gate."""
+    """Keep curated v2 copy immutable and invalidate review after source changes."""
     metadata = dict(database.execute("SELECT key,value FROM metadata"))
     original_status = metadata.get("concept_question_release_status", "candidate")
-    content = {
-        row[0]: {
-            "title": row[1],
-            "core_relation": row[2],
-            "definition": row[3],
-            "intuition": row[4],
-        }
-        for row in database.execute(
-            """SELECT e.element_id, e.title, e.core_relation, c.definition, c.intuition
-               FROM elements e JOIN concept_cards c USING(element_id)"""
-        )
-    }
-    prompts = {
-        "definition_to_term": "다음 설명에 가장 부합하는 금융 개념은 무엇인가?",
-        "intuition_to_term": "다음 직관적 설명이 가리키는 금융 개념은 무엇인가?",
-        "core_relation_to_term": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?",
-    }
-    fields = {
-        "definition_to_term": "definition",
-        "intuition_to_term": "intuition",
-        "core_relation_to_term": "core_relation",
-    }
     question_rows = database.execute(
         "SELECT question_id,element_id,question_type FROM concept_questions ORDER BY display_order"
     ).fetchall()
     for question_id, element_id, question_type in question_rows:
-        if question_type not in prompts or element_id not in content:
+        if question_type not in {
+            "term_to_definition",
+            "term_to_intuition",
+            "term_to_verbal_relation",
+        }:
             raise ReleaseWorkerError(f"unsupported concept question projection: {question_id}")
-        target = content[element_id]
-        database.execute(
-            "UPDATE concept_questions SET stem=?,explanation=? WHERE question_id=?",
-            (
-                f"{prompts[question_type]}\n{target[fields[question_type]]}",
-                f"정답은 {target['title']}입니다. {target['definition']} {target['intuition']}",
-                question_id,
-            ),
-        )
-    database.executemany(
-        """UPDATE concept_question_choices SET text=?,explanation=?
-           WHERE question_id=? AND choice_key=?""",
-        (
-            (content[element_id]["title"], content[element_id]["definition"], question_id, choice_key)
-            for question_id, choice_key, element_id in database.execute(
-                """SELECT question_id,choice_key,element_id
-                   FROM concept_question_choices ORDER BY question_id,choice_order"""
-            ).fetchall()
-        ),
-    )
-    if changed_element_ids and original_status != "release_ready":
+    if changed_element_ids:
         placeholders = ",".join("?" for _ in changed_element_ids)
         affected = [
             row[0]
@@ -682,9 +644,9 @@ def _refresh_concept_questions(
         )
     ]
     bank_sha = sha256_bytes(canonical_json_bytes(projection))
-    bank_status = original_status
+    bank_status = "candidate" if changed_element_ids else original_status
     model_version = metadata.get("concept_question_model_version", "unknown")
-    bank_version = int(metadata.get("concept_question_bank_version", "1"))
+    bank_version = int(metadata.get("concept_question_bank_version", "2"))
     database.executemany(
         "INSERT OR REPLACE INTO metadata(key,value) VALUES (?,?)",
         (

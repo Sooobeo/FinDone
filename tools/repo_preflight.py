@@ -530,7 +530,7 @@ def verification_commands(scopes: set[str], *, release_requested: bool) -> list[
                     ),
                 ),
                 Command(
-                    "Concept-question v2 reset contract",
+                    "Concept-question v2 active contract",
                     (
                         python,
                         "tools/validate_concept_question_reset.py",

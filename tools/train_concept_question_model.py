@@ -53,11 +53,26 @@ DEFAULT_BANK = ROOT / "content" / "model" / "concept-question-bank.generated.jso
 DEFAULT_ADMIN_REPORT = ROOT / "admin" / "data" / "concept-model-experiments.generated.json"
 DEFAULT_BUILD_DIR = ROOT / "build" / "concept-model"
 DEFAULT_MARKDOWN_REPORT_DIR = ROOT / "docs" / "modeling" / "experiments"
-REPORT_VERSION = 1
-BANK_VERSION = 1
+REPORT_VERSION = 2
+BANK_VERSION = 2
+CONTRACT_VERSION = "2.0"
 DOMAIN_ORDER = ("ACC", "CF", "INV", "FI", "DER", "EQV", "IBT")
 CHOICE_KEYS = ("A", "B", "C", "D", "E")
 TOKEN_RE = re.compile(r"[0-9A-Za-z가-힣]+")
+FORMULA_CHOICE_RE = re.compile(
+    r"(?:\$|\\(?:frac|sum|sqrt|left|right|begin|end)|[=<>≤≥∑∏√^×÷]|[A-Za-z0-9_)\]]\s*[+*/]\s*[A-Za-z0-9_(\[])",
+    re.IGNORECASE,
+)
+LEGACY_QUESTION_TYPES = {
+    "definition_to_term",
+    "intuition_to_term",
+    "core_relation_to_term",
+}
+V2_QUESTION_TYPES = {
+    "term_to_definition",
+    "term_to_intuition",
+    "term_to_verbal_relation",
+}
 
 
 class ConceptModelError(RuntimeError):
@@ -437,28 +452,25 @@ def build_facts_and_questions(
     fact_specs = (
         (
             "definition",
-            "definition_to_term",
-            "다음 설명에 가장 부합하는 금융 개념은 무엇인가?",
-            lambda item: item.definition,
+            "term_to_definition",
+            "다음 중 이 용어의 정의로 가장 정확한 것은?",
         ),
         (
             "intuition",
-            "intuition_to_term",
-            "다음 직관적 설명이 가리키는 금융 개념은 무엇인가?",
-            lambda item: item.intuition,
+            "term_to_intuition",
+            "다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
         ),
         (
-            "core_relation",
-            "core_relation_to_term",
-            "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?",
-            lambda item: item.core_relation,
+            "verbal_relation",
+            "term_to_verbal_relation",
+            "다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
         ),
     )
     facts: list[FactRecord] = []
     questions: list[QuestionGroup] = []
     for element_index, element in enumerate(elements):
-        for fact_type, question_type, prompt, getter in fact_specs:
-            text = normalize_text(getter(element))
+        for fact_type, question_type, prompt in fact_specs:
+            text = display_fact_text(element, fact_type)
             fact_id = f"{element.element_id}:{fact_type}:01"
             fact_hash = _sha256_bytes(
                 _stable_json_bytes(
@@ -466,8 +478,9 @@ def build_facts_and_questions(
                         "elementId": element.element_id,
                         "factType": fact_type,
                         "text": text,
-                        "answer": element.title,
+                        "targetTerm": element.title,
                         "source": element.source_locator,
+                        "contractVersion": CONTRACT_VERSION,
                     }
                 )
             )
@@ -478,10 +491,14 @@ def build_facts_and_questions(
                     domain_id=element.domain_id,
                     fact_type=fact_type,
                     text=text,
-                    answer_text=element.title,
+                    answer_text=text,
                     source_label=element.source_label,
                     source_locator=element.source_locator,
-                    review_status="reviewed",
+                    review_status=(
+                        "derived_unreviewed"
+                        if fact_type == "verbal_relation"
+                        else "source_reviewed_masked"
+                    ),
                     content_sha256=fact_hash,
                 )
             )
@@ -492,8 +509,8 @@ def build_facts_and_questions(
                     element_id=element.element_id,
                     domain_id=element.domain_id,
                     question_type=question_type,
-                    stem=f"{prompt}\n{text}",
-                    correct_answer=element.title,
+                    stem=f"용어: {element.title}\n{prompt}",
+                    correct_answer=text,
                     fact_id=fact_id,
                     split=assignments[element.element_id],
                 )
@@ -713,6 +730,305 @@ def title_alias_keys(value: str) -> set[str]:
         if len(parenthetical) >= 2:
             keys.add(parenthetical)
     return {key for key in keys if key}
+
+
+def visible_title_aliases(value: str) -> tuple[str, ...]:
+    """Return title phrases that would reveal a choice's source concept."""
+    normalized = normalize_text(value)
+    aliases = {normalized}
+    without_parenthetical = normalize_text(re.sub(r"\([^)]*\)", "", normalized))
+    if without_parenthetical:
+        aliases.add(without_parenthetical)
+    aliases.update(
+        normalize_text(match.group(1))
+        for match in re.finditer(r"\(([^)]*)\)", normalized)
+        if len(normalized_key(match.group(1))) >= 2
+    )
+    for segment in re.split(r"\s*[·,/—–]\s*|(?<=[가-힣])(?:과|와)\s+", normalized):
+        cleaned = normalize_text(re.sub(r"\([^)]*\)", "", segment))
+        if len(normalized_key(cleaned)) >= 4:
+            aliases.add(cleaned)
+    for token in re.findall(r"[A-Za-z][A-Za-z0-9-]{1,}", normalized):
+        aliases.add(token)
+    return tuple(sorted((item for item in aliases if item), key=lambda item: (-len(item), item)))
+
+
+def _visible_alias_pattern(alias: str) -> str:
+    escaped = re.escape(alias)
+    if re.fullmatch(r"[A-Za-z][A-Za-z0-9-]*", alias):
+        return rf"(?<![A-Za-z0-9]){escaped}(?![A-Za-z0-9])"
+    return escaped
+
+
+def mask_title_mentions(text: str, title: str) -> str:
+    """Hide the source term while preserving the source-backed description."""
+    result = normalize_text(text)
+    particle_replacements = {
+        "은": "이 개념은",
+        "는": "이 개념은",
+        "이": "이 개념이",
+        "가": "이 개념이",
+        "을": "이 개념을",
+        "를": "이 개념을",
+        "과": "이 개념과",
+        "와": "이 개념과",
+        "으로": "이 개념으로",
+        "로": "이 개념으로",
+        "의": "이 개념의",
+    }
+    for alias in visible_title_aliases(title):
+        flags = re.IGNORECASE if re.search(r"[A-Za-z]", alias) else 0
+        pattern = _visible_alias_pattern(alias)
+        for particle in sorted(particle_replacements, key=len, reverse=True):
+            result = re.sub(
+                pattern + re.escape(particle),
+                particle_replacements[particle],
+                result,
+                flags=flags,
+            )
+        result = re.sub(pattern, "이 개념", result, flags=flags)
+    result = re.sub(r"(?:이 개념\s*){2,}", "이 개념 ", result)
+    return normalize_text(result)
+
+
+VERBAL_RELATION_OVERRIDES = {
+    "ACC-02": "현금이 오간 시점과 관계없이 수익은 벌어들인 기간에, 비용은 부담한 기간에 기록한다.",
+    "ACC-03": "회수하지 못할 것으로 예상하는 금액이 커질수록 장부에 표시되는 순수취 가능액은 작아진다.",
+    "ACC-04": "판매할 수 있는 원가 중 더 많은 금액을 기말에 남겨 두면 당기 비용으로 배분되는 금액은 작아진다.",
+    "ACC-05": "사용기간에 배분한 비용이 누적될수록 자산의 장부금액은 줄고, 매각대금과 남은 장부금액의 차이가 매각 성과가 된다.",
+    "ACC-09": "본업, 장기자산 투자, 차입·증자·배당에서 생긴 현금 변화를 합치면 한 기간의 전체 현금 증감이 된다.",
+    "ACC-10": "비현금 비용은 당기 이익과 자산 장부금액을 줄이지만 당기 영업현금을 직접 줄이지는 않는다.",
+    "ACC-11": "같은 이익이라도 매출이나 사용 자산이 더 크면 표준화한 성과비율은 낮아질 수 있다.",
+    "CF-03": "미래 유입액의 현재가치가 초기 투자액보다 크면 현재의 부를 늘리고, 작으면 부를 줄인다.",
+    "CF-04": "투자의 내재 수익 경계가 요구수익률보다 높으면 가치가 남지만 현금흐름 방향이 여러 번 바뀌면 경계가 여럿 생길 수 있다.",
+    "CF-06": "시장과 함께 움직이는 위험 노출이 커질수록 투자자가 요구하는 추가 보상도 커진다.",
+    "CF-08": "부채 비중이 커질수록 남은 이익을 받는 주주의 위험과 요구수익률이 함께 높아진다.",
+    "CF-09": "투자안을 선택했을 때만 달라지는 현금은 포함하고, 이미 지출해 되돌릴 수 없는 금액은 제외한다.",
+    "INV-02": "가능한 결과가 평균에서 더 넓게 흩어질수록 측정되는 위험은 커진다.",
+    "INV-01": "여러 기간 성과를 단순 합산해 평균하면 다음 한 기간의 기대치를, 복리로 누적하면 실제 장기 성장속도를 더 잘 보여 준다.",
+    "INV-05": "시장과 같은 방향으로 더 민감하게 움직일수록 체계적 위험 노출이 커지지만 고유위험까지 뜻하지는 않는다.",
+    "INV-03": "두 자산이 같은 방향으로 움직일수록 동행 측정값은 커지고, 반대 방향으로 움직일수록 작아진다.",
+    "INV-07": "여러 공통 위험요인에 대한 노출이나 각 요인의 보상이 커질수록 자산에 요구되는 기대수익도 커진다.",
+    "FI-01": "시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간다.",
+    "FI-02": "서로 다른 만기의 누적 투자수익이 같아지도록 중간 구간의 미래 금리가 정해진다.",
+    "FI-03": "금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으로 더 크게 움직인다.",
+    "FI-04": "금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을 잘 설명한다.",
+    "FI-05": "자산과 부채의 현재가치 및 금리 민감도를 맞추면 작은 금리 변화에서 양쪽 가치 변동이 대체로 상쇄된다.",
+    "FI-06": "현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄된다.",
+    "FI-07": "담보가치에서 더 큰 완충 비율을 떼어 둘수록 빌려주는 현금은 줄고 가격변동 보호는 커진다.",
+    "FI-10": "부도 가능성이나 손실률이 커질수록 평균 신용손실과 투자자가 요구하는 보상은 커진다.",
+    "DER-07": "상승·하락 상태의 가중값은 실제 예측확률이 아니라 복제 포트폴리오와 같은 현재가격을 만들도록 정해진다.",
+    "DER-04": "살 권리는 시장가격이 약정가격보다 높을 때, 팔 권리는 시장가격이 약정가격보다 낮을 때 만기 가치가 생긴다.",
+    "DER-05": "매수할 때 지급한 프리미엄이 커질수록 이익으로 전환되는 기초자산 가격의 경계는 더 멀어진다.",
+    "DER-09": "기초자산, 변동성, 시간, 금리가 변하면 각각에 대한 민감도만큼 옵션가치가 함께 움직인다.",
+    "EQV-03": "영업이익이 커질수록 세후 영업성과는 커지고, 영업 관련 세율이 높을수록 그 성과는 작아진다.",
+    "EQV-04": "매출에 비해 영업자산이 더 많이 묶이거나 영업부채 조달이 줄면 필요한 운전자금과 현금 유출이 커진다.",
+    "EQV-05": "장기자산 지출이 당기 비용 배분액보다 크면 생산기반을 순확장하는 투자 규모가 커진다.",
+    "EQV-10": "장부자본 한 단위에 붙는 시장가치 배수는 앞으로 낼 주주수익성과 자본비용의 차이가 클수록 높아지는 경향이 있다.",
+    "EQV-11": "주주와 채권자의 합산 가치는 자본구조 전 영업성과와 비교해야 청구권 기준이 맞는다.",
+    "EQV-12": "세후 영업성과에서 설비와 운전자본에 다시 묶인 금액을 빼면 전체 자본 제공자에게 남는 현금이 된다.",
+    "EQV-18": "영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다.",
+    "EQV-17": "현재가격과 목표가격의 격차가 클수록 잠재 수익은 커지지만 위험과 도달기간도 함께 고려해야 한다.",
+    "EQV-21": "판매단가와 판매수량이 모두 변하면 어느 요인을 먼저 적용하는지에 따라 둘의 교호효과가 귀속되는 곳이 달라진다.",
+    "EQV-23": "기존 고객의 축소와 이탈이 클수록 유지되는 반복 매출 비중은 낮아지고, 확장이 크면 순유지 성과는 높아진다.",
+    "EQV-26": "거래총액에 적용하는 수수료율이 높을수록 순매출은 늘지만 과도한 인상은 이용자 이탈로 거래총액을 줄일 수 있다.",
+    "EQV-27": "판매량이 고정비를 회수하는 경계를 넘은 뒤에는 추가 단위의 공헌액이 이익으로 더 빠르게 쌓인다.",
+    "EQV-29": "회계이익에 비해 영업현금이 약할수록 비현금 조정 비중은 커지고 이익이 현금으로 이어지는 정도는 나빠진다.",
+    "EQV-31": "서비스를 먼저 제공했지만 아직 청구조건을 충족하지 못하면 매출을 인식해도 미청구 권리가 늘어난다.",
+    "EQV-32": "상품 판매 속도가 느려지고 예상 손실에 대비한 적립 비중까지 높아지면 수요와 회수 품질 악화 가능성이 커진다.",
+    "EQV-36": "리스 관련 채무를 순부채에 포함했다면 영업성과와 비교 배수도 같은 회계 기준으로 맞춰야 한다.",
+    "EQV-38": "과거의 세무상 손실은 미래 과세소득이 충분할 때만 절세에 사용할 수 있다.",
+    "EQV-39": "인수가격 중 식별 가능한 순자산을 넘는 부분은 인수 후 기대 현금흐름이 약해지면 손상될 수 있다.",
+    "EQV-41": "세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다.",
+    "EQV-42": "같은 투하자본 수익성이라도 영업마진을 높이거나 자본을 더 빠르게 회전시키는 두 경로로 만들 수 있다.",
+    "EQV-43": "추가로 투입한 자본에서 생긴 세후 영업성과가 클수록 신규투자의 수익성은 높아진다.",
+    "EQV-44": "주주수익성은 세금부담, 이자부담, 영업마진, 자산회전, 재무레버리지의 결합으로 나뉜다.",
+    "EQV-45": "이익을 사업에 다시 투입하는 비중과 신규자본의 수익성이 높을수록 지속 가능한 확장 속도는 빨라진다.",
+    "EQV-47": "전체 자본 제공자에게 남는 현금, 보통주주에게 남는 현금, 요구수익을 넘는 이익은 귀속주체에 맞는 할인율과 연결해야 한다.",
+    "EQV-48": "기말잔액은 기초잔액에 기간 중 증가 요인을 더하고 감소 요인을 빼서 이어진다.",
+    "EQV-49": "장기 성장속도를 높게 잡을수록 이를 뒷받침하는 자본 투입도 늘어야 하며 그렇지 않으면 먼 미래 가치가 과대해진다.",
+    "EQV-51": "현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다.",
+    "EQV-54": "한 입력만 바꾸면 개별 영향이 드러나고, 여러 입력을 일관된 방향으로 함께 바꾸면 하나의 미래 경로가 된다.",
+    "EQV-55": "대출 등 자산금리가 예금 등 조달금리보다 더 빠르게 오르면 이자마진이 개선되고 반대면 축소된다.",
+    "EQV-56": "유형 보통주자본 대비 이익이 높아도 규제상 손실흡수 자본이 부족하면 지속 가능한 수익성으로 보기 어렵다.",
+    "EQV-63": "사용 가능한 현금과 미사용 한도가 많고 단기 의무나 현금소진이 작을수록 버틸 수 있는 기간이 길어진다.",
+    "EQV-62": "시장 기대를 바꿀 구체적 사건이 가까우며 결과가 예상보다 좋을수록 목표가격이 현실화될 가능성이 커진다.",
+    "IBT-01": "명목금리 상승분보다 물가상승분이 크면 구매력 기준 수익은 낮아지고, 그 반대면 높아진다.",
+    "IBT-08": "인수회사의 주가가 낮을수록 고정된 인수가치를 지급하기 위해 넘겨야 할 신주 수는 많아진다.",
+    "IBT-10": "새로 발행하는 주식이 상장 후 전체 주식에서 차지하는 비중이 클수록 기존주주의 소유비율 감소도 커진다.",
+    "IBT-11": "공모가격이나 상장 후 주식수가 커질수록 상장 후 시가총액이 커지고, 이익이 같다면 이익 대비 배수도 높아진다.",
+    "IBT-12": "잠재 임대수입에서 공실과 운영비 부담이 커질수록 부동산이 창출하는 영업소득은 작아진다.",
+    "IBT-07": "인수 후 합산 이익이 늘어도 대가로 발행한 주식수가 더 빠르게 늘면 기존 주주의 주당이익은 줄 수 있다.",
+    "IBT-13": "투자자가 요구하는 부동산 수익률이 높아질수록 같은 영업소득이 만드는 자산가치는 낮아진다.",
+    "IBT-14": "대출액이 같아도 담보가치가 하락하면 담보 대비 대출 비중과 채권자 위험은 커진다.",
+    "IBT-15": "운영소득이 원리금 상환액보다 더 클수록 채무를 감당할 수 있는 여유가 커진다.",
+    "IBT-16": "같은 총분배금이라도 현금을 더 빨리 회수할수록 연환산 투자수익은 높아진다.",
+    "IBT-18": "위험사건의 발생 가능성이나 발생 시 손실이 커질수록 평균 손실 추정치도 커진다.",
+}
+
+DISPLAY_FACT_OVERRIDES = {
+    (
+        "ACC-03",
+        "definition",
+    ): "외상매출 중 회수하지 못할 것으로 예상되는 금액을 미리 반영해 순수취 가능액을 현실적으로 표시하는 계정이다.",
+    (
+        "ACC-08",
+        "definition",
+    ): "단기 영업에 묶인 자산에서 단기 영업으로 조달한 부채를 뺀 차이로 일상 영업의 자금 소요를 보여 준다.",
+    (
+        "CF-12",
+        "definition",
+    ): "영업자산 전체 가치에서 채권자 등 다른 청구권을 조정해 보통주주 몫과 주당가치를 구하는 연결 과정이다.",
+    (
+        "INV-08",
+        "definition",
+    ): "초과수익을 총위험, 시장위험 또는 시장위험 기준수익과 비교해 위험조정 성과를 평가하는 세 가지 지표다.",
+    (
+        "DER-06",
+        "definition",
+    ): "같은 만기와 행사가를 가진 유럽형 콜·풋의 가치를 주식과 무위험채권 조합에 연결하는 무차익 관계다.",
+    (
+        "FI-07",
+        "intuition",
+    ): "담보가격이 떨어질 수 있어 전액을 빌려주지 않는다. 담보에서 떼어 두는 완충 비율이 커질수록 대출액은 줄고 보호는 커지며, 만기에는 원금과 약정 이자를 합쳐 되산다.",
+    (
+        "IBT-13",
+        "intuition",
+    ): "같은 영업소득이라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 요구수익률에도 사려 하므로 가치가 높다. 요구수익률이 조금만 올라가도 가치가 크게 내려간다.",
+    (
+        "EQV-05",
+        "definition",
+    ): "새로 지출한 장기자산 투자액에서 기존 자산의 당기 가치소모액을 뺀 자산기반의 순증가분이다.",
+    (
+        "EQV-11",
+        "definition",
+    ): "영업자산에 대한 투자자 전체의 가치를 이자·세금·감가상각 전 영업성과와 비교하는 배수다.",
+    (
+        "EQV-21",
+        "definition",
+    ): "매출변화를 판매단가 변화와 판매수량 변화로 나누고 두 변화가 겹치는 효과의 귀속 기준을 정하는 분석이다.",
+    (
+        "EQV-26",
+        "definition",
+    ): "플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비를 차감한 뒤 남는 이익을 연결하는 분석이다.",
+    (
+        "EQV-29",
+        "definition",
+    ): "회계이익 중 실제 영업현금으로 뒷받침되는 정도를 비현금 조정과 현금 유입의 관점에서 측정한다.",
+    (
+        "EQV-32",
+        "intuition",
+    ): "재고나 매출채권이 매출보다 빨리 늘어도 출시 준비나 계절성 때문일 수 있다. 그러나 판매와 회수가 계속 느려지고 예상손실 대비 적립 비중까지 올라가면 수요약화·반품·회수위험의 신호일 가능성이 커진다.",
+    (
+        "EQV-45",
+        "definition",
+    ): "회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속 가능한 확장 속도를 결정한다는 원리다.",
+    (
+        "EQV-45",
+        "intuition",
+    ): "돈을 많이 다시 넣는다고 좋은 확장은 아니다. 신규투자 수익률이 자본비용보다 낮으면 규모와 이익은 커져도 가치가 파괴되며, 높은 수익률의 투자기회가 있을 때 재투입이 가치가 된다.",
+    (
+        "EQV-47",
+        "intuition",
+    ): "어떤 모형이든 현금 또는 이익의 귀속주체와 할인율을 맞춰야 한다. 은행처럼 부채가 영업재료인 회사는 전체 자본 기준 현금보다 주주 현금이나 초과이익 기준이 더 자연스럽다.",
+}
+
+DISPLAY_FACT_OVERRIDES.update(
+    {
+        ("ACC-07", "definition"): "보통주주에게 귀속되는 이익을 해당 기간 실제로 유통된 보통주식수의 시간가중 평균으로 나눈 주당 성과다.",
+        ("ACC-09", "intuition"): "순이익이 흑자여도 고객에게 돈을 못 받거나 설비를 크게 사면 현금은 줄 수 있다. 본업, 장기자산 투자, 차입·증자·배당에서 생긴 현금 움직임을 구분해 봐야 한다.",
+        ("ACC-10", "intuition"): "감가상각은 이익을 줄이지만 그날 현금이 나가지는 않는다. 당기 비용, 영업현금의 비현금 조정, 자산 장부금액 감소로 서로 다르게 나타난다.",
+        ("ACC-12", "definition"): "주주수익성을 이익률, 자산 효율, 재무레버리지로 나누어 성과의 원인을 설명하는 방법이다.",
+        ("CF-02", "definition"): "일정하거나 일정률로 커지는 반복 현금흐름을 한 시점의 가치로 묶어 계산하는 모형이다.",
+        ("CF-04", "intuition"): "투자가 견딜 수 있는 할인율의 경계로 볼 수 있다. 그 경계가 요구수익률보다 높으면 가치가 남지만 현금흐름 방향이 여러 번 바뀌면 경계가 여럿 생길 수 있다.",
+        ("CF-10", "definition"): "영업과 재투자 뒤 기업의 모든 자본 제공자에게 남는 현금과 보통주주에게 남는 현금을 각각 측정하는 두 기준이다.",
+        ("CF-10", "intuition"): "이자 지급 전 현금은 채권자와 주주가 함께 나눌 몫이고, 이자와 순차입까지 반영한 현금은 주주 몫이다. 귀속주체에 따라 적용할 할인율도 달라진다.",
+        ("INV-01", "intuition"): "한 기간의 성과는 시작한 돈에 비해 얼마를 벌었는지 보면 된다. 여러 기간을 단순 평균하면 다음 한 기간의 기대치를, 복리로 누적하면 실제 장기 성장속도를 더 잘 보여 준다.",
+        ("INV-02", "definition"): "가능한 결과의 중심과 그 주변에 흩어지는 정도를 각 결과의 발생확률까지 반영해 측정한다.",
+        ("INV-05", "intuition"): "시장민감도가 1.5라면 시장이 움직일 때 같은 방향으로 더 크게 움직이는 경향이 있다는 뜻이지, 반드시 1.5배 수익을 보장한다는 뜻은 아니다. 회사 고유위험까지 모두 담지는 않는다.",
+        ("INV-09", "definition"): "벤치마크 대비 수익의 흔들림과 그 위험 한 단위당 평균 초과수익을 함께 측정하는 두 지표다.",
+        ("FI-01", "definition"): "약정된 쿠폰과 원금을 시장 요구수익률로 할인한 현재가치와, 그 현재가치를 설명하는 만기수익률을 연결한다.",
+        ("FI-02", "definition"): "오늘부터 특정 만기까지 적용되는 금리와 서로 다른 만기의 금리가 암시하는 미래 구간 금리를 연결한다.",
+        ("FI-03", "definition"): "채권 현금흐름을 회수하는 가중평균 시점과 이를 수익률 변화에 대한 가격 민감도로 바꾼 값을 구분한다.",
+        ("FI-04", "definition"): "금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함께 측정한다.",
+        ("FI-07", "definition"): "증권을 담보로 현금을 빌린 뒤 더 높은 가격으로 되사는 단기금융 거래와, 담보가치 중 대출하지 않는 완충분을 뜻한다.",
+        ("FI-08", "definition"): "현물채권 가격과 전환계수로 조정한 선물가격의 차이를 비교해 인도자에게 가장 유리한 후보 채권을 찾는다.",
+        ("FI-09", "definition"): "같은 명목원금에 대해 고정 이자와 변동 이자를 교환하고 두 지급 흐름의 현재가치가 같아지는 고정금리를 찾는다.",
+        ("DER-09", "intuition"): "기초자산에 대한 일차 민감도만 맞추면 아주 작은 가격변화에는 중립이지만, 가격이 움직이면 그 민감도 자체도 달라진다. 변동성 변화와 시간경과의 영향도 함께 봐야 한다.",
+        ("EQV-11", "intuition"): "시가총액만 비교하면 부채가 많은 회사를 싸게 볼 수 있다. 주주와 채권자 몫을 함께 보는 가치와 자본구조 전 영업성과처럼 청구권 기준이 맞는 두 값을 비교해야 한다.",
+        ("EQV-23", "intuition"): "고객 수가 줄어도 남은 고객의 사용량과 가격이 크게 늘면 기존 반복매출이 순증할 수 있다. 확장을 제외한 보존율은 기존 매출을 얼마나 지켰는지 더 엄격하게 보여 준다.",
+        ("EQV-24", "intuition"): "고객 한 명의 장기 공헌액이 유치비보다 커도 회수기간이 지나치게 길면 빠른 성장 중 현금이 고갈될 수 있다. 가입시기별 유지율과 마진을 함께 봐야 한다.",
+        ("EQV-26", "intuition"): "플랫폼에서 큰 금액이 거래돼도 회사 매출은 그중 수수료 몫뿐이다. 수수료율을 무리하게 올리면 판매자와 이용자가 떠나 전체 거래규모가 줄 수 있다.",
+        ("EQV-28", "definition"): "확보한 주문잔고의 변화를 추적하고 신규수주가 현재 매출을 얼마나 대체하는지 보여 주는 선행지표다.",
+        ("EQV-31", "definition"): "청구액·선이행 권리·선수 의무를 통해 청구, 수익인식, 현금수취의 시점 차이를 연결하는 계약사업 지표다.",
+        ("EQV-31", "intuition"): "고객에게 먼저 청구하고 돈을 받아도 아직 서비스를 제공하지 않았다면 매출이 아니라 이행 의무가 남는다. 반대로 일을 먼저 했지만 청구조건을 못 채우면 미청구 권리가 생긴다.",
+        ("EQV-35", "definition"): "옵션·제한조건부주식·전환증권이 미래 보통주식수를 얼마나 늘려 기존 주주의 몫을 줄이는지 측정한다.",
+        ("EQV-54", "intuition"): "낙관적인 미래 경로는 할인율만 낮추는 것이 아니라 수요, 가격, 마진, 재투자가 하나의 서사로 연결돼야 한다. 한 변수의 영향과 여러 변수가 함께 움직이는 세계를 구분해 본다.",
+        ("EQV-55", "definition"): "대출·증권의 이자수익, 예금·차입의 이자비용, 평균이자수익자산과 예금금리 전가속도를 연결해 은행의 핵심 영업수익성을 본다.",
+        ("EQV-56", "intuition"): "충당금 환입으로 이익이 늘어도 대출의 기초 건전성이 좋아졌는지 확인해야 한다. 유형자본 수익성이 높아도 규제상 손실흡수 자본이 부족하면 지속 가능하지 않을 수 있다.",
+        ("IBT-16", "intuition"): "같은 총이익이라도 현금을 더 빨리 회수한 투자의 연환산 수익은 높다. 레버리지를 쓰면 자기자본 수익이 커질 수 있지만 손실과 재융자 위험도 함께 커진다.",
+    }
+)
+
+
+def verbal_relation_text(element: ElementRecord) -> str:
+    """Derive a formula-free relation statement from reviewed source prose."""
+    override = VERBAL_RELATION_OVERRIDES.get(element.element_id)
+    if override:
+        return normalize_text(override)
+    sentences = [
+        normalize_text(item)
+        for item in re.split(r"(?<=[.!?])\s+", element.intuition)
+        if normalize_text(item)
+    ]
+    if not sentences:
+        raise ConceptModelError(f"{element.element_id} has no intuition sentence")
+    return sentences[-1]
+
+
+def display_fact_text(element: ElementRecord, fact_type: str) -> str:
+    override = DISPLAY_FACT_OVERRIDES.get((element.element_id, fact_type))
+    if override:
+        source = override
+    elif fact_type == "definition":
+        source = element.definition
+    elif fact_type == "intuition":
+        source = element.intuition
+    elif fact_type == "verbal_relation":
+        source = verbal_relation_text(element)
+    else:
+        raise ConceptModelError(f"Unsupported v2 fact type: {fact_type}")
+    result = mask_title_mentions(source, element.title)
+    if not result:
+        raise ConceptModelError(f"{element.element_id}/{fact_type} became empty after masking")
+    if fact_type == "verbal_relation" and FORMULA_CHOICE_RE.search(result):
+        raise ConceptModelError(
+            f"{element.element_id} verbal relation still contains formula notation: {result}"
+        )
+    return result
+
+
+def fact_type_for_question(question_type: str) -> str:
+    mapping = {
+        "term_to_definition": "definition",
+        "term_to_intuition": "intuition",
+        "term_to_verbal_relation": "verbal_relation",
+    }
+    try:
+        return mapping[question_type]
+    except KeyError as error:
+        raise ConceptModelError(f"Unsupported v2 question type: {question_type}") from error
+
+
+def text_mentions_title(text: str, title: str) -> bool:
+    normalized = normalize_text(text)
+    for alias in visible_title_aliases(title):
+        if re.search(r"[A-Za-z]", alias):
+            if re.search(_visible_alias_pattern(alias), normalized, flags=re.IGNORECASE):
+                return True
+        elif alias in normalized:
+            return True
+    return False
 
 
 def eligible_candidate_indices(
@@ -1432,7 +1748,7 @@ def evaluate_ranking(
         relevant_total = sum(value >= 2 for value in all_relevance)
         retrieved_relevance = [
             _effective_relevance(context, question_index, candidate_index, human_labels)
-            for candidate_index in retrieved[question_index]
+            for candidate_index in retrieved[question_index][:20]
         ]
         recall_values.append(
             sum(value >= 2 for value in retrieved_relevance) / max(1, relevant_total)
@@ -1488,21 +1804,33 @@ def _question_bank(
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     questions: list[dict[str, Any]] = []
     answer_leaks = 0
+    term_leaks = 0
+    formula_choices = 0
     duplicate_choices = 0
     ambiguous_questions = 0
     ambiguous_question_ids: list[str] = []
+    element_by_id = {element.element_id: element for element in context.elements}
     for question_index, question in enumerate(context.questions):
         target = context.elements[question.element_index]
+        fact_type = fact_type_for_question(question.question_type)
         selected: list[tuple[int, float]] = []
         seen_titles = set(title_alias_keys(target.title))
+        seen_choice_texts = {normalized_key(display_fact_text(target, fact_type))}
         # A ranked candidate can still be an obviously weak distractor. Prefer the
         # weak/human relevance >= 2 pool, then fall back only when a question does
         # not have four distinct viable alternatives. This is an output safety
         # constraint; validation/test model selection remains untouched.
         for minimum_relevance in (2, 0):
             for candidate_index, score in ranked[question_index]:
-                title_keys = title_alias_keys(context.elements[candidate_index].title)
+                candidate = context.elements[candidate_index]
+                title_keys = title_alias_keys(candidate.title)
                 if not title_keys or not seen_titles.isdisjoint(title_keys):
+                    continue
+                candidate_text = display_fact_text(candidate, fact_type)
+                candidate_text_key = normalized_key(candidate_text)
+                if not candidate_text_key or candidate_text_key in seen_choice_texts:
+                    continue
+                if text_mentions_title(candidate_text, target.title):
                     continue
                 if (
                     _effective_relevance(
@@ -1515,6 +1843,7 @@ def _question_bank(
                 ):
                     continue
                 seen_titles.update(title_keys)
+                seen_choice_texts.add(candidate_text_key)
                 selected.append((candidate_index, score))
                 if len(selected) == 4:
                     break
@@ -1535,8 +1864,9 @@ def _question_bank(
         raw_choices: list[dict[str, Any]] = [
             {
                 "elementId": target.element_id,
-                "text": target.title,
-                "explanation": target.definition,
+                "factId": f"{target.element_id}:{fact_type}:01",
+                "text": display_fact_text(target, fact_type),
+                "explanation": f"{target.title}: {display_fact_text(target, fact_type)}",
                 "isCorrect": True,
             }
         ]
@@ -1545,8 +1875,11 @@ def _question_bank(
             raw_choices.append(
                 {
                     "elementId": candidate.element_id,
-                    "text": candidate.title,
-                    "explanation": candidate.definition,
+                    "factId": f"{candidate.element_id}:{fact_type}:01",
+                    "text": display_fact_text(candidate, fact_type),
+                    "explanation": (
+                        f"{candidate.title}: {display_fact_text(candidate, fact_type)}"
+                    ),
                     "isCorrect": False,
                 }
             )
@@ -1559,21 +1892,27 @@ def _question_bank(
             {"key": CHOICE_KEYS[index], **choice}
             for index, choice in enumerate(raw_choices)
         ]
-        choice_aliases = [title_alias_keys(choice["text"]) for choice in choices]
-        if any(
-            not left.isdisjoint(right)
-            for index, left in enumerate(choice_aliases)
-            for right in choice_aliases[index + 1 :]
-        ):
+        choice_text_keys = [normalized_key(str(choice["text"])) for choice in choices]
+        if len(set(choice_text_keys)) != len(choice_text_keys):
             duplicate_choices += 1
-        correct_keys = title_alias_keys(target.title)
-        if any(
-            not title_alias_keys(choice["text"]).isdisjoint(correct_keys)
-            and not choice["isCorrect"]
-            for choice in choices
-        ):
+        if any(text_mentions_title(str(choice["text"]), target.title) for choice in choices):
             answer_leaks += 1
-        difficulty = 1 if question.question_type == "definition_to_term" else 2
+        term_leaks += sum(
+            text_mentions_title(
+                str(choice["text"]),
+                element_by_id[str(choice["elementId"])].title,
+            )
+            for choice in choices
+        )
+        if question.question_type == "term_to_verbal_relation":
+            formula_choices += sum(
+                bool(FORMULA_CHOICE_RE.search(str(choice["text"]))) for choice in choices
+            )
+        difficulty = {
+            "term_to_definition": 1,
+            "term_to_intuition": 2,
+            "term_to_verbal_relation": 3,
+        }[question.question_type]
         questions.append(
             {
                 "questionId": question.question_id,
@@ -1581,8 +1920,8 @@ def _question_bank(
                 "questionType": question.question_type,
                 "stem": question.stem,
                 "explanation": (
-                    f"정답은 {target.title}입니다. {target.definition} "
-                    f"{target.intuition}"
+                    f"정답 설명: {display_fact_text(target, fact_type)} "
+                    f"용어: {target.title}."
                 ),
                 "difficulty": difficulty,
                 "modelVersion": model_version,
@@ -1599,6 +1938,7 @@ def _question_bank(
         )
     bank: dict[str, Any] = {
         "bankVersion": BANK_VERSION,
+        "contractVersion": CONTRACT_VERSION,
         "modelVersion": model_version,
         "selectedEmbedding": selected_embedding,
         "selectedRetrievalProfile": selected_retrieval,
@@ -1612,6 +1952,8 @@ def _question_bank(
     bank["bankSha256"] = _sha256_bytes(_stable_json_bytes(bank))
     safety = {
         "answerLeakCount": answer_leaks,
+        "termLeakCount": term_leaks,
+        "formulaChoiceCount": formula_choices,
         "duplicateChoiceCount": duplicate_choices,
         "ambiguousQuestionCount": ambiguous_questions,
         "ambiguousQuestionIds": ambiguous_question_ids,
@@ -1642,6 +1984,7 @@ def _question_review_fingerprint(question: Mapping[str, Any]) -> str:
             {
                 "key": choice.get("key"),
                 "elementId": choice.get("elementId"),
+                "factId": choice.get("factId"),
                 "text": choice.get("text"),
                 "explanation": choice.get("explanation"),
                 "isCorrect": choice.get("isCorrect"),
@@ -1680,7 +2023,14 @@ def _apply_question_edits(
                 )
             question["stem"] = str(edit["stem"])
             question["explanation"] = str(edit["explanation"])
-            question["choices"] = [dict(choice) for choice in edit["choices"]]
+            fact_type = fact_type_for_question(str(question.get("questionType")))
+            question["choices"] = [
+                {
+                    **dict(choice),
+                    "factId": f"{choice['elementId']}:{fact_type}:01",
+                }
+                for choice in edit["choices"]
+            ]
             edited_count += 1
     return edited_count
 
@@ -1693,6 +2043,8 @@ def _recompute_question_safety(
     elements_by_id = {element.element_id: element for element in context.elements}
     element_indices = {element.element_id: index for index, element in enumerate(context.elements)}
     answer_leaks = 0
+    term_leaks = 0
+    formula_choices = 0
     duplicate_choices = 0
     ambiguous_question_ids: list[str] = []
     questions = bank.get("questions", [])
@@ -1703,31 +2055,30 @@ def _recompute_question_safety(
         choices = question.get("choices")
         if target is None or not isinstance(choices, list):
             continue
-        choice_aliases = [
-            title_alias_keys(str(choice.get("text", "")))
+        choice_text_keys = [
+            normalized_key(str(choice.get("text", "")))
             for choice in choices
             if isinstance(choice, Mapping)
         ]
-        if any(
-            not left.isdisjoint(right)
-            for index, left in enumerate(choice_aliases)
-            for right in choice_aliases[index + 1 :]
-        ):
+        if len(choice_text_keys) != len(set(choice_text_keys)):
             duplicate_choices += 1
-        correct_aliases = set(title_alias_keys(target.title))
-        correct_choice = next(
-            (choice for choice in choices if isinstance(choice, Mapping) and choice.get("isCorrect")),
-            None,
-        )
-        if isinstance(correct_choice, Mapping):
-            correct_aliases.update(title_alias_keys(str(correct_choice.get("text", ""))))
         if any(
-            not title_alias_keys(str(choice.get("text", ""))).isdisjoint(correct_aliases)
-            and not bool(choice.get("isCorrect"))
+            text_mentions_title(str(choice.get("text", "")), target.title)
             for choice in choices
             if isinstance(choice, Mapping)
         ):
             answer_leaks += 1
+        for choice in choices:
+            if not isinstance(choice, Mapping):
+                continue
+            source = elements_by_id.get(str(choice.get("elementId")))
+            if source is None or text_mentions_title(str(choice.get("text", "")), source.title):
+                term_leaks += 1
+            if (
+                str(question.get("questionType")) == "term_to_verbal_relation"
+                and FORMULA_CHOICE_RE.search(str(choice.get("text", "")))
+            ):
+                formula_choices += 1
         weak_distractor = False
         for choice in choices:
             if not isinstance(choice, Mapping) or bool(choice.get("isCorrect")):
@@ -1740,6 +2091,8 @@ def _recompute_question_safety(
             ambiguous_question_ids.append(str(question.get("questionId")))
     return {
         "answerLeakCount": answer_leaks,
+        "termLeakCount": term_leaks,
+        "formulaChoiceCount": formula_choices,
         "duplicateChoiceCount": duplicate_choices,
         "ambiguousQuestionCount": len(ambiguous_question_ids),
         "ambiguousQuestionIds": ambiguous_question_ids,
@@ -1753,7 +2106,16 @@ def _load_previous_question_bank(path: Path) -> dict[str, Any] | None:
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, UnicodeDecodeError, json.JSONDecodeError):
         return None
-    return value if isinstance(value, dict) else None
+    if not isinstance(value, dict):
+        return None
+    if value.get("bankVersion") != BANK_VERSION or value.get("contractVersion") != CONTRACT_VERSION:
+        return None
+    question_types = {
+        str(item.get("questionType"))
+        for item in value.get("questions", [])
+        if isinstance(item, Mapping)
+    }
+    return value if question_types == V2_QUESTION_TYPES else None
 
 
 def _review_reason(
@@ -1998,6 +2360,7 @@ def _apply_automated_review_profile(
         item = {
             "questionId": question_id,
             "elementId": target_id,
+            "questionType": raw_question.get("questionType"),
             "split": context.questions[question_index].split,
             "questionFingerprint": fingerprint,
             "severity": "block" if hard_reasons else "review",
@@ -2232,7 +2595,12 @@ def _package_version(module_name: str) -> str | None:
     return str(getattr(module, "__version__", "unknown"))
 
 
-def _append_admin_history(path: Path, experiment: Mapping[str, Any]) -> dict[str, Any]:
+def _append_admin_history(
+    path: Path,
+    experiment: Mapping[str, Any],
+    *,
+    replace: bool = False,
+) -> dict[str, Any]:
     existing: dict[str, Any] = {}
     if path.exists():
         try:
@@ -2241,7 +2609,7 @@ def _append_admin_history(path: Path, experiment: Mapping[str, Any]) -> dict[str
                 existing = value
         except (OSError, UnicodeDecodeError, json.JSONDecodeError):
             existing = {}
-    history = existing.get("experiments", [])
+    history = [] if replace else existing.get("experiments", [])
     if not isinstance(history, list):
         history = []
     experiment_id = str(experiment["experimentId"])
@@ -2249,6 +2617,7 @@ def _append_admin_history(path: Path, experiment: Mapping[str, Any]) -> dict[str
     history.insert(0, dict(experiment))
     result = {
         "reportVersion": REPORT_VERSION,
+        "contractVersion": CONTRACT_VERSION,
         "latestExperimentId": experiment_id,
         "experiments": history[:30],
     }
@@ -2570,6 +2939,8 @@ def _render_experiment_markdown(experiment: Mapping[str, Any]) -> str:
             "| 안전성 검사 | 값 |",
             "|---|---:|",
             f"| 정답 누출 | {_md_cell(safety.get('answerLeakCount'))} |",
+            f"| 선택지 출처 용어 노출 | {_md_cell(safety.get('termLeakCount'))} |",
+            f"| 관계 선택지 수식 노출 | {_md_cell(safety.get('formulaChoiceCount'))} |",
             f"| 중복 선택지 | {_md_cell(safety.get('duplicateChoiceCount'))} |",
             f"| 약한 오답 포함 문항 | {_md_cell(safety.get('ambiguousQuestionCount'))} |",
             "",
@@ -2586,7 +2957,7 @@ def _render_experiment_markdown(experiment: Mapping[str, Any]) -> str:
     lines.extend(
         [
             "",
-            "## 10. 환경과 산출물",
+            "## 11. 환경과 산출물",
             "",
             "### 환경",
             "",
@@ -2599,7 +2970,7 @@ def _render_experiment_markdown(experiment: Mapping[str, Any]) -> str:
     lines.extend(["", "### 산출물", "", "| 항목 | 값 |", "|---|---|"])
     for key, value in artifacts.items():
         lines.append(f"| {_md_cell(key)} | `{_md_cell(value)}` |")
-    lines.extend(["", "## 11. 참고문헌", ""])
+    lines.extend(["", "## 12. 참고문헌", ""])
     if fusion.get("referenceUrl"):
         lines.append(f"- [{_md_cell(fusion.get('reference'))}]({_md_cell(fusion.get('referenceUrl'))})")
     for reference in references:
@@ -2621,7 +2992,7 @@ def _render_markdown_index(experiments: Sequence[Mapping[str, Any]]) -> str:
         "Admin 시각화는 `admin/data/concept-model-experiments.generated.json`을 사용하고, 이 MD들은 감사·비교·의사결정 이력으로 유지한다.",
         "",
         "- 설계 기준: [개념형 5지선다 오프라인 모델링 설계서](CONCEPT_MCQ_MODELING_DESIGN.md)",
-        "- 생성 명령: `python tools/train_concept_question_model.py --write-question-bank --write-admin-report --write-markdown-report`",
+        "- 생성 명령: `python tools/train_concept_question_model.py --all-embeddings --ranker all --write-question-bank --write-admin-report --write-markdown-report`",
         "- 원칙: validation으로 조합을 선택하고 선택된 한 조합에만 test를 실행한다.",
         "",
         "| 실험 | 시각 | 상태 | 후보 임베딩 | 실행 조합 | 선택 구성 | val NDCG@4 | test NDCG@4 | 사람 test | 보고서 |",
@@ -2657,6 +3028,8 @@ def _render_markdown_index(experiments: Sequence[Mapping[str, Any]]) -> str:
 def write_markdown_history(
     report_dir: Path,
     history: Mapping[str, Any],
+    *,
+    prune: bool = False,
 ) -> list[Path]:
     raw_experiments = history.get("experiments")
     if not isinstance(raw_experiments, list):
@@ -2666,11 +3039,16 @@ def write_markdown_history(
     written: list[Path] = []
     for experiment in experiments:
         experiment_id = str(experiment.get("experimentId", "")).strip()
-        if not re.fullmatch(r"cmq-[0-9]{8}-[0-9]{6}-[0-9a-f]{8}", experiment_id):
+        if not re.fullmatch(r"cmq-v2-[0-9]{8}-[0-9]{6}-[0-9a-f]{8}", experiment_id):
             raise ConceptModelError(f"Unsafe experiment id for Markdown report: {experiment_id}")
         path = report_dir / f"{experiment_id}.md"
         _atomic_text(path, _render_experiment_markdown(experiment))
         written.append(path)
+    if prune:
+        keep = {path.resolve() for path in written}
+        for stale in report_dir.glob("cmq-*.md"):
+            if stale.resolve() not in keep:
+                stale.unlink()
     _atomic_text(report_dir.parent / "README.md", _render_markdown_index(experiments))
     return written
 
@@ -2784,6 +3162,7 @@ def run_experiment(
     write_question_bank: bool = False,
     write_admin_report: bool = False,
     write_markdown_report: bool = False,
+    replace_admin_history: bool = False,
     progress: ProgressBar | None = None,
 ) -> dict[str, Any]:
     config_path = _resolve_repo_path(config_path)
@@ -3169,10 +3548,24 @@ def run_experiment(
         ),
         _gate(
             "answer-leak",
-            "정답 누출 건수",
+            "문제 용어가 선택지에 노출된 문항 수",
             safety["answerLeakCount"],
             int(gates_config["maximumAnswerLeakCount"]),
             safety["answerLeakCount"] <= int(gates_config["maximumAnswerLeakCount"]),
+        ),
+        _gate(
+            "source-term-leak",
+            "선택지 출처 용어 노출 건수",
+            safety["termLeakCount"],
+            int(gates_config["maximumTermLeakCount"]),
+            safety["termLeakCount"] <= int(gates_config["maximumTermLeakCount"]),
+        ),
+        _gate(
+            "formula-choice",
+            "관계형 선택지 수식 노출 건수",
+            safety["formulaChoiceCount"],
+            int(gates_config["maximumFormulaChoiceCount"]),
+            safety["formulaChoiceCount"] <= int(gates_config["maximumFormulaChoiceCount"]),
         ),
         _gate(
             "duplicate-choice",
@@ -3208,13 +3601,14 @@ def run_experiment(
         _atomic_json(bank_path, bank)
     finished_wall = datetime.now(timezone.utc)
     experiment_id = (
-        f"cmq-{started_wall.strftime('%Y%m%d-%H%M%S')}-{config_hash[:8]}"
+        f"cmq-v2-{started_wall.strftime('%Y%m%d-%H%M%S')}-{config_hash[:8]}"
     )
     split_counts = Counter(assignments.values())
     question_split_counts = Counter(item.split for item in questions)
     report: dict[str, Any] = {
         "experimentId": experiment_id,
         "reportVersion": REPORT_VERSION,
+        "contractVersion": CONTRACT_VERSION,
         "status": "release_ready" if release_ready else "candidate",
         "releaseReady": release_ready,
         "releaseBlockReason": None
@@ -3279,7 +3673,11 @@ def run_experiment(
             "hyperparameters": selected["hyperparameters"],
             "validationNdcgAt4": selected["validation"]["ndcgAt4"],
             "selectionTolerance": tolerance,
-            "reason": "최고 validation NDCG@4와 1%p 이내에서 임베딩·랭커 복잡도를 먼저 낮추고, 같은 비용군에서는 validation NDCG@4 최고 조합을 선택",
+            "reason": (
+                "validation NDCG@4의 엄격한 최고점만 후보로 두고, 정확히 동률일 때만 임베딩·랭커 복잡도를 낮춰 선택"
+                if math.isclose(tolerance, 0.0, abs_tol=1e-12)
+                else f"최고 validation NDCG@4와 {tolerance:.3f} 이내에서 임베딩·랭커 복잡도를 먼저 낮춰 선택"
+            ),
             "modelSha256": selected["modelSha256"],
             "modelBytes": selected["modelBytes"],
         },
@@ -3319,7 +3717,11 @@ def run_experiment(
     _atomic_json(build_dir / "latest-report.json", report)
     history: dict[str, Any] | None = None
     if write_admin_report:
-        history = _append_admin_history(admin_report_path, report)
+        history = _append_admin_history(
+            admin_report_path,
+            report,
+            replace=replace_admin_history,
+        )
     if write_markdown_report:
         if history is None:
             existing: dict[str, Any] = {}
@@ -3339,10 +3741,15 @@ def run_experiment(
             ]
             history = {
                 "reportVersion": REPORT_VERSION,
+                "contractVersion": CONTRACT_VERSION,
                 "latestExperimentId": experiment_id,
                 "experiments": [report, *merged][:30],
             }
-        write_markdown_history(markdown_report_dir, history)
+        write_markdown_history(
+            markdown_report_dir,
+            history,
+            prune=replace_admin_history,
+        )
     renderer.update(
         100,
         "개념형 모델링 실험 완료",
@@ -3391,6 +3798,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--write-question-bank", action="store_true")
     parser.add_argument("--write-admin-report", action="store_true")
     parser.add_argument("--write-markdown-report", action="store_true")
+    parser.add_argument(
+        "--replace-admin-history",
+        action="store_true",
+        help="Replace prior concept-model history with this clean v2 baseline run",
+    )
     parser.add_argument(
         "--refresh-reference-catalog",
         action="store_true",
@@ -3445,6 +3857,7 @@ def main(argv: Iterable[str] | None = None) -> int:
         write_question_bank=args.write_question_bank,
         write_admin_report=args.write_admin_report,
         write_markdown_report=args.write_markdown_report or args.write_admin_report,
+        replace_admin_history=args.replace_admin_history,
         progress=ProgressBar(not args.quiet),
     )
     print(

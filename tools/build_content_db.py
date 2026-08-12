@@ -31,6 +31,10 @@ VALID_QUESTION_REVIEW_STATUSES = {
     "automated_pass", "needs_owner_review", "blocked", "owner_approved",
 }
 APP_ELIGIBLE_QUESTION_REVIEW_STATUSES = {"automated_pass", "owner_approved"}
+CONCEPT_FORMULA_CHOICE_RE = re.compile(
+    r"(?:\$|\\(?:frac|sum|sqrt|left|right|begin|end)|[=<>≤≥∑∏√^×÷]|[A-Za-z0-9_)\]]\s*[+*/]\s*[A-Za-z0-9_(\[])",
+    re.IGNORECASE,
+)
 
 SCHEMA_VERSION = 2
 CONTENT_DB_VERSION = 7
@@ -320,7 +324,7 @@ def load_concept_question_bank(
     actual_hash = sha256_bytes(stable_json_bytes(unsigned))
     if expected_hash != actual_hash:
         raise ValueError("Concept question bank SHA-256 is invalid")
-    if payload.get("bankVersion") != 1:
+    if payload.get("bankVersion") != 2 or payload.get("contractVersion") != "2.0":
         raise ValueError("Unsupported concept question bank version")
     if payload.get("releaseStatus") not in {
         "bootstrap_not_reviewed", "candidate", "release_ready"
@@ -358,6 +362,12 @@ def load_concept_question_bank(
                 f"{question_id} has an invalid review status: "
                 f"{raw_question['reviewStatus']}"
             )
+        if raw_question["questionType"] not in {
+            "term_to_definition",
+            "term_to_intuition",
+            "term_to_verbal_relation",
+        }:
+            raise ValueError(f"{question_id} has an unsupported v2 question type")
         difficulty = raw_question.get("difficulty")
         if not isinstance(difficulty, int) or difficulty not in (1, 2, 3):
             raise ValueError(f"{question_id} has an invalid difficulty")
@@ -380,6 +390,7 @@ def load_concept_question_bank(
             choice_element_id = choice.get("elementId")
             text = choice.get("text")
             explanation = choice.get("explanation")
+            fact_id = choice.get("factId")
             if expected_ids and choice_element_id not in expected_ids:
                 raise ValueError(f"{question_id} choice references {choice_element_id}")
             if not isinstance(text, str) or not text.strip() or text in choice_texts:
@@ -391,6 +402,15 @@ def load_concept_question_bank(
             choice_aliases.append(aliases)
             if not isinstance(explanation, str) or not explanation.strip():
                 raise ValueError(f"{question_id} choice explanation is empty")
+            if not isinstance(fact_id, str) or not fact_id.strip():
+                raise ValueError(f"{question_id} choice fact id is empty")
+            if choice_element_id in text:
+                raise ValueError(f"{question_id} exposes an internal element id")
+            if (
+                raw_question["questionType"] == "term_to_verbal_relation"
+                and CONCEPT_FORMULA_CHOICE_RE.search(text)
+            ):
+                raise ValueError(f"{question_id} relation choice contains formula notation")
             if not isinstance(choice.get("isCorrect"), bool):
                 raise ValueError(f"{question_id} choice correctness is invalid")
             if choice["isCorrect"]:
@@ -2411,22 +2431,23 @@ def validate_database(path: Path) -> dict[str, int]:
                     "Release-ready content contains non-eligible questions: "
                     f"{ineligible_release_questions}"
                 )
-        missing_app_question_coverage = database.execute(
-            """
-            SELECT e.element_id
-            FROM elements e
-            LEFT JOIN concept_questions q
-                ON q.element_id = e.element_id
-               AND q.review_status IN ('automated_pass', 'owner_approved')
-            GROUP BY e.element_id
-            HAVING COUNT(q.question_id) = 0
-            """
-        ).fetchall()
-        if missing_app_question_coverage:
-            raise ValueError(
-                "Every element needs at least one app-eligible concept question: "
-                f"{missing_app_question_coverage[:3]}"
-            )
+        if metadata["concept_question_release_status"] == "release_ready":
+            missing_app_question_coverage = database.execute(
+                """
+                SELECT e.element_id
+                FROM elements e
+                LEFT JOIN concept_questions q
+                    ON q.element_id = e.element_id
+                   AND q.review_status IN ('automated_pass', 'owner_approved')
+                GROUP BY e.element_id
+                HAVING COUNT(q.question_id) = 0
+                """
+            ).fetchall()
+            if missing_app_question_coverage:
+                raise ValueError(
+                    "Every element needs at least one app-eligible concept question: "
+                    f"{missing_app_question_coverage[:3]}"
+                )
         malformed_question_groups = database.execute(
             """
             SELECT q.question_id

@@ -18,7 +18,28 @@ type ConceptOption = {
   elementId: string;
   title: string;
   definition: string;
+  intuition: string;
 };
+
+function maskTerm(text: string, title: string) {
+  const aliases = new Set([title, title.replace(/\([^)]*\)/gu, "").trim()]);
+  for (const match of title.matchAll(/\(([^)]*)\)/gu)) {
+    if (match[1]?.trim()) aliases.add(match[1].trim());
+  }
+  return [...aliases]
+    .filter(Boolean)
+    .sort((left, right) => right.length - left.length)
+    .reduce((copy, alias) => copy.replaceAll(alias, "이 개념"), text)
+    .replace(/(?:이 개념\s*){2,}/gu, "이 개념 ")
+    .trim();
+}
+
+function suggestedChoiceText(option: ConceptOption, questionType: string) {
+  if (questionType === "term_to_definition") return maskTerm(option.definition, option.title);
+  if (questionType === "term_to_intuition") return maskTerm(option.intuition, option.title);
+  const sentences = option.intuition.split(/(?<=[.!?])\s+/u).filter(Boolean);
+  return maskTerm(sentences.at(-1) ?? option.intuition, option.title);
+}
 
 export function ConceptExceptionReview({
   items,
@@ -76,13 +97,14 @@ export function ConceptExceptionReview({
     });
   }
 
-  function changeDraftChoice(questionId: string, index: number, elementId: string) {
+  function changeDraftChoice(item: QueueItem, index: number, elementId: string) {
     const option = conceptOptions.find((candidate) => candidate.elementId === elementId);
     if (!option) return;
-    updateDraftChoice(questionId, index, {
+    const text = suggestedChoiceText(option, item.questionType);
+    updateDraftChoice(item.questionId, index, {
       elementId: option.elementId,
-      text: option.title,
-      explanation: option.definition,
+      text,
+      explanation: `${option.title}: ${text}`,
     });
   }
 
@@ -210,36 +232,36 @@ export function ConceptExceptionReview({
               ) : <p className="concept-review-stem">{item.stem}</p>}
               <div className="table-scroll">
                 <table className="data-table">
-                  <thead><tr><th>선택지</th><th>개념</th><th>판정</th><th>설명</th></tr></thead>
+                  <thead><tr><th>선택지</th><th>화면에 보이는 설명</th><th>판정</th><th>출처 용어·검토 메모</th></tr></thead>
                   <tbody>{item.choices.map((choice, choiceIndex) => {
                     const draftChoice = draft?.choices[choiceIndex] ?? choice;
+                    const sourceOption = conceptOptions.find((option) => option.elementId === draftChoice.elementId);
                     return (
                       <tr key={choice.key}>
                         <td><strong>{choice.key}</strong></td>
-                        <td>{editing ? <select
-                          className="concept-review-input concept-review-select"
-                          value={draftChoice.elementId}
-                          onChange={(event) => changeDraftChoice(item.questionId, choiceIndex, event.target.value)}
-                          disabled={!canReview || busy || choice.isCorrect}
-                          aria-label={`${choice.key} 개념`}
-                        >
-                          {!conceptOptions.some((option) => option.elementId === draftChoice.elementId) ? (
-                            <option value={draftChoice.elementId}>{draftChoice.text} ({draftChoice.elementId})</option>
-                          ) : null}
-                          {conceptOptions.map((option) => (
-                            <option key={option.elementId} value={option.elementId}>{option.title} ({option.elementId})</option>
-                          ))}
-                        </select> : <span className="concept-review-choice-copy"><strong>{choice.text}</strong><small>{choice.elementId}</small></span>}</td>
+                        <td>{editing ? <textarea
+                          className="concept-review-input"
+                          rows={4}
+                          value={draftChoice.text}
+                          onChange={(event) => updateDraftChoice(item.questionId, choiceIndex, { text: event.target.value })}
+                          maxLength={2000}
+                          disabled={!canReview || busy}
+                          aria-label={`${choice.key} 화면 설명`}
+                        /> : <span className="concept-review-choice-copy"><strong>{choice.text}</strong></span>}</td>
                         <td>{choice.isCorrect ? "정답" : "오답"}</td>
                         <td>{editing ? <div className="concept-review-choice-fields">
-                          <input
-                            className="concept-review-input"
-                            value={draftChoice.text}
-                            onChange={(event) => updateDraftChoice(item.questionId, choiceIndex, { text: event.target.value })}
-                            maxLength={2000}
-                            disabled={!canReview || busy}
-                            aria-label={`${choice.key} 보기`}
-                          />
+                          <select
+                            className="concept-review-input concept-review-select"
+                            value={draftChoice.elementId}
+                            onChange={(event) => changeDraftChoice(item, choiceIndex, event.target.value)}
+                            disabled={!canReview || busy || choice.isCorrect}
+                            aria-label={`${choice.key} 출처 용어`}
+                          >
+                            {!sourceOption ? <option value={draftChoice.elementId}>{draftChoice.elementId}</option> : null}
+                            {conceptOptions.map((option) => (
+                              <option key={option.elementId} value={option.elementId}>{option.title}</option>
+                            ))}
+                          </select>
                           <textarea
                             className="concept-review-input"
                             rows={2}
@@ -249,7 +271,7 @@ export function ConceptExceptionReview({
                             disabled={!canReview || busy}
                             aria-label={`${choice.key} 보기 해설`}
                           />
-                        </div> : choice.explanation}</td>
+                        </div> : <span className="concept-review-choice-copy"><strong>{sourceOption?.title ?? choice.elementId}</strong><small>{choice.elementId}</small>{choice.explanation}</span>}</td>
                       </tr>
                     );
                   })}</tbody>

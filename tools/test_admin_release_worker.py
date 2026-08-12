@@ -29,7 +29,7 @@ class AdminReleaseWorkerTest(unittest.TestCase):
             database.commit()
         return base
 
-    def test_build_projects_revision_and_rebuilds_search(self) -> None:
+    def test_concept_revision_requires_question_model_rerun(self) -> None:
         with closing(sqlite3.connect(worker.PACKAGED_DATABASE)) as database:
             row = database.execute(
                 """SELECT concept_id,element_id,title,definition,intuition,scope_notes
@@ -60,47 +60,13 @@ class AdminReleaseWorkerTest(unittest.TestCase):
             base_database = self.release_ready_base(directory)
             database_path = directory / "content.sqlite3"
             manifest_path = directory / "content-manifest.json"
-            manifest = worker.build_release_bundle(
-                base_database,
-                database_path,
-                manifest_path,
-                self.release(),
-                [revision],
-            )
-
-            self.assertEqual(self.release()["content_version"], manifest["contentDbVersion"])
-            self.assertEqual("release_ready", manifest["conceptQuestionReleaseStatus"])
-            self.assertEqual("clean-rebuild", manifest["buildMode"])
-            self.assertEqual(worker.sha256_file(database_path), manifest["sha256"])
-            self.assertEqual(worker.canonical_json_bytes(manifest), manifest_path.read_bytes())
-            validation = worker.validate_release_database(database_path, manifest)
-            self.assertEqual("passed", validation.status)
-            with closing(sqlite3.connect(database_path)) as database:
-                self.assertEqual(0, database.execute("PRAGMA freelist_count").fetchone()[0])
-                self.assertEqual(
-                    changed_definition,
-                    database.execute(
-                        "SELECT definition FROM concept_cards WHERE concept_id=?",
-                        (row[0],),
-                    ).fetchone()[0],
-                )
-                self.assertIn(
-                    "자동 릴리스 검증 문구",
-                    database.execute(
-                        "SELECT normalized_text FROM knowledge_fts WHERE element_id=?",
-                        (row[1],),
-                    ).fetchone()[0],
-                )
-                self.assertEqual(
-                    405,
-                    database.execute("SELECT COUNT(*) FROM concept_questions").fetchone()[0],
-                )
-                self.assertIn(
-                    "자동 릴리스 검증 문구",
-                    database.execute(
-                        "SELECT explanation FROM concept_questions WHERE element_id=? LIMIT 1",
-                        (row[1],),
-                    ).fetchone()[0],
+            with self.assertRaisesRegex(worker.ReleaseWorkerError, "human review"):
+                worker.build_release_bundle(
+                    base_database,
+                    database_path,
+                    manifest_path,
+                    self.release(),
+                    [revision],
                 )
 
     def test_bootstrap_question_bank_blocks_stable_release(self) -> None:

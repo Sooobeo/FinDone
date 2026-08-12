@@ -16,7 +16,7 @@ vi.mock("@/lib/concept-model-report", () => ({
     experiments: [{
       automatedReview: {
         queue: [{
-          questionId: "CF-07-core_relation_to_term-01",
+          questionId: "CF-07-term_to_verbal_relation-01",
           questionFingerprint: "a".repeat(64),
           severity: "review",
         }],
@@ -49,7 +49,7 @@ describe("concept model review route", () => {
 
   it("records an owner decision only for the exact current fingerprint", async () => {
     const response = await POST(request({
-      questionId: "CF-07-core_relation_to_term-01",
+      questionId: "CF-07-term_to_verbal_relation-01",
       questionFingerprint: "a".repeat(64),
       decision: "approved",
       comment: "선택지 확인 완료",
@@ -58,7 +58,7 @@ describe("concept model review route", () => {
     expect(response.status).toBe(200);
     expect(mocks.rpc).toHaveBeenCalledWith("submit_concept_question_review", {
       p_review_input_sha256: "c".repeat(64),
-      p_question_id: "CF-07-core_relation_to_term-01",
+      p_question_id: "CF-07-term_to_verbal_relation-01",
       p_question_fingerprint: "a".repeat(64),
       p_decision: "approved",
       p_comment: "선택지 확인 완료",
@@ -67,7 +67,7 @@ describe("concept model review route", () => {
 
   it("rejects a stale fingerprint", async () => {
     const response = await POST(request({
-      questionId: "CF-07-core_relation_to_term-01",
+      questionId: "CF-07-term_to_verbal_relation-01",
       questionFingerprint: "b".repeat(64),
       decision: "approved",
     }));
@@ -78,7 +78,7 @@ describe("concept model review route", () => {
 
   it("requires a reason when rejecting", async () => {
     const response = await POST(request({
-      questionId: "CF-07-core_relation_to_term-01",
+      questionId: "CF-07-term_to_verbal_relation-01",
       questionFingerprint: "a".repeat(64),
       decision: "rejected",
       comment: "",
@@ -91,7 +91,7 @@ describe("concept model review route", () => {
   it("rejects users without review capability", async () => {
     mocks.getAdminCapabilities.mockResolvedValue({ canReview: false });
     const response = await POST(request({
-      questionId: "CF-07-core_relation_to_term-01",
+      questionId: "CF-07-term_to_verbal_relation-01",
       questionFingerprint: "a".repeat(64),
       decision: "approved",
     }));

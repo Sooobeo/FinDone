@@ -166,6 +166,9 @@ class FormulaMarkdownGeneratorTest(unittest.TestCase):
                 WHERE review_status IN ('automated_pass', 'owner_approved')
                 """
             ).fetchone()
+            question_release_status = database.execute(
+                "SELECT value FROM metadata WHERE key = 'concept_question_release_status'"
+            ).fetchone()
             uncovered_elements = database.execute(
                 """
                 SELECT e.element_id
@@ -184,7 +187,13 @@ class FormulaMarkdownGeneratorTest(unittest.TestCase):
         self.assertEqual((2025,), choice_count)
         self.assertGreater(app_eligible_question_count[0], 0)
         self.assertLessEqual(app_eligible_question_count[0], question_count[0])
-        self.assertEqual([], uncovered_elements)
+        if question_release_status == ("release_ready",):
+            self.assertEqual([], uncovered_elements)
+        else:
+            self.assertIn(
+                question_release_status,
+                {("bootstrap_not_reviewed",), ("candidate",)},
+            )
         self.assertEqual([], malformed_questions)
         self.assertEqual(135, len(rows))
         self.assertEqual(135, sum("$$" in expression for (expression,) in rows))

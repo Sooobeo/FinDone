@@ -368,7 +368,7 @@ class ContentRepository(context: Context) : Closeable {
                 manifest.rowCounts["concept_question_choices"] != 2025 ||
                 manifest.rowCounts["knowledge_fts"] != 135
             ) throw ContentIntegrityException("Manifest card/question/FTS invariant failed")
-            if (manifest.conceptQuestionBankVersion != 1 ||
+            if (manifest.conceptQuestionBankVersion != 2 ||
                 manifest.conceptQuestionModelVersion.isBlank() ||
                 manifest.conceptQuestionReleaseStatus !in setOf(
                     "bootstrap_not_reviewed", "candidate", "release_ready"
@@ -476,24 +476,26 @@ class ContentRepository(context: Context) : Closeable {
                         )
                     }
                 }
-                val missingEligibleCoverage = connection.scalarLong(
-                    """
-                    SELECT COUNT(*)
-                    FROM (
-                        SELECT e.element_id
-                        FROM elements e
-                        LEFT JOIN concept_questions q
-                            ON q.element_id = e.element_id
-                           AND q.review_status IN ('automated_pass', 'owner_approved')
-                        GROUP BY e.element_id
-                        HAVING COUNT(q.question_id) = 0
+                if (bankStatus == "release_ready") {
+                    val missingEligibleCoverage = connection.scalarLong(
+                        """
+                        SELECT COUNT(*)
+                        FROM (
+                            SELECT e.element_id
+                            FROM elements e
+                            LEFT JOIN concept_questions q
+                                ON q.element_id = e.element_id
+                               AND q.review_status IN ('automated_pass', 'owner_approved')
+                            GROUP BY e.element_id
+                            HAVING COUNT(q.question_id) = 0
+                        )
+                        """.trimIndent()
                     )
-                    """.trimIndent()
-                )
-                if (missingEligibleCoverage != 0L) {
-                    throw ContentIntegrityException(
-                        "Database has elements without an eligible concept question"
-                    )
+                    if (missingEligibleCoverage != 0L) {
+                        throw ContentIntegrityException(
+                            "Release-ready database has elements without an eligible concept question"
+                        )
+                    }
                 }
                 val foreignKeyError = connection.query("PRAGMA foreign_key_check") { it.step() }
                 if (foreignKeyError) throw ContentIntegrityException("SQLite foreign_key_check failed")

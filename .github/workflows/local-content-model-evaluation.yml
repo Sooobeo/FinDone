@@ -52,7 +52,7 @@ jobs:
       # The v1 description-to-term generator is intentionally retired. Restore
       # training and review sync only after the v2 term-to-description contract
       # is implemented and covered by the repository preflight.
-      - name: Verify concept-question v2 reset contract
+      - name: Verify active concept-question v2 contract
         run: python tools/validate_concept_question_reset.py
 
       - name: Upload measured model report

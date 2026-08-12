@@ -90,6 +90,7 @@ export interface ConceptExperiment {
     queue: Array<{
       questionId: string;
       elementId: string;
+      questionType: "term_to_definition" | "term_to_intuition" | "term_to_verbal_relation";
       split: string;
       questionFingerprint: string;
       severity: "review" | "block";
@@ -98,6 +99,7 @@ export interface ConceptExperiment {
       choices: Array<{
         key: string;
         elementId: string;
+        factId?: string;
         text: string;
         explanation: string;
         isCorrect: boolean;
@@ -151,6 +153,8 @@ export interface ConceptExperiment {
   };
   safety: {
     answerLeakCount: number;
+    termLeakCount: number;
+    formulaChoiceCount: number;
     duplicateChoiceCount: number;
     ambiguousQuestionCount: number;
   };

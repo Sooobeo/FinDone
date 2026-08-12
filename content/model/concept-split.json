@@ -186,6 +186,6 @@
     ]
   },
   "splitSeed": 20260811,
-  "splitSha256": "e1555069fc32ea58f91fbd3d34d9ba91e735ceb7f782082368d87606b0d75dc7",
-  "splitVersion": "element-split-v1"
+  "splitSha256": "e407a33649ecd2ff7391a6a6ff6138d7427aa7d00f6d297ee00091bd881a94b0",
+  "splitVersion": "element-split-v2"
 }

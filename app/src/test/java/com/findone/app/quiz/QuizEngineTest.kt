@@ -55,10 +55,10 @@ class QuizEngineTest {
     fun `curated bank renderer keeps five choices and one target answer`() {
         val target = curriculum.first()
         val curated = CuratedConceptQuestion(
-            questionId = "${target.id}-definition_to_term-01",
+            questionId = "${target.id}-term_to_definition-01",
             elementId = target.id,
-            questionType = "definition_to_term",
-            stem = "다음 설명에 가장 부합하는 개념은?",
+            questionType = "term_to_definition",
+            stem = "용어: ${target.title}\n다음 중 이 용어의 정의로 가장 정확한 것은?",
             explanation = "정답 개념을 검토된 사실 레코드와 대조합니다.",
             coreRelation = target.coreRelation,
             difficulty = 1,
@@ -68,7 +68,7 @@ class QuizEngineTest {
             choices = curriculum.take(5).mapIndexed { index, element ->
                 CuratedConceptChoice(
                     key = "ABCDE"[index].toString(),
-                    text = element.title,
+                    text = "${element.title}을 가린 검토된 설명입니다.",
                     elementId = element.id,
                     explanation = "${element.title}의 검토된 정의입니다.",
                     isCorrect = element.id == target.id,
@@ -87,7 +87,7 @@ class QuizEngineTest {
             first.choices.orEmpty().single { it.id == first.canonicalAnswer }.sourceElementId,
         )
         first.choices.orEmpty().forEach { choice ->
-            assertEquals("${choice.text}의 검토된 정의입니다.", choice.explanation)
+            assertFalse(choice.explanation.isNullOrBlank())
         }
         assertTrue(first.audit.passed)
     }

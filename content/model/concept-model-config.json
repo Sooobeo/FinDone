@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "modelVersion": "findone-concept-ranker-v0-bootstrap",
-  "featureVersion": "concept-ranker-features-v1",
-  "splitVersion": "element-split-v1",
+  "modelVersion": "findone-concept-ranker-v2-baseline",
+  "featureVersion": "concept-ranker-features-v2-term-to-description",
+  "splitVersion": "element-split-v2",
   "splitSeed": 20260811,
   "splitCounts": {
     "train": 95,
@@ -10,15 +10,15 @@
     "test": 20
   },
   "questionTypes": [
-    "definition_to_term",
-    "intuition_to_term",
-    "core_relation_to_term"
+    "term_to_definition",
+    "term_to_intuition",
+    "term_to_verbal_relation"
   ],
-  "retrievalLimit": 20,
+  "retrievalLimit": 30,
   "choiceCount": 5,
   "distractorCount": 4,
   "pairwiseMaxPairsPerQuestion": 80,
-  "embeddingSelectionTolerance": 0.01,
+  "embeddingSelectionTolerance": 0.0,
   "canonicalWeakSupervisionProfile": "balanced",
   "fusionBaseline": {
     "method": "reciprocal_rank_fusion",
@@ -264,14 +264,16 @@
     "minimumRetrievalRecallAt20": 0.95,
     "minimumTestNdcgAt4": 0.8,
     "minimumTestPrecisionAt4": 0.9,
-    "minimumQuestionsPerElement": 2,
+    "minimumQuestionsPerElement": 3,
     "maximumAnswerLeakCount": 0,
+    "maximumTermLeakCount": 0,
+    "maximumFormulaChoiceCount": 0,
     "maximumDuplicateChoiceCount": 0,
     "maximumAmbiguousQuestionCount": 0,
     "requireDeterministicBank": true
   },
   "automatedReview": {
-    "policyVersion": "concept-auto-review-v1",
+    "policyVersion": "concept-auto-review-v2",
     "minimumDistractorRelevance": 2,
     "requireOwnerBatchApproval": true,
     "reviewChangedChoiceSet": false,

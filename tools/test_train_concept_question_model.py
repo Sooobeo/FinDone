@@ -43,8 +43,26 @@ class ConceptQuestionModelTest(unittest.TestCase):
             set(Counter(question.element_id for question in self.questions).values()),
         )
         self.assertEqual(
-            {"definition_to_term", "intuition_to_term", "core_relation_to_term"},
+            {"term_to_definition", "term_to_intuition", "term_to_verbal_relation"},
             {question.question_type for question in self.questions},
+        )
+        self.assertEqual(
+            0,
+            sum(
+                model.text_mentions_title(
+                    fact.text,
+                    next(item.title for item in self.elements if item.element_id == fact.element_id),
+                )
+                for fact in self.facts
+            ),
+        )
+        self.assertEqual(
+            0,
+            sum(
+                bool(model.FORMULA_CHOICE_RE.search(fact.text))
+                for fact in self.facts
+                if fact.fact_type == "verbal_relation"
+            ),
         )
 
     def test_duplicate_title_alias_is_never_a_distractor(self) -> None:
@@ -140,6 +158,8 @@ class ConceptQuestionModelTest(unittest.TestCase):
     def test_checked_in_question_bank_is_five_choice_candidate(self) -> None:
         bank = json.loads(model.DEFAULT_BANK.read_text(encoding="utf-8"))
 
+        self.assertEqual(2, bank["bankVersion"])
+        self.assertEqual("2.0", bank["contractVersion"])
         self.assertEqual(405, bank["questionCount"])
         self.assertIn(bank["releaseStatus"], {"candidate", "release_ready"})
         self.assertEqual(405, len(bank["questions"]))
@@ -151,6 +171,10 @@ class ConceptQuestionModelTest(unittest.TestCase):
             self.assertEqual(["A", "B", "C", "D", "E"], [item["key"] for item in choices])
             self.assertEqual(5, len({item["text"] for item in choices}))
             self.assertEqual(1, sum(bool(item["isCorrect"]) for item in choices))
+            self.assertIn(question["questionType"], model.V2_QUESTION_TYPES)
+            self.assertTrue(all(item.get("factId") for item in choices))
+            if question["questionType"] == "term_to_verbal_relation":
+                self.assertFalse(any(model.FORMULA_CHOICE_RE.search(item["text"]) for item in choices))
             self.assertIn(
                 question["reviewStatus"],
                 {"automated_pass", "needs_owner_review", "blocked", "owner_approved"},
@@ -196,7 +220,7 @@ class ConceptQuestionModelTest(unittest.TestCase):
                 json.dumps(
                     {
                         "type": "question",
-                        "questionId": "ACC-01-definition_to_term-01",
+                        "questionId": "ACC-01-term_to_definition-01",
                         "questionFingerprint": fingerprint,
                         "decision": "approved",
                         "reviewerId": "owner",
@@ -218,7 +242,7 @@ class ConceptQuestionModelTest(unittest.TestCase):
 
         self.assertEqual(
             "approved",
-            question_decisions[("ACC-01-definition_to_term-01", fingerprint)].decision,
+            question_decisions[("ACC-01-term_to_definition-01", fingerprint)].decision,
         )
         self.assertEqual("approved", batch_decisions["b" * 64].decision)
 
@@ -226,7 +250,7 @@ class ConceptQuestionModelTest(unittest.TestCase):
         question = {
             "questionId": "Q-1",
             "elementId": "ACC-01",
-            "questionType": "definition_to_term",
+            "questionType": "term_to_definition",
             "stem": "old stem",
             "explanation": "old explanation",
             "difficulty": 1,

@@ -17,7 +17,7 @@ vi.mock("@/lib/concept-model-report", () => ({
       automatedReview: {
         reviewInputSha256: "c".repeat(64),
         queue: [{
-          questionId: "CF-07-core_relation_to_term-01",
+          questionId: "CF-07-term_to_verbal_relation-01",
           elementId: "CF-07",
           questionFingerprint: "a".repeat(64),
           severity: "block",
@@ -60,7 +60,7 @@ describe("concept model edit route", () => {
 
   it("records a valid edit for the exact current fingerprint", async () => {
     const response = await POST(request({
-      questionId: "CF-07-core_relation_to_term-01",
+      questionId: "CF-07-term_to_verbal_relation-01",
       questionFingerprint: "a".repeat(64),
       stem: "edited stem",
       explanation: "edited explanation",
@@ -71,7 +71,7 @@ describe("concept model edit route", () => {
     expect(response.status).toBe(200);
     expect(mocks.rpc).toHaveBeenCalledWith("submit_concept_question_edit", expect.objectContaining({
       p_review_input_sha256: "c".repeat(64),
-      p_question_id: "CF-07-core_relation_to_term-01",
+      p_question_id: "CF-07-term_to_verbal_relation-01",
       p_question_fingerprint: "a".repeat(64),
       p_element_id: "CF-07",
     }));
@@ -79,7 +79,7 @@ describe("concept model edit route", () => {
 
   it("rejects a stale fingerprint", async () => {
     const response = await POST(request({
-      questionId: "CF-07-core_relation_to_term-01",
+      questionId: "CF-07-term_to_verbal_relation-01",
       questionFingerprint: "b".repeat(64),
       stem: "edited stem",
       explanation: "edited explanation",
@@ -94,7 +94,7 @@ describe("concept model edit route", () => {
     const changedChoices = choices();
     changedChoices[0].elementId = "CF-99";
     const response = await POST(request({
-      questionId: "CF-07-core_relation_to_term-01",
+      questionId: "CF-07-term_to_verbal_relation-01",
       questionFingerprint: "a".repeat(64),
       stem: "edited stem",
       explanation: "edited explanation",
