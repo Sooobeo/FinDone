@@ -2535,6 +2535,14 @@ p {
 .concept-review-actions > code { overflow: hidden; color: var(--muted); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
 .concept-review-actions .button { min-height: 36px; font-size: 11px; }
 .concept-review-message { margin: -5px 0 0 !important; padding: 9px 11px; background: var(--surface-soft); color: var(--teal-800) !important; font-size: 11px !important; }
+.concept-review-editor { display: grid; gap: 10px; }
+.concept-review-edit-toolbar { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+.concept-review-edit-toolbar > span { margin-right: auto; color: var(--muted); font-size: 11px; }
+.concept-review-input { width: 100%; min-width: 0; padding: 8px 9px; color: var(--ink); background: #fff; border: 1px solid var(--line-strong); border-radius: 7px; outline: 0; font: inherit; font-size: 12px; line-height: 1.45; }
+.concept-review-input:focus { border-color: var(--teal-700); box-shadow: 0 0 0 3px rgba(36, 122, 105, .1); }
+.concept-review-input:disabled { background: var(--surface-soft); color: var(--muted); }
+.concept-review-choice-fields { display: grid; gap: 6px; min-width: 220px; }
+.concept-review-choice-fields textarea { resize: vertical; }
 
 .route-loading-state { min-height: 280px; padding: 28px; display: grid; place-items: center; align-content: center; gap: 12px; text-align: center; }
 .route-loading-state > svg { color: var(--teal-700); }

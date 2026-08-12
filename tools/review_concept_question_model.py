@@ -26,6 +26,7 @@ from tools.admin_import_supabase import normalize_supabase_url, resolve_supabase
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_REPORT = ROOT / "admin" / "data" / "concept-model-experiments.generated.json"
 DEFAULT_DECISIONS = ROOT / "content" / "model" / "concept-owner-decisions.jsonl"
+DEFAULT_EDITS = ROOT / "content" / "model" / "concept-question-edits.jsonl"
 MAX_SYNC_RESPONSE_BYTES = 1024 * 1024
 
 
@@ -261,6 +262,56 @@ def merge_remote_question_decisions(
     return merged, added
 
 
+def merge_remote_question_edits(
+    experiment: Mapping[str, Any],
+    existing_rows: list[dict[str, Any]],
+    remote_rows: Iterable[Mapping[str, Any]],
+) -> tuple[list[dict[str, Any]], int]:
+    """Merge exact-fingerprint Admin edits without duplicating audit rows."""
+    current = {
+        (str(item.get("questionId")), str(item.get("questionFingerprint")))
+        for item in _queue(experiment)
+    }
+    seen_ids = {
+        str(row.get("sourceEditId"))
+        for row in existing_rows
+        if row.get("sourceEditId")
+    }
+    merged = list(existing_rows)
+    added = 0
+    review = experiment.get("automatedReview")
+    review_input_sha = str(review.get("reviewInputSha256", "")) if isinstance(review, Mapping) else ""
+    for remote in remote_rows:
+        source_id = str(remote.get("concept_question_edit_id", ""))
+        question_id = str(remote.get("question_id", ""))
+        fingerprint = str(remote.get("question_fingerprint", ""))
+        if not source_id or source_id in seen_ids or (question_id, fingerprint) not in current:
+            continue
+        choices = remote.get("choices")
+        if not isinstance(choices, list):
+            continue
+        merged.append(
+            {
+                "type": "question_edit",
+                "reviewInputSha256": review_input_sha,
+                "questionId": question_id,
+                "questionFingerprint": fingerprint,
+                "elementId": str(remote.get("element_id", "")),
+                "stem": str(remote.get("stem", "")),
+                "explanation": str(remote.get("explanation", "")),
+                "choices": choices,
+                "comment": str(remote.get("comment", "")),
+                "editorId": str(remote.get("editor_id", "owner")),
+                "editedAt": str(remote.get("edited_at", "")),
+                "source": "supabase-admin",
+                "sourceEditId": source_id,
+            }
+        )
+        seen_ids.add(source_id)
+        added += 1
+    return merged, added
+
+
 def append_auto_batch_if_complete(
     experiment: Mapping[str, Any], rows: list[dict[str, Any]]
 ) -> tuple[list[dict[str, Any]], bool]:
@@ -307,6 +358,7 @@ def append_auto_batch_if_complete(
 def sync_from_supabase(
     experiment: Mapping[str, Any],
     decisions_path: Path,
+    edits_path: Path,
     *,
     base_url: str,
     secret_key: str,
@@ -336,46 +388,77 @@ def sync_from_supabase(
         + "/rest/v1/concept_question_review_decisions?"
         + query
     )
-    request = urllib.request.Request(
-        url,
-        method="GET",
-        headers={"apikey": secret, "Accept": "application/json"},
+    def fetch_rows(url: str, *, optional: bool = False) -> list[dict[str, Any]]:
+        fetch_request = urllib.request.Request(
+            url,
+            method="GET",
+            headers={"apikey": secret, "Accept": "application/json"},
+        )
+        try:
+            with urllib.request.urlopen(
+                fetch_request,
+                timeout=timeout_seconds,
+                context=ssl.create_default_context(),
+            ) as response:
+                response_body = response.read(MAX_SYNC_RESPONSE_BYTES + 1)
+        except urllib.error.HTTPError as error:
+            if optional and error.code == 404:
+                return []
+            detail = error.read(2048).decode("utf-8", errors="replace")
+            raise ReviewCommandError(
+                f"Supabase review sync failed with HTTP {error.code}: {detail}"
+            ) from error
+        except (urllib.error.URLError, TimeoutError) as error:
+            raise ReviewCommandError(f"Could not reach Supabase review data: {error}") from error
+        if len(response_body) > MAX_SYNC_RESPONSE_BYTES:
+            raise ReviewCommandError("Supabase review response exceeded the safety limit")
+        try:
+            parsed = json.loads(response_body.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as error:
+            raise ReviewCommandError("Supabase review sync returned invalid JSON") from error
+        if not isinstance(parsed, list) or any(not isinstance(row, dict) for row in parsed):
+            raise ReviewCommandError("Supabase review sync returned an unexpected payload")
+        return parsed
+
+    remote_rows = fetch_rows(url)
+    edit_query = urllib.parse.urlencode(
+        {
+            "select": (
+                "concept_question_edit_id,question_id,question_fingerprint,element_id,"
+                "stem,explanation,choices,comment,editor_id,edited_at"
+            ),
+            "review_input_sha256": f"eq.{review_input_sha}",
+            "order": "edited_at.asc",
+        }
     )
-    try:
-        with urllib.request.urlopen(
-            request,
-            timeout=timeout_seconds,
-            context=ssl.create_default_context(),
-        ) as response:
-            body = response.read(MAX_SYNC_RESPONSE_BYTES + 1)
-    except urllib.error.HTTPError as error:
-        detail = error.read(2048).decode("utf-8", errors="replace")
-        raise ReviewCommandError(
-            f"Supabase review sync failed with HTTP {error.code}: {detail}"
-        ) from error
-    except (urllib.error.URLError, TimeoutError) as error:
-        raise ReviewCommandError(f"Could not reach Supabase review decisions: {error}") from error
-    if len(body) > MAX_SYNC_RESPONSE_BYTES:
-        raise ReviewCommandError("Supabase review decision response exceeded the safety limit")
-    try:
-        remote_rows = json.loads(body.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as error:
-        raise ReviewCommandError("Supabase review sync returned invalid JSON") from error
-    if not isinstance(remote_rows, list) or any(not isinstance(row, dict) for row in remote_rows):
-        raise ReviewCommandError("Supabase review sync returned an unexpected payload")
+    edit_url = (
+        normalize_supabase_url(base_url)
+        + "/rest/v1/concept_question_edits?"
+        + edit_query
+    )
+    remote_edit_rows = fetch_rows(edit_url, optional=True)
     existing = _read_rows(decisions_path)
     merged, added = merge_remote_question_decisions(experiment, existing, remote_rows)
     merged, auto_batch_approved = append_auto_batch_if_complete(experiment, merged)
     if added or auto_batch_approved:
         _write_rows(decisions_path, merged)
+    existing_edits = _read_rows(edits_path)
+    merged_edits, added_edits = merge_remote_question_edits(
+        experiment, existing_edits, remote_edit_rows
+    )
+    if added_edits:
+        _write_rows(edits_path, merged_edits)
     print(
         json.dumps(
             {
                 "reviewInputSha256": review_input_sha,
                 "remoteDecisionCount": len(remote_rows),
                 "addedDecisionCount": added,
+                "remoteEditCount": len(remote_edit_rows),
+                "addedEditCount": added_edits,
                 "autoBatchApproved": auto_batch_approved,
                 "decisionsPath": str(decisions_path),
+                "editsPath": str(edits_path),
             },
             ensure_ascii=False,
         )
@@ -386,6 +469,7 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT)
     parser.add_argument("--decisions", type=Path, default=DEFAULT_DECISIONS)
+    parser.add_argument("--edits", type=Path, default=DEFAULT_EDITS)
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("show")
     decision = subparsers.add_parser("decide")
@@ -427,6 +511,7 @@ def main(argv: Iterable[str] | None = None) -> int:
         sync_from_supabase(
             experiment,
             args.decisions,
+            args.edits,
             base_url=resolve_supabase_url(),
             secret_key=os.environ.get("SUPABASE_SECRET_KEY", ""),
             timeout_seconds=args.timeout,

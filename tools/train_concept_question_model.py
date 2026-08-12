@@ -47,6 +47,7 @@ DEFAULT_CONFIG = ROOT / "content" / "model" / "concept-model-config.json"
 DEFAULT_ELEMENTS = ROOT / "admin" / "data" / "content-elements.generated.json"
 DEFAULT_LABELS = ROOT / "content" / "model" / "concept-review-labels.jsonl"
 DEFAULT_OWNER_DECISIONS = ROOT / "content" / "model" / "concept-owner-decisions.jsonl"
+DEFAULT_QUESTION_EDITS = ROOT / "content" / "model" / "concept-question-edits.jsonl"
 DEFAULT_SPLIT = ROOT / "content" / "model" / "concept-split.json"
 DEFAULT_BANK = ROOT / "content" / "model" / "concept-question-bank.generated.json"
 DEFAULT_ADMIN_REPORT = ROOT / "admin" / "data" / "concept-model-experiments.generated.json"
@@ -602,6 +603,98 @@ def load_owner_decisions(
                     f"Owner decision line {line_number} has an invalid type"
                 )
     return question_decisions, batch_decisions
+
+
+def _question_edit_value(raw: Mapping[str, Any], name: str, *, line_number: int) -> str:
+    value = raw.get(name)
+    if not isinstance(value, str) or not value.strip():
+        raise ConceptModelError(f"Question edit line {line_number} is missing {name}")
+    return value.strip()
+
+
+def load_question_edits(
+    path: Path = DEFAULT_QUESTION_EDITS,
+) -> dict[tuple[str, str], dict[str, Any]]:
+    """Load append-only Admin edits keyed by the exact pre-edit fingerprint."""
+    if not path.exists():
+        return {}
+    result: dict[tuple[str, str], dict[str, Any]] = {}
+    with path.open("r", encoding="utf-8") as stream:
+        for line_number, line in enumerate(stream, start=1):
+            if not line.strip():
+                continue
+            try:
+                raw = json.loads(line)
+            except json.JSONDecodeError as error:
+                raise ConceptModelError(
+                    f"Invalid question edit JSONL at line {line_number}"
+                ) from error
+            if not isinstance(raw, Mapping) or str(raw.get("type", "question_edit")) != "question_edit":
+                raise ConceptModelError(f"Question edit line {line_number} has an invalid type")
+            question_id = _question_edit_value(raw, "questionId", line_number=line_number)
+            if len(question_id) > 160 or not re.fullmatch(r"[A-Za-z0-9_-]+", question_id):
+                raise ConceptModelError(f"Question edit line {line_number} has an invalid question id")
+            fingerprint = _question_edit_value(raw, "questionFingerprint", line_number=line_number)
+            if not re.fullmatch(r"[0-9a-f]{64}", fingerprint):
+                raise ConceptModelError(f"Question edit line {line_number} has an invalid fingerprint")
+            element_id = _question_edit_value(raw, "elementId", line_number=line_number)
+            if len(element_id) > 80 or not re.fullmatch(r"[A-Za-z0-9_-]+", element_id):
+                raise ConceptModelError(f"Question edit line {line_number} has an invalid element id")
+            stem = _question_edit_value(raw, "stem", line_number=line_number)
+            explanation = _question_edit_value(raw, "explanation", line_number=line_number)
+            if len(stem) > 20000 or len(explanation) > 20000:
+                raise ConceptModelError(f"Question edit line {line_number} has text that is too long")
+            comment = str(raw.get("comment", "")).strip()
+            if len(comment) > 2000:
+                raise ConceptModelError(f"Question edit line {line_number} has a comment that is too long")
+            choices = raw.get("choices")
+            if not isinstance(choices, list) or len(choices) != len(CHOICE_KEYS):
+                raise ConceptModelError(f"Question edit line {line_number} must contain five choices")
+            normalized_choices: list[dict[str, Any]] = []
+            for expected_key, choice in zip(CHOICE_KEYS, choices, strict=True):
+                if not isinstance(choice, Mapping):
+                    raise ConceptModelError(f"Question edit line {line_number} has an invalid choice")
+                key = str(choice.get("key", "")).strip()
+                choice_element_id = str(choice.get("elementId", "")).strip()
+                text = str(choice.get("text", "")).strip()
+                choice_explanation = str(choice.get("explanation", "")).strip()
+                is_correct = choice.get("isCorrect")
+                if (
+                    key != expected_key
+                    or not choice_element_id
+                    or len(choice_element_id) > 80
+                    or not re.fullmatch(r"[A-Za-z0-9_-]+", choice_element_id)
+                    or not text
+                    or len(text) > 2000
+                    or not choice_explanation
+                    or len(choice_explanation) > 2000
+                    or not isinstance(is_correct, bool)
+                ):
+                    raise ConceptModelError(f"Question edit line {line_number} has malformed choice {expected_key}")
+                normalized_choices.append(
+                    {
+                        "key": key,
+                        "elementId": choice_element_id,
+                        "text": text,
+                        "explanation": choice_explanation,
+                        "isCorrect": is_correct,
+                    }
+                )
+            correct_choices = [choice for choice in normalized_choices if choice["isCorrect"]]
+            if len(correct_choices) != 1 or correct_choices[0]["elementId"] != element_id:
+                raise ConceptModelError(
+                    f"Question edit line {line_number} must keep exactly one correct choice for {element_id}"
+                )
+            result[(question_id, fingerprint)] = {
+                "questionId": question_id,
+                "questionFingerprint": fingerprint,
+                "elementId": element_id,
+                "stem": stem,
+                "explanation": explanation,
+                "choices": normalized_choices,
+                "comment": comment,
+            }
+    return result
 
 
 def _token_set(value: str) -> set[str]:
@@ -1562,6 +1655,97 @@ def _question_review_fingerprint(question: Mapping[str, Any]) -> str:
     return _sha256_bytes(_stable_json_bytes(payload))
 
 
+def _apply_question_edits(
+    bank: dict[str, Any],
+    question_edits: Mapping[tuple[str, str], Mapping[str, Any]],
+) -> int:
+    """Apply an exact-fingerprint edit chain to each generated question."""
+    edited_count = 0
+    for question in bank.get("questions", []):
+        if not isinstance(question, dict):
+            continue
+        question_id = str(question.get("questionId", ""))
+        seen_fingerprints: set[str] = set()
+        while True:
+            fingerprint = _question_review_fingerprint(question)
+            if fingerprint in seen_fingerprints:
+                raise ConceptModelError(f"Question edit chain cycles for {question_id}")
+            seen_fingerprints.add(fingerprint)
+            edit = question_edits.get((question_id, fingerprint))
+            if edit is None:
+                break
+            if str(edit.get("elementId")) != str(question.get("elementId")):
+                raise ConceptModelError(
+                    f"Question edit target mismatch for {question.get('questionId')}"
+                )
+            question["stem"] = str(edit["stem"])
+            question["explanation"] = str(edit["explanation"])
+            question["choices"] = [dict(choice) for choice in edit["choices"]]
+            edited_count += 1
+    return edited_count
+
+
+def _recompute_question_safety(
+    bank: Mapping[str, Any],
+    context: FeatureContext,
+) -> dict[str, Any]:
+    """Recheck safety gates after Admin text/choice edits are applied."""
+    elements_by_id = {element.element_id: element for element in context.elements}
+    element_indices = {element.element_id: index for index, element in enumerate(context.elements)}
+    answer_leaks = 0
+    duplicate_choices = 0
+    ambiguous_question_ids: list[str] = []
+    questions = bank.get("questions", [])
+    for question_index, question in enumerate(questions if isinstance(questions, list) else []):
+        if not isinstance(question, Mapping):
+            continue
+        target = elements_by_id.get(str(question.get("elementId")))
+        choices = question.get("choices")
+        if target is None or not isinstance(choices, list):
+            continue
+        choice_aliases = [
+            title_alias_keys(str(choice.get("text", "")))
+            for choice in choices
+            if isinstance(choice, Mapping)
+        ]
+        if any(
+            not left.isdisjoint(right)
+            for index, left in enumerate(choice_aliases)
+            for right in choice_aliases[index + 1 :]
+        ):
+            duplicate_choices += 1
+        correct_aliases = set(title_alias_keys(target.title))
+        correct_choice = next(
+            (choice for choice in choices if isinstance(choice, Mapping) and choice.get("isCorrect")),
+            None,
+        )
+        if isinstance(correct_choice, Mapping):
+            correct_aliases.update(title_alias_keys(str(correct_choice.get("text", ""))))
+        if any(
+            not title_alias_keys(str(choice.get("text", ""))).isdisjoint(correct_aliases)
+            and not bool(choice.get("isCorrect"))
+            for choice in choices
+            if isinstance(choice, Mapping)
+        ):
+            answer_leaks += 1
+        weak_distractor = False
+        for choice in choices:
+            if not isinstance(choice, Mapping) or bool(choice.get("isCorrect")):
+                continue
+            candidate_index = element_indices.get(str(choice.get("elementId")))
+            if candidate_index is not None and question_index < len(context.questions):
+                if int(context.weak_relevance[question_index, candidate_index]) < 2:
+                    weak_distractor = True
+        if weak_distractor:
+            ambiguous_question_ids.append(str(question.get("questionId")))
+    return {
+        "answerLeakCount": answer_leaks,
+        "duplicateChoiceCount": duplicate_choices,
+        "ambiguousQuestionCount": len(ambiguous_question_ids),
+        "ambiguousQuestionIds": ambiguous_question_ids,
+    }
+
+
 def _load_previous_question_bank(path: Path) -> dict[str, Any] | None:
     if not path.exists():
         return None
@@ -1818,6 +2002,7 @@ def _apply_automated_review_profile(
             "questionFingerprint": fingerprint,
             "severity": "block" if hard_reasons else "review",
             "stem": raw_question.get("stem"),
+            "explanation": raw_question.get("explanation"),
             "choices": raw_question.get("choices"),
             "reasons": [*hard_reasons, *review_reasons],
             "metrics": {
@@ -2587,6 +2772,7 @@ def run_experiment(
     elements_path: Path = DEFAULT_ELEMENTS,
     labels_path: Path = DEFAULT_LABELS,
     owner_decisions_path: Path = DEFAULT_OWNER_DECISIONS,
+    question_edits_path: Path = DEFAULT_QUESTION_EDITS,
     split_path: Path = DEFAULT_SPLIT,
     bank_path: Path = DEFAULT_BANK,
     admin_report_path: Path = DEFAULT_ADMIN_REPORT,
@@ -2604,6 +2790,7 @@ def run_experiment(
     elements_path = _resolve_repo_path(elements_path)
     labels_path = _resolve_repo_path(labels_path)
     owner_decisions_path = _resolve_repo_path(owner_decisions_path)
+    question_edits_path = _resolve_repo_path(question_edits_path)
     split_path = _resolve_repo_path(split_path)
     bank_path = _resolve_repo_path(bank_path)
     admin_report_path = _resolve_repo_path(admin_report_path)
@@ -2648,6 +2835,7 @@ def run_experiment(
     owner_question_decisions, owner_batch_decisions = load_owner_decisions(
         owner_decisions_path
     )
+    question_edits = load_question_edits(question_edits_path)
     candidate_count = sum(
         len(eligible_candidate_indices(elements, question.element_index))
         for question in questions
@@ -2886,6 +3074,9 @@ def run_experiment(
         str(split_manifest["splitSha256"]),
         human_labels,
     )
+    edited_question_count = _apply_question_edits(bank, question_edits)
+    if edited_question_count:
+        safety = _recompute_question_safety(bank, context)
     review_config = config.get("automatedReview")
     if not isinstance(review_config, Mapping):
         raise ConceptModelError("automatedReview is missing from model config")
@@ -3098,6 +3289,7 @@ def run_experiment(
             "labelSource": "human_and_weak_rule" if human_labels else "weak_rule_bootstrap",
         },
         "safety": safety,
+        "questionEditCount": edited_question_count,
         "qualityGates": gates,
         "artifacts": {
             "questionBank": _report_path(bank_path),
@@ -3107,6 +3299,7 @@ def run_experiment(
             "facts": _report_path(build_dir / "facts.jsonl"),
             "candidates": _report_path(build_dir / "candidates.jsonl"),
             "ownerDecisions": _report_path(owner_decisions_path),
+            "questionEdits": _report_path(question_edits_path),
             "markdownReport": _report_path(markdown_report_dir / f"{experiment_id}.md"),
             "markdownReportWritten": write_markdown_report,
         },
@@ -3165,6 +3358,9 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--labels", type=Path, default=DEFAULT_LABELS)
     parser.add_argument(
         "--owner-decisions", type=Path, default=DEFAULT_OWNER_DECISIONS
+    )
+    parser.add_argument(
+        "--question-edits", type=Path, default=DEFAULT_QUESTION_EDITS
     )
     parser.add_argument("--split", type=Path, default=DEFAULT_SPLIT)
     parser.add_argument("--question-bank", type=Path, default=DEFAULT_BANK)
@@ -3237,6 +3433,7 @@ def main(argv: Iterable[str] | None = None) -> int:
         elements_path=args.elements,
         labels_path=args.labels,
         owner_decisions_path=args.owner_decisions,
+        question_edits_path=args.question_edits,
         split_path=args.split,
         bank_path=args.question_bank,
         admin_report_path=args.admin_report,

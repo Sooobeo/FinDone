@@ -94,6 +94,7 @@ export interface ConceptExperiment {
       questionFingerprint: string;
       severity: "review" | "block";
       stem: string;
+      explanation: string;
       choices: Array<{
         key: string;
         elementId: string;

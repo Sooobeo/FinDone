@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ChevronDown, CircleAlert, LoaderCircle, X } from "lucide-react";
+import { Check, ChevronDown, CircleAlert, LoaderCircle, Pencil, Save, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { ConceptExperiment } from "@/lib/concept-model-report";
@@ -8,6 +8,12 @@ import type { ConceptQuestionDecision } from "@/lib/concept-model-review-store";
 
 type QueueItem = ConceptExperiment["automatedReview"]["queue"][number];
 type DecisionKind = ConceptQuestionDecision["decision"];
+type DraftChoice = QueueItem["choices"][number];
+type QuestionDraft = {
+  stem: string;
+  explanation: string;
+  choices: DraftChoice[];
+};
 
 export function ConceptExceptionReview({
   items,
@@ -24,11 +30,81 @@ export function ConceptExceptionReview({
     Object.fromEntries(Object.entries(initialDecisions).map(([questionId, value]) => [questionId, value.comment])),
   );
   const [submitting, setSubmitting] = useState<{ questionId: string; decision: DecisionKind } | null>(null);
+  const [editingQuestionId, setEditingQuestionId] = useState<string | null>(null);
+  const [savingQuestionId, setSavingQuestionId] = useState<string | null>(null);
+  const [drafts, setDrafts] = useState<Record<string, QuestionDraft>>({});
   const [messages, setMessages] = useState<Record<string, string>>({});
   const decidedCount = useMemo(
     () => items.filter((item) => savedDecisions[item.questionId]).length,
     [items, savedDecisions],
   );
+
+  function beginEdit(item: QueueItem) {
+    setDrafts((current) => ({
+      ...current,
+      [item.questionId]: {
+        stem: item.stem,
+        explanation: item.explanation,
+        choices: item.choices.map((choice) => ({ ...choice })),
+      },
+    }));
+    setEditingQuestionId(item.questionId);
+    setMessages((current) => ({ ...current, [item.questionId]: "" }));
+  }
+
+  function updateDraft(questionId: string, update: Partial<QuestionDraft>) {
+    setDrafts((current) => ({
+      ...current,
+      [questionId]: { ...current[questionId], ...update } as QuestionDraft,
+    }));
+  }
+
+  function updateDraftChoice(questionId: string, index: number, update: Partial<DraftChoice>) {
+    const draft = drafts[questionId];
+    if (!draft) return;
+    updateDraft(questionId, {
+      choices: draft.choices.map((choice, choiceIndex) => (
+        choiceIndex === index ? { ...choice, ...update } : choice
+      )),
+    });
+  }
+
+  async function saveEdit(item: QueueItem) {
+    const draft = drafts[item.questionId];
+    if (!draft) return;
+    if (!draft.stem.trim() || !draft.explanation.trim()) {
+      setMessages((current) => ({ ...current, [item.questionId]: "문항과 해설을 입력해 주세요." }));
+      return;
+    }
+    setSavingQuestionId(item.questionId);
+    setMessages((current) => ({ ...current, [item.questionId]: "" }));
+    try {
+      const response = await fetch("/api/model/edit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          questionId: item.questionId,
+          questionFingerprint: item.questionFingerprint,
+          stem: draft.stem,
+          explanation: draft.explanation,
+          choices: draft.choices,
+          comment: comments[item.questionId] ?? "",
+        }),
+      });
+      const result = await response.json().catch(() => ({})) as { error?: string; message?: string };
+      if (!response.ok) {
+        setMessages((current) => ({ ...current, [item.questionId]: result.error ?? "문항 수정 저장에 실패했습니다." }));
+        return;
+      }
+      setEditingQuestionId(null);
+      setMessages((current) => ({ ...current, [item.questionId]: result.message ?? "문항 수정이 저장되었습니다." }));
+      router.refresh();
+    } catch {
+      setMessages((current) => ({ ...current, [item.questionId]: "서버에 연결하지 못했습니다." }));
+    } finally {
+      setSavingQuestionId(null);
+    }
+  }
 
   async function submitDecision(item: QueueItem, decision: DecisionKind) {
     const comment = comments[item.questionId]?.trim() ?? "";
@@ -80,7 +156,9 @@ export function ConceptExceptionReview({
       </div>
       {items.map((item) => {
         const saved = savedDecisions[item.questionId];
-        const busy = submitting?.questionId === item.questionId;
+        const busy = submitting?.questionId === item.questionId || savingQuestionId === item.questionId;
+        const editing = editingQuestionId === item.questionId;
+        const draft = drafts[item.questionId];
         return (
           <details className="model-rule-details concept-review-item" key={item.questionId} open={saved?.decision === "rejected"}>
             <summary>
@@ -89,12 +167,83 @@ export function ConceptExceptionReview({
               {saved ? <b className={`concept-review-decision ${saved.decision}`}>{saved.decision === "approved" ? "승인 저장됨" : "반려 저장됨"}</b> : <b className="concept-review-decision pending">미결</b>}
             </summary>
             <div className="model-rule-detail-body concept-review-detail">
-              <p className="concept-review-stem">{item.stem}</p>
+              {editing && draft ? (
+                <div className="concept-review-editor">
+                  <label className="concept-review-comment">
+                    <span>문항</span>
+                    <textarea
+                      rows={3}
+                      value={draft.stem}
+                      onChange={(event) => updateDraft(item.questionId, { stem: event.target.value })}
+                      maxLength={20000}
+                      disabled={!canReview || busy}
+                    />
+                  </label>
+                  <label className="concept-review-comment">
+                    <span>해설</span>
+                    <textarea
+                      rows={4}
+                      value={draft.explanation}
+                      onChange={(event) => updateDraft(item.questionId, { explanation: event.target.value })}
+                      maxLength={20000}
+                      disabled={!canReview || busy}
+                    />
+                  </label>
+                </div>
+              ) : <p className="concept-review-stem">{item.stem}</p>}
               <div className="table-scroll">
                 <table className="data-table">
                   <thead><tr><th>선택지</th><th>개념</th><th>판정</th><th>설명</th></tr></thead>
-                  <tbody>{item.choices.map((choice) => <tr key={choice.key}><td>{choice.key}</td><td>{choice.text}</td><td>{choice.isCorrect ? "정답" : "오답"}</td><td>{choice.explanation}</td></tr>)}</tbody>
+                  <tbody>{item.choices.map((choice, choiceIndex) => {
+                    const draftChoice = draft?.choices[choiceIndex] ?? choice;
+                    return (
+                      <tr key={choice.key}>
+                        <td><strong>{choice.key}</strong></td>
+                        <td>{editing ? <input
+                          className="concept-review-input"
+                          value={draftChoice.elementId}
+                          onChange={(event) => updateDraftChoice(item.questionId, choiceIndex, { elementId: event.target.value })}
+                          disabled={!canReview || busy || choice.isCorrect}
+                          aria-label={`${choice.key} 개념 ID`}
+                        /> : choice.elementId}</td>
+                        <td>{choice.isCorrect ? "정답" : "오답"}</td>
+                        <td>{editing ? <div className="concept-review-choice-fields">
+                          <input
+                            className="concept-review-input"
+                            value={draftChoice.text}
+                            onChange={(event) => updateDraftChoice(item.questionId, choiceIndex, { text: event.target.value })}
+                            maxLength={2000}
+                            disabled={!canReview || busy}
+                            aria-label={`${choice.key} 보기`}
+                          />
+                          <textarea
+                            className="concept-review-input"
+                            rows={2}
+                            value={draftChoice.explanation}
+                            onChange={(event) => updateDraftChoice(item.questionId, choiceIndex, { explanation: event.target.value })}
+                            maxLength={2000}
+                            disabled={!canReview || busy}
+                            aria-label={`${choice.key} 보기 해설`}
+                          />
+                        </div> : choice.explanation}</td>
+                      </tr>
+                    );
+                  })}</tbody>
                 </table>
+              </div>
+              <div className="concept-review-edit-toolbar">
+                <span>{editing ? "정답 대상 용어는 고정되며 오답 보기와 문구를 수정할 수 있습니다." : "문항·선택지·해설을 수정한 뒤 모델을 다시 실행할 수 있습니다."}</span>
+                {editing ? <>
+                  <button className="button button-ghost" type="button" onClick={() => setEditingQuestionId(null)} disabled={busy}>
+                    <X size={15} /> 취소
+                  </button>
+                  <button className="button button-primary" type="button" onClick={() => saveEdit(item)} disabled={!canReview || busy}>
+                    {savingQuestionId === item.questionId ? <LoaderCircle className="spin" size={15} /> : <Save size={15} />}
+                    {savingQuestionId === item.questionId ? "저장 중" : "수정 저장"}
+                  </button>
+                </> : <button className="button button-ghost" type="button" onClick={() => beginEdit(item)} disabled={!canReview || busy}>
+                  <Pencil size={15} /> 문항 수정
+                </button>}
               </div>
               <label className="concept-review-comment">
                 <span>검수 메모 {comments[item.questionId]?.length ? `· ${comments[item.questionId].length}자` : ""}</span>

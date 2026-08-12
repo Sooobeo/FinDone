@@ -213,6 +213,61 @@ class ConceptQuestionModelTest(unittest.TestCase):
         )
         self.assertEqual("approved", batch_decisions["b" * 64].decision)
 
+    def test_question_edits_apply_only_to_the_exact_pre_edit_fingerprint(self) -> None:
+        question = {
+            "questionId": "Q-1",
+            "elementId": "ACC-01",
+            "questionType": "definition_to_term",
+            "stem": "old stem",
+            "explanation": "old explanation",
+            "difficulty": 1,
+            "sourceFactIds": ["fact-1"],
+            "choices": [
+                {
+                    "key": key,
+                    "elementId": "ACC-01" if index == 0 else f"ACC-{index + 1:02d}",
+                    "text": f"old-{key}",
+                    "explanation": f"old explanation {key}",
+                    "isCorrect": index == 0,
+                }
+                for index, key in enumerate(model.CHOICE_KEYS)
+            ],
+        }
+        fingerprint = model._question_review_fingerprint(question)
+        bank = {"questions": [question]}
+        edit = {
+            "questionId": "Q-1",
+            "questionFingerprint": fingerprint,
+            "elementId": "ACC-01",
+            "stem": "new stem",
+            "explanation": "new explanation",
+            "choices": [
+                {
+                    "key": key,
+                    "elementId": "ACC-01" if index == 0 else f"ACC-{index + 11:02d}",
+                    "text": f"new-{key}",
+                    "explanation": f"new explanation {key}",
+                    "isCorrect": index == 0,
+                }
+                for index, key in enumerate(model.CHOICE_KEYS)
+            ],
+        }
+
+        self.assertEqual(1, model._apply_question_edits(bank, {("Q-1", fingerprint): edit}))
+        self.assertEqual("new stem", bank["questions"][0]["stem"])
+        self.assertEqual("new-E", bank["questions"][0]["choices"][-1]["text"])
+        second_fingerprint = model._question_review_fingerprint(bank["questions"][0])
+        second_edit = {**edit, "questionFingerprint": second_fingerprint, "stem": "newer stem"}
+        self.assertEqual(
+            1,
+            model._apply_question_edits(
+                bank,
+                {("Q-1", fingerprint): edit, ("Q-1", second_fingerprint): second_edit},
+            ),
+        )
+        self.assertEqual("newer stem", bank["questions"][0]["stem"])
+        self.assertEqual(0, model._apply_question_edits(bank, {("Q-1", "0" * 64): edit}))
+
     def test_owner_batch_command_rejects_unresolved_queue(self) -> None:
         experiment = {
             "automatedReview": {

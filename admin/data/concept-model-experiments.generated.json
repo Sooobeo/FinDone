@@ -4,6 +4,3107 @@
       "artifacts": {
         "candidates": "build/concept-model/candidates.jsonl",
         "facts": "build/concept-model/facts.jsonl",
+        "markdownReport": "docs/modeling/experiments/cmq-20260812-112232-c1670dca.md",
+        "markdownReportWritten": true,
+        "ownerDecisions": "content/model/concept-owner-decisions.jsonl",
+        "questionBank": "content/model/concept-question-bank.generated.json",
+        "questionBankSha256": "45d9e11720729626b9de355cb47e1698f82843816ce8f022ea77798275b346a9",
+        "questionBankWritten": true,
+        "questionEdits": "content/model/concept-question-edits.jsonl",
+        "split": "content/model/concept-split.json"
+      },
+      "automatedReview": {
+        "affectedQuestionCount": 0,
+        "autoPassedCount": 398,
+        "baselineMode": "incremental",
+        "blockedCount": 4,
+        "changedElementCount": 0,
+        "changedElementIds": [],
+        "changedQuestionCount": 0,
+        "needsOwnerReviewCount": 0,
+        "ownerApprovedCount": 3,
+        "ownerBatchApproved": false,
+        "ownerBatchDecision": null,
+        "ownerReviewComplete": false,
+        "policyConfigSha256": "e1c66b83427d387af24f28f0ecd40dc6e36893083bc067ce6fc68e02d66e474f",
+        "policyVersion": "concept-auto-review-v1",
+        "previousBankSha256": "45d9e11720729626b9de355cb47e1698f82843816ce8f022ea77798275b346a9",
+        "profileExperiments": [
+          {
+            "distanceFromTargetReviewRate": 0.233333,
+            "profileId": "reference-balanced",
+            "profileIndex": 0,
+            "provenance": "동일 가중 RRF 기준선과 다수결 0.5를 중심으로 둔 운영 reference baseline; 논문 기본값은 아님",
+            "thresholds": {
+              "minimumMeanTop4Agreement": 0.5,
+              "minimumNormalizedBoundaryMargin": 0.01,
+              "minimumSelectedCandidateSupport": 0.35
+            },
+            "validationBlockedCount": 0,
+            "validationQuestionCount": 60,
+            "validationReviewCount": 17,
+            "validationReviewRate": 0.283333
+          },
+          {
+            "distanceFromTargetReviewRate": 0.4,
+            "profileId": "conservative-review",
+            "profileIndex": 1,
+            "provenance": "reference baseline에서 검토 민감도를 높인 단방향 ablation",
+            "thresholds": {
+              "minimumMeanTop4Agreement": 0.6,
+              "minimumNormalizedBoundaryMargin": 0.02,
+              "minimumSelectedCandidateSupport": 0.45
+            },
+            "validationBlockedCount": 0,
+            "validationQuestionCount": 60,
+            "validationReviewCount": 27,
+            "validationReviewRate": 0.45
+          },
+          {
+            "distanceFromTargetReviewRate": 0.166667,
+            "profileId": "relaxed-review",
+            "profileIndex": 2,
+            "provenance": "reference baseline에서 검토량을 낮춘 단방향 ablation",
+            "thresholds": {
+              "minimumMeanTop4Agreement": 0.4,
+              "minimumNormalizedBoundaryMargin": 0.005,
+              "minimumSelectedCandidateSupport": 0.25
+            },
+            "validationBlockedCount": 0,
+            "validationQuestionCount": 60,
+            "validationReviewCount": 13,
+            "validationReviewRate": 0.216667
+          },
+          {
+            "distanceFromTargetReviewRate": 0.033333,
+            "profileId": "exception-only",
+            "profileIndex": 3,
+            "provenance": "자동 하드 게이트를 유지하면서 극단적 순위 불일치만 올리는 최소 검토량 ablation",
+            "thresholds": {
+              "minimumMeanTop4Agreement": 0.25,
+              "minimumNormalizedBoundaryMargin": -0.1,
+              "minimumSelectedCandidateSupport": 0.1
+            },
+            "validationBlockedCount": 0,
+            "validationQuestionCount": 60,
+            "validationReviewCount": 1,
+            "validationReviewRate": 0.016667
+          }
+        ],
+        "profileId": "exception-only",
+        "queue": [
+          {
+            "change": {
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
+            },
+            "choices": [
+              {
+                "elementId": "CF-07",
+                "explanation": "WACC는 채권자와 주주가 요구하는 수익률을 시장가치 조달비중으로 가중한 기업 전체의 자본비용이다.",
+                "isCorrect": true,
+                "key": "A",
+                "text": "WACC"
+              },
+              {
+                "elementId": "ACC-06",
+                "explanation": "유효이자율법은 사채의 실제 조달수익률을 장부금액에 적용해 기간별 이자비용과 장부가 변화를 계산하는 방법이다.",
+                "isCorrect": false,
+                "key": "B",
+                "text": "사채 회계·유효이자율법"
+              },
+              {
+                "elementId": "CF-10",
+                "explanation": "FCFF와 FCFE는 영업과 재투자 뒤 기업 전체 또는 보통주주에게 남는 현금을 각각 측정한다.",
+                "isCorrect": false,
+                "key": "C",
+                "text": "FCFF·FCFE"
+              },
+              {
+                "elementId": "EQV-15",
+                "explanation": "계속가치는 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다.",
+                "isCorrect": false,
+                "key": "D",
+                "text": "계속가치"
+              },
+              {
+                "elementId": "ACC-02",
+                "explanation": "발생주의는 현금이 오간 날이 아니라 수익을 벌고 비용을 부담한 기간에 경영성과를 기록하는 원칙이다.",
+                "isCorrect": false,
+                "key": "E",
+                "text": "발생주의·현금주의와 결산조정"
+              }
+            ],
+            "elementId": "CF-07",
+            "explanation": "정답은 WACC입니다. WACC는 채권자와 주주가 요구하는 수익률을 시장가치 조달비중으로 가중한 기업 전체의 자본비용이다. 회사는 빚과 자기자본을 함께 써서 사업을 운영한다. 부채이자는 세금을 줄여 주지만 주주는 더 큰 위험을 부담하므로, 각 자금의 실제 비중과 비용을 맞춰 하나의 기준수익률을 만든다.",
+            "metrics": {
+              "meanTop4Agreement": 0.555556,
+              "minimumDistractorRelevance": 2,
+              "minimumSelectedCandidateSupport": 0.0,
+              "normalizedBoundaryMargin": -0.085196
+            },
+            "ownerDecision": {
+              "comment": "문제가 의미가 없는데",
+              "decision": "rejected",
+              "question_fingerprint": "d6a5de7b153936b0fb9be6881a9c7d5f5d4536e6299929ca9554abebd752b080",
+              "question_id": "CF-07-core_relation_to_term-01",
+              "reviewed_at": "2026-08-12T10:53:33.109924+00:00",
+              "reviewer_id": "ebb5893f-ab68-4cef-949a-4e6c9519245b"
+            },
+            "questionFingerprint": "d6a5de7b153936b0fb9be6881a9c7d5f5d4536e6299929ca9554abebd752b080",
+            "questionId": "CF-07-core_relation_to_term-01",
+            "reasons": [
+              {
+                "id": "owner-rejected",
+                "label": "Owner가 문항을 차단함",
+                "measured": "rejected",
+                "threshold": "approved"
+              },
+              {
+                "id": "candidate-support",
+                "label": "선택 오답의 실험 조합 지지율 낮음",
+                "measured": 0.0,
+                "threshold": 0.1
+              }
+            ],
+            "severity": "block",
+            "split": "test",
+            "stem": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?\nWACC=wE×ke+wD×kd×(1-T). 장부가가 아니라 시장가치 가중치를 기본으로 한다."
+          },
+          {
+            "change": {
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
+            },
+            "choices": [
+              {
+                "elementId": "CF-10",
+                "explanation": "FCFF와 FCFE는 영업과 재투자 뒤 기업 전체 또는 보통주주에게 남는 현금을 각각 측정한다.",
+                "isCorrect": false,
+                "key": "A",
+                "text": "FCFF·FCFE"
+              },
+              {
+                "elementId": "EQV-13",
+                "explanation": "WACC는 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
+                "isCorrect": false,
+                "key": "B",
+                "text": "WACC"
+              },
+              {
+                "elementId": "EQV-16",
+                "explanation": "Peer multiple 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다.",
+                "isCorrect": false,
+                "key": "C",
+                "text": "Peer multiple"
+              },
+              {
+                "elementId": "CF-11",
+                "explanation": "계속가치는 명시적 예측기간 뒤에 발생할 모든 현금흐름을 예측 종료시점의 한 금액으로 요약한 값이다.",
+                "isCorrect": true,
+                "key": "D",
+                "text": "계속가치(Terminal Value)"
+              },
+              {
+                "elementId": "CF-02",
+                "explanation": "연금과 영구연금은 일정하거나 성장하는 반복 현금흐름을 한 시점의 가치로 묶어 계산하는 모형이다.",
+                "isCorrect": false,
+                "key": "E",
+                "text": "연금·영구연금·성장영구연금"
+              }
+            ],
+            "elementId": "CF-11",
+            "explanation": "정답은 계속가치(Terminal Value)입니다. 계속가치는 명시적 예측기간 뒤에 발생할 모든 현금흐름을 예측 종료시점의 한 금액으로 요약한 값이다. 기업이 예측 5년 뒤 갑자기 사라지는 것은 아니므로 그 이후 가치도 넣어야 한다. 다만 먼 미래를 한 숫자로 압축하기 때문에 성장률이나 출구배수를 조금만 바꿔도 전체 가치가 크게 흔들린다.",
+            "metrics": {
+              "meanTop4Agreement": 0.466667,
+              "minimumDistractorRelevance": 2,
+              "minimumSelectedCandidateSupport": 0.0,
+              "normalizedBoundaryMargin": -0.290562
+            },
+            "ownerDecision": {
+              "comment": "문제가 의미가 없음",
+              "decision": "rejected",
+              "question_fingerprint": "8d4434e38d2f74f76b17fa412e4eb35d5fece4e36ca68e5a220c1733ff34ad41",
+              "question_id": "CF-11-core_relation_to_term-01",
+              "reviewed_at": "2026-08-12T10:53:51.939466+00:00",
+              "reviewer_id": "ebb5893f-ab68-4cef-949a-4e6c9519245b"
+            },
+            "questionFingerprint": "8d4434e38d2f74f76b17fa412e4eb35d5fece4e36ca68e5a220c1733ff34ad41",
+            "questionId": "CF-11-core_relation_to_term-01",
+            "reasons": [
+              {
+                "id": "owner-rejected",
+                "label": "Owner가 문항을 차단함",
+                "measured": "rejected",
+                "threshold": "approved"
+              },
+              {
+                "id": "candidate-support",
+                "label": "선택 오답의 실험 조합 지지율 낮음",
+                "measured": 0.0,
+                "threshold": 0.1
+              },
+              {
+                "id": "boundary-margin",
+                "label": "4위 선택 경계가 불안정함",
+                "measured": -0.290562,
+                "threshold": -0.1
+              }
+            ],
+            "severity": "block",
+            "split": "train",
+            "stem": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?\n영구성장법 TV_n=FCF_(n+1)/(WACC-g), 단 WACC>g; 출구배수법 TV_n=기준지표_n×Exit Multiple."
+          },
+          {
+            "change": {
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
+            },
+            "choices": [
+              {
+                "elementId": "EQV-41",
+                "explanation": "ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
+                "isCorrect": false,
+                "key": "A",
+                "text": "ROIC·투하자본"
+              },
+              {
+                "elementId": "EQV-32",
+                "explanation": "재고회전율과 충당률은 재고가 판매로 전환되는 속도와 매출채권 손실에 대비한 완충 수준을 보여 준다.",
+                "isCorrect": false,
+                "key": "B",
+                "text": "재고회전율·충당률"
+              },
+              {
+                "elementId": "EQV-29",
+                "explanation": "발생액비율과 현금전환율은 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 측정한다.",
+                "isCorrect": false,
+                "key": "C",
+                "text": "발생액비율·현금전환"
+              },
+              {
+                "elementId": "EQV-30",
+                "explanation": "DSO·DIO·DPO와 현금전환주기는 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순기간을 일수로 보여 준다.",
+                "isCorrect": true,
+                "key": "D",
+                "text": "운전자본 일수·현금전환주기"
+              },
+              {
+                "elementId": "EQV-31",
+                "explanation": "Billings와 계약자산·계약부채는 청구, 수익인식, 현금수취의 시점 차이를 연결해 계약사업의 활동을 보여 준다.",
+                "isCorrect": false,
+                "key": "E",
+                "text": "Billings·계약자산·계약부채"
+              }
+            ],
+            "elementId": "EQV-30",
+            "explanation": "정답은 운전자본 일수·현금전환주기입니다. DSO·DIO·DPO와 현금전환주기는 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순기간을 일수로 보여 준다. 재고를 오래 보유하고 고객대금을 늦게 받으면 현금이 오래 묶인다. 공급업체 결제를 늦추면 일부가 상쇄되지만, 지나친 DPO 증가는 협상력보다 유동성 압박의 신호일 수도 있다.",
+            "metrics": {
+              "meanTop4Agreement": 0.622222,
+              "minimumDistractorRelevance": 2,
+              "minimumSelectedCandidateSupport": 0.055556,
+              "normalizedBoundaryMargin": 0.05022
+            },
+            "ownerDecision": {
+              "comment": "문제에 답이 있는디?",
+              "decision": "rejected",
+              "question_fingerprint": "21349bafb78cacaaf4e04e6744b0897ebf09f5b92bba624bc03c33d12af42570",
+              "question_id": "EQV-30-definition_to_term-01",
+              "reviewed_at": "2026-08-12T10:54:47.05125+00:00",
+              "reviewer_id": "ebb5893f-ab68-4cef-949a-4e6c9519245b"
+            },
+            "questionFingerprint": "21349bafb78cacaaf4e04e6744b0897ebf09f5b92bba624bc03c33d12af42570",
+            "questionId": "EQV-30-definition_to_term-01",
+            "reasons": [
+              {
+                "id": "owner-rejected",
+                "label": "Owner가 문항을 차단함",
+                "measured": "rejected",
+                "threshold": "approved"
+              },
+              {
+                "id": "candidate-support",
+                "label": "선택 오답의 실험 조합 지지율 낮음",
+                "measured": 0.055556,
+                "threshold": 0.1
+              }
+            ],
+            "severity": "block",
+            "split": "validation",
+            "stem": "다음 설명에 가장 부합하는 금융 개념은 무엇인가?\nDSO·DIO·DPO와 현금전환주기는 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순기간을 일수로 보여 준다."
+          },
+          {
+            "change": {
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
+            },
+            "choices": [
+              {
+                "elementId": "EQV-19",
+                "explanation": "시나리오 가중가치는 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다.",
+                "isCorrect": false,
+                "key": "A",
+                "text": "시나리오 가중가치"
+              },
+              {
+                "elementId": "EQV-01",
+                "explanation": "P×Q 매출 추정은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다.",
+                "isCorrect": false,
+                "key": "B",
+                "text": "P×Q 매출 추정"
+              },
+              {
+                "elementId": "INV-04",
+                "explanation": "2자산 포트폴리오는 각 자산의 비중뿐 아니라 두 자산의 동행 정도까지 반영해 전체 기대수익과 위험을 계산한다.",
+                "isCorrect": false,
+                "key": "C",
+                "text": "2자산 포트폴리오"
+              },
+              {
+                "elementId": "IBT-18",
+                "explanation": "기대 하방은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표다.",
+                "isCorrect": true,
+                "key": "D",
+                "text": "리서치 위험·기대 하방"
+              },
+              {
+                "elementId": "FI-10",
+                "explanation": "기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험 등을 가격에 반영한 추가 수익률이다.",
+                "isCorrect": false,
+                "key": "E",
+                "text": "신용위험·Credit Spread·Expected Loss"
+              }
+            ],
+            "elementId": "IBT-18",
+            "explanation": "정답은 리서치 위험·기대 하방입니다. 기대 하방은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표다. 10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부분 0원이고 드물게 50원을 잃는다. 평균값이 tail risk와 사건 간 동시발생을 숨길 수 있다.",
+            "metrics": {
+              "meanTop4Agreement": 0.6,
+              "minimumDistractorRelevance": 3,
+              "minimumSelectedCandidateSupport": 0.0,
+              "normalizedBoundaryMargin": -0.280779
+            },
+            "ownerDecision": {
+              "comment": "문제에 답이 있음",
+              "decision": "rejected",
+              "question_fingerprint": "ba8a711a735de3a80ce00aacf6ed86c2feefd7cada0aa886988d073cf346d412",
+              "question_id": "IBT-18-intuition_to_term-01",
+              "reviewed_at": "2026-08-12T10:55:31.3362+00:00",
+              "reviewer_id": "ebb5893f-ab68-4cef-949a-4e6c9519245b"
+            },
+            "questionFingerprint": "ba8a711a735de3a80ce00aacf6ed86c2feefd7cada0aa886988d073cf346d412",
+            "questionId": "IBT-18-intuition_to_term-01",
+            "reasons": [
+              {
+                "id": "owner-rejected",
+                "label": "Owner가 문항을 차단함",
+                "measured": "rejected",
+                "threshold": "approved"
+              },
+              {
+                "id": "candidate-support",
+                "label": "선택 오답의 실험 조합 지지율 낮음",
+                "measured": 0.0,
+                "threshold": 0.1
+              },
+              {
+                "id": "boundary-margin",
+                "label": "4위 선택 경계가 불안정함",
+                "measured": -0.280779,
+                "threshold": -0.1
+              }
+            ],
+            "severity": "block",
+            "split": "train",
+            "stem": "다음 직관적 설명이 가리키는 금융 개념은 무엇인가?\n10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부분 0원이고 드물게 50원을 잃는다. 평균값이 tail risk와 사건 간 동시발생을 숨길 수 있다."
+          }
+        ],
+        "resolvedItems": [
+          {
+            "change": {
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
+            },
+            "choices": [
+              {
+                "elementId": "EQV-10",
+                "explanation": "PBR은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다.",
+                "isCorrect": false,
+                "key": "A",
+                "text": "PBR"
+              },
+              {
+                "elementId": "EQV-09",
+                "explanation": "ROE는 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다.",
+                "isCorrect": false,
+                "key": "B",
+                "text": "ROE"
+              },
+              {
+                "elementId": "EQV-13",
+                "explanation": "WACC는 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
+                "isCorrect": false,
+                "key": "C",
+                "text": "WACC"
+              },
+              {
+                "elementId": "ACC-12",
+                "explanation": "DuPont 분해는 ROE를 이익률, 자산 효율, 레버리지로 나누어 주주수익성의 원인을 설명하는 방법이다.",
+                "isCorrect": true,
+                "key": "D",
+                "text": "ROA·ROE·DuPont 분해"
+              },
+              {
+                "elementId": "ACC-11",
+                "explanation": "재무비율은 이익창출력, 자산 활용도, 재무부담을 서로 다른 분모로 표준화해 기업과 기간을 비교하는 도구다.",
+                "isCorrect": false,
+                "key": "E",
+                "text": "수익성·효율성·레버리지 비율"
+              }
+            ],
+            "elementId": "ACC-12",
+            "explanation": "정답은 ROA·ROE·DuPont 분해입니다. DuPont 분해는 ROE를 이익률, 자산 효율, 레버리지로 나누어 주주수익성의 원인을 설명하는 방법이다. ROE가 높다는 사실만으로 사업이 좋다고 말할 수 없다. 많이 남겨서 높을 수도, 자산을 빠르게 돌려서 높을 수도, 자기자본을 적게 두고 빚을 많이 써서 높을 수도 있다.",
+            "metrics": {
+              "meanTop4Agreement": 0.6,
+              "minimumDistractorRelevance": 2,
+              "minimumSelectedCandidateSupport": 0.0,
+              "normalizedBoundaryMargin": -0.019192
+            },
+            "ownerDecision": {
+              "comment": "",
+              "decision": "approved",
+              "question_fingerprint": "05206db71023fa2015863df82f33e5340f0ad4696588a5f123a31e9ee64cf646",
+              "question_id": "ACC-12-core_relation_to_term-01",
+              "reviewed_at": "2026-08-12T10:53:06.536227+00:00",
+              "reviewer_id": "ebb5893f-ab68-4cef-949a-4e6c9519245b"
+            },
+            "questionFingerprint": "05206db71023fa2015863df82f33e5340f0ad4696588a5f123a31e9ee64cf646",
+            "questionId": "ACC-12-core_relation_to_term-01",
+            "reasons": [
+              {
+                "id": "candidate-support",
+                "label": "선택 오답의 실험 조합 지지율 낮음",
+                "measured": 0.0,
+                "threshold": 0.1
+              }
+            ],
+            "severity": "review",
+            "split": "train",
+            "stem": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?\nROA=순이익률×총자산회전율; 3단계 DuPont은 ROE=순이익률×총자산회전율×자기자본승수, 자기자본승수=평균자산/평균자본."
+          },
+          {
+            "change": {
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
+            },
+            "choices": [
+              {
+                "elementId": "FI-08",
+                "explanation": "채권선물 basis는 현물채권 가격과 전환계수로 조정한 선물가격의 차이고, CTD는 인도 선택권을 고려할 때 가장 유리한 후보 채권이다.",
+                "isCorrect": false,
+                "key": "A",
+                "text": "채권선물 Basis·CTD"
+              },
+              {
+                "elementId": "DER-04",
+                "explanation": "옵션 payoff는 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다.",
+                "isCorrect": false,
+                "key": "B",
+                "text": "Call·Put Payoff"
+              },
+              {
+                "elementId": "DER-02",
+                "explanation": "선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정이익을 만드는 전략이다.",
+                "isCorrect": true,
+                "key": "C",
+                "text": "Forward·Futures 무차익거래"
+              },
+              {
+                "elementId": "DER-01",
+                "explanation": "선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가격을 정한 값이다.",
+                "isCorrect": false,
+                "key": "D",
+                "text": "Forward·Futures 이론가격"
+              },
+              {
+                "elementId": "FI-07",
+                "explanation": "Repo는 증권을 담보로 현금을 빌리고 나중에 더 높은 가격으로 되사는 단기금융 거래이며, haircut은 담보가치 중 대출하지 않는 완충분이다.",
+                "isCorrect": false,
+                "key": "E",
+                "text": "Repo·Haircut"
+              }
+            ],
+            "elementId": "DER-02",
+            "explanation": "정답은 Forward·Futures 무차익거래입니다. 선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정이익을 만드는 전략이다. 선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다. 반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다.",
+            "metrics": {
+              "meanTop4Agreement": 0.577778,
+              "minimumDistractorRelevance": 3,
+              "minimumSelectedCandidateSupport": 0.055556,
+              "normalizedBoundaryMargin": 0.01196
+            },
+            "ownerDecision": {
+              "comment": "",
+              "decision": "approved",
+              "question_fingerprint": "6e76d346ab61be24fcd4bed081bfeb73dfdbb9b8aefaff9b7c97cfe410109544",
+              "question_id": "DER-02-core_relation_to_term-01",
+              "reviewed_at": "2026-08-12T10:54:14.357761+00:00",
+              "reviewer_id": "ebb5893f-ab68-4cef-949a-4e6c9519245b"
+            },
+            "questionFingerprint": "6e76d346ab61be24fcd4bed081bfeb73dfdbb9b8aefaff9b7c97cfe410109544",
+            "questionId": "DER-02-core_relation_to_term-01",
+            "reasons": [
+              {
+                "id": "candidate-support",
+                "label": "선택 오답의 실험 조합 지지율 낮음",
+                "measured": 0.055556,
+                "threshold": 0.1
+              }
+            ],
+            "severity": "review",
+            "split": "train",
+            "stem": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?\n시장선도가격 K_mkt가 이론가격 F*보다 높으면 현물 매수·선도 매도(cash-and-carry), 낮으면 가능한 경우 현물 공매도·선도 매수(reverse cash-and-carry). 만기 단위당 확정이익은 단순 조건에서 |K_mkt−F*|다."
+          },
+          {
+            "change": {
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
+            },
+            "choices": [
+              {
+                "elementId": "EQV-61",
+                "explanation": "추정치 괴리·실적 서프라이즈는 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결한다.",
+                "isCorrect": true,
+                "key": "A",
+                "text": "추정치 괴리·실적 서프라이즈"
+              },
+              {
+                "elementId": "EQV-62",
+                "explanation": "기대 TSR·촉매 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다.",
+                "isCorrect": false,
+                "key": "B",
+                "text": "기대 TSR·촉매"
+              },
+              {
+                "elementId": "EQV-41",
+                "explanation": "ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
+                "isCorrect": false,
+                "key": "C",
+                "text": "ROIC·투하자본"
+              },
+              {
+                "elementId": "EQV-20",
+                "explanation": "매출 브리지는 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다.",
+                "isCorrect": false,
+                "key": "D",
+                "text": "매출 브리지"
+              },
+              {
+                "elementId": "EQV-17",
+                "explanation": "목표주가 상승여력은 현재 주가가 분석가의 목표가까지 움직일 경우 얻을 수 있는 가격수익률이다.",
+                "isCorrect": false,
+                "key": "E",
+                "text": "목표주가·상승여력"
+              }
+            ],
+            "elementId": "EQV-61",
+            "explanation": "정답은 추정치 괴리·실적 서프라이즈입니다. 추정치 괴리·실적 서프라이즈는 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결한다. 실적이 전년보다 좋아도 시장이 더 좋은 숫자를 기대했다면 주가는 떨어질 수 있다. 절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요하다.",
+            "metrics": {
+              "meanTop4Agreement": 0.364021,
+              "minimumDistractorRelevance": 3,
+              "minimumSelectedCandidateSupport": 0.055556,
+              "normalizedBoundaryMargin": -0.032326
+            },
+            "ownerDecision": {
+              "comment": "",
+              "decision": "approved",
+              "question_fingerprint": "f4b81db55d245801b16717b4b9e99c0f7b037eb391ef95bbda647fbb648704dc",
+              "question_id": "EQV-61-core_relation_to_term-01",
+              "reviewed_at": "2026-08-12T10:55:06.426089+00:00",
+              "reviewer_id": "ebb5893f-ab68-4cef-949a-4e6c9519245b"
+            },
+            "questionFingerprint": "f4b81db55d245801b16717b4b9e99c0f7b037eb391ef95bbda647fbb648704dc",
+            "questionId": "EQV-61-core_relation_to_term-01",
+            "reasons": [
+              {
+                "id": "candidate-support",
+                "label": "선택 오답의 실험 조합 지지율 낮음",
+                "measured": 0.055556,
+                "threshold": 0.1
+              }
+            ],
+            "severity": "review",
+            "split": "train",
+            "stem": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?\nEstimateGap=OurEstimate/Consensus−1; Surprise=Actual/Consensus−1; 목표가 변화는 EPS·배수·순부채로 분해"
+          }
+        ],
+        "reusedQuestionCount": 405,
+        "reviewInputSha256": "0932bbb5d01f2349ca46252a55580ce3de7d1b8088d4f78c1cd42689d990a902",
+        "selectedProfileId": "exception-only",
+        "selectionReason": "validation 예외율 1.67%가 목표 5.00%에 가장 가까운 프로필",
+        "selectionRule": "validation 예외율이 목표 5%에 가장 가까운 프로필을 선택하고 동률이면 reference baseline을 우선한다. test는 선택에 사용하지 않는다.",
+        "staleOwnerDecisionCount": 0,
+        "targetValidationReviewRate": 0.05
+      },
+      "dataset": {
+        "candidateCount": 54258,
+        "configSha256": "c1670dca7af7b5a63493afff0d49e73c6757e22d31418488391ed957b94a3367",
+        "contentFingerprint": "1292a74307d173ea13e1790b1336359d6a5a6b458f7948b79b82306795f96535",
+        "elementCount": 135,
+        "elementSplits": {
+          "test": 20,
+          "train": 95,
+          "validation": 20
+        },
+        "factCount": 405,
+        "questionCount": 405,
+        "questionSplits": {
+          "test": 60,
+          "train": 285,
+          "validation": 60
+        },
+        "splitSha256": "e1555069fc32ea58f91fbd3d34d9ba91e735ceb7f782082368d87606b0d75dc7"
+      },
+      "durationSeconds": 32.602,
+      "embeddings": [
+        {
+          "artifactBytes": 0,
+          "cacheHit": false,
+          "candidateId": "tfidf-word-char",
+          "dimensions": null,
+          "encodeSeconds": 0.0,
+          "error": null,
+          "matrixCacheSha256": null,
+          "modelId": "tfidf-word-char",
+          "revisionRequested": "feature-v1",
+          "revisionResolved": "feature-v1",
+          "status": "completed"
+        }
+      ],
+      "environment": {
+        "appRuntimeModelCalls": 0,
+        "externalLlmApiCalls": 0,
+        "numpy": "2.4.4",
+        "platform": "Windows-11-10.0.26200-SP0",
+        "python": "3.13.3",
+        "scikitLearn": "1.7.2",
+        "sentenceTransformers": null,
+        "xgboost": "3.4.0"
+      },
+      "evaluation": {
+        "labelSource": "weak_rule_bootstrap",
+        "test": {
+          "labelSource": "weak_rule",
+          "mrr": 1.0,
+          "ndcgAt4": 0.946206,
+          "precisionAt4": 0.995833,
+          "questionCount": 60,
+          "retrievalRecallAt20": 0.995833,
+          "split": "test"
+        },
+        "validation": {
+          "labelSource": "weak_rule",
+          "mrr": 1.0,
+          "ndcgAt4": 0.952131,
+          "precisionAt4": 1.0,
+          "questionCount": 60,
+          "retrievalRecallAt20": 0.995833,
+          "split": "validation"
+        }
+      },
+      "experimentId": "cmq-20260812-112232-c1670dca",
+      "finishedAt": "2026-08-12T11:23:05.505392+00:00",
+      "labels": {
+        "coveredTestQuestionCount": 0,
+        "humanApprovalRate": 0.0,
+        "humanLabelCompletion": 0.0,
+        "humanLabelCount": 0,
+        "humanTestCoverage": 0.0,
+        "metricWarning": "현재 test 점수는 약지도 규칙 재현도이며 교육 품질의 독립 성능이 아닙니다.",
+        "testQuestionCount": 60,
+        "weakLabelCount": 54258
+      },
+      "methodReferences": [
+        {
+          "id": "lambda-mart",
+          "title": "From RankNet to LambdaRank to LambdaMART: An Overview",
+          "url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/MSR-TR-2010-82.pdf"
+        },
+        {
+          "id": "xgboost",
+          "title": "XGBoost: A Scalable Tree Boosting System",
+          "url": "https://arxiv.org/abs/1603.02754"
+        },
+        {
+          "id": "e5",
+          "title": "Text Embeddings by Weakly-Supervised Contrastive Pre-training",
+          "url": "https://arxiv.org/abs/2212.03533"
+        },
+        {
+          "id": "beir",
+          "title": "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+          "url": "https://arxiv.org/abs/2104.08663"
+        },
+        {
+          "id": "bge-m3",
+          "title": "BGE M3-Embedding: Multi-Lingual, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation",
+          "url": "https://arxiv.org/abs/2402.03216"
+        },
+        {
+          "id": "kure-v1-model-card",
+          "title": "KURE-v1 official model card (model provenance and training details; not a paper)",
+          "url": "https://huggingface.co/nlpai-lab/KURE-v1"
+        }
+      ],
+      "progress": {
+        "message": "자동 검수와 예외 분류 완료",
+        "percent": 100,
+        "processed": 405,
+        "stage": "completed",
+        "total": 405
+      },
+      "qualityGates": [
+        {
+          "id": "retrieval-recall-at-20",
+          "label": "test Recall@20",
+          "measured": 0.995833,
+          "passed": true,
+          "threshold": 0.95
+        },
+        {
+          "id": "test-ndcg-at-4",
+          "label": "test NDCG@4",
+          "measured": 0.946206,
+          "passed": true,
+          "threshold": 0.8
+        },
+        {
+          "id": "test-precision-at-4",
+          "label": "test Precision@4",
+          "measured": 0.995833,
+          "passed": true,
+          "threshold": 0.9
+        },
+        {
+          "id": "automated-review-blocks",
+          "label": "자동 검수 차단 문항 수",
+          "measured": 4,
+          "passed": false,
+          "threshold": 0
+        },
+        {
+          "id": "owner-exception-review",
+          "label": "Owner 미확인 예외 문항 수",
+          "measured": 0,
+          "passed": true,
+          "threshold": 0
+        },
+        {
+          "id": "owner-batch-approval",
+          "label": "Owner 자동검수 배치 승인",
+          "measured": false,
+          "passed": false,
+          "threshold": true
+        },
+        {
+          "id": "questions-per-element",
+          "label": "요소별 생성 문항 수",
+          "measured": 3,
+          "passed": true,
+          "threshold": 2
+        },
+        {
+          "id": "answer-leak",
+          "label": "정답 누출 건수",
+          "measured": 0,
+          "passed": true,
+          "threshold": 0
+        },
+        {
+          "id": "duplicate-choice",
+          "label": "중복 선택지 건수",
+          "measured": 0,
+          "passed": true,
+          "threshold": 0
+        },
+        {
+          "id": "ambiguous-question",
+          "label": "약한 오답 포함 문항 수",
+          "measured": 0,
+          "passed": true,
+          "threshold": 0
+        },
+        {
+          "id": "deterministic-bank",
+          "label": "문항 은행 직렬화 재현성",
+          "measured": true,
+          "passed": true,
+          "threshold": true
+        }
+      ],
+      "questionEditCount": 0,
+      "rankerRuns": [
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1245,
+          "modelSha256": "391c6dd1891bba84eae290b7b119fc44749f0674aca8a94cdd257d21c6de267f",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.884,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.867446,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 1.0,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1243,
+          "modelSha256": "6e11d3305522b6fe8e65fe7528f97f581f6aafcb1105e0ac4b91b20f764e62e6",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.496,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.867446,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 1.0,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1246,
+          "modelSha256": "b57b2a92d14cb057cce53e4d7b90945615a48f42388a406701546fbba5468070",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.482,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.867446,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 1.0,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-xgboost-reference-default.joblib",
+          "modelBytes": 72712,
+          "modelSha256": "4fe5076f1a086063400415e5b9010ed013fa08ab10227ffba0cc8dcb44ff026f",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.912,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.938032,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 1.0,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-xgboost-shallow-medium.joblib",
+          "modelBytes": 24910,
+          "modelSha256": "de3dec8aad942d23afd8d2b44cd078efc87af3acc3e0ba05a7a687da6cc62a8c",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.029,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.944466,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 1.0,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-xgboost-shallow-slow.joblib",
+          "modelBytes": 58073,
+          "modelSha256": "c9f0d68a3a7e42258449bd541953bb603165f34fb281a390e8daa4056eeff480",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.517,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.942434,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 1.0,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1239,
+          "modelSha256": "1926093d655e3019b7ee764aa097ea440664b71856eb1e6b56b511f7c7afc835",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.663,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.858465,
+            "precisionAt4": 0.95,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.991667,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1237,
+          "modelSha256": "70402b5d3b7a49998548475236636b801d1d7afd6346d5d919fb59a5571d867a",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.799,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.858337,
+            "precisionAt4": 0.95,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.991667,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1236,
+          "modelSha256": "619878af90506117718b64afaa0d31cd0ff38fb9c22d3c5c638d2cbab572a4e4",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.652,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.858337,
+            "precisionAt4": 0.95,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.991667,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-xgboost-reference-default.joblib",
+          "modelBytes": 60692,
+          "modelSha256": "beee6b09271d714da1994783ca30002357aac65a0e719317ce01b684869edf50",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.339,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.941375,
+            "precisionAt4": 0.991667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.991667,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-xgboost-shallow-medium.joblib",
+          "modelBytes": 40196,
+          "modelSha256": "6b583c7291188a34400aeba87b76084df3c9df9e1f7509e6077ed249e9a2ba89",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.478,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.946325,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.991667,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-xgboost-shallow-slow.joblib",
+          "modelBytes": 61407,
+          "modelSha256": "573ec420d067d734911e911d4c4e6ac76d1e20c62daf16fc451712acef8ef08d",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.409,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.938487,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.991667,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1247,
+          "modelSha256": "70693d0c36f9a6ec24424c8ac92236cea464aa306d74962d5f255d18b1329b5c",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.713,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.966667,
+            "ndcgAt4": 0.859344,
+            "precisionAt4": 0.958333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.995833,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1244,
+          "modelSha256": "a51ee190ae259cc56a4b41b1153df9aa52e3b8978b0d6c7c982aa6440664548d",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.727,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.966667,
+            "ndcgAt4": 0.859344,
+            "precisionAt4": 0.958333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.995833,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1245,
+          "modelSha256": "7852d15bdbda12c388b5e5d95b088ac966a916e2d622764f64f2b270c06553de",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.441,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.966667,
+            "ndcgAt4": 0.859344,
+            "precisionAt4": 0.958333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.995833,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-xgboost-reference-default.joblib",
+          "modelBytes": 67151,
+          "modelSha256": "662dd025eb6c25894462c845b92b04ec96a84ec4b4e2a8c6e2d2328072992706",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.946206,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.995833,
+            "split": "test"
+          },
+          "testEvaluated": true,
+          "trainingSeconds": 0.909,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.952131,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.995833,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-xgboost-shallow-medium.joblib",
+          "modelBytes": 23182,
+          "modelSha256": "e3478ada1236cad35c9829ac94da393a8fa64b78216aa33ae274e228f9617637",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.075,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.943609,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.995833,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-xgboost-shallow-slow.joblib",
+          "modelBytes": 44076,
+          "modelSha256": "2260fd2e5c1e211072e85f33c3778c80bcef49bf4a6aceb34d523c423b8538a5",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.294,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.944264,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.995833,
+            "split": "validation"
+          }
+        }
+      ],
+      "releaseBlockReason": "자동 검수 예외 확인 또는 Owner 배치 승인이 필요합니다.",
+      "releaseReady": false,
+      "reportSha256": "c09e7d81addb1bc6d7f4c6451ee04868f227732daf1abc6dea7fb9af3a14ee9a",
+      "reportVersion": 1,
+      "safety": {
+        "ambiguousQuestionCount": 0,
+        "ambiguousQuestionIds": [],
+        "answerLeakCount": 0,
+        "duplicateChoiceCount": 0
+      },
+      "selection": {
+        "embeddingId": "tfidf-word-char",
+        "hyperparameters": {
+          "id": "reference-default",
+          "learningRate": 0.3,
+          "maxDepth": 6,
+          "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+        },
+        "modelBytes": 67151,
+        "modelSha256": "662dd025eb6c25894462c845b92b04ec96a84ec4b4e2a8c6e2d2328072992706",
+        "rankerFamily": "xgboost",
+        "rankerId": "xgboost-reference-default",
+        "reason": "최고 validation NDCG@4와 1%p 이내에서 임베딩·랭커 복잡도를 먼저 낮추고, 같은 비용군에서는 validation NDCG@4 최고 조합을 선택",
+        "retrievalProfileId": "lexical-char-heavy",
+        "selectionTolerance": 0.01,
+        "validationNdcgAt4": 0.952131
+      },
+      "startedAt": "2026-08-12T11:22:32.903484+00:00",
+      "status": "candidate",
+      "weightExperiments": {
+        "fusionBaseline": {
+          "method": "reciprocal_rank_fusion",
+          "rationale": "원 점수 스케일 정규화 대신 각 신호의 순위를 결합한다. k=60은 원 논문의 고정 기준값이다.",
+          "reference": "Cormack, Clarke, Buettcher (SIGIR 2009), doi:10.1145/1571941.1572114",
+          "referenceUrl": "https://cormack.uwaterloo.ca/cormacksigir09-rrf.pdf",
+          "rrfK": 60
+        },
+        "pairwiseCValues": [
+          0.1,
+          1.0,
+          10.0
+        ],
+        "pairwiseReference": {
+          "method": "RankNet-style pairwise logistic loss",
+          "paper": "Burges et al. (ICML 2005), doi:10.1145/1102351.1102363",
+          "paperUrl": "https://www.microsoft.com/en-us/research/wp-content/uploads/2005/08/icml_ranking.pdf",
+          "regularizationBaselineC": 1.0,
+          "regularizationBaselineSource": "scikit-learn LogisticRegression reference implementation default; not specified by RankNet paper",
+          "regularizationBaselineUrl": "https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html"
+        },
+        "retrievalProfileCount": 6,
+        "retrievalProfiles": [
+          {
+            "answerChar": 0.1666666667,
+            "answerSemantic": 0.0,
+            "answerWord": 0.1666666667,
+            "id": "lexical-balanced",
+            "provenance": "equal-weight RRF reference baseline",
+            "questionChar": 0.1666666667,
+            "questionSemantic": 0.0,
+            "questionWord": 0.1666666667,
+            "sameDomain": 0.1666666666,
+            "sameMode": 0.1666666666
+          },
+          {
+            "answerChar": 0.08,
+            "answerSemantic": 0.0,
+            "answerWord": 0.25,
+            "id": "lexical-word-heavy",
+            "provenance": "word/char sensitivity ablation; not a paper default",
+            "questionChar": 0.08,
+            "questionSemantic": 0.0,
+            "questionWord": 0.25,
+            "sameDomain": 0.25,
+            "sameMode": 0.09
+          },
+          {
+            "answerChar": 0.25,
+            "answerSemantic": 0.0,
+            "answerWord": 0.08,
+            "id": "lexical-char-heavy",
+            "provenance": "word/char sensitivity ablation; not a paper default",
+            "questionChar": 0.25,
+            "questionSemantic": 0.0,
+            "questionWord": 0.08,
+            "sameDomain": 0.25,
+            "sameMode": 0.09
+          },
+          {
+            "answerChar": 0.125,
+            "answerSemantic": 0.125,
+            "answerWord": 0.125,
+            "id": "semantic-balanced",
+            "provenance": "equal-weight sparse/dense RRF reference baseline",
+            "questionChar": 0.125,
+            "questionSemantic": 0.125,
+            "questionWord": 0.125,
+            "sameDomain": 0.125,
+            "sameMode": 0.125
+          },
+          {
+            "answerChar": 0.1333333333,
+            "answerSemantic": 0.1,
+            "answerWord": 0.1333333333,
+            "id": "semantic-conservative",
+            "provenance": "dense-weight sensitivity ablation; not a paper default",
+            "questionChar": 0.1333333333,
+            "questionSemantic": 0.1,
+            "questionWord": 0.1333333333,
+            "sameDomain": 0.1333333334,
+            "sameMode": 0.1333333334
+          },
+          {
+            "answerChar": 0.0833333333,
+            "answerSemantic": 0.25,
+            "answerWord": 0.0833333333,
+            "id": "semantic-heavy",
+            "provenance": "dense-weight sensitivity ablation; not a paper default",
+            "questionChar": 0.0833333333,
+            "questionSemantic": 0.25,
+            "questionWord": 0.0833333333,
+            "sameDomain": 0.0833333334,
+            "sameMode": 0.0833333334
+          }
+        ],
+        "selectionRule": "train으로 학습하고 validation NDCG@4로만 선택한 뒤 선택된 1개 구성에만 test를 실행",
+        "weakSupervision": {
+          "canonicalProfileId": "balanced",
+          "comparisons": [
+            {
+              "changedQuestionCount": 0,
+              "meanTop4JaccardVsCanonical": 1.0,
+              "minimumTop4JaccardVsCanonical": 1.0,
+              "profileId": "balanced"
+            },
+            {
+              "changedQuestionCount": 266,
+              "meanTop4JaccardVsCanonical": 0.679436,
+              "minimumTop4JaccardVsCanonical": 0.142857,
+              "profileId": "semantic-heavy"
+            },
+            {
+              "changedQuestionCount": 187,
+              "meanTop4JaccardVsCanonical": 0.793862,
+              "minimumTop4JaccardVsCanonical": 0.142857,
+              "profileId": "domain-heavy"
+            }
+          ],
+          "fusionMethod": "reciprocal_rank_fusion",
+          "interpretation": "사람 라벨 전에는 최고 성능이 아니라 수동 약지도 가중치 변화에 대한 후보 안정성을 측정합니다.",
+          "meanTop4JaccardAcrossAlternatives": 0.736649,
+          "minimumTop4JaccardAcrossAlternatives": 0.142857,
+          "profileCount": 3,
+          "rrfK": 60
+        },
+        "weakSupervisionProfiles": [
+          {
+            "answerChar": 0.1666666667,
+            "answerWord": 0.1666666667,
+            "id": "balanced",
+            "provenance": "equal-weight RRF reference baseline",
+            "questionChar": 0.1666666667,
+            "questionWord": 0.1666666667,
+            "sameDomain": 0.1666666666,
+            "sameMode": 0.1666666666
+          },
+          {
+            "answerChar": 0.2,
+            "answerWord": 0.2,
+            "id": "semantic-heavy",
+            "provenance": "sensitivity ablation around equal-weight RRF; not a paper default",
+            "questionChar": 0.25,
+            "questionWord": 0.25,
+            "sameDomain": 0.05,
+            "sameMode": 0.05
+          },
+          {
+            "answerChar": 0.13,
+            "answerWord": 0.13,
+            "id": "domain-heavy",
+            "provenance": "sensitivity ablation around equal-weight RRF; not a paper default",
+            "questionChar": 0.12,
+            "questionWord": 0.12,
+            "sameDomain": 0.35,
+            "sameMode": 0.15
+          }
+        ],
+        "xgboostGrid": [
+          {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          }
+        ]
+      }
+    },
+    {
+      "artifacts": {
+        "candidates": "build/concept-model/candidates.jsonl",
+        "facts": "build/concept-model/facts.jsonl",
+        "markdownReport": "docs/modeling/experiments/cmq-20260812-105741-c1670dca.md",
+        "markdownReportWritten": true,
+        "ownerDecisions": "content/model/concept-owner-decisions.jsonl",
+        "questionBank": "content/model/concept-question-bank.generated.json",
+        "questionBankSha256": "45d9e11720729626b9de355cb47e1698f82843816ce8f022ea77798275b346a9",
+        "questionBankWritten": true,
+        "split": "content/model/concept-split.json"
+      },
+      "automatedReview": {
+        "affectedQuestionCount": 0,
+        "autoPassedCount": 398,
+        "baselineMode": "incremental",
+        "blockedCount": 4,
+        "changedElementCount": 0,
+        "changedElementIds": [],
+        "changedQuestionCount": 0,
+        "needsOwnerReviewCount": 0,
+        "ownerApprovedCount": 3,
+        "ownerBatchApproved": false,
+        "ownerBatchDecision": null,
+        "ownerReviewComplete": false,
+        "policyConfigSha256": "e1c66b83427d387af24f28f0ecd40dc6e36893083bc067ce6fc68e02d66e474f",
+        "policyVersion": "concept-auto-review-v1",
+        "previousBankSha256": "2aead67d77f086e1e4649d94c9fbb7a4d81e98b1c339d98c8412c46c094d21cc",
+        "profileExperiments": [
+          {
+            "distanceFromTargetReviewRate": 0.233333,
+            "profileId": "reference-balanced",
+            "profileIndex": 0,
+            "provenance": "동일 가중 RRF 기준선과 다수결 0.5를 중심으로 둔 운영 reference baseline; 논문 기본값은 아님",
+            "thresholds": {
+              "minimumMeanTop4Agreement": 0.5,
+              "minimumNormalizedBoundaryMargin": 0.01,
+              "minimumSelectedCandidateSupport": 0.35
+            },
+            "validationBlockedCount": 0,
+            "validationQuestionCount": 60,
+            "validationReviewCount": 17,
+            "validationReviewRate": 0.283333
+          },
+          {
+            "distanceFromTargetReviewRate": 0.4,
+            "profileId": "conservative-review",
+            "profileIndex": 1,
+            "provenance": "reference baseline에서 검토 민감도를 높인 단방향 ablation",
+            "thresholds": {
+              "minimumMeanTop4Agreement": 0.6,
+              "minimumNormalizedBoundaryMargin": 0.02,
+              "minimumSelectedCandidateSupport": 0.45
+            },
+            "validationBlockedCount": 0,
+            "validationQuestionCount": 60,
+            "validationReviewCount": 27,
+            "validationReviewRate": 0.45
+          },
+          {
+            "distanceFromTargetReviewRate": 0.166667,
+            "profileId": "relaxed-review",
+            "profileIndex": 2,
+            "provenance": "reference baseline에서 검토량을 낮춘 단방향 ablation",
+            "thresholds": {
+              "minimumMeanTop4Agreement": 0.4,
+              "minimumNormalizedBoundaryMargin": 0.005,
+              "minimumSelectedCandidateSupport": 0.25
+            },
+            "validationBlockedCount": 0,
+            "validationQuestionCount": 60,
+            "validationReviewCount": 13,
+            "validationReviewRate": 0.216667
+          },
+          {
+            "distanceFromTargetReviewRate": 0.033333,
+            "profileId": "exception-only",
+            "profileIndex": 3,
+            "provenance": "자동 하드 게이트를 유지하면서 극단적 순위 불일치만 올리는 최소 검토량 ablation",
+            "thresholds": {
+              "minimumMeanTop4Agreement": 0.25,
+              "minimumNormalizedBoundaryMargin": -0.1,
+              "minimumSelectedCandidateSupport": 0.1
+            },
+            "validationBlockedCount": 0,
+            "validationQuestionCount": 60,
+            "validationReviewCount": 1,
+            "validationReviewRate": 0.016667
+          }
+        ],
+        "profileId": "exception-only",
+        "queue": [
+          {
+            "change": {
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
+            },
+            "choices": [
+              {
+                "elementId": "CF-07",
+                "explanation": "WACC는 채권자와 주주가 요구하는 수익률을 시장가치 조달비중으로 가중한 기업 전체의 자본비용이다.",
+                "isCorrect": true,
+                "key": "A",
+                "text": "WACC"
+              },
+              {
+                "elementId": "ACC-06",
+                "explanation": "유효이자율법은 사채의 실제 조달수익률을 장부금액에 적용해 기간별 이자비용과 장부가 변화를 계산하는 방법이다.",
+                "isCorrect": false,
+                "key": "B",
+                "text": "사채 회계·유효이자율법"
+              },
+              {
+                "elementId": "CF-10",
+                "explanation": "FCFF와 FCFE는 영업과 재투자 뒤 기업 전체 또는 보통주주에게 남는 현금을 각각 측정한다.",
+                "isCorrect": false,
+                "key": "C",
+                "text": "FCFF·FCFE"
+              },
+              {
+                "elementId": "EQV-15",
+                "explanation": "계속가치는 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다.",
+                "isCorrect": false,
+                "key": "D",
+                "text": "계속가치"
+              },
+              {
+                "elementId": "ACC-02",
+                "explanation": "발생주의는 현금이 오간 날이 아니라 수익을 벌고 비용을 부담한 기간에 경영성과를 기록하는 원칙이다.",
+                "isCorrect": false,
+                "key": "E",
+                "text": "발생주의·현금주의와 결산조정"
+              }
+            ],
+            "elementId": "CF-07",
+            "metrics": {
+              "meanTop4Agreement": 0.555556,
+              "minimumDistractorRelevance": 2,
+              "minimumSelectedCandidateSupport": 0.0,
+              "normalizedBoundaryMargin": -0.085196
+            },
+            "ownerDecision": {
+              "comment": "문제가 의미가 없는데",
+              "decision": "rejected",
+              "question_fingerprint": "d6a5de7b153936b0fb9be6881a9c7d5f5d4536e6299929ca9554abebd752b080",
+              "question_id": "CF-07-core_relation_to_term-01",
+              "reviewed_at": "2026-08-12T10:53:33.109924+00:00",
+              "reviewer_id": "ebb5893f-ab68-4cef-949a-4e6c9519245b"
+            },
+            "questionFingerprint": "d6a5de7b153936b0fb9be6881a9c7d5f5d4536e6299929ca9554abebd752b080",
+            "questionId": "CF-07-core_relation_to_term-01",
+            "reasons": [
+              {
+                "id": "owner-rejected",
+                "label": "Owner가 문항을 차단함",
+                "measured": "rejected",
+                "threshold": "approved"
+              },
+              {
+                "id": "candidate-support",
+                "label": "선택 오답의 실험 조합 지지율 낮음",
+                "measured": 0.0,
+                "threshold": 0.1
+              }
+            ],
+            "severity": "block",
+            "split": "test",
+            "stem": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?\nWACC=wE×ke+wD×kd×(1-T). 장부가가 아니라 시장가치 가중치를 기본으로 한다."
+          },
+          {
+            "change": {
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
+            },
+            "choices": [
+              {
+                "elementId": "CF-10",
+                "explanation": "FCFF와 FCFE는 영업과 재투자 뒤 기업 전체 또는 보통주주에게 남는 현금을 각각 측정한다.",
+                "isCorrect": false,
+                "key": "A",
+                "text": "FCFF·FCFE"
+              },
+              {
+                "elementId": "EQV-13",
+                "explanation": "WACC는 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
+                "isCorrect": false,
+                "key": "B",
+                "text": "WACC"
+              },
+              {
+                "elementId": "EQV-16",
+                "explanation": "Peer multiple 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다.",
+                "isCorrect": false,
+                "key": "C",
+                "text": "Peer multiple"
+              },
+              {
+                "elementId": "CF-11",
+                "explanation": "계속가치는 명시적 예측기간 뒤에 발생할 모든 현금흐름을 예측 종료시점의 한 금액으로 요약한 값이다.",
+                "isCorrect": true,
+                "key": "D",
+                "text": "계속가치(Terminal Value)"
+              },
+              {
+                "elementId": "CF-02",
+                "explanation": "연금과 영구연금은 일정하거나 성장하는 반복 현금흐름을 한 시점의 가치로 묶어 계산하는 모형이다.",
+                "isCorrect": false,
+                "key": "E",
+                "text": "연금·영구연금·성장영구연금"
+              }
+            ],
+            "elementId": "CF-11",
+            "metrics": {
+              "meanTop4Agreement": 0.466667,
+              "minimumDistractorRelevance": 2,
+              "minimumSelectedCandidateSupport": 0.0,
+              "normalizedBoundaryMargin": -0.290562
+            },
+            "ownerDecision": {
+              "comment": "문제가 의미가 없음",
+              "decision": "rejected",
+              "question_fingerprint": "8d4434e38d2f74f76b17fa412e4eb35d5fece4e36ca68e5a220c1733ff34ad41",
+              "question_id": "CF-11-core_relation_to_term-01",
+              "reviewed_at": "2026-08-12T10:53:51.939466+00:00",
+              "reviewer_id": "ebb5893f-ab68-4cef-949a-4e6c9519245b"
+            },
+            "questionFingerprint": "8d4434e38d2f74f76b17fa412e4eb35d5fece4e36ca68e5a220c1733ff34ad41",
+            "questionId": "CF-11-core_relation_to_term-01",
+            "reasons": [
+              {
+                "id": "owner-rejected",
+                "label": "Owner가 문항을 차단함",
+                "measured": "rejected",
+                "threshold": "approved"
+              },
+              {
+                "id": "candidate-support",
+                "label": "선택 오답의 실험 조합 지지율 낮음",
+                "measured": 0.0,
+                "threshold": 0.1
+              },
+              {
+                "id": "boundary-margin",
+                "label": "4위 선택 경계가 불안정함",
+                "measured": -0.290562,
+                "threshold": -0.1
+              }
+            ],
+            "severity": "block",
+            "split": "train",
+            "stem": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?\n영구성장법 TV_n=FCF_(n+1)/(WACC-g), 단 WACC>g; 출구배수법 TV_n=기준지표_n×Exit Multiple."
+          },
+          {
+            "change": {
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
+            },
+            "choices": [
+              {
+                "elementId": "EQV-41",
+                "explanation": "ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
+                "isCorrect": false,
+                "key": "A",
+                "text": "ROIC·투하자본"
+              },
+              {
+                "elementId": "EQV-32",
+                "explanation": "재고회전율과 충당률은 재고가 판매로 전환되는 속도와 매출채권 손실에 대비한 완충 수준을 보여 준다.",
+                "isCorrect": false,
+                "key": "B",
+                "text": "재고회전율·충당률"
+              },
+              {
+                "elementId": "EQV-29",
+                "explanation": "발생액비율과 현금전환율은 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 측정한다.",
+                "isCorrect": false,
+                "key": "C",
+                "text": "발생액비율·현금전환"
+              },
+              {
+                "elementId": "EQV-30",
+                "explanation": "DSO·DIO·DPO와 현금전환주기는 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순기간을 일수로 보여 준다.",
+                "isCorrect": true,
+                "key": "D",
+                "text": "운전자본 일수·현금전환주기"
+              },
+              {
+                "elementId": "EQV-31",
+                "explanation": "Billings와 계약자산·계약부채는 청구, 수익인식, 현금수취의 시점 차이를 연결해 계약사업의 활동을 보여 준다.",
+                "isCorrect": false,
+                "key": "E",
+                "text": "Billings·계약자산·계약부채"
+              }
+            ],
+            "elementId": "EQV-30",
+            "metrics": {
+              "meanTop4Agreement": 0.622222,
+              "minimumDistractorRelevance": 2,
+              "minimumSelectedCandidateSupport": 0.055556,
+              "normalizedBoundaryMargin": 0.05022
+            },
+            "ownerDecision": {
+              "comment": "문제에 답이 있는디?",
+              "decision": "rejected",
+              "question_fingerprint": "21349bafb78cacaaf4e04e6744b0897ebf09f5b92bba624bc03c33d12af42570",
+              "question_id": "EQV-30-definition_to_term-01",
+              "reviewed_at": "2026-08-12T10:54:47.05125+00:00",
+              "reviewer_id": "ebb5893f-ab68-4cef-949a-4e6c9519245b"
+            },
+            "questionFingerprint": "21349bafb78cacaaf4e04e6744b0897ebf09f5b92bba624bc03c33d12af42570",
+            "questionId": "EQV-30-definition_to_term-01",
+            "reasons": [
+              {
+                "id": "owner-rejected",
+                "label": "Owner가 문항을 차단함",
+                "measured": "rejected",
+                "threshold": "approved"
+              },
+              {
+                "id": "candidate-support",
+                "label": "선택 오답의 실험 조합 지지율 낮음",
+                "measured": 0.055556,
+                "threshold": 0.1
+              }
+            ],
+            "severity": "block",
+            "split": "validation",
+            "stem": "다음 설명에 가장 부합하는 금융 개념은 무엇인가?\nDSO·DIO·DPO와 현금전환주기는 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순기간을 일수로 보여 준다."
+          },
+          {
+            "change": {
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
+            },
+            "choices": [
+              {
+                "elementId": "EQV-19",
+                "explanation": "시나리오 가중가치는 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다.",
+                "isCorrect": false,
+                "key": "A",
+                "text": "시나리오 가중가치"
+              },
+              {
+                "elementId": "EQV-01",
+                "explanation": "P×Q 매출 추정은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다.",
+                "isCorrect": false,
+                "key": "B",
+                "text": "P×Q 매출 추정"
+              },
+              {
+                "elementId": "INV-04",
+                "explanation": "2자산 포트폴리오는 각 자산의 비중뿐 아니라 두 자산의 동행 정도까지 반영해 전체 기대수익과 위험을 계산한다.",
+                "isCorrect": false,
+                "key": "C",
+                "text": "2자산 포트폴리오"
+              },
+              {
+                "elementId": "IBT-18",
+                "explanation": "기대 하방은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표다.",
+                "isCorrect": true,
+                "key": "D",
+                "text": "리서치 위험·기대 하방"
+              },
+              {
+                "elementId": "FI-10",
+                "explanation": "기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험 등을 가격에 반영한 추가 수익률이다.",
+                "isCorrect": false,
+                "key": "E",
+                "text": "신용위험·Credit Spread·Expected Loss"
+              }
+            ],
+            "elementId": "IBT-18",
+            "metrics": {
+              "meanTop4Agreement": 0.6,
+              "minimumDistractorRelevance": 3,
+              "minimumSelectedCandidateSupport": 0.0,
+              "normalizedBoundaryMargin": -0.280779
+            },
+            "ownerDecision": {
+              "comment": "문제에 답이 있음",
+              "decision": "rejected",
+              "question_fingerprint": "ba8a711a735de3a80ce00aacf6ed86c2feefd7cada0aa886988d073cf346d412",
+              "question_id": "IBT-18-intuition_to_term-01",
+              "reviewed_at": "2026-08-12T10:55:31.3362+00:00",
+              "reviewer_id": "ebb5893f-ab68-4cef-949a-4e6c9519245b"
+            },
+            "questionFingerprint": "ba8a711a735de3a80ce00aacf6ed86c2feefd7cada0aa886988d073cf346d412",
+            "questionId": "IBT-18-intuition_to_term-01",
+            "reasons": [
+              {
+                "id": "owner-rejected",
+                "label": "Owner가 문항을 차단함",
+                "measured": "rejected",
+                "threshold": "approved"
+              },
+              {
+                "id": "candidate-support",
+                "label": "선택 오답의 실험 조합 지지율 낮음",
+                "measured": 0.0,
+                "threshold": 0.1
+              },
+              {
+                "id": "boundary-margin",
+                "label": "4위 선택 경계가 불안정함",
+                "measured": -0.280779,
+                "threshold": -0.1
+              }
+            ],
+            "severity": "block",
+            "split": "train",
+            "stem": "다음 직관적 설명이 가리키는 금융 개념은 무엇인가?\n10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부분 0원이고 드물게 50원을 잃는다. 평균값이 tail risk와 사건 간 동시발생을 숨길 수 있다."
+          }
+        ],
+        "resolvedItems": [
+          {
+            "change": {
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
+            },
+            "choices": [
+              {
+                "elementId": "EQV-10",
+                "explanation": "PBR은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다.",
+                "isCorrect": false,
+                "key": "A",
+                "text": "PBR"
+              },
+              {
+                "elementId": "EQV-09",
+                "explanation": "ROE는 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다.",
+                "isCorrect": false,
+                "key": "B",
+                "text": "ROE"
+              },
+              {
+                "elementId": "EQV-13",
+                "explanation": "WACC는 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
+                "isCorrect": false,
+                "key": "C",
+                "text": "WACC"
+              },
+              {
+                "elementId": "ACC-12",
+                "explanation": "DuPont 분해는 ROE를 이익률, 자산 효율, 레버리지로 나누어 주주수익성의 원인을 설명하는 방법이다.",
+                "isCorrect": true,
+                "key": "D",
+                "text": "ROA·ROE·DuPont 분해"
+              },
+              {
+                "elementId": "ACC-11",
+                "explanation": "재무비율은 이익창출력, 자산 활용도, 재무부담을 서로 다른 분모로 표준화해 기업과 기간을 비교하는 도구다.",
+                "isCorrect": false,
+                "key": "E",
+                "text": "수익성·효율성·레버리지 비율"
+              }
+            ],
+            "elementId": "ACC-12",
+            "metrics": {
+              "meanTop4Agreement": 0.6,
+              "minimumDistractorRelevance": 2,
+              "minimumSelectedCandidateSupport": 0.0,
+              "normalizedBoundaryMargin": -0.019192
+            },
+            "ownerDecision": {
+              "comment": "",
+              "decision": "approved",
+              "question_fingerprint": "05206db71023fa2015863df82f33e5340f0ad4696588a5f123a31e9ee64cf646",
+              "question_id": "ACC-12-core_relation_to_term-01",
+              "reviewed_at": "2026-08-12T10:53:06.536227+00:00",
+              "reviewer_id": "ebb5893f-ab68-4cef-949a-4e6c9519245b"
+            },
+            "questionFingerprint": "05206db71023fa2015863df82f33e5340f0ad4696588a5f123a31e9ee64cf646",
+            "questionId": "ACC-12-core_relation_to_term-01",
+            "reasons": [
+              {
+                "id": "candidate-support",
+                "label": "선택 오답의 실험 조합 지지율 낮음",
+                "measured": 0.0,
+                "threshold": 0.1
+              }
+            ],
+            "severity": "review",
+            "split": "train",
+            "stem": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?\nROA=순이익률×총자산회전율; 3단계 DuPont은 ROE=순이익률×총자산회전율×자기자본승수, 자기자본승수=평균자산/평균자본."
+          },
+          {
+            "change": {
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
+            },
+            "choices": [
+              {
+                "elementId": "FI-08",
+                "explanation": "채권선물 basis는 현물채권 가격과 전환계수로 조정한 선물가격의 차이고, CTD는 인도 선택권을 고려할 때 가장 유리한 후보 채권이다.",
+                "isCorrect": false,
+                "key": "A",
+                "text": "채권선물 Basis·CTD"
+              },
+              {
+                "elementId": "DER-04",
+                "explanation": "옵션 payoff는 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다.",
+                "isCorrect": false,
+                "key": "B",
+                "text": "Call·Put Payoff"
+              },
+              {
+                "elementId": "DER-02",
+                "explanation": "선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정이익을 만드는 전략이다.",
+                "isCorrect": true,
+                "key": "C",
+                "text": "Forward·Futures 무차익거래"
+              },
+              {
+                "elementId": "DER-01",
+                "explanation": "선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가격을 정한 값이다.",
+                "isCorrect": false,
+                "key": "D",
+                "text": "Forward·Futures 이론가격"
+              },
+              {
+                "elementId": "FI-07",
+                "explanation": "Repo는 증권을 담보로 현금을 빌리고 나중에 더 높은 가격으로 되사는 단기금융 거래이며, haircut은 담보가치 중 대출하지 않는 완충분이다.",
+                "isCorrect": false,
+                "key": "E",
+                "text": "Repo·Haircut"
+              }
+            ],
+            "elementId": "DER-02",
+            "metrics": {
+              "meanTop4Agreement": 0.577778,
+              "minimumDistractorRelevance": 3,
+              "minimumSelectedCandidateSupport": 0.055556,
+              "normalizedBoundaryMargin": 0.01196
+            },
+            "ownerDecision": {
+              "comment": "",
+              "decision": "approved",
+              "question_fingerprint": "6e76d346ab61be24fcd4bed081bfeb73dfdbb9b8aefaff9b7c97cfe410109544",
+              "question_id": "DER-02-core_relation_to_term-01",
+              "reviewed_at": "2026-08-12T10:54:14.357761+00:00",
+              "reviewer_id": "ebb5893f-ab68-4cef-949a-4e6c9519245b"
+            },
+            "questionFingerprint": "6e76d346ab61be24fcd4bed081bfeb73dfdbb9b8aefaff9b7c97cfe410109544",
+            "questionId": "DER-02-core_relation_to_term-01",
+            "reasons": [
+              {
+                "id": "candidate-support",
+                "label": "선택 오답의 실험 조합 지지율 낮음",
+                "measured": 0.055556,
+                "threshold": 0.1
+              }
+            ],
+            "severity": "review",
+            "split": "train",
+            "stem": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?\n시장선도가격 K_mkt가 이론가격 F*보다 높으면 현물 매수·선도 매도(cash-and-carry), 낮으면 가능한 경우 현물 공매도·선도 매수(reverse cash-and-carry). 만기 단위당 확정이익은 단순 조건에서 |K_mkt−F*|다."
+          },
+          {
+            "change": {
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
+            },
+            "choices": [
+              {
+                "elementId": "EQV-61",
+                "explanation": "추정치 괴리·실적 서프라이즈는 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결한다.",
+                "isCorrect": true,
+                "key": "A",
+                "text": "추정치 괴리·실적 서프라이즈"
+              },
+              {
+                "elementId": "EQV-62",
+                "explanation": "기대 TSR·촉매 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다.",
+                "isCorrect": false,
+                "key": "B",
+                "text": "기대 TSR·촉매"
+              },
+              {
+                "elementId": "EQV-41",
+                "explanation": "ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
+                "isCorrect": false,
+                "key": "C",
+                "text": "ROIC·투하자본"
+              },
+              {
+                "elementId": "EQV-20",
+                "explanation": "매출 브리지는 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다.",
+                "isCorrect": false,
+                "key": "D",
+                "text": "매출 브리지"
+              },
+              {
+                "elementId": "EQV-17",
+                "explanation": "목표주가 상승여력은 현재 주가가 분석가의 목표가까지 움직일 경우 얻을 수 있는 가격수익률이다.",
+                "isCorrect": false,
+                "key": "E",
+                "text": "목표주가·상승여력"
+              }
+            ],
+            "elementId": "EQV-61",
+            "metrics": {
+              "meanTop4Agreement": 0.364021,
+              "minimumDistractorRelevance": 3,
+              "minimumSelectedCandidateSupport": 0.055556,
+              "normalizedBoundaryMargin": -0.032326
+            },
+            "ownerDecision": {
+              "comment": "",
+              "decision": "approved",
+              "question_fingerprint": "f4b81db55d245801b16717b4b9e99c0f7b037eb391ef95bbda647fbb648704dc",
+              "question_id": "EQV-61-core_relation_to_term-01",
+              "reviewed_at": "2026-08-12T10:55:06.426089+00:00",
+              "reviewer_id": "ebb5893f-ab68-4cef-949a-4e6c9519245b"
+            },
+            "questionFingerprint": "f4b81db55d245801b16717b4b9e99c0f7b037eb391ef95bbda647fbb648704dc",
+            "questionId": "EQV-61-core_relation_to_term-01",
+            "reasons": [
+              {
+                "id": "candidate-support",
+                "label": "선택 오답의 실험 조합 지지율 낮음",
+                "measured": 0.055556,
+                "threshold": 0.1
+              }
+            ],
+            "severity": "review",
+            "split": "train",
+            "stem": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?\nEstimateGap=OurEstimate/Consensus−1; Surprise=Actual/Consensus−1; 목표가 변화는 EPS·배수·순부채로 분해"
+          }
+        ],
+        "reusedQuestionCount": 405,
+        "reviewInputSha256": "0932bbb5d01f2349ca46252a55580ce3de7d1b8088d4f78c1cd42689d990a902",
+        "selectedProfileId": "exception-only",
+        "selectionReason": "validation 예외율 1.67%가 목표 5.00%에 가장 가까운 프로필",
+        "selectionRule": "validation 예외율이 목표 5%에 가장 가까운 프로필을 선택하고 동률이면 reference baseline을 우선한다. test는 선택에 사용하지 않는다.",
+        "staleOwnerDecisionCount": 0,
+        "targetValidationReviewRate": 0.05
+      },
+      "dataset": {
+        "candidateCount": 54258,
+        "configSha256": "c1670dca7af7b5a63493afff0d49e73c6757e22d31418488391ed957b94a3367",
+        "contentFingerprint": "1292a74307d173ea13e1790b1336359d6a5a6b458f7948b79b82306795f96535",
+        "elementCount": 135,
+        "elementSplits": {
+          "test": 20,
+          "train": 95,
+          "validation": 20
+        },
+        "factCount": 405,
+        "questionCount": 405,
+        "questionSplits": {
+          "test": 60,
+          "train": 285,
+          "validation": 60
+        },
+        "splitSha256": "e1555069fc32ea58f91fbd3d34d9ba91e735ceb7f782082368d87606b0d75dc7"
+      },
+      "durationSeconds": 21.758,
+      "embeddings": [
+        {
+          "artifactBytes": 0,
+          "cacheHit": false,
+          "candidateId": "tfidf-word-char",
+          "dimensions": null,
+          "encodeSeconds": 0.0,
+          "error": null,
+          "matrixCacheSha256": null,
+          "modelId": "tfidf-word-char",
+          "revisionRequested": "feature-v1",
+          "revisionResolved": "feature-v1",
+          "status": "completed"
+        }
+      ],
+      "environment": {
+        "appRuntimeModelCalls": 0,
+        "externalLlmApiCalls": 0,
+        "numpy": "2.4.4",
+        "platform": "Windows-11-10.0.26200-SP0",
+        "python": "3.13.3",
+        "scikitLearn": "1.7.2",
+        "sentenceTransformers": null,
+        "xgboost": "3.4.0"
+      },
+      "evaluation": {
+        "labelSource": "weak_rule_bootstrap",
+        "test": {
+          "labelSource": "weak_rule",
+          "mrr": 1.0,
+          "ndcgAt4": 0.946206,
+          "precisionAt4": 0.995833,
+          "questionCount": 60,
+          "retrievalRecallAt20": 0.995833,
+          "split": "test"
+        },
+        "validation": {
+          "labelSource": "weak_rule",
+          "mrr": 1.0,
+          "ndcgAt4": 0.952131,
+          "precisionAt4": 1.0,
+          "questionCount": 60,
+          "retrievalRecallAt20": 0.995833,
+          "split": "validation"
+        }
+      },
+      "experimentId": "cmq-20260812-105741-c1670dca",
+      "finishedAt": "2026-08-12T10:58:03.473984+00:00",
+      "labels": {
+        "coveredTestQuestionCount": 0,
+        "humanApprovalRate": 0.0,
+        "humanLabelCompletion": 0.0,
+        "humanLabelCount": 0,
+        "humanTestCoverage": 0.0,
+        "metricWarning": "현재 test 점수는 약지도 규칙 재현도이며 교육 품질의 독립 성능이 아닙니다.",
+        "testQuestionCount": 60,
+        "weakLabelCount": 54258
+      },
+      "methodReferences": [
+        {
+          "id": "lambda-mart",
+          "title": "From RankNet to LambdaRank to LambdaMART: An Overview",
+          "url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/MSR-TR-2010-82.pdf"
+        },
+        {
+          "id": "xgboost",
+          "title": "XGBoost: A Scalable Tree Boosting System",
+          "url": "https://arxiv.org/abs/1603.02754"
+        },
+        {
+          "id": "e5",
+          "title": "Text Embeddings by Weakly-Supervised Contrastive Pre-training",
+          "url": "https://arxiv.org/abs/2212.03533"
+        },
+        {
+          "id": "beir",
+          "title": "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+          "url": "https://arxiv.org/abs/2104.08663"
+        },
+        {
+          "id": "bge-m3",
+          "title": "BGE M3-Embedding: Multi-Lingual, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation",
+          "url": "https://arxiv.org/abs/2402.03216"
+        },
+        {
+          "id": "kure-v1-model-card",
+          "title": "KURE-v1 official model card (model provenance and training details; not a paper)",
+          "url": "https://huggingface.co/nlpai-lab/KURE-v1"
+        }
+      ],
+      "progress": {
+        "message": "자동 검수와 예외 분류 완료",
+        "percent": 100,
+        "processed": 405,
+        "stage": "completed",
+        "total": 405
+      },
+      "qualityGates": [
+        {
+          "id": "retrieval-recall-at-20",
+          "label": "test Recall@20",
+          "measured": 0.995833,
+          "passed": true,
+          "threshold": 0.95
+        },
+        {
+          "id": "test-ndcg-at-4",
+          "label": "test NDCG@4",
+          "measured": 0.946206,
+          "passed": true,
+          "threshold": 0.8
+        },
+        {
+          "id": "test-precision-at-4",
+          "label": "test Precision@4",
+          "measured": 0.995833,
+          "passed": true,
+          "threshold": 0.9
+        },
+        {
+          "id": "automated-review-blocks",
+          "label": "자동 검수 차단 문항 수",
+          "measured": 4,
+          "passed": false,
+          "threshold": 0
+        },
+        {
+          "id": "owner-exception-review",
+          "label": "Owner 미확인 예외 문항 수",
+          "measured": 0,
+          "passed": true,
+          "threshold": 0
+        },
+        {
+          "id": "owner-batch-approval",
+          "label": "Owner 자동검수 배치 승인",
+          "measured": false,
+          "passed": false,
+          "threshold": true
+        },
+        {
+          "id": "questions-per-element",
+          "label": "요소별 생성 문항 수",
+          "measured": 3,
+          "passed": true,
+          "threshold": 2
+        },
+        {
+          "id": "answer-leak",
+          "label": "정답 누출 건수",
+          "measured": 0,
+          "passed": true,
+          "threshold": 0
+        },
+        {
+          "id": "duplicate-choice",
+          "label": "중복 선택지 건수",
+          "measured": 0,
+          "passed": true,
+          "threshold": 0
+        },
+        {
+          "id": "ambiguous-question",
+          "label": "약한 오답 포함 문항 수",
+          "measured": 0,
+          "passed": true,
+          "threshold": 0
+        },
+        {
+          "id": "deterministic-bank",
+          "label": "문항 은행 직렬화 재현성",
+          "measured": true,
+          "passed": true,
+          "threshold": true
+        }
+      ],
+      "rankerRuns": [
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1245,
+          "modelSha256": "391c6dd1891bba84eae290b7b119fc44749f0674aca8a94cdd257d21c6de267f",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.841,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.867446,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 1.0,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1243,
+          "modelSha256": "6e11d3305522b6fe8e65fe7528f97f581f6aafcb1105e0ac4b91b20f764e62e6",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.044,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.867446,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 1.0,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1246,
+          "modelSha256": "b57b2a92d14cb057cce53e4d7b90945615a48f42388a406701546fbba5468070",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.18,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.867446,
+            "precisionAt4": 0.9625,
+            "questionCount": 60,
+            "retrievalRecallAt20": 1.0,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-xgboost-reference-default.joblib",
+          "modelBytes": 72712,
+          "modelSha256": "4fe5076f1a086063400415e5b9010ed013fa08ab10227ffba0cc8dcb44ff026f",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.389,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.938032,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 1.0,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-xgboost-shallow-medium.joblib",
+          "modelBytes": 24910,
+          "modelSha256": "de3dec8aad942d23afd8d2b44cd078efc87af3acc3e0ba05a7a687da6cc62a8c",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.837,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.944466,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 1.0,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-balanced-xgboost-shallow-slow.joblib",
+          "modelBytes": 58073,
+          "modelSha256": "c9f0d68a3a7e42258449bd541953bb603165f34fb281a390e8daa4056eeff480",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-balanced",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.897,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.942434,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 1.0,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1239,
+          "modelSha256": "1926093d655e3019b7ee764aa097ea440664b71856eb1e6b56b511f7c7afc835",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.892,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.858465,
+            "precisionAt4": 0.95,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.991667,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1237,
+          "modelSha256": "70402b5d3b7a49998548475236636b801d1d7afd6346d5d919fb59a5571d867a",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.917,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.858337,
+            "precisionAt4": 0.95,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.991667,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1236,
+          "modelSha256": "619878af90506117718b64afaa0d31cd0ff38fb9c22d3c5c638d2cbab572a4e4",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.909,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.983333,
+            "ndcgAt4": 0.858337,
+            "precisionAt4": 0.95,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.991667,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-xgboost-reference-default.joblib",
+          "modelBytes": 60692,
+          "modelSha256": "beee6b09271d714da1994783ca30002357aac65a0e719317ce01b684869edf50",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.736,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.941375,
+            "precisionAt4": 0.991667,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.991667,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-xgboost-shallow-medium.joblib",
+          "modelBytes": 40196,
+          "modelSha256": "6b583c7291188a34400aeba87b76084df3c9df9e1f7509e6077ed249e9a2ba89",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.838,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.946325,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.991667,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-word-heavy-xgboost-shallow-slow.joblib",
+          "modelBytes": 61407,
+          "modelSha256": "573ec420d067d734911e911d4c4e6ac76d1e20c62daf16fc451712acef8ef08d",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-word-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.169,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.938487,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.991667,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 0.1
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-pairwise-logistic-c0p1.joblib",
+          "modelBytes": 1247,
+          "modelSha256": "70693d0c36f9a6ec24424c8ac92236cea464aa306d74962d5f255d18b1329b5c",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c0p1",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.491,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.966667,
+            "ndcgAt4": 0.859344,
+            "precisionAt4": 0.958333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.995833,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 1.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-pairwise-logistic-c1p0.joblib",
+          "modelBytes": 1244,
+          "modelSha256": "a51ee190ae259cc56a4b41b1153df9aa52e3b8978b0d6c7c982aa6440664548d",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c1p0",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.389,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.966667,
+            "ndcgAt4": 0.859344,
+            "precisionAt4": 0.958333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.995833,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "C": 10.0
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-pairwise-logistic-c10p0.joblib",
+          "modelBytes": 1245,
+          "modelSha256": "7852d15bdbda12c388b5e5d95b088ac966a916e2d622764f64f2b270c06553de",
+          "rankerFamily": "pairwise-logistic",
+          "rankerId": "pairwise-logistic-c10p0",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 1.197,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 0.966667,
+            "ndcgAt4": 0.859344,
+            "precisionAt4": 0.958333,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.995833,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-xgboost-reference-default.joblib",
+          "modelBytes": 67151,
+          "modelSha256": "662dd025eb6c25894462c845b92b04ec96a84ec4b4e2a8c6e2d2328072992706",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-reference-default",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.946206,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.995833,
+            "split": "test"
+          },
+          "testEvaluated": true,
+          "trainingSeconds": 0.812,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.952131,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.995833,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-xgboost-shallow-medium.joblib",
+          "modelBytes": 23182,
+          "modelSha256": "e3478ada1236cad35c9829ac94da393a8fa64b78216aa33ae274e228f9617637",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-medium",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.964,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.943609,
+            "precisionAt4": 1.0,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.995833,
+            "split": "validation"
+          }
+        },
+        {
+          "embeddingId": "tfidf-word-char",
+          "error": null,
+          "hyperparameters": {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          "modelArtifact": "build/concept-model/tfidf-word-char-lexical-char-heavy-xgboost-shallow-slow.joblib",
+          "modelBytes": 44076,
+          "modelSha256": "2260fd2e5c1e211072e85f33c3778c80bcef49bf4a6aceb34d523c423b8538a5",
+          "rankerFamily": "xgboost",
+          "rankerId": "xgboost-shallow-slow",
+          "retrievalProfileId": "lexical-char-heavy",
+          "status": "completed",
+          "test": null,
+          "testEvaluated": false,
+          "trainingSeconds": 0.807,
+          "validation": {
+            "labelSource": "weak_rule",
+            "mrr": 1.0,
+            "ndcgAt4": 0.944264,
+            "precisionAt4": 0.995833,
+            "questionCount": 60,
+            "retrievalRecallAt20": 0.995833,
+            "split": "validation"
+          }
+        }
+      ],
+      "releaseBlockReason": "자동 검수 예외 확인 또는 Owner 배치 승인이 필요합니다.",
+      "releaseReady": false,
+      "reportSha256": "2e588ac0ef9a59b43d57e775cd5580e0e0787e8774fd0bb3405fe21f9ebc0a60",
+      "reportVersion": 1,
+      "safety": {
+        "ambiguousQuestionCount": 0,
+        "ambiguousQuestionIds": [],
+        "answerLeakCount": 0,
+        "duplicateChoiceCount": 0
+      },
+      "selection": {
+        "embeddingId": "tfidf-word-char",
+        "hyperparameters": {
+          "id": "reference-default",
+          "learningRate": 0.3,
+          "maxDepth": 6,
+          "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+        },
+        "modelBytes": 67151,
+        "modelSha256": "662dd025eb6c25894462c845b92b04ec96a84ec4b4e2a8c6e2d2328072992706",
+        "rankerFamily": "xgboost",
+        "rankerId": "xgboost-reference-default",
+        "reason": "최고 validation NDCG@4와 1%p 이내에서 임베딩·랭커 복잡도를 먼저 낮추고, 같은 비용군에서는 validation NDCG@4 최고 조합을 선택",
+        "retrievalProfileId": "lexical-char-heavy",
+        "selectionTolerance": 0.01,
+        "validationNdcgAt4": 0.952131
+      },
+      "startedAt": "2026-08-12T10:57:41.716359+00:00",
+      "status": "candidate",
+      "weightExperiments": {
+        "fusionBaseline": {
+          "method": "reciprocal_rank_fusion",
+          "rationale": "원 점수 스케일 정규화 대신 각 신호의 순위를 결합한다. k=60은 원 논문의 고정 기준값이다.",
+          "reference": "Cormack, Clarke, Buettcher (SIGIR 2009), doi:10.1145/1571941.1572114",
+          "referenceUrl": "https://cormack.uwaterloo.ca/cormacksigir09-rrf.pdf",
+          "rrfK": 60
+        },
+        "pairwiseCValues": [
+          0.1,
+          1.0,
+          10.0
+        ],
+        "pairwiseReference": {
+          "method": "RankNet-style pairwise logistic loss",
+          "paper": "Burges et al. (ICML 2005), doi:10.1145/1102351.1102363",
+          "paperUrl": "https://www.microsoft.com/en-us/research/wp-content/uploads/2005/08/icml_ranking.pdf",
+          "regularizationBaselineC": 1.0,
+          "regularizationBaselineSource": "scikit-learn LogisticRegression reference implementation default; not specified by RankNet paper",
+          "regularizationBaselineUrl": "https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html"
+        },
+        "retrievalProfileCount": 6,
+        "retrievalProfiles": [
+          {
+            "answerChar": 0.1666666667,
+            "answerSemantic": 0.0,
+            "answerWord": 0.1666666667,
+            "id": "lexical-balanced",
+            "provenance": "equal-weight RRF reference baseline",
+            "questionChar": 0.1666666667,
+            "questionSemantic": 0.0,
+            "questionWord": 0.1666666667,
+            "sameDomain": 0.1666666666,
+            "sameMode": 0.1666666666
+          },
+          {
+            "answerChar": 0.08,
+            "answerSemantic": 0.0,
+            "answerWord": 0.25,
+            "id": "lexical-word-heavy",
+            "provenance": "word/char sensitivity ablation; not a paper default",
+            "questionChar": 0.08,
+            "questionSemantic": 0.0,
+            "questionWord": 0.25,
+            "sameDomain": 0.25,
+            "sameMode": 0.09
+          },
+          {
+            "answerChar": 0.25,
+            "answerSemantic": 0.0,
+            "answerWord": 0.08,
+            "id": "lexical-char-heavy",
+            "provenance": "word/char sensitivity ablation; not a paper default",
+            "questionChar": 0.25,
+            "questionSemantic": 0.0,
+            "questionWord": 0.08,
+            "sameDomain": 0.25,
+            "sameMode": 0.09
+          },
+          {
+            "answerChar": 0.125,
+            "answerSemantic": 0.125,
+            "answerWord": 0.125,
+            "id": "semantic-balanced",
+            "provenance": "equal-weight sparse/dense RRF reference baseline",
+            "questionChar": 0.125,
+            "questionSemantic": 0.125,
+            "questionWord": 0.125,
+            "sameDomain": 0.125,
+            "sameMode": 0.125
+          },
+          {
+            "answerChar": 0.1333333333,
+            "answerSemantic": 0.1,
+            "answerWord": 0.1333333333,
+            "id": "semantic-conservative",
+            "provenance": "dense-weight sensitivity ablation; not a paper default",
+            "questionChar": 0.1333333333,
+            "questionSemantic": 0.1,
+            "questionWord": 0.1333333333,
+            "sameDomain": 0.1333333334,
+            "sameMode": 0.1333333334
+          },
+          {
+            "answerChar": 0.0833333333,
+            "answerSemantic": 0.25,
+            "answerWord": 0.0833333333,
+            "id": "semantic-heavy",
+            "provenance": "dense-weight sensitivity ablation; not a paper default",
+            "questionChar": 0.0833333333,
+            "questionSemantic": 0.25,
+            "questionWord": 0.0833333333,
+            "sameDomain": 0.0833333334,
+            "sameMode": 0.0833333334
+          }
+        ],
+        "selectionRule": "train으로 학습하고 validation NDCG@4로만 선택한 뒤 선택된 1개 구성에만 test를 실행",
+        "weakSupervision": {
+          "canonicalProfileId": "balanced",
+          "comparisons": [
+            {
+              "changedQuestionCount": 0,
+              "meanTop4JaccardVsCanonical": 1.0,
+              "minimumTop4JaccardVsCanonical": 1.0,
+              "profileId": "balanced"
+            },
+            {
+              "changedQuestionCount": 266,
+              "meanTop4JaccardVsCanonical": 0.679436,
+              "minimumTop4JaccardVsCanonical": 0.142857,
+              "profileId": "semantic-heavy"
+            },
+            {
+              "changedQuestionCount": 187,
+              "meanTop4JaccardVsCanonical": 0.793862,
+              "minimumTop4JaccardVsCanonical": 0.142857,
+              "profileId": "domain-heavy"
+            }
+          ],
+          "fusionMethod": "reciprocal_rank_fusion",
+          "interpretation": "사람 라벨 전에는 최고 성능이 아니라 수동 약지도 가중치 변화에 대한 후보 안정성을 측정합니다.",
+          "meanTop4JaccardAcrossAlternatives": 0.736649,
+          "minimumTop4JaccardAcrossAlternatives": 0.142857,
+          "profileCount": 3,
+          "rrfK": 60
+        },
+        "weakSupervisionProfiles": [
+          {
+            "answerChar": 0.1666666667,
+            "answerWord": 0.1666666667,
+            "id": "balanced",
+            "provenance": "equal-weight RRF reference baseline",
+            "questionChar": 0.1666666667,
+            "questionWord": 0.1666666667,
+            "sameDomain": 0.1666666666,
+            "sameMode": 0.1666666666
+          },
+          {
+            "answerChar": 0.2,
+            "answerWord": 0.2,
+            "id": "semantic-heavy",
+            "provenance": "sensitivity ablation around equal-weight RRF; not a paper default",
+            "questionChar": 0.25,
+            "questionWord": 0.25,
+            "sameDomain": 0.05,
+            "sameMode": 0.05
+          },
+          {
+            "answerChar": 0.13,
+            "answerWord": 0.13,
+            "id": "domain-heavy",
+            "provenance": "sensitivity ablation around equal-weight RRF; not a paper default",
+            "questionChar": 0.12,
+            "questionWord": 0.12,
+            "sameDomain": 0.35,
+            "sameMode": 0.15
+          }
+        ],
+        "xgboostGrid": [
+          {
+            "id": "reference-default",
+            "learningRate": 0.3,
+            "maxDepth": 6,
+            "provenance": "XGBoost reference implementation defaults; evaluated with validation early stopping"
+          },
+          {
+            "id": "shallow-medium",
+            "learningRate": 0.1,
+            "maxDepth": 3,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          },
+          {
+            "id": "shallow-slow",
+            "learningRate": 0.05,
+            "maxDepth": 4,
+            "provenance": "regularization sensitivity ablation; not a paper default"
+          }
+        ]
+      }
+    },
+    {
+      "artifacts": {
+        "candidates": "build/concept-model/candidates.jsonl",
+        "facts": "build/concept-model/facts.jsonl",
         "markdownReport": "docs/modeling/experiments/cmq-20260812-024142-c1670dca.md",
         "markdownReportWritten": true,
         "ownerDecisions": "content/model/concept-owner-decisions.jsonl",
@@ -25105,6 +28206,6 @@
       }
     }
   ],
-  "latestExperimentId": "cmq-20260812-024142-c1670dca",
+  "latestExperimentId": "cmq-20260812-112232-c1670dca",
   "reportVersion": 1
 }
