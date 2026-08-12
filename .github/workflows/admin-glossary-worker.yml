@@ -18,9 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
 
@@ -41,10 +41,26 @@ jobs:
           test -n "$SUPABASE_SECRET_KEY" || { echo "SUPABASE_SECRET_KEY secret is missing"; exit 1; }
 
       - name: Compile and publish queued static glossary packs
+        id: glossary
+        shell: bash
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
-        run: >-
-          python tools/admin_glossary_worker.py
-          --worker-id "github:${{ github.run_id }}:${{ github.run_attempt }}"
-          --max-jobs 10
+        run: |
+          result="$(python tools/admin_glossary_worker.py \
+            --worker-id "github:${{ github.run_id }}:${{ github.run_attempt }}" \
+            --max-jobs 10)"
+          printf '%s\n' "$result"
+          if [[ "$result" == *'"status": "processed"'* ]]; then
+            echo "processed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "processed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Verify newly published public stable glossary
+        if: steps.glossary.outputs.processed == 'true'
+        env:
+          GLOSSARY_RELEASE_ENDPOINT: ${{ vars.GLOSSARY_RELEASE_ENDPOINT }}
+        run: |
+          test -n "$GLOSSARY_RELEASE_ENDPOINT" || { echo "GLOSSARY_RELEASE_ENDPOINT variable is missing"; exit 1; }
+          python tools/verify_glossary_release.py "$GLOSSARY_RELEASE_ENDPOINT" --timeout 180

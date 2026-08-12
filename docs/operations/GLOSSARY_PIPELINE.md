@@ -64,8 +64,15 @@ Worker는 이미 저작된 snapshot만 처리하며 LLM을 사용하지 않는�
 python tools/admin_glossary_worker.py --max-jobs 10
 ```
 
+stable 채널과 signed artifact를 앱과 같은 보안 경계로 종단간 검증한다.
+
+```powershell
+python tools/verify_glossary_release.py https://<admin-domain>/api/glossary/stable
+```
+
 운영에서는 GitHub Actions secret `SUPABASE_URL`, `SUPABASE_SECRET_KEY`를 설정하고
-repository variable `ADMIN_GLOSSARY_WORKER_ENABLED=true`를 켠다.
+repository variable `ADMIN_GLOSSARY_WORKER_ENABLED=true`,
+`GLOSSARY_RELEASE_ENDPOINT=https://<admin-domain>/api/glossary/stable`을 설정한다.
 `admin-glossary-worker.yml`이 5분마다 대기열을 확인한다. 수동 실행도 가능하다.
 
 여러 번의 빠른 편집은 대기 중인 작업 하나로 합쳐진다. 이미 실행 중인 snapshot은

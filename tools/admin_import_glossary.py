@@ -88,7 +88,6 @@ def call_import(
         method="POST",
         headers={
             "apikey": secret,
-            "Authorization": f"Bearer {secret}",
             "Content-Type": "application/json; charset=utf-8",
             "Accept": "application/json",
         },

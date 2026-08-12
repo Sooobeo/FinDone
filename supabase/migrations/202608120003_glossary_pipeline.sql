@@ -497,7 +497,8 @@ begin
     set is_active = false,
         archived_at = clock_timestamp(),
         archived_by = auth.uid(),
-        change_reason = '용어집 snapshot 교체';
+        change_reason = '용어집 snapshot 교체'
+    where is_active = true;
 
     insert into public.glossary_terms (
         term_id, category_id, display_order, canonical_name_en, canonical_name_ko,
