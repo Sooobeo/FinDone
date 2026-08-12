@@ -23,7 +23,7 @@ import {
   conceptModelExperiments,
   type ConceptQualityGate,
 } from "@/lib/concept-model-report";
-import { getLocalModelOperationalMetrics } from "@/lib/data";
+import { getConceptElements, getLocalModelOperationalMetrics } from "@/lib/data";
 import { getAdminContext } from "@/lib/auth";
 import { getConceptQuestionDecisions } from "@/lib/concept-model-review-store";
 import { localModelReport } from "@/lib/local-model-report";
@@ -95,6 +95,7 @@ export default async function ModelDashboardPage() {
   }
   const report = localModelReport;
   const runtime = await getLocalModelOperationalMetrics();
+  const conceptElements = await getConceptElements();
   const training = report.training;
   const evaluation = report.evaluation;
   const performance = report.performance;
@@ -270,6 +271,7 @@ export default async function ModelDashboardPage() {
           <ConceptExceptionReview
             items={conceptReview.queue}
             initialDecisions={conceptQuestionDecisions}
+            conceptOptions={conceptElements.map(({ elementId, title, definition }) => ({ elementId, title, definition }))}
             canReview={context.role === "owner"}
           />
         ) : <p className="model-panel-note">확인할 예외가 없습니다. Owner 배치 승인만 남았습니다.</p>}

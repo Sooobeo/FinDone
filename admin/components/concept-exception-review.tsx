@@ -14,14 +14,21 @@ type QuestionDraft = {
   explanation: string;
   choices: DraftChoice[];
 };
+type ConceptOption = {
+  elementId: string;
+  title: string;
+  definition: string;
+};
 
 export function ConceptExceptionReview({
   items,
   initialDecisions,
+  conceptOptions,
   canReview,
 }: {
   items: QueueItem[];
   initialDecisions: Record<string, ConceptQuestionDecision>;
+  conceptOptions: ConceptOption[];
   canReview: boolean;
 }) {
   const router = useRouter();
@@ -66,6 +73,16 @@ export function ConceptExceptionReview({
       choices: draft.choices.map((choice, choiceIndex) => (
         choiceIndex === index ? { ...choice, ...update } : choice
       )),
+    });
+  }
+
+  function changeDraftChoice(questionId: string, index: number, elementId: string) {
+    const option = conceptOptions.find((candidate) => candidate.elementId === elementId);
+    if (!option) return;
+    updateDraftChoice(questionId, index, {
+      elementId: option.elementId,
+      text: option.title,
+      explanation: option.definition,
     });
   }
 
@@ -199,13 +216,20 @@ export function ConceptExceptionReview({
                     return (
                       <tr key={choice.key}>
                         <td><strong>{choice.key}</strong></td>
-                        <td>{editing ? <input
-                          className="concept-review-input"
+                        <td>{editing ? <select
+                          className="concept-review-input concept-review-select"
                           value={draftChoice.elementId}
-                          onChange={(event) => updateDraftChoice(item.questionId, choiceIndex, { elementId: event.target.value })}
+                          onChange={(event) => changeDraftChoice(item.questionId, choiceIndex, event.target.value)}
                           disabled={!canReview || busy || choice.isCorrect}
-                          aria-label={`${choice.key} 개념 ID`}
-                        /> : choice.elementId}</td>
+                          aria-label={`${choice.key} 개념`}
+                        >
+                          {!conceptOptions.some((option) => option.elementId === draftChoice.elementId) ? (
+                            <option value={draftChoice.elementId}>{draftChoice.text} ({draftChoice.elementId})</option>
+                          ) : null}
+                          {conceptOptions.map((option) => (
+                            <option key={option.elementId} value={option.elementId}>{option.title} ({option.elementId})</option>
+                          ))}
+                        </select> : <span className="concept-review-choice-copy"><strong>{choice.text}</strong><small>{choice.elementId}</small></span>}</td>
                         <td>{choice.isCorrect ? "정답" : "오답"}</td>
                         <td>{editing ? <div className="concept-review-choice-fields">
                           <input
