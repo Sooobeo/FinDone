@@ -1,15 +1,15 @@
 {
   "automatedReview": {
     "autoPassedCount": 398,
-    "blockedCount": 4,
-    "needsOwnerReviewCount": 0,
+    "blockedCount": 0,
+    "needsOwnerReviewCount": 4,
     "ownerApprovedCount": 3,
     "ownerBatchApproved": false
   },
   "automatedReviewPolicySha256": "e1c66b83427d387af24f28f0ecd40dc6e36893083bc067ce6fc68e02d66e474f",
   "automatedReviewPolicyVersion": "concept-auto-review-v1",
   "automatedReviewProfileId": "exception-only",
-  "bankSha256": "45d9e11720729626b9de355cb47e1698f82843816ce8f022ea77798275b346a9",
+  "bankSha256": "c8426c28acd27464a42ca9788637253b4277a49327401e5539feb46200430afe",
   "bankVersion": 1,
   "contentFingerprint": "1292a74307d173ea13e1790b1336359d6a5a6b458f7948b79b82306795f96535",
   "elementFingerprints": {
@@ -206,7 +206,7 @@
     "CF-06-core_relation_to_term-01": "38a11218a9e1bb7e60abb6c695fbe5e860c2163cea850da96b584cb295b12681",
     "CF-06-definition_to_term-01": "0eb717e4674c9eeeb2579e1c29f3954a543e2530dfa67378aaf00b6277b6811f",
     "CF-06-intuition_to_term-01": "d13822f759aded962cd25940e0641f47adfc48914b53a80ad39f86c4cf8cd4f3",
-    "CF-07-core_relation_to_term-01": "d6a5de7b153936b0fb9be6881a9c7d5f5d4536e6299929ca9554abebd752b080",
+    "CF-07-core_relation_to_term-01": "ca8caab3739f15a9174a3be4ad8837ac19812d33c1e0caf46d5c37afdb0930cb",
     "CF-07-definition_to_term-01": "3b15bc18a59f232f40f00a6d1526eb350cba0a5c03d851d360f79501bb1f22a6",
     "CF-07-intuition_to_term-01": "1a51131c8191ea28204a6a648c234b85e473f16722191e90d06c0c1b03b6c83e",
     "CF-08-core_relation_to_term-01": "c13f6cbc365adf88dc110ac01fb1b12a119eb47e43b00cb74f4194772610a202",
@@ -218,7 +218,7 @@
     "CF-10-core_relation_to_term-01": "106e3fdd7d083e061cc3d35f4410e426393357842b8897429c5f4853f1c028a8",
     "CF-10-definition_to_term-01": "b49e6f64cc1092907955df684435d46ddd9e52e7c84aa37c7d8fa8bebc0bc3aa",
     "CF-10-intuition_to_term-01": "9d7746ae8c0031dc0c0c50b20e4a64fd9e969cae2e6c692d20c51c6c38d415c2",
-    "CF-11-core_relation_to_term-01": "8d4434e38d2f74f76b17fa412e4eb35d5fece4e36ca68e5a220c1733ff34ad41",
+    "CF-11-core_relation_to_term-01": "c25762d88faf3eaced8eb78f4707de313c7876d608db65a5647cf453a352c5ad",
     "CF-11-definition_to_term-01": "67bf4911d1c86bd499d4cfffea3d2d0b2d4054cdfb50615f015b25c18eb66ddd",
     "CF-11-intuition_to_term-01": "85c4db87f4683f2a93b9ffca62cf7212a0c4c9549426c800c19e5c64e8a4af36",
     "CF-12-core_relation_to_term-01": "44f1bdd0ccd9aa7c36c1ecf069827aa1102038ee4ab635deaa4fde916e846174",
@@ -342,7 +342,7 @@
     "EQV-29-definition_to_term-01": "e85ac135266165e7c69cfac851f949ae35a6fbb07bfeebf270bf0923e35f19fe",
     "EQV-29-intuition_to_term-01": "50bc95c7dece096c9c43ba4dd2722b95c9ff4c88fe0506f8d2333f7c54ae1b10",
     "EQV-30-core_relation_to_term-01": "917fe99ac054c85f8e6649d338bf3ca408c82a694ecfde806d507e5e60f460fb",
-    "EQV-30-definition_to_term-01": "21349bafb78cacaaf4e04e6744b0897ebf09f5b92bba624bc03c33d12af42570",
+    "EQV-30-definition_to_term-01": "990020e16695a98101bffdb7d57eb8440d0c3b762e7f927eedd4b15ba26d26b9",
     "EQV-30-intuition_to_term-01": "f7dfb9d74a4eb744bbe59ef7071184807a22eeb4bdc9711017ede175ec2bdaee",
     "EQV-31-core_relation_to_term-01": "bb62d5e9b15d5e0857c8fb7a5f219c6aaea33c6fa9dbcdd7ebd301c3b41d1aa2",
     "EQV-31-definition_to_term-01": "8ada5acdb04a300333e622870df1548cbc0097b8e721c7a732e0b5f073bf10a0",
@@ -529,7 +529,7 @@
     "IBT-17-intuition_to_term-01": "ef17bae9c0d55760f171d09637887cdeed0296234075411c5c1f243a1a80a80c",
     "IBT-18-core_relation_to_term-01": "ef12b43114e3e38f7495e6bbf4b76846fa96cfe908f80d7bba1c236cbe50ca51",
     "IBT-18-definition_to_term-01": "840b9df8438d6d8208108ed9f152aa58536e957f10395f7e07bd6ec8be0e1bb4",
-    "IBT-18-intuition_to_term-01": "ba8a711a735de3a80ce00aacf6ed86c2feefd7cada0aa886988d073cf346d412",
+    "IBT-18-intuition_to_term-01": "1356e0acf50381463c5cc75696a83dea6db3bc42ce43004faafcf35b366b9ecf",
     "INV-01-core_relation_to_term-01": "7f6ac74b6a404b3d729a63a71c829274bb0687ec8074e5a861959beae75b8392",
     "INV-01-definition_to_term-01": "2e28a0a1468ca735548d25e3322e8df08d309c3204d4ac1059c5dd3c45c05d6a",
     "INV-01-intuition_to_term-01": "6233a138f52e5566eb25be90a850b4a4ee16a52665144154e18d9ee9bd89be26",
@@ -3403,11 +3403,11 @@
       "modelVersion": "findone-concept-ranker-v0-bootstrap",
       "questionId": "CF-07-core_relation_to_term-01",
       "questionType": "core_relation_to_term",
-      "reviewStatus": "blocked",
+      "reviewStatus": "needs_owner_review",
       "sourceFactIds": [
         "CF-07:core_relation:01"
       ],
-      "stem": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?\nWACC=wE×ke+wD×kd×(1-T). 장부가가 아니라 시장가치 가중치를 기본으로 한다."
+      "stem": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?\n투자자가 유사한 위험의 투자에서 요구하는 최소한의 기회수익률."
     },
     {
       "choices": [
@@ -4003,11 +4003,11 @@
       "modelVersion": "findone-concept-ranker-v0-bootstrap",
       "questionId": "CF-11-core_relation_to_term-01",
       "questionType": "core_relation_to_term",
-      "reviewStatus": "blocked",
+      "reviewStatus": "needs_owner_review",
       "sourceFactIds": [
         "CF-11:core_relation:01"
       ],
-      "stem": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?\n영구성장법 TV_n=FCF_(n+1)/(WACC-g), 단 WACC>g; 출구배수법 TV_n=기준지표_n×Exit Multiple."
+      "stem": "다음 핵심 관계와 직접 연결되는 금융 개념은 무엇인가?\n할인율과 영구성장률 같은 가정의 작은 변화에도 전체 기업가치 평가 결과가 크게 달라진다."
     },
     {
       "choices": [
@@ -12903,11 +12903,11 @@
       "modelVersion": "findone-concept-ranker-v0-bootstrap",
       "questionId": "EQV-30-definition_to_term-01",
       "questionType": "definition_to_term",
-      "reviewStatus": "blocked",
+      "reviewStatus": "needs_owner_review",
       "sourceFactIds": [
         "EQV-30:definition:01"
       ],
-      "stem": "다음 설명에 가장 부합하는 금융 개념은 무엇인가?\nDSO·DIO·DPO와 현금전환주기는 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순기간을 일수로 보여 준다."
+      "stem": "다음 설명에 가장 부합하는 금융 개념은 무엇인가?\n이 값이 짧을수록 현금이 영업과정에서 덜 묶여 유동성이 좋고 운전 자본 관리가 효율적이다."
     },
     {
       "choices": [
@@ -20753,11 +20753,11 @@
       "modelVersion": "findone-concept-ranker-v0-bootstrap",
       "questionId": "IBT-18-intuition_to_term-01",
       "questionType": "intuition_to_term",
-      "reviewStatus": "blocked",
+      "reviewStatus": "needs_owner_review",
       "sourceFactIds": [
         "IBT-18:intuition:01"
       ],
-      "stem": "다음 직관적 설명이 가리키는 금융 개념은 무엇인가?\n10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부분 0원이고 드물게 50원을 잃는다. 평균값이 tail risk와 사건 간 동시발생을 숨길 수 있다."
+      "stem": "다음 직관적 설명이 가리키는 금융 개념은 무엇인가?\n기대치보다 낮은 결과의 크기와 빈도를 기준으로 위험을 측정하는 단측적 성격을 가진다."
     },
     {
       "choices": [
@@ -20811,7 +20811,7 @@
     }
   ],
   "releaseStatus": "candidate",
-  "reviewInputSha256": "0932bbb5d01f2349ca46252a55580ce3de7d1b8088d4f78c1cd42689d990a902",
+  "reviewInputSha256": "9566f7a941130704a72c5f75175d5950a0b8bc95ffac0bcb4d9af9fcbb10728d",
   "selectedEmbedding": "tfidf-word-char",
   "selectedRanker": "xgboost-reference-default",
   "selectedRetrievalProfile": "lexical-char-heavy",

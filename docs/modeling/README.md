@@ -9,6 +9,7 @@ Admin 시각화는 `admin/data/concept-model-experiments.generated.json`을 사�
 
 | 실험 | 시각 | 상태 | 후보 임베딩 | 실행 조합 | 선택 구성 | val NDCG@4 | test NDCG@4 | 사람 test | 보고서 |
 |---|---|---|---:|---:|---|---:|---:|---:|---|
+| `cmq-20260812-121810-c1670dca` | 2026-08-12T12:18:10.690640+00:00 | candidate | 1 | 18 | `tfidf-word-char/lexical-char-heavy/xgboost-reference-default` | 0.952131 | 0.946206 | 0.00% | [열기](experiments/cmq-20260812-121810-c1670dca.md) |
 | `cmq-20260812-112232-c1670dca` | 2026-08-12T11:22:32.903484+00:00 | candidate | 1 | 18 | `tfidf-word-char/lexical-char-heavy/xgboost-reference-default` | 0.952131 | 0.946206 | 0.00% | [열기](experiments/cmq-20260812-112232-c1670dca.md) |
 | `cmq-20260812-105741-c1670dca` | 2026-08-12T10:57:41.716359+00:00 | candidate | 1 | 18 | `tfidf-word-char/lexical-char-heavy/xgboost-reference-default` | 0.952131 | 0.946206 | 0.00% | [열기](experiments/cmq-20260812-105741-c1670dca.md) |
 | `cmq-20260812-024142-c1670dca` | 2026-08-12T02:41:42.456509+00:00 | candidate | 1 | 18 | `tfidf-word-char/lexical-char-heavy/xgboost-reference-default` | 0.952131 | 0.946206 | 0.00% | [열기](experiments/cmq-20260812-024142-c1670dca.md) |
