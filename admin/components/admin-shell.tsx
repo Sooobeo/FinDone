@@ -40,8 +40,9 @@ interface AdminShellProps {
 export function AdminShell({ children, mode, email, role }: AdminShellProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const activeItem = navItems.find((item) => pathname.startsWith(item.href));
   const viewer = role === "viewer";
+  const activeItem = navItems.find((item) => pathname.startsWith(item.href));
+  const activeLabel = viewer && activeItem?.href === "/model" ? "모델링 과정" : activeItem?.label;
 
   async function signOut() {
     await getBrowserSupabase()?.auth.signOut();
@@ -81,6 +82,7 @@ export function AdminShell({ children, mode, email, role }: AdminShellProps) {
           <p className="nav-label">{viewer ? "조회" : "관리"}</p>
           {navItems.map(({ href, label, icon: Icon }) => {
             const active = pathname.startsWith(href);
+            const displayLabel = viewer && href === "/model" ? "모델링 과정" : label;
             return (
               <Link
                 key={href}
@@ -90,7 +92,7 @@ export function AdminShell({ children, mode, email, role }: AdminShellProps) {
                 onClick={() => setMobileOpen(false)}
               >
                 <Icon size={18} strokeWidth={active ? 2.3 : 1.8} />
-                <span>{label}</span>
+                <span>{displayLabel}</span>
               </Link>
             );
           })}
@@ -130,7 +132,7 @@ export function AdminShell({ children, mode, email, role }: AdminShellProps) {
             >
               <Menu size={20} />
             </button>
-            <span>{activeItem?.label ?? "관리"}</span>
+            <span>{activeLabel ?? "관리"}</span>
           </div>
           <div className="topbar-meta">
             <span className={mode === "supabase" ? "connection-live" : "connection-demo"}>

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="600" height="700" viewBox="0 0 600 700" role="img" aria-labelledby="title desc">
-  <title id="title">FinDone Admin에서 Android 앱으로 이어지는 콘텐츠 업데이트 흐름</title>
-  <desc id="desc">원본과 개념 편집, 자동 검증, 승인 검토, stable 공개, 앱의 무결성 검증과 설치 순서를 보여준다.</desc>
+  <title id="title">FinDone 로컬 모델에서 Android 앱으로 이어지는 콘텐츠 업데이트 흐름</title>
+  <desc id="desc">기준 데이터와 원본 준비, 로컬 랭커 실험, 앱 DB 후보 생성, 사람 검토, stable 공개와 앱 무결성 검증 순서를 보여준다.</desc>
   <defs>
     <linearGradient id="canvas" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#f8fbfa"/>
@@ -14,8 +14,8 @@
   <rect width="600" height="700" rx="3" fill="url(#canvas)"/>
   <g font-family="Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif">
     <text x="42" y="47" font-size="10" font-weight="800" letter-spacing="1.7" fill="#2d7871">CONTENT DELIVERY</text>
-    <text x="42" y="78" font-size="24" font-weight="850" fill="#162522">Admin에서 앱까지</text>
-    <text x="42" y="101" font-size="10" fill="#60736d">검수된 콘텐츠만 stable 채널을 거쳐 Android 앱에 반영돼요.</text>
+    <text x="42" y="78" font-size="24" font-weight="850" fill="#162522">모델링에서 앱까지</text>
+    <text x="42" y="101" font-size="10" fill="#60736d">원본 → 로컬 모델 → 앱 DB 후보 → 사람 검토 → stable 릴리스</text>
 
     <g filter="url(#shadow)">
       <rect x="42" y="128" width="516" height="292" rx="3" fill="#fff" stroke="#cad6d2"/>
@@ -27,53 +27,52 @@
 
       <g font-size="8" fill="#a9c8c2">
         <text x="58" y="213">대시보드</text>
-        <rect x="54" y="228" width="87" height="30" rx="3" fill="#ffffff" fill-opacity=".1"/>
-        <text x="64" y="247" font-weight="800" fill="#fff">개념 DB</text>
+        <text x="58" y="247">개념 DB</text>
         <text x="58" y="279">원본 자료</text>
-        <text x="58" y="309">오답 후보</text>
-        <text x="58" y="339">자동 검증</text>
-        <text x="58" y="369">승인 검토</text>
-        <text x="58" y="399">앱 반영</text>
+        <rect x="54" y="290" width="87" height="30" rx="3" fill="#ffffff" fill-opacity=".1"/>
+        <text x="64" y="309" font-weight="800" fill="#fff">로컬 모델</text>
+        <text x="58" y="339">앱 DB 최종 검토</text>
+        <text x="58" y="369">릴리스 이력</text>
       </g>
 
       <rect x="154" y="128" width="404" height="42" fill="#fbfcfc"/>
       <line x1="154" y1="170" x2="558" y2="170" stroke="#dfe5e2"/>
-      <text x="176" y="154" font-size="10" font-weight="800" fill="#263c36">콘텐츠 운영 흐름</text>
+      <text x="176" y="154" font-size="10" font-weight="800" fill="#263c36">로컬 모델 현황</text>
       <rect x="482" y="140" width="56" height="18" rx="3" fill="#e7f4ee"/>
       <circle cx="493" cy="149" r="3" fill="#338268"/>
       <text x="501" y="152" font-size="6.5" font-weight="700" fill="#276d59">Owner</text>
 
-      <text x="176" y="197" font-size="7" font-weight="800" fill="#73817d">작성과 정리</text>
+      <text x="176" y="197" font-size="7" font-weight="800" fill="#73817d">모델링 과정</text>
       <g>
         <rect x="176" y="208" width="104" height="70" rx="3" fill="#f7faf9" stroke="#dfe5e2"/>
         <rect x="188" y="221" width="25" height="25" rx="3" fill="#eaf2f8"/>
         <path d="M195 228h11M195 233h11M195 238h8" stroke="#527c9d" stroke-width="1.4" stroke-linecap="round"/>
-        <text x="188" y="260" font-size="8" font-weight="800" fill="#263c36">원본 자료</text>
-        <text x="188" y="271" font-size="6" fill="#71807b">출처와 파일 연결</text>
+        <text x="188" y="260" font-size="8" font-weight="800" fill="#263c36">기준 데이터</text>
+        <text x="188" y="271" font-size="6" fill="#71807b">기존 DB와 원본 준비</text>
 
         <rect x="290" y="208" width="104" height="70" rx="3" fill="#f7faf9" stroke="#dfe5e2"/>
         <rect x="302" y="221" width="25" height="25" rx="3" fill="#edf7f5"/>
         <path d="M309 227h11v13h-11zM312 230h5M312 234h5M312 238h4" fill="none" stroke="#2d7871" stroke-width="1.2" stroke-linecap="round"/>
-        <text x="302" y="260" font-size="8" font-weight="800" fill="#263c36">개념 DB</text>
-        <text x="302" y="271" font-size="6" fill="#71807b">학습 본문 구조화</text>
+        <text x="302" y="260" font-size="8" font-weight="800" fill="#263c36">랭커 실험</text>
+        <text x="302" y="271" font-size="6" fill="#71807b">train·validation·test</text>
 
         <rect x="404" y="208" width="104" height="70" rx="3" fill="#f7faf9" stroke="#dfe5e2"/>
         <rect x="416" y="221" width="25" height="25" rx="3" fill="#fff0eb"/>
         <path d="M423 228l11 11M434 228l-11 11" stroke="#d46e55" stroke-width="1.4" stroke-linecap="round"/>
-        <text x="416" y="260" font-size="8" font-weight="800" fill="#263c36">오답 후보</text>
-        <text x="416" y="271" font-size="6" fill="#71807b">선택지와 근거 관리</text>
+        <text x="416" y="260" font-size="8" font-weight="800" fill="#263c36">앱 DB 후보</text>
+        <text x="416" y="271" font-size="6" fill="#71807b">결정론 SQLite 빌드</text>
       </g>
 
       <path d="M225 293v15M342 293v15M456 293v15M225 308h231" fill="none" stroke="#a9bbb5" stroke-width="1.2"/>
       <path d="M342 305l4 5-4 5" fill="none" stroke="#2d7871" stroke-width="1.5"/>
 
-      <text x="176" y="330" font-size="7" font-weight="800" fill="#73817d">검수와 공개</text>
+      <text x="176" y="330" font-size="7" font-weight="800" fill="#73817d">검증과 릴리스</text>
       <g>
         <rect x="176" y="341" width="104" height="55" rx="3" fill="#edf7f5" stroke="#cfe5df"/>
         <circle cx="192" cy="357" r="7" fill="#338268"/>
         <path d="M188 357l3 3 5-6" fill="none" stroke="#fff" stroke-width="1.3"/>
-        <text x="205" y="359" font-size="8" font-weight="800" fill="#263c36">자동 검증</text>
-        <text x="188" y="382" font-size="6" fill="#60736d">누락·규칙·관계 검사</text>
+        <text x="205" y="359" font-size="8" font-weight="800" fill="#263c36">자동 게이트</text>
+        <text x="188" y="382" font-size="6" fill="#60736d">중복·노출·무결성 검사</text>
 
         <path d="M286 368h13" stroke="#7fa79f" stroke-width="1.5"/>
         <path d="M296 364l4 4-4 4" fill="none" stroke="#7fa79f" stroke-width="1.5"/>
@@ -81,8 +80,8 @@
         <rect x="304" y="341" width="104" height="55" rx="3" fill="#fff6df" stroke="#ead9ad"/>
         <circle cx="320" cy="357" r="7" fill="#ad741c"/>
         <path d="M316 357l3 3 5-6" fill="none" stroke="#fff" stroke-width="1.3"/>
-        <text x="333" y="359" font-size="8" font-weight="800" fill="#263c36">승인 검토</text>
-        <text x="316" y="382" font-size="6" fill="#60736d">변경 전후와 근거 확인</text>
+        <text x="333" y="359" font-size="8" font-weight="800" fill="#263c36">사람 검토</text>
+        <text x="316" y="382" font-size="6" fill="#60736d">문항·정답·근거 확인</text>
 
         <path d="M414 368h13" stroke="#7fa79f" stroke-width="1.5"/>
         <path d="M424 364l4 4-4 4" fill="none" stroke="#7fa79f" stroke-width="1.5"/>
@@ -90,7 +89,7 @@
         <rect x="432" y="341" width="104" height="55" rx="3" fill="#18524e"/>
         <circle cx="448" cy="357" r="7" fill="#fff" fill-opacity=".18"/>
         <path d="M444 357h8M448 353v8" stroke="#fff" stroke-width="1.3"/>
-        <text x="461" y="359" font-size="8" font-weight="800" fill="#fff">앱 반영</text>
+        <text x="461" y="359" font-size="8" font-weight="800" fill="#fff">stable 공개</text>
         <text x="444" y="382" font-size="6" fill="#c7ddd8">stable 릴리스 공개</text>
       </g>
     </g>

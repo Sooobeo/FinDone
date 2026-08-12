@@ -2,6 +2,8 @@ import "server-only";
 
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { getModelCopy } from "@/lib/model-copy";
+import { serializeMarkdownSection } from "@/lib/sectioned-markdown";
 
 export const introSlugs = ["overview", "today", "study", "quiz", "records", "admin"] as const;
 export type IntroSlug = (typeof introSlugs)[number];
@@ -17,6 +19,13 @@ export interface IntroSection {
 
 export function isIntroSlug(value: string): value is IntroSlug {
   return introSlugs.includes(value as IntroSlug);
+}
+
+async function resolveContentIncludes(source: string) {
+  const token = "{{include:local-model:modeling-process}}";
+  if (!source.includes(token)) return source;
+  const copy = await getModelCopy();
+  return source.replaceAll(token, serializeMarkdownSection(copy["modeling-process"]));
 }
 
 export async function getIntroSection(slug: IntroSlug): Promise<IntroSection> {
@@ -42,7 +51,7 @@ export async function getIntroSection(slug: IntroSlug): Promise<IntroSection> {
     eyebrow: metadata.eyebrow?.trim() || null,
     title: metadata.title ?? "FinDone",
     summary: metadata.summary ?? "",
-    body: match[2].trim(),
+    body: (await resolveContentIncludes(match[2])).trim(),
   };
 }
 

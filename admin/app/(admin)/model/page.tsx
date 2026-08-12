@@ -5,6 +5,7 @@ import {
   Clock3,
   Cpu,
   Database,
+  ChevronDown,
   FileCheck2,
   Gauge,
   GitCompareArrows,
@@ -14,12 +15,17 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
+import type { ReactNode } from "react";
+import { MarkdownCopy } from "@/components/markdown-copy";
+import { ModelProcess } from "@/components/model-process";
 import {
   conceptModelExperiments,
   type ConceptQualityGate,
 } from "@/lib/concept-model-report";
 import { getLocalModelOperationalMetrics } from "@/lib/data";
+import { getAdminContext } from "@/lib/auth";
 import { localModelReport } from "@/lib/local-model-report";
+import { getModelCopy } from "@/lib/model-copy";
 
 export const metadata: Metadata = { title: "로컬 모델 현황" };
 
@@ -49,7 +55,42 @@ function conceptGateMetric(gate: ConceptQualityGate, value: number | boolean) {
   return percent(value);
 }
 
+function ModelDisclosure({
+  eyebrow,
+  title,
+  description,
+  meta,
+  children,
+  open = false,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  meta?: string;
+  children: ReactNode;
+  open?: boolean;
+}) {
+  return (
+    <details className="panel model-disclosure" open={open}>
+      <summary>
+        <span className="model-disclosure-icon"><ChevronDown size={18} /></span>
+        <span className="model-disclosure-copy"><span className="eyebrow">{eyebrow}</span><strong>{title}</strong><small>{description}</small></span>
+        {meta ? <span className="panel-kicker">{meta}</span> : null}
+      </summary>
+      <div className="model-disclosure-body">{children}</div>
+    </details>
+  );
+}
+
 export default async function ModelDashboardPage() {
+  const [context, copy] = await Promise.all([getAdminContext(), getModelCopy()]);
+  if (context.role === "viewer") {
+    return (
+      <div className="page-stack local-model-dashboard viewer-model-dashboard">
+        <ModelProcess section={copy["modeling-process"]} viewer />
+      </div>
+    );
+  }
   const report = localModelReport;
   const runtime = await getLocalModelOperationalMetrics();
   const training = report.training;
@@ -101,8 +142,8 @@ export default async function ModelDashboardPage() {
     <div className="page-stack local-model-dashboard">
       <PageHeader
         eyebrow="LOCAL CONTENT MODEL"
-        title="로컬 모델 현황"
-        description="외부 LLM API 없이 실행한 개념형 오지선다 랭커 실험과 코드 기반 콘텐츠 변환 규칙을 분리해 확인합니다."
+        title={copy["page-intro"].title}
+        description={copy["page-intro"].lead}
         actions={
           <span className={`model-health-badge ${latestConcept.releaseReady ? "passed" : "failed"}`}>
             <ShieldCheck size={15} /> {latestConcept.releaseReady ? "문항은행 릴리스 가능" : "사람 검토 전 · 릴리스 차단"}
@@ -110,9 +151,11 @@ export default async function ModelDashboardPage() {
         }
       />
 
+      <ModelProcess section={copy["modeling-process"]} />
+
       <div className="model-section-heading">
-        <div><p className="eyebrow">CONCEPT MCQ RANKER</p><h2>개념형 오지선다 모델</h2></div>
-        <p>train으로 학습하고 validation으로만 구성을 선택한 뒤, 선택된 1개 구성에만 test를 실행합니다.</p>
+        <div><p className="eyebrow">CONCEPT MCQ RANKER</p><h2>{copy["concept-model"].title}</h2></div>
+        <p>{copy["concept-model"].lead}</p>
       </div>
 
       <section className={`panel concept-model-hero ${latestConcept.releaseReady ? "ready" : "blocked"}`}>
@@ -172,12 +215,22 @@ export default async function ModelDashboardPage() {
         <span>{passedConceptGates}/{latestConcept.qualityGates.length} 게이트 통과</span>
       </section>
 
-      <section className="model-dashboard-columns concept-experiment-columns">
-        <article className="panel">
-          <div className="panel-heading">
-            <div><p className="eyebrow">EMBEDDING BAKE-OFF</p><h2>임베딩 후보 비교</h2></div>
-            <span className="panel-kicker">완료 랭커 실행 {completedConceptRuns.length}개</span>
-          </div>
+      <ModelDisclosure
+        eyebrow="EXPERIMENT NARRATIVE"
+        title={copy["experiment-flow"].title}
+        description={copy["experiment-flow"].lead}
+        meta="5단계"
+      >
+        <MarkdownCopy source={copy["experiment-flow"].body} className="model-explanation-copy" />
+      </ModelDisclosure>
+
+      <ModelDisclosure
+        eyebrow="EMBEDDING BAKE-OFF"
+        title={copy["embedding-comparison"].title}
+        description={copy["embedding-comparison"].lead}
+        meta={`완료 실행 ${completedConceptRuns.length}개`}
+      >
+          <MarkdownCopy source={copy["embedding-comparison"].body} className="model-explanation-copy compact" />
           <div className="concept-embedding-list">
             {bestByEmbedding.map((embedding) => {
               const selected = embedding.candidateId === latestConcept.selection.embeddingId;
@@ -191,14 +244,15 @@ export default async function ModelDashboardPage() {
               );
             })}
           </div>
-          <p className="model-panel-note">최고 validation과 {percent(latestConcept.selection.selectionTolerance)}p 이내면 더 가벼운 임베딩·랭커를 우선하고, 같은 비용군에서 validation 최고 조합을 선택합니다.</p>
-        </article>
+      </ModelDisclosure>
 
-        <article className="panel model-gates-panel">
-          <div className="panel-heading">
-            <div><p className="eyebrow">RELEASE GATES</p><h2>문항은행 품질 게이트</h2></div>
-            <ShieldCheck size={19} className="subtle-icon" />
-          </div>
+      <ModelDisclosure
+        eyebrow="RELEASE GATES"
+        title={copy["quality-gates"].title}
+        description={copy["quality-gates"].lead}
+        meta={`${passedConceptGates}/${latestConcept.qualityGates.length} 통과`}
+      >
+          <MarkdownCopy source={copy["quality-gates"].body} className="model-explanation-copy compact" />
           <div className="model-gate-list concept-gate-list">
             {latestConcept.qualityGates.map((gate) => (
               <div key={gate.id}>
@@ -208,14 +262,15 @@ export default async function ModelDashboardPage() {
               </div>
             ))}
           </div>
-        </article>
-      </section>
+      </ModelDisclosure>
 
-      <section className="panel concept-experiment-history">
-        <div className="panel-heading">
-          <div><p className="eyebrow">EXPERIMENT LOG</p><h2>누적 실험 기록</h2></div>
-          <span className="panel-kicker">Markdown 보고서 {conceptHistory.experiments.length}개</span>
-        </div>
+      <ModelDisclosure
+        eyebrow="EXPERIMENT LOG"
+        title={copy["experiment-log"].title}
+        description={copy["experiment-log"].lead}
+        meta={`보고서 ${conceptHistory.experiments.length}개`}
+      >
+        <MarkdownCopy source={copy["experiment-log"].body} className="model-explanation-copy compact" />
         <div className="table-scroll">
           <table className="data-table">
             <thead><tr><th>실험</th><th>임베딩</th><th>랭커</th><th>Val NDCG@4</th><th>Test NDCG@4</th><th>사람 test</th><th>상태</th><th>보고서</th></tr></thead>
@@ -235,11 +290,11 @@ export default async function ModelDashboardPage() {
             </tbody>
           </table>
         </div>
-      </section>
+      </ModelDisclosure>
 
       <div className="model-section-heading rule-model-heading">
-        <div><p className="eyebrow">DETERMINISTIC TRANSFORMER</p><h2>콘텐츠 변환 규칙 모델</h2></div>
-        <p>아래 100%는 머신러닝 정확도가 아니라 고정 규칙의 스키마·골든셋 커버리지입니다.</p>
+        <div><p className="eyebrow">DETERMINISTIC TRANSFORMER</p><h2>{copy["rule-model"].title}</h2></div>
+        <p>{copy["rule-model"].lead}</p>
       </div>
 
       <section className="panel model-readiness-hero">
@@ -288,6 +343,18 @@ export default async function ModelDashboardPage() {
         </article>
       </section>
 
+      <ModelDisclosure
+        eyebrow="METRICS GUIDE"
+        title={copy["metrics-guide"].title}
+        description={copy["metrics-guide"].lead}
+        meta="정의 보기"
+      >
+        <MarkdownCopy source={copy["metrics-guide"].body} className="model-explanation-copy" />
+      </ModelDisclosure>
+
+      <details className="model-rule-details">
+        <summary><ChevronDown size={17} /><span><strong>콘텐츠 변환 상세 지표</strong><small>운영 누적값·학습 반영량·품질 게이트·빌드 성능을 펼쳐 봅니다.</small></span></summary>
+        <div className="model-rule-detail-body">
       <section className="panel model-runtime-strip" aria-label="운영 로컬 모델 누적 지표">
         <div>
           <p className="eyebrow">OPERATIONAL FEEDBACK</p>
@@ -385,6 +452,8 @@ export default async function ModelDashboardPage() {
           {report.model.supportedAdapters.map((adapter) => <span key={adapter}>{adapter}</span>)}
         </div>
       </section>
+        </div>
+      </details>
     </div>
   );
 }

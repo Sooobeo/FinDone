@@ -9,7 +9,7 @@ import {
   PanelsTopLeft,
 } from "lucide-react";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { MarkdownCopy } from "@/components/markdown-copy";
 import { getIntroNavigation, getIntroSection, introSlugs, type IntroSlug } from "@/lib/app-intro";
 
 const icons = {
@@ -35,58 +35,6 @@ const screenImages: Record<Exclude<IntroSlug, "overview">, string> = {
 
 function introHref(slug: IntroSlug) {
   return slug === "overview" ? "/about" : `/about/${slug}`;
-}
-
-function inlineMarkdown(text: string): ReactNode[] {
-  return text.split(/(\*\*[^*]+\*\*)/g).filter(Boolean).map((part, index) =>
-    part.startsWith("**") && part.endsWith("**")
-      ? <strong key={`${part}-${index}`}>{part.slice(2, -2)}</strong>
-      : part,
-  );
-}
-
-function MarkdownCopy({ source }: { source: string }) {
-  const nodes: ReactNode[] = [];
-  const lines = source.split(/\r?\n/);
-  let paragraph: string[] = [];
-  let list: string[] = [];
-
-  const flushParagraph = () => {
-    if (!paragraph.length) return;
-    const value = paragraph.join(" ");
-    nodes.push(<p key={`p-${nodes.length}`}>{inlineMarkdown(value)}</p>);
-    paragraph = [];
-  };
-  const flushList = () => {
-    if (!list.length) return;
-    nodes.push(<ul key={`ul-${nodes.length}`}>{list.map((item, index) => <li key={`${item}-${index}`}>{inlineMarkdown(item)}</li>)}</ul>);
-    list = [];
-  };
-
-  for (const rawLine of lines) {
-    const line = rawLine.trim();
-    if (!line) {
-      flushParagraph();
-      flushList();
-    } else if (line.startsWith("## ")) {
-      flushParagraph();
-      flushList();
-      nodes.push(<h2 key={`h2-${nodes.length}`}>{line.slice(3)}</h2>);
-    } else if (line.startsWith("### ")) {
-      flushParagraph();
-      flushList();
-      nodes.push(<h3 key={`h3-${nodes.length}`}>{line.slice(4)}</h3>);
-    } else if (line.startsWith("- ")) {
-      flushParagraph();
-      list.push(line.slice(2));
-    } else {
-      flushList();
-      paragraph.push(line);
-    }
-  }
-  flushParagraph();
-  flushList();
-  return <div className="intro-markdown">{nodes}</div>;
 }
 
 function AppVisual({ slug, title }: { slug: IntroSlug; title: string }) {
@@ -138,7 +86,7 @@ export async function AppIntroPage({ slug }: { slug: IntroSlug }) {
             {section.eyebrow ? <p className="eyebrow">{section.eyebrow}</p> : null}
             <h1>{section.title}</h1>
             <p className="intro-summary">{section.summary}</p>
-            <MarkdownCopy source={section.body} />
+            <MarkdownCopy source={section.body} className="intro-markdown" />
             <div className="intro-page-links">
               {previous ? <Link href={introHref(previous.slug)}><ArrowLeft size={15} /> {previous.navLabel}</Link> : <span />}
               {next ? <Link href={introHref(next.slug)}>{next.navLabel} <ArrowRight size={15} /></Link> : <Link href="/login">로그인으로 <ArrowRight size={15} /></Link>}
