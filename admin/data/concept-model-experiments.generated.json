@@ -5,31 +5,31 @@
       "artifacts": {
         "candidates": "build/concept-model/candidates.jsonl",
         "facts": "build/concept-model/facts.jsonl",
-        "markdownReport": "docs/modeling/experiments/cmq-v2-20260812-140338-de9a0235.md",
+        "markdownReport": "docs/modeling/experiments/cmq-v2-20260812-143000-cad29ebe.md",
         "markdownReportWritten": true,
         "ownerDecisions": "content/model/concept-owner-decisions.jsonl",
         "questionBank": "content/model/concept-question-bank.generated.json",
-        "questionBankSha256": "b99ef57f5f01915199c1b6a514e16ea3c57c1e5df3a168fef99858b069ed5a61",
+        "questionBankSha256": "17615e5da14e99acba15147c213ce933ebc2b8e22c57f9894f771dbd9b29c2af",
         "questionBankWritten": true,
         "questionEdits": "content/model/concept-question-edits.jsonl",
         "split": "content/model/concept-split.json"
       },
       "automatedReview": {
-        "affectedQuestionCount": 405,
-        "autoPassedCount": 331,
+        "affectedQuestionCount": 0,
+        "autoPassedCount": 349,
         "baselineMode": "incremental",
         "blockedCount": 0,
         "changedElementCount": 0,
         "changedElementIds": [],
-        "changedQuestionCount": 405,
-        "needsOwnerReviewCount": 74,
+        "changedQuestionCount": 0,
+        "needsOwnerReviewCount": 56,
         "ownerApprovedCount": 0,
         "ownerBatchApproved": false,
         "ownerBatchDecision": null,
         "ownerReviewComplete": false,
-        "policyConfigSha256": "8b692e3a59745dc8eba67a87cef0aa0502570a40480166944696911ae7d3ea39",
+        "policyConfigSha256": "d6715b2f72fdb283b0d0ca0f716de74ffd111bd51feb9914eeaf1cd39640147b",
         "policyVersion": "concept-auto-review-v2",
-        "previousBankSha256": "1bc547af4657d05eb404e6644f1c6109d4d773c43e2542c9d2cf2bdb5c4048d6",
+        "previousBankSha256": "b99ef57f5f01915199c1b6a514e16ea3c57c1e5df3a168fef99858b069ed5a61",
         "profileExperiments": [
           {
             "distanceFromTargetReviewRate": 0.316667,
@@ -80,11 +80,11 @@
             "distanceFromTargetReviewRate": 0.083333,
             "profileId": "exception-only",
             "profileIndex": 3,
-            "provenance": "자동 하드 게이트를 유지하면서 극단적 순위 불일치만 올리는 최소 검토량 ablation",
+            "provenance": "자동 하드 게이트를 유지하면서 극단적 순위 불일치만 올리는 최소 검토량 ablation; v2 검토량 완화",
             "thresholds": {
               "minimumMeanTop4Agreement": 0.25,
-              "minimumNormalizedBoundaryMargin": -0.1,
-              "minimumSelectedCandidateSupport": 0.1
+              "minimumNormalizedBoundaryMargin": -0.2,
+              "minimumSelectedCandidateSupport": 0.05
             },
             "validationBlockedCount": 0,
             "validationQuestionCount": 60,
@@ -96,8 +96,8 @@
         "queue": [
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -158,13 +158,7 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.005051,
-                "threshold": 0.1
-              },
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.138132,
-                "threshold": -0.1
+                "threshold": 0.05
               }
             ],
             "severity": "review",
@@ -173,8 +167,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -235,13 +229,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.0,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.59412,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -250,8 +244,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -309,16 +303,10 @@
             "questionType": "term_to_intuition",
             "reasons": [
               {
-                "id": "candidate-support",
-                "label": "선택 오답의 실험 조합 지지율 낮음",
-                "measured": 0.050505,
-                "threshold": 0.1
-              },
-              {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.419277,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -327,8 +315,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -389,7 +377,7 @@
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.376829,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -398,8 +386,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -457,16 +445,10 @@
             "questionType": "term_to_verbal_relation",
             "reasons": [
               {
-                "id": "candidate-support",
-                "label": "선택 오답의 실험 조합 지지율 낮음",
-                "measured": 0.085859,
-                "threshold": 0.1
-              },
-              {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.35084,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -475,8 +457,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -537,13 +519,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.0,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.444885,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -552,78 +534,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
-            },
-            "choices": [
-              {
-                "elementId": "ACC-12",
-                "explanation": "ROA·ROE·DuPont 분해: 이 개념이 높다는 사실만으로 사업이 좋다고 말할 수 없다. 많이 남겨서 높을 수도, 자산을 빠르게 돌려서 높을 수도, 자기자본을 적게 두고 빚을 많이 써서 높을 수도 있다.",
-                "factId": "ACC-12:intuition:01",
-                "isCorrect": true,
-                "key": "A",
-                "text": "이 개념이 높다는 사실만으로 사업이 좋다고 말할 수 없다. 많이 남겨서 높을 수도, 자산을 빠르게 돌려서 높을 수도, 자기자본을 적게 두고 빚을 많이 써서 높을 수도 있다."
-              },
-              {
-                "elementId": "EQV-09",
-                "explanation": "ROE: 같은 순이익이라도 적은 자기자본으로 벌면 이 개념은 높다. 다만 부채를 늘이거나 자사주 매입으로 장부자본을 줄여도 올라갈 수 있으므로 영업개선과 재무레버리지를 분리해야 한다.",
-                "factId": "EQV-09:intuition:01",
-                "isCorrect": false,
-                "key": "B",
-                "text": "같은 순이익이라도 적은 자기자본으로 벌면 이 개념은 높다. 다만 부채를 늘이거나 자사주 매입으로 장부자본을 줄여도 올라갈 수 있으므로 영업개선과 재무레버리지를 분리해야 한다."
-              },
-              {
-                "elementId": "ACC-11",
-                "explanation": "수익성·효율성·레버리지 비율: 이익 10억 원만 보면 회사 규모를 알 수 없다. 매출 100억 원에서 번 10억 원인지, 자산 1,000억 원을 써서 번 10억 원인지에 따라 해석이 완전히 달라진다.",
-                "factId": "ACC-11:intuition:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "이익 10억 원만 보면 회사 규모를 알 수 없다. 매출 100억 원에서 번 10억 원인지, 자산 1,000억 원을 써서 번 10억 원인지에 따라 해석이 완전히 달라진다."
-              },
-              {
-                "elementId": "EQV-01",
-                "explanation": "P×Q 매출 추정: 매출이 10% 늘었다는 결과보다 가격을 올렸는지, 더 많이 팔았는지가 중요하다. 수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다.",
-                "factId": "EQV-01:intuition:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "매출이 10% 늘었다는 결과보다 가격을 올렸는지, 더 많이 팔았는지가 중요하다. 수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다."
-              },
-              {
-                "elementId": "EQV-42",
-                "explanation": "ROIC 마진·회전율 분해: 명품회사는 높은 마진과 낮은 회전율로, 유통회사는 낮은 마진과 높은 회전율로 비슷한 이 개념을 만들 수 있다. 두 모델의 개선 방법과 위험은 서로 다르다.",
-                "factId": "EQV-42:intuition:01",
-                "isCorrect": false,
-                "key": "E",
-                "text": "명품회사는 높은 마진과 낮은 회전율로, 유통회사는 낮은 마진과 높은 회전율로 비슷한 이 개념을 만들 수 있다. 두 모델의 개선 방법과 위험은 서로 다르다."
-              }
-            ],
-            "elementId": "ACC-12",
-            "explanation": "정답 설명: 이 개념이 높다는 사실만으로 사업이 좋다고 말할 수 없다. 많이 남겨서 높을 수도, 자산을 빠르게 돌려서 높을 수도, 자기자본을 적게 두고 빚을 많이 써서 높을 수도 있다. 용어: ROA·ROE·DuPont 분해.",
-            "metrics": {
-              "meanTop4Agreement": 0.493603,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.19697,
-              "normalizedBoundaryMargin": -0.144214
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "0ed75c2977ff0642c84c12a7f1302fa6e0f3a0be0ca70210a0a272471a9111c2",
-            "questionId": "ACC-12-term_to_intuition-01",
-            "questionType": "term_to_intuition",
-            "reasons": [
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.144214,
-                "threshold": -0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: ROA·ROE·DuPont 분해\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -685,7 +596,7 @@
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.485363,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -694,8 +605,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -756,13 +667,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.040404,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.402334,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -771,8 +682,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -833,13 +744,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.035354,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.382419,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -848,7 +759,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -916,13 +827,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.005051,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.626923,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -931,8 +842,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -999,13 +910,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.0,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.52259,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -1014,8 +925,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -1076,13 +987,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.015152,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.431789,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -1091,78 +1002,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": false
-            },
-            "choices": [
-              {
-                "elementId": "EQV-47",
-                "explanation": "FCFF·FCFE·잔여이익: 이 개념은 각각 전체 자본, 보통주 현금, 장부자본 초과이익을 기준으로 같은 기업가치를 다른 경로에서 측정한다.",
-                "factId": "EQV-47:definition:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "이 개념은 각각 전체 자본, 보통주 현금, 장부자본 초과이익을 기준으로 같은 기업가치를 다른 경로에서 측정한다."
-              },
-              {
-                "elementId": "CF-11",
-                "explanation": "계속가치(Terminal Value): 이 개념은 명시적 예측기간 뒤에 발생할 모든 현금흐름을 예측 종료시점의 한 금액으로 요약한 값이다.",
-                "factId": "CF-11:definition:01",
-                "isCorrect": false,
-                "key": "B",
-                "text": "이 개념은 명시적 예측기간 뒤에 발생할 모든 현금흐름을 예측 종료시점의 한 금액으로 요약한 값이다."
-              },
-              {
-                "elementId": "CF-09",
-                "explanation": "증분 프로젝트 현금흐름: 이 개념은 투자안을 선택했기 때문에 새로 생기거나 사라지는 현금만 골라낸 값이다.",
-                "factId": "CF-09:definition:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "이 개념은 투자안을 선택했기 때문에 새로 생기거나 사라지는 현금만 골라낸 값이다."
-              },
-              {
-                "elementId": "EQV-12",
-                "explanation": "FCFF: 이 개념은 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다.",
-                "factId": "EQV-12:definition:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "이 개념은 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다."
-              },
-              {
-                "elementId": "CF-10",
-                "explanation": "FCFF·FCFE: 영업과 재투자 뒤 기업의 모든 자본 제공자에게 남는 현금과 보통주주에게 남는 현금을 각각 측정하는 두 기준이다.",
-                "factId": "CF-10:definition:01",
-                "isCorrect": true,
-                "key": "E",
-                "text": "영업과 재투자 뒤 기업의 모든 자본 제공자에게 남는 현금과 보통주주에게 남는 현금을 각각 측정하는 두 기준이다."
-              }
-            ],
-            "elementId": "CF-10",
-            "explanation": "정답 설명: 영업과 재투자 뒤 기업의 모든 자본 제공자에게 남는 현금과 보통주주에게 남는 현금을 각각 측정하는 두 기준이다. 용어: FCFF·FCFE.",
-            "metrics": {
-              "meanTop4Agreement": 0.573064,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.156566,
-              "normalizedBoundaryMargin": -0.117297
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "93691137c576f6927a5a3e4c4bebe503c58eb92843380c6fb17641c3debd1146",
-            "questionId": "CF-10-term_to_definition-01",
-            "questionType": "term_to_definition",
-            "reasons": [
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.117297,
-                "threshold": -0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: FCFF·FCFE\n다음 중 이 용어의 정의로 가장 정확한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -1224,7 +1064,7 @@
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.228848,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -1233,8 +1073,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -1295,13 +1135,7 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.0,
-                "threshold": 0.1
-              },
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.109637,
-                "threshold": -0.1
+                "threshold": 0.05
               }
             ],
             "severity": "review",
@@ -1310,7 +1144,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -1372,13 +1206,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.025253,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.312866,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -1387,7 +1221,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -1449,13 +1283,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.015152,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.525257,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -1464,7 +1298,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -1526,13 +1360,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.0,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.446873,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -1541,221 +1375,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
-            },
-            "choices": [
-              {
-                "elementId": "FI-08",
-                "explanation": "채권선물 Basis·CTD: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
-                "factId": "FI-08:intuition:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
-              },
-              {
-                "elementId": "FI-04",
-                "explanation": "DV01·Convexity 가격변화: Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이면 실제 가격곡선이 휘어 있으므로 이 개념을 더해야 상승과 하락의 비대칭을 더 정확히 잡는다.",
-                "factId": "FI-04:intuition:01",
-                "isCorrect": false,
-                "key": "B",
-                "text": "Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이면 실제 가격곡선이 휘어 있으므로 이 개념을 더해야 상승과 하락의 비대칭을 더 정확히 잡는다."
-              },
-              {
-                "elementId": "FI-07",
-                "explanation": "Repo·Haircut: 담보가격이 떨어질 수 있어 전액을 빌려주지 않는다. 담보에서 떼어 두는 완충 비율이 커질수록 대출액은 줄고 보호는 커지며, 만기에는 원금과 약정 이자를 합쳐 되산다.",
-                "factId": "FI-07:intuition:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "담보가격이 떨어질 수 있어 전액을 빌려주지 않는다. 담보에서 떼어 두는 완충 비율이 커질수록 대출액은 줄고 보호는 커지며, 만기에는 원금과 약정 이자를 합쳐 되산다."
-              },
-              {
-                "elementId": "FI-03",
-                "explanation": "Macaulay Duration·Modified Duration: 같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다.",
-                "factId": "FI-03:intuition:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다."
-              },
-              {
-                "elementId": "FI-01",
-                "explanation": "채권가격·YTM: 새 채권이 더 높은 이자를 주기 시작하면 낮은 쿠폰의 기존 채권은 같은 가격에 팔리지 않는다. 구매자가 새 채권과 비슷한 수익을 얻도록 기존 채권 가격이 내려가므로 가격과 이 개념은 반대로 움직인다.",
-                "factId": "FI-01:intuition:01",
-                "isCorrect": true,
-                "key": "E",
-                "text": "새 채권이 더 높은 이자를 주기 시작하면 낮은 쿠폰의 기존 채권은 같은 가격에 팔리지 않는다. 구매자가 새 채권과 비슷한 수익을 얻도록 기존 채권 가격이 내려가므로 가격과 이 개념은 반대로 움직인다."
-              }
-            ],
-            "elementId": "FI-01",
-            "explanation": "정답 설명: 새 채권이 더 높은 이자를 주기 시작하면 낮은 쿠폰의 기존 채권은 같은 가격에 팔리지 않는다. 구매자가 새 채권과 비슷한 수익을 얻도록 기존 채권 가격이 내려가므로 가격과 이 개념은 반대로 움직인다. 용어: 채권가격·YTM.",
-            "metrics": {
-              "meanTop4Agreement": 0.46532,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.106061,
-              "normalizedBoundaryMargin": -0.173312
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "2e1d32300eda3b887bf258ea171685a21258c678347d043b643cb7ce42bfc3a7",
-            "questionId": "FI-01-term_to_intuition-01",
-            "questionType": "term_to_intuition",
-            "reasons": [
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.173312,
-                "threshold": -0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: 채권가격·YTM\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
-            },
-            "choices": [
-              {
-                "elementId": "FI-08",
-                "explanation": "채권선물 Basis·CTD: 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
-                "factId": "FI-08:verbal_relation:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
-              },
-              {
-                "elementId": "FI-01",
-                "explanation": "채권가격·YTM: 시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간다.",
-                "factId": "FI-01:verbal_relation:01",
-                "isCorrect": true,
-                "key": "B",
-                "text": "시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간다."
-              },
-              {
-                "elementId": "FI-04",
-                "explanation": "DV01·Convexity 가격변화: 금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을 잘 설명한다.",
-                "factId": "FI-04:verbal_relation:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을 잘 설명한다."
-              },
-              {
-                "elementId": "FI-03",
-                "explanation": "Macaulay Duration·Modified Duration: 금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으로 더 크게 움직인다.",
-                "factId": "FI-03:verbal_relation:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으로 더 크게 움직인다."
-              },
-              {
-                "elementId": "FI-07",
-                "explanation": "Repo·Haircut: 담보가치에서 더 큰 완충 비율을 떼어 둘수록 빌려주는 현금은 줄고 가격변동 보호는 커진다.",
-                "factId": "FI-07:verbal_relation:01",
-                "isCorrect": false,
-                "key": "E",
-                "text": "담보가치에서 더 큰 완충 비율을 떼어 둘수록 빌려주는 현금은 줄고 가격변동 보호는 커진다."
-              }
-            ],
-            "elementId": "FI-01",
-            "explanation": "정답 설명: 시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간다. 용어: 채권가격·YTM.",
-            "metrics": {
-              "meanTop4Agreement": 0.477441,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.146465,
-              "normalizedBoundaryMargin": -0.163071
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "bdc23d3e062e77e066fd46cea3dc4d5f2ad1fa95fd4c88c698c528bb4a397746",
-            "questionId": "FI-01-term_to_verbal_relation-01",
-            "questionType": "term_to_verbal_relation",
-            "reasons": [
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.163071,
-                "threshold": -0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: 채권가격·YTM\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
-            },
-            "choices": [
-              {
-                "elementId": "DER-01",
-                "explanation": "Forward·Futures 이론가격: 오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경로의 비용이 같아야 차익거래가 없다. 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다.",
-                "factId": "DER-01:intuition:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경로의 비용이 같아야 차익거래가 없다. 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
-              },
-              {
-                "elementId": "FI-02",
-                "explanation": "현물이자율·선도금리: 2년 투자 결과는 2년 금리로 한 번에 계산해도, 1년 투자 뒤 다시 1년 투자하는 경로로 계산해도 무차익 조건에서는 같아야 한다. 두 경로를 같게 만드는 두 번째 구간 금리가 이 개념다.",
-                "factId": "FI-02:intuition:01",
-                "isCorrect": true,
-                "key": "B",
-                "text": "2년 투자 결과는 2년 금리로 한 번에 계산해도, 1년 투자 뒤 다시 1년 투자하는 경로로 계산해도 무차익 조건에서는 같아야 한다. 두 경로를 같게 만드는 두 번째 구간 금리가 이 개념다."
-              },
-              {
-                "elementId": "FI-09",
-                "explanation": "금리스왑 고정금리·현금흐름: 원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다.",
-                "factId": "FI-09:intuition:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다."
-              },
-              {
-                "elementId": "DER-02",
-                "explanation": "Forward·Futures 무차익거래: 선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다. 반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다.",
-                "factId": "DER-02:intuition:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다. 반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
-              },
-              {
-                "elementId": "DER-07",
-                "explanation": "Binomial Option Pricing: 주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두 상품의 오늘 가격은 같아야 한다. 위험중립확률은 실제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다.",
-                "factId": "DER-07:intuition:01",
-                "isCorrect": false,
-                "key": "E",
-                "text": "주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두 상품의 오늘 가격은 같아야 한다. 위험중립확률은 실제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다."
-              }
-            ],
-            "elementId": "FI-02",
-            "explanation": "정답 설명: 2년 투자 결과는 2년 금리로 한 번에 계산해도, 1년 투자 뒤 다시 1년 투자하는 경로로 계산해도 무차익 조건에서는 같아야 한다. 두 경로를 같게 만드는 두 번째 구간 금리가 이 개념다. 용어: 현물이자율·선도금리.",
-            "metrics": {
-              "meanTop4Agreement": 0.59798,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.075758,
-              "normalizedBoundaryMargin": 0.012359
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "1783e4d47d80836e012338feaa482a2b7fea083fd3cb15edc9648b3d052806f3",
-            "questionId": "FI-02-term_to_intuition-01",
-            "questionType": "term_to_intuition",
-            "reasons": [
-              {
-                "id": "candidate-support",
-                "label": "선택 오답의 실험 조합 지지율 낮음",
-                "measured": 0.075758,
-                "threshold": 0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: 현물이자율·선도금리\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -1816,13 +1437,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.005051,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.350298,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -1831,7 +1452,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -1893,13 +1514,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.010101,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.368053,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -1908,7 +1529,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -1970,13 +1591,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.030303,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.475066,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -1985,8 +1606,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -2047,13 +1668,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.015152,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.510555,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -2062,7 +1683,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -2124,13 +1745,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.005051,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.483305,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -2139,8 +1760,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -2201,13 +1822,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.015152,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.372753,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -2216,150 +1837,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
-            },
-            "choices": [
-              {
-                "elementId": "DER-10",
-                "explanation": "Swap Cash Flows·Netting: 명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다.",
-                "factId": "DER-10:intuition:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다."
-              },
-              {
-                "elementId": "CF-02",
-                "explanation": "연금·영구연금·성장영구연금: 매달 같은 월세를 받는 계약은 각 지급액을 따로 할인할 수도 있지만, 반복 구조를 이용하면 한 번에 계산할 수 있다. 영원히 성장한다고 가정할 때는 성장률이 할인율보다 낮아야 가치가 유한하게 남는다.",
-                "factId": "CF-02:intuition:01",
-                "isCorrect": false,
-                "key": "B",
-                "text": "매달 같은 월세를 받는 계약은 각 지급액을 따로 할인할 수도 있지만, 반복 구조를 이용하면 한 번에 계산할 수 있다. 영원히 성장한다고 가정할 때는 성장률이 할인율보다 낮아야 가치가 유한하게 남는다."
-              },
-              {
-                "elementId": "FI-03",
-                "explanation": "Macaulay Duration·Modified Duration: 같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다.",
-                "factId": "FI-03:intuition:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다."
-              },
-              {
-                "elementId": "FI-09",
-                "explanation": "금리스왑 고정금리·현금흐름: 원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다.",
-                "factId": "FI-09:intuition:01",
-                "isCorrect": true,
-                "key": "D",
-                "text": "원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다."
-              },
-              {
-                "elementId": "FI-02",
-                "explanation": "현물이자율·선도금리: 2년 투자 결과는 2년 금리로 한 번에 계산해도, 1년 투자 뒤 다시 1년 투자하는 경로로 계산해도 무차익 조건에서는 같아야 한다. 두 경로를 같게 만드는 두 번째 구간 금리가 이 개념다.",
-                "factId": "FI-02:intuition:01",
-                "isCorrect": false,
-                "key": "E",
-                "text": "2년 투자 결과는 2년 금리로 한 번에 계산해도, 1년 투자 뒤 다시 1년 투자하는 경로로 계산해도 무차익 조건에서는 같아야 한다. 두 경로를 같게 만드는 두 번째 구간 금리가 이 개념다."
-              }
-            ],
-            "elementId": "FI-09",
-            "explanation": "정답 설명: 원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다. 용어: 금리스왑 고정금리·현금흐름.",
-            "metrics": {
-              "meanTop4Agreement": 0.53468,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.055556,
-              "normalizedBoundaryMargin": -0.024817
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "d6e9803df3ffd553bc13a9eb869923144eb77bcb08ae29b2017bbf99162cf6bc",
-            "questionId": "FI-09-term_to_intuition-01",
-            "questionType": "term_to_intuition",
-            "reasons": [
-              {
-                "id": "candidate-support",
-                "label": "선택 오답의 실험 조합 지지율 낮음",
-                "measured": 0.055556,
-                "threshold": 0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: 금리스왑 고정금리·현금흐름\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
-            },
-            "choices": [
-              {
-                "elementId": "CF-02",
-                "explanation": "연금·영구연금·성장영구연금: 영원히 성장한다고 가정할 때는 성장률이 할인율보다 낮아야 가치가 유한하게 남는다.",
-                "factId": "CF-02:verbal_relation:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "영원히 성장한다고 가정할 때는 성장률이 할인율보다 낮아야 가치가 유한하게 남는다."
-              },
-              {
-                "elementId": "DER-10",
-                "explanation": "Swap Cash Flows·Netting: 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다.",
-                "factId": "DER-10:verbal_relation:01",
-                "isCorrect": false,
-                "key": "B",
-                "text": "변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다."
-              },
-              {
-                "elementId": "FI-02",
-                "explanation": "현물이자율·선도금리: 서로 다른 만기의 누적 투자수익이 같아지도록 중간 구간의 미래 금리가 정해진다.",
-                "factId": "FI-02:verbal_relation:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "서로 다른 만기의 누적 투자수익이 같아지도록 중간 구간의 미래 금리가 정해진다."
-              },
-              {
-                "elementId": "FI-03",
-                "explanation": "Macaulay Duration·Modified Duration: 금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으로 더 크게 움직인다.",
-                "factId": "FI-03:verbal_relation:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으로 더 크게 움직인다."
-              },
-              {
-                "elementId": "FI-09",
-                "explanation": "금리스왑 고정금리·현금흐름: 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다.",
-                "factId": "FI-09:verbal_relation:01",
-                "isCorrect": true,
-                "key": "E",
-                "text": "계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다."
-              }
-            ],
-            "elementId": "FI-09",
-            "explanation": "정답 설명: 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다. 용어: 금리스왑 고정금리·현금흐름.",
-            "metrics": {
-              "meanTop4Agreement": 0.63165,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.09596,
-              "normalizedBoundaryMargin": -0.017443
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "41573f09345b44c20f2fd496cd3bb231585a894ca8c86b3697853f3035a3f0a3",
-            "questionId": "FI-09-term_to_verbal_relation-01",
-            "questionType": "term_to_verbal_relation",
-            "reasons": [
-              {
-                "id": "candidate-support",
-                "label": "선택 오답의 실험 조합 지지율 낮음",
-                "measured": 0.09596,
-                "threshold": 0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: 금리스왑 고정금리·현금흐름\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -2420,13 +1899,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.030303,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.584892,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -2435,8 +1914,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -2497,13 +1976,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.035354,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.471505,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -2512,8 +1991,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -2574,13 +2053,7 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.035354,
-                "threshold": 0.1
-              },
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.162192,
-                "threshold": -0.1
+                "threshold": 0.05
               }
             ],
             "severity": "review",
@@ -2589,85 +2062,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
-            },
-            "choices": [
-              {
-                "elementId": "DER-02",
-                "explanation": "Forward·Futures 무차익거래: 반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다.",
-                "factId": "DER-02:verbal_relation:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
-              },
-              {
-                "elementId": "DER-06",
-                "explanation": "Put–Call Parity·차익거래: 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
-                "factId": "DER-06:verbal_relation:01",
-                "isCorrect": false,
-                "key": "B",
-                "text": "이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
-              },
-              {
-                "elementId": "DER-05",
-                "explanation": "옵션 Profit·손익분기점·전략손익: 매수할 때 지급한 프리미엄이 커질수록 이익으로 전환되는 기초자산 가격의 경계는 더 멀어진다.",
-                "factId": "DER-05:verbal_relation:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "매수할 때 지급한 프리미엄이 커질수록 이익으로 전환되는 기초자산 가격의 경계는 더 멀어진다."
-              },
-              {
-                "elementId": "DER-04",
-                "explanation": "Call·Put Payoff: 살 권리는 시장가격이 약정가격보다 높을 때, 팔 권리는 시장가격이 약정가격보다 낮을 때 만기 가치가 생긴다.",
-                "factId": "DER-04:verbal_relation:01",
-                "isCorrect": true,
-                "key": "D",
-                "text": "살 권리는 시장가격이 약정가격보다 높을 때, 팔 권리는 시장가격이 약정가격보다 낮을 때 만기 가치가 생긴다."
-              },
-              {
-                "elementId": "FI-01",
-                "explanation": "채권가격·YTM: 시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간다.",
-                "factId": "FI-01:verbal_relation:01",
-                "isCorrect": false,
-                "key": "E",
-                "text": "시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간다."
-              }
-            ],
-            "elementId": "DER-04",
-            "explanation": "정답 설명: 살 권리는 시장가격이 약정가격보다 높을 때, 팔 권리는 시장가격이 약정가격보다 낮을 때 만기 가치가 생긴다. 용어: Call·Put Payoff.",
-            "metrics": {
-              "meanTop4Agreement": 0.606061,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.09596,
-              "normalizedBoundaryMargin": -0.106814
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "58feabd93dcafb2e4fb2bee35c93eedcfd9e39b2547ccd8d930c346c490e006f",
-            "questionId": "DER-04-term_to_verbal_relation-01",
-            "questionType": "term_to_verbal_relation",
-            "reasons": [
-              {
-                "id": "candidate-support",
-                "label": "선택 오답의 실험 조합 지지율 낮음",
-                "measured": 0.09596,
-                "threshold": 0.1
-              },
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.106814,
-                "threshold": -0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: Call·Put Payoff\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
             },
             "choices": [
               {
@@ -2728,7 +2124,7 @@
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.228079,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -2737,220 +2133,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": false
-            },
-            "choices": [
-              {
-                "elementId": "FI-06",
-                "explanation": "금리위험 헤징·계약수: 현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄된다.",
-                "factId": "FI-06:verbal_relation:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄된다."
-              },
-              {
-                "elementId": "DER-07",
-                "explanation": "Binomial Option Pricing: 상승·하락 상태의 가중값은 실제 예측확률이 아니라 복제 포트폴리오와 같은 현재가격을 만들도록 정해진다.",
-                "factId": "DER-07:verbal_relation:01",
-                "isCorrect": true,
-                "key": "B",
-                "text": "상승·하락 상태의 가중값은 실제 예측확률이 아니라 복제 포트폴리오와 같은 현재가격을 만들도록 정해진다."
-              },
-              {
-                "elementId": "DER-10",
-                "explanation": "Swap Cash Flows·Netting: 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다.",
-                "factId": "DER-10:verbal_relation:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다."
-              },
-              {
-                "elementId": "DER-06",
-                "explanation": "Put–Call Parity·차익거래: 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
-                "factId": "DER-06:verbal_relation:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
-              },
-              {
-                "elementId": "EQV-01",
-                "explanation": "P×Q 매출 추정: 수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다.",
-                "factId": "EQV-01:verbal_relation:01",
-                "isCorrect": false,
-                "key": "E",
-                "text": "수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다."
-              }
-            ],
-            "elementId": "DER-07",
-            "explanation": "정답 설명: 상승·하락 상태의 가중값은 실제 예측확률이 아니라 복제 포트폴리오와 같은 현재가격을 만들도록 정해진다. 용어: Binomial Option Pricing.",
-            "metrics": {
-              "meanTop4Agreement": 0.555171,
-              "minimumDistractorRelevance": 3,
-              "minimumSelectedCandidateSupport": 0.318182,
-              "normalizedBoundaryMargin": -0.108118
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "13afaa9e812fd36c3a29d5a120c82fabcaf47079647753e8e70a570624fbe249",
-            "questionId": "DER-07-term_to_verbal_relation-01",
-            "questionType": "term_to_verbal_relation",
-            "reasons": [
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.108118,
-                "threshold": -0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: Binomial Option Pricing\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": false
-            },
-            "choices": [
-              {
-                "elementId": "EQV-03",
-                "explanation": "현금세율·NOPAT: 이 개념은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다.",
-                "factId": "EQV-03:definition:01",
-                "isCorrect": true,
-                "key": "A",
-                "text": "이 개념은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다."
-              },
-              {
-                "elementId": "IBT-12",
-                "explanation": "부동산 NOI: 이 개념은 잠재 임대수입에서 공실손실과 부동산 운영비를 뺀 자산 자체의 영업소득이다.",
-                "factId": "IBT-12:definition:01",
-                "isCorrect": false,
-                "key": "B",
-                "text": "이 개념은 잠재 임대수입에서 공실손실과 부동산 운영비를 뺀 자산 자체의 영업소득이다."
-              },
-              {
-                "elementId": "EQV-41",
-                "explanation": "ROIC·투하자본: 이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
-                "factId": "EQV-41:definition:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다."
-              },
-              {
-                "elementId": "EQV-12",
-                "explanation": "FCFF: 이 개념은 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다.",
-                "factId": "EQV-12:definition:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "이 개념은 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다."
-              },
-              {
-                "elementId": "EQV-11",
-                "explanation": "EV와 EV/EBITDA: 영업자산에 대한 투자자 전체의 가치를 이자·세금·감가상각 전 영업성과와 비교하는 배수다.",
-                "factId": "EQV-11:definition:01",
-                "isCorrect": false,
-                "key": "E",
-                "text": "영업자산에 대한 투자자 전체의 가치를 이자·세금·감가상각 전 영업성과와 비교하는 배수다."
-              }
-            ],
-            "elementId": "EQV-03",
-            "explanation": "정답 설명: 이 개념은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다. 용어: 현금세율·NOPAT.",
-            "metrics": {
-              "meanTop4Agreement": 0.448004,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.232323,
-              "normalizedBoundaryMargin": -0.119478
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "988f1956ecf72216807aff3316cc3ca4e7d9da92233a17280e047711167cdeb8",
-            "questionId": "EQV-03-term_to_definition-01",
-            "questionType": "term_to_definition",
-            "reasons": [
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.119478,
-                "threshold": -0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: 현금세율·NOPAT\n다음 중 이 용어의 정의로 가장 정확한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": false
-            },
-            "choices": [
-              {
-                "elementId": "EQV-30",
-                "explanation": "운전자본 일수·현금전환주기: DSO·DIO·DPO와 이 개념은 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순기간을 일수로 보여 준다.",
-                "factId": "EQV-30:definition:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "DSO·DIO·DPO와 이 개념은 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순기간을 일수로 보여 준다."
-              },
-              {
-                "elementId": "EQV-04",
-                "explanation": "운전자본: 매출연동 이 개념은 성장에 따라 매출채권·재고 등에 추가로 묶이는 영업자금을 단순 비율로 추정한다.",
-                "factId": "EQV-04:definition:01",
-                "isCorrect": true,
-                "key": "B",
-                "text": "매출연동 이 개념은 성장에 따라 매출채권·재고 등에 추가로 묶이는 영업자금을 단순 비율로 추정한다."
-              },
-              {
-                "elementId": "ACC-08",
-                "explanation": "운전자본과 순운전자본 증감: 단기 영업에 묶인 자산에서 단기 영업으로 조달한 부채를 뺀 차이로 일상 영업의 자금 소요를 보여 준다.",
-                "factId": "ACC-08:definition:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "단기 영업에 묶인 자산에서 단기 영업으로 조달한 부채를 뺀 차이로 일상 영업의 자금 소요를 보여 준다."
-              },
-              {
-                "elementId": "EQV-12",
-                "explanation": "FCFF: 이 개념은 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다.",
-                "factId": "EQV-12:definition:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "이 개념은 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다."
-              },
-              {
-                "elementId": "EQV-29",
-                "explanation": "발생액비율·현금전환: 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 비현금 조정과 현금 유입의 관점에서 측정한다.",
-                "factId": "EQV-29:definition:01",
-                "isCorrect": false,
-                "key": "E",
-                "text": "회계이익 중 실제 영업현금으로 뒷받침되는 정도를 비현금 조정과 현금 유입의 관점에서 측정한다."
-              }
-            ],
-            "elementId": "EQV-04",
-            "explanation": "정답 설명: 매출연동 이 개념은 성장에 따라 매출채권·재고 등에 추가로 묶이는 영업자금을 단순 비율로 추정한다. 용어: 운전자본.",
-            "metrics": {
-              "meanTop4Agreement": 0.800673,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.686869,
-              "normalizedBoundaryMargin": -0.105289
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "e97b60144f08de2ece65bbe99675a68223bdd956ba0def4782e36a7dc7264ccc",
-            "questionId": "EQV-04-term_to_definition-01",
-            "questionType": "term_to_definition",
-            "reasons": [
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.105289,
-                "threshold": -0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: 운전자본\n다음 중 이 용어의 정의로 가장 정확한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -3012,13 +2195,7 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.0,
-                "threshold": 0.1
-              },
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.176582,
-                "threshold": -0.1
+                "threshold": 0.05
               }
             ],
             "severity": "review",
@@ -3027,78 +2204,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": false
-            },
-            "choices": [
-              {
-                "elementId": "ACC-08",
-                "explanation": "운전자본과 순운전자본 증감: 반대로 공급업체 대금을 늦게 지급하면 그 기간만큼 영업자금을 빌려 쓰는 효과가 생긴다.",
-                "factId": "ACC-08:verbal_relation:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "반대로 공급업체 대금을 늦게 지급하면 그 기간만큼 영업자금을 빌려 쓰는 효과가 생긴다."
-              },
-              {
-                "elementId": "EQV-04",
-                "explanation": "운전자본: 매출에 비해 영업자산이 더 많이 묶이거나 영업부채 조달이 줄면 필요한 운전자금과 현금 유출이 커진다.",
-                "factId": "EQV-04:verbal_relation:01",
-                "isCorrect": true,
-                "key": "B",
-                "text": "매출에 비해 영업자산이 더 많이 묶이거나 영업부채 조달이 줄면 필요한 운전자금과 현금 유출이 커진다."
-              },
-              {
-                "elementId": "EQV-30",
-                "explanation": "운전자본 일수·현금전환주기: 공급업체 결제를 늦추면 일부가 상쇄되지만, 지나친 DPO 증가는 협상력보다 유동성 압박의 신호일 수도 있다.",
-                "factId": "EQV-30:verbal_relation:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "공급업체 결제를 늦추면 일부가 상쇄되지만, 지나친 DPO 증가는 협상력보다 유동성 압박의 신호일 수도 있다."
-              },
-              {
-                "elementId": "EQV-06",
-                "explanation": "3개 재무제표 연결: 감가상각은 되돌리고, 받지 못한 매출과 재고는 현금에서 빼며, 설비투자와 차입·배당까지 반영해야 실제 기말현금이 나온다.",
-                "factId": "EQV-06:verbal_relation:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "감가상각은 되돌리고, 받지 못한 매출과 재고는 현금에서 빼며, 설비투자와 차입·배당까지 반영해야 실제 기말현금이 나온다."
-              },
-              {
-                "elementId": "EQV-29",
-                "explanation": "발생액비율·현금전환: 회계이익에 비해 영업현금이 약할수록 비현금 조정 비중은 커지고 이익이 현금으로 이어지는 정도는 나빠진다.",
-                "factId": "EQV-29:verbal_relation:01",
-                "isCorrect": false,
-                "key": "E",
-                "text": "회계이익에 비해 영업현금이 약할수록 비현금 조정 비중은 커지고 이익이 현금으로 이어지는 정도는 나빠진다."
-              }
-            ],
-            "elementId": "EQV-04",
-            "explanation": "정답 설명: 매출에 비해 영업자산이 더 많이 묶이거나 영업부채 조달이 줄면 필요한 운전자금과 현금 유출이 커진다. 용어: 운전자본.",
-            "metrics": {
-              "meanTop4Agreement": 0.60404,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.5,
-              "normalizedBoundaryMargin": -0.115871
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "ed2ce32de2bcd1151c5b4d2e65a369f8f3f51c93af4452e82b74c1aa5c400e69",
-            "questionId": "EQV-04-term_to_verbal_relation-01",
-            "questionType": "term_to_verbal_relation",
-            "reasons": [
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.115871,
-                "threshold": -0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: 운전자본\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -3160,7 +2266,7 @@
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.202966,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -3169,79 +2275,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
-            },
-            "choices": [
-              {
-                "elementId": "ACC-12",
-                "explanation": "ROA·ROE·DuPont 분해: 주주수익성을 이익률, 자산 효율, 재무레버리지로 나누어 성과의 원인을 설명하는 방법이다.",
-                "factId": "ACC-12:definition:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "주주수익성을 이익률, 자산 효율, 재무레버리지로 나누어 성과의 원인을 설명하는 방법이다."
-              },
-              {
-                "elementId": "EQV-13",
-                "explanation": "WACC: 이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
-                "factId": "EQV-13:definition:01",
-                "isCorrect": false,
-                "key": "B",
-                "text": "이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다."
-              },
-              {
-                "elementId": "EQV-09",
-                "explanation": "ROE: 이 개념은 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다.",
-                "factId": "EQV-09:definition:01",
-                "isCorrect": true,
-                "key": "C",
-                "text": "이 개념은 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다."
-              },
-              {
-                "elementId": "EQV-10",
-                "explanation": "PBR: 이 개념은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다.",
-                "factId": "EQV-10:definition:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "이 개념은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다."
-              },
-              {
-                "elementId": "EQV-41",
-                "explanation": "ROIC·투하자본: 이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
-                "factId": "EQV-41:definition:01",
-                "isCorrect": false,
-                "key": "E",
-                "text": "이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다."
-              }
-            ],
-            "elementId": "EQV-09",
-            "explanation": "정답 설명: 이 개념은 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다. 용어: ROE.",
-            "metrics": {
-              "meanTop4Agreement": 0.591919,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.277778,
-              "normalizedBoundaryMargin": -0.167098
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "76e5d21e6845356877cf1413dba521dbe6c44d6a53f7301a9e08b8dcd6ec05ee",
-            "questionId": "EQV-09-term_to_definition-01",
-            "questionType": "term_to_definition",
-            "reasons": [
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.167098,
-                "threshold": -0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: ROE\n다음 중 이 용어의 정의로 가장 정확한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
             },
             "choices": [
               {
@@ -3302,13 +2337,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.0,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.472953,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -3317,7 +2352,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -3379,7 +2414,7 @@
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.212286,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -3388,8 +2423,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -3456,13 +2491,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.0,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.470742,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -3471,78 +2506,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": false
-            },
-            "choices": [
-              {
-                "elementId": "ACC-09",
-                "explanation": "현금흐름표(CFO·CFI·CFF): 이 개념은 한 기간의 현금 증감을 영업, 투자, 재무 활동으로 나누어 이익이 실제 현금으로 이어진 경로를 보여 준다.",
-                "factId": "ACC-09:definition:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "이 개념은 한 기간의 현금 증감을 영업, 투자, 재무 활동으로 나누어 이익이 실제 현금으로 이어진 경로를 보여 준다."
-              },
-              {
-                "elementId": "EQV-47",
-                "explanation": "FCFF·FCFE·잔여이익: 이 개념은 각각 전체 자본, 보통주 현금, 장부자본 초과이익을 기준으로 같은 기업가치를 다른 경로에서 측정한다.",
-                "factId": "EQV-47:definition:01",
-                "isCorrect": false,
-                "key": "B",
-                "text": "이 개념은 각각 전체 자본, 보통주 현금, 장부자본 초과이익을 기준으로 같은 기업가치를 다른 경로에서 측정한다."
-              },
-              {
-                "elementId": "EQV-12",
-                "explanation": "FCFF: 이 개념은 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다.",
-                "factId": "EQV-12:definition:01",
-                "isCorrect": true,
-                "key": "C",
-                "text": "이 개념은 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다."
-              },
-              {
-                "elementId": "CF-10",
-                "explanation": "FCFF·FCFE: 영업과 재투자 뒤 기업의 모든 자본 제공자에게 남는 현금과 보통주주에게 남는 현금을 각각 측정하는 두 기준이다.",
-                "factId": "CF-10:definition:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "영업과 재투자 뒤 기업의 모든 자본 제공자에게 남는 현금과 보통주주에게 남는 현금을 각각 측정하는 두 기준이다."
-              },
-              {
-                "elementId": "EQV-06",
-                "explanation": "3개 재무제표 연결: 이 개념은 순이익에서 비현금항목·운전자본·투자·조달을 거쳐 기말현금까지 일관되게 이어 붙이는 모델링 과정이다.",
-                "factId": "EQV-06:definition:01",
-                "isCorrect": false,
-                "key": "E",
-                "text": "이 개념은 순이익에서 비현금항목·운전자본·투자·조달을 거쳐 기말현금까지 일관되게 이어 붙이는 모델링 과정이다."
-              }
-            ],
-            "elementId": "EQV-12",
-            "explanation": "정답 설명: 이 개념은 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다. 용어: FCFF.",
-            "metrics": {
-              "meanTop4Agreement": 0.428956,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.151515,
-              "normalizedBoundaryMargin": -0.198987
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "a1c45f482d1d72419953abecb79e6ead432f7a966dffbde4a99ceb873b5e869a",
-            "questionId": "EQV-12-term_to_definition-01",
-            "questionType": "term_to_definition",
-            "reasons": [
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.198987,
-                "threshold": -0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: FCFF\n다음 중 이 용어의 정의로 가장 정확한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -3604,13 +2568,7 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.035354,
-                "threshold": 0.1
-              },
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.176044,
-                "threshold": -0.1
+                "threshold": 0.05
               }
             ],
             "severity": "review",
@@ -3619,8 +2577,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -3681,13 +2639,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.005051,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.300049,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -3696,7 +2654,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -3764,13 +2722,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.0,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.485095,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -3779,8 +2737,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -3841,13 +2799,7 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.005051,
-                "threshold": 0.1
-              },
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.133695,
-                "threshold": -0.1
+                "threshold": 0.05
               }
             ],
             "severity": "review",
@@ -3856,7 +2808,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -3918,13 +2870,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.020202,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.460472,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -3933,7 +2885,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -3995,7 +2947,7 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.005051,
-                "threshold": 0.1
+                "threshold": 0.05
               }
             ],
             "severity": "review",
@@ -4004,7 +2956,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -4066,13 +3018,7 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.020202,
-                "threshold": 0.1
-              },
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.196744,
-                "threshold": -0.1
+                "threshold": 0.05
               }
             ],
             "severity": "review",
@@ -4081,8 +3027,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -4140,16 +3086,10 @@
             "questionType": "term_to_definition",
             "reasons": [
               {
-                "id": "candidate-support",
-                "label": "선택 오답의 실험 조합 지지율 낮음",
-                "measured": 0.090909,
-                "threshold": 0.1
-              },
-              {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.348969,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -4158,220 +3098,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": false
-            },
-            "choices": [
-              {
-                "elementId": "EQV-08",
-                "explanation": "PER: 이 개념 20배는 현재 이익 1원에 시장이 20원을 지불한다는 뜻이다. 높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다.",
-                "factId": "EQV-08:intuition:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "이 개념 20배는 현재 이익 1원에 시장이 20원을 지불한다는 뜻이다. 높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다."
-              },
-              {
-                "elementId": "EQV-07",
-                "explanation": "기본 EPS: 기업 전체 이익이 늘어도 신주가 더 빠르게 늘면 기존 주주의 주당 몫은 줄 수 있다. 그래서 순이익과 함께 증자·자사주·주식보상의 분모 효과를 봐야 한다.",
-                "factId": "EQV-07:intuition:01",
-                "isCorrect": false,
-                "key": "B",
-                "text": "기업 전체 이익이 늘어도 신주가 더 빠르게 늘면 기존 주주의 주당 몫은 줄 수 있다. 그래서 순이익과 함께 증자·자사주·주식보상의 분모 효과를 봐야 한다."
-              },
-              {
-                "elementId": "IBT-17",
-                "explanation": "리서치 촉매·실적서프라이즈: 매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다.",
-                "factId": "IBT-17:intuition:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
-              },
-              {
-                "elementId": "EQV-62",
-                "explanation": "기대 TSR·촉매: 좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결과가 어떤 지표에서 언제 확인될지를 촉매로 적어야 투자논리가 검증 가능해진다.",
-                "factId": "EQV-62:intuition:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결과가 어떤 지표에서 언제 확인될지를 촉매로 적어야 투자논리가 검증 가능해진다."
-              },
-              {
-                "elementId": "EQV-17",
-                "explanation": "목표주가·상승여력: 목표가가 현재가보다 높다는 사실만으로 충분하지 않다. 이 개념이 위험과 시간, 배당, 목표가 도달 가능성을 보상할 만큼 큰지 함께 봐야 한다.",
-                "factId": "EQV-17:intuition:01",
-                "isCorrect": true,
-                "key": "E",
-                "text": "목표가가 현재가보다 높다는 사실만으로 충분하지 않다. 이 개념이 위험과 시간, 배당, 목표가 도달 가능성을 보상할 만큼 큰지 함께 봐야 한다."
-              }
-            ],
-            "elementId": "EQV-17",
-            "explanation": "정답 설명: 목표가가 현재가보다 높다는 사실만으로 충분하지 않다. 이 개념이 위험과 시간, 배당, 목표가 도달 가능성을 보상할 만큼 큰지 함께 봐야 한다. 용어: 목표주가·상승여력.",
-            "metrics": {
-              "meanTop4Agreement": 0.508418,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.181818,
-              "normalizedBoundaryMargin": -0.1723
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "24a5aa50934e949f08f2b89842c94442b9d1fdaf913a7125e41e7926f85c81a1",
-            "questionId": "EQV-17-term_to_intuition-01",
-            "questionType": "term_to_intuition",
-            "reasons": [
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.1723,
-                "threshold": -0.1
-              }
-            ],
-            "severity": "review",
-            "split": "test",
-            "stem": "용어: 목표주가·상승여력\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
-            },
-            "choices": [
-              {
-                "elementId": "EQV-54",
-                "explanation": "시나리오·민감도: 이 개념 분석은 여러 일관된 미래 경로의 가치와 개별 입력 변화에 대한 가치 반응을 구분해 불확실성을 보여 준다.",
-                "factId": "EQV-54:definition:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "이 개념 분석은 여러 일관된 미래 경로의 가치와 개별 입력 변화에 대한 가치 반응을 구분해 불확실성을 보여 준다."
-              },
-              {
-                "elementId": "EQV-18",
-                "explanation": "민감도: 배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다.",
-                "factId": "EQV-18:definition:01",
-                "isCorrect": true,
-                "key": "B",
-                "text": "배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다."
-              },
-              {
-                "elementId": "IBT-03",
-                "explanation": "신용스프레드·가격민감도: 이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지 duration으로 근사한다.",
-                "factId": "IBT-03:definition:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지 duration으로 근사한다."
-              },
-              {
-                "elementId": "EQV-11",
-                "explanation": "EV와 EV/EBITDA: 영업자산에 대한 투자자 전체의 가치를 이자·세금·감가상각 전 영업성과와 비교하는 배수다.",
-                "factId": "EQV-11:definition:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "영업자산에 대한 투자자 전체의 가치를 이자·세금·감가상각 전 영업성과와 비교하는 배수다."
-              },
-              {
-                "elementId": "EQV-15",
-                "explanation": "계속가치: 이 개념은 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다.",
-                "factId": "EQV-15:definition:01",
-                "isCorrect": false,
-                "key": "E",
-                "text": "이 개념은 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다."
-              }
-            ],
-            "elementId": "EQV-18",
-            "explanation": "정답 설명: 배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다. 용어: 민감도.",
-            "metrics": {
-              "meanTop4Agreement": 0.520539,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.10101,
-              "normalizedBoundaryMargin": -0.150271
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "0aaca43ec4ebf35c1548a9c202b147593c788d298177f0f695c13b272d27ecf7",
-            "questionId": "EQV-18-term_to_definition-01",
-            "questionType": "term_to_definition",
-            "reasons": [
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.150271,
-                "threshold": -0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: 민감도\n다음 중 이 용어의 정의로 가장 정확한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": false
-            },
-            "choices": [
-              {
-                "elementId": "EQV-15",
-                "explanation": "계속가치: 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가정 변화가 큰 가치 차이를 만든다.",
-                "factId": "EQV-15:verbal_relation:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가정 변화가 큰 가치 차이를 만든다."
-              },
-              {
-                "elementId": "EQV-18",
-                "explanation": "민감도: 영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다.",
-                "factId": "EQV-18:verbal_relation:01",
-                "isCorrect": true,
-                "key": "B",
-                "text": "영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다."
-              },
-              {
-                "elementId": "IBT-17",
-                "explanation": "리서치 촉매·실적서프라이즈: 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다.",
-                "factId": "IBT-17:verbal_relation:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
-              },
-              {
-                "elementId": "EQV-11",
-                "explanation": "EV와 EV/EBITDA: 주주와 채권자의 합산 가치는 자본구조 전 영업성과와 비교해야 청구권 기준이 맞는다.",
-                "factId": "EQV-11:verbal_relation:01",
-                "isCorrect": false,
-                "key": "D",
-                "text": "주주와 채권자의 합산 가치는 자본구조 전 영업성과와 비교해야 청구권 기준이 맞는다."
-              },
-              {
-                "elementId": "EQV-54",
-                "explanation": "시나리오·민감도: 한 입력만 바꾸면 개별 영향이 드러나고, 여러 입력을 일관된 방향으로 함께 바꾸면 하나의 미래 경로가 된다.",
-                "factId": "EQV-54:verbal_relation:01",
-                "isCorrect": false,
-                "key": "E",
-                "text": "한 입력만 바꾸면 개별 영향이 드러나고, 여러 입력을 일관된 방향으로 함께 바꾸면 하나의 미래 경로가 된다."
-              }
-            ],
-            "elementId": "EQV-18",
-            "explanation": "정답 설명: 영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다. 용어: 민감도.",
-            "metrics": {
-              "meanTop4Agreement": 0.47138,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.060606,
-              "normalizedBoundaryMargin": -0.081728
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "6fa6a8196eae3ebbaab2cdc347eff083e36468344715c42a9d444fcde34dfe5f",
-            "questionId": "EQV-18-term_to_verbal_relation-01",
-            "questionType": "term_to_verbal_relation",
-            "reasons": [
-              {
-                "id": "candidate-support",
-                "label": "선택 오답의 실험 조합 지지율 낮음",
-                "measured": 0.060606,
-                "threshold": 0.1
-              }
-            ],
-            "severity": "review",
-            "split": "train",
-            "stem": "용어: 민감도\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -4433,7 +3160,7 @@
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.36388,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -4442,8 +3169,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -4504,13 +3231,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.015152,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.394011,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -4519,8 +3246,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -4581,13 +3308,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.025253,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.392395,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -4596,8 +3323,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -4655,16 +3382,10 @@
             "questionType": "term_to_intuition",
             "reasons": [
               {
-                "id": "candidate-support",
-                "label": "선택 오답의 실험 조합 지지율 낮음",
-                "measured": 0.075758,
-                "threshold": 0.1
-              },
-              {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.339756,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -4673,8 +3394,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -4735,7 +3456,7 @@
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.435542,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -4744,79 +3465,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
-            },
-            "choices": [
-              {
-                "elementId": "EQV-38",
-                "explanation": "실효세율·NOL: 이 개념 분석은 회계상 세금비용, 실제 현금세금, 이월결손금이 미래 세후이익과 현금흐름에 미치는 차이를 추적한다.",
-                "factId": "EQV-38:definition:01",
-                "isCorrect": false,
-                "key": "A",
-                "text": "이 개념 분석은 회계상 세금비용, 실제 현금세금, 이월결손금이 미래 세후이익과 현금흐름에 미치는 차이를 추적한다."
-              },
-              {
-                "elementId": "CF-02",
-                "explanation": "연금·영구연금·성장영구연금: 일정하거나 일정률로 커지는 반복 현금흐름을 한 시점의 가치로 묶어 계산하는 모형이다.",
-                "factId": "CF-02:definition:01",
-                "isCorrect": false,
-                "key": "B",
-                "text": "일정하거나 일정률로 커지는 반복 현금흐름을 한 시점의 가치로 묶어 계산하는 모형이다."
-              },
-              {
-                "elementId": "EQV-35",
-                "explanation": "주식보상·희석주식수: 옵션·제한조건부주식·전환증권이 미래 보통주식수를 얼마나 늘려 기존 주주의 몫을 줄이는지 측정한다.",
-                "factId": "EQV-35:definition:01",
-                "isCorrect": false,
-                "key": "C",
-                "text": "옵션·제한조건부주식·전환증권이 미래 보통주식수를 얼마나 늘려 기존 주주의 몫을 줄이는지 측정한다."
-              },
-              {
-                "elementId": "EQV-37",
-                "explanation": "연금 적립상태: 이 개념은 확정급여채무와 이를 충당할 사외적립자산의 차이로, 부족분은 기업의 장기 재무부담을 나타낸다.",
-                "factId": "EQV-37:definition:01",
-                "isCorrect": true,
-                "key": "D",
-                "text": "이 개념은 확정급여채무와 이를 충당할 사외적립자산의 차이로, 부족분은 기업의 장기 재무부담을 나타낸다."
-              },
-              {
-                "elementId": "EQV-40",
-                "explanation": "보통주 지분가치 브리지: 이 개념은 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구한다.",
-                "factId": "EQV-40:definition:01",
-                "isCorrect": false,
-                "key": "E",
-                "text": "이 개념은 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구한다."
-              }
-            ],
-            "elementId": "EQV-37",
-            "explanation": "정답 설명: 이 개념은 확정급여채무와 이를 충당할 사외적립자산의 차이로, 부족분은 기업의 장기 재무부담을 나타낸다. 용어: 연금 적립상태.",
-            "metrics": {
-              "meanTop4Agreement": 0.654545,
-              "minimumDistractorRelevance": 2,
-              "minimumSelectedCandidateSupport": 0.262626,
-              "normalizedBoundaryMargin": -0.105633
-            },
-            "ownerDecision": null,
-            "questionFingerprint": "a83bfcda63d324cb11422318db77ae1abdd879171f13e74e9243ad4f80a4929c",
-            "questionId": "EQV-37-term_to_definition-01",
-            "questionType": "term_to_definition",
-            "reasons": [
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.105633,
-                "threshold": -0.1
-              }
-            ],
-            "severity": "review",
-            "split": "test",
-            "stem": "용어: 연금 적립상태\n다음 중 이 용어의 정의로 가장 정확한 것은?"
-          },
-          {
-            "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -4883,13 +3533,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.0,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.442508,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -4898,7 +3548,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -4960,13 +3610,7 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.0,
-                "threshold": 0.1
-              },
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.114009,
-                "threshold": -0.1
+                "threshold": 0.05
               }
             ],
             "severity": "review",
@@ -4975,8 +3619,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -5037,13 +3681,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.0,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.406165,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -5052,8 +3696,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -5114,13 +3758,7 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.0,
-                "threshold": 0.1
-              },
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.164179,
-                "threshold": -0.1
+                "threshold": 0.05
               }
             ],
             "severity": "review",
@@ -5129,8 +3767,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -5191,13 +3829,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.020202,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.489851,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -5206,8 +3844,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -5268,7 +3906,7 @@
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.439799,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -5277,8 +3915,8 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
-              "choiceSetChanged": true
+              "affectedByChangedElement": false,
+              "choiceSetChanged": false
             },
             "choices": [
               {
@@ -5339,7 +3977,7 @@
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.391251,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -5348,7 +3986,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -5410,13 +4048,7 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.005051,
-                "threshold": 0.1
-              },
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.110722,
-                "threshold": -0.1
+                "threshold": 0.05
               }
             ],
             "severity": "review",
@@ -5425,7 +4057,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -5487,13 +4119,7 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.005051,
-                "threshold": 0.1
-              },
-              {
-                "id": "boundary-margin",
-                "label": "4위 선택 경계가 불안정함",
-                "measured": -0.121157,
-                "threshold": -0.1
+                "threshold": 0.05
               }
             ],
             "severity": "review",
@@ -5502,7 +4128,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -5564,7 +4190,7 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.040404,
-                "threshold": 0.1
+                "threshold": 0.05
               }
             ],
             "severity": "review",
@@ -5573,7 +4199,7 @@
           },
           {
             "change": {
-              "affectedByChangedElement": true,
+              "affectedByChangedElement": false,
               "choiceSetChanged": false
             },
             "choices": [
@@ -5635,13 +4261,13 @@
                 "id": "candidate-support",
                 "label": "선택 오답의 실험 조합 지지율 낮음",
                 "measured": 0.0,
-                "threshold": 0.1
+                "threshold": 0.05
               },
               {
                 "id": "boundary-margin",
                 "label": "4위 선택 경계가 불안정함",
                 "measured": -0.586846,
-                "threshold": -0.1
+                "threshold": -0.2
               }
             ],
             "severity": "review",
@@ -5650,8 +4276,8 @@
           }
         ],
         "resolvedItems": [],
-        "reusedQuestionCount": 0,
-        "reviewInputSha256": "541fc2c194e2a5fa387ba219b5c0f357938a0850f50593d09260de509057ad94",
+        "reusedQuestionCount": 405,
+        "reviewInputSha256": "5cb70bb357160fd0976689c53a053c733f9790f593be989fe81babb8a315fe34",
         "selectedProfileId": "exception-only",
         "selectionReason": "validation 예외율 13.33%가 목표 5.00%에 가장 가까운 프로필",
         "selectionRule": "validation 예외율이 목표 5%에 가장 가까운 프로필을 선택하고 동률이면 reference baseline을 우선한다. test는 선택에 사용하지 않는다.",
@@ -5661,7 +4287,7 @@
       "contractVersion": "2.0",
       "dataset": {
         "candidateCount": 54258,
-        "configSha256": "de9a02353b2eb80ce8200784e6380cf2c7f73f537b660afc5a6f14e394b48db4",
+        "configSha256": "cad29ebeb7c6c2eb6597744f1fe76362f1c717131b41e981d18d128f3b3be620",
         "contentFingerprint": "1292a74307d173ea13e1790b1336359d6a5a6b458f7948b79b82306795f96535",
         "elementCount": 135,
         "elementSplits": {
@@ -5678,7 +4304,7 @@
         },
         "splitSha256": "e407a33649ecd2ff7391a6a6ff6138d7427aa7d00f6d297ee00091bd881a94b0"
       },
-      "durationSeconds": 299.832,
+      "durationSeconds": 366.408,
       "embeddings": [
         {
           "artifactBytes": 0,
@@ -5698,7 +4324,7 @@
           "cacheHit": true,
           "candidateId": "multilingual-e5-small",
           "dimensions": 384,
-          "encodeSeconds": 5.66,
+          "encodeSeconds": 35.595,
           "error": null,
           "matrixCacheSha256": "49528fa0cb6b3163ab03e1d303492089299709801261eb6dfbbdf4d7e349e9a1",
           "modelId": "intfloat/multilingual-e5-small",
@@ -5711,7 +4337,7 @@
           "cacheHit": true,
           "candidateId": "multilingual-minilm-l12",
           "dimensions": 384,
-          "encodeSeconds": 0.215,
+          "encodeSeconds": 0.318,
           "error": null,
           "matrixCacheSha256": "9bbc2a55fa0cdf4c05c619a17d03df1e3d4c422a3460b843ea6bacdd03858a7e",
           "modelId": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
@@ -5724,7 +4350,7 @@
           "cacheHit": true,
           "candidateId": "kure-v1",
           "dimensions": 1024,
-          "encodeSeconds": 0.212,
+          "encodeSeconds": 0.21,
           "error": null,
           "matrixCacheSha256": "a5a95eb11728fe2fc1ab4cfbe9ebbf85ba64d88a031064891dd0288dff614f4f",
           "modelId": "nlpai-lab/KURE-v1",
@@ -5737,7 +4363,7 @@
           "cacheHit": true,
           "candidateId": "bge-m3",
           "dimensions": 1024,
-          "encodeSeconds": 0.218,
+          "encodeSeconds": 0.216,
           "error": null,
           "matrixCacheSha256": "7003771d9d81958f0f784dba05302816a946d1831c84cfe0d79fadc5bdfef780",
           "modelId": "BAAI/bge-m3",
@@ -5750,7 +4376,7 @@
           "cacheHit": true,
           "candidateId": "multilingual-e5-base",
           "dimensions": 768,
-          "encodeSeconds": 0.285,
+          "encodeSeconds": 0.259,
           "error": null,
           "matrixCacheSha256": "653a62f4490c5ac7c6b0a7a86114193a5e0e1df3bce5b093f494ba64cc24b9e0",
           "modelId": "intfloat/multilingual-e5-base",
@@ -5790,8 +4416,8 @@
           "split": "validation"
         }
       },
-      "experimentId": "cmq-v2-20260812-140338-de9a0235",
-      "finishedAt": "2026-08-12T14:08:38.590433+00:00",
+      "experimentId": "cmq-v2-20260812-143000-cad29ebe",
+      "finishedAt": "2026-08-12T14:36:06.580204+00:00",
       "labels": {
         "coveredTestQuestionCount": 0,
         "humanApprovalRate": 0.0,
@@ -5873,7 +4499,7 @@
         {
           "id": "owner-exception-review",
           "label": "Owner 미확인 예외 문항 수",
-          "measured": 74,
+          "measured": 56,
           "passed": false,
           "threshold": 0
         },
@@ -5951,7 +4577,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.775,
+          "trainingSeconds": 0.879,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -5977,7 +4603,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.792,
+          "trainingSeconds": 0.789,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -6003,7 +4629,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.941,
+          "trainingSeconds": 0.868,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -6032,7 +4658,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.039,
+          "trainingSeconds": 1.651,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6061,7 +4687,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.897,
+          "trainingSeconds": 1.251,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6090,7 +4716,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.776,
+          "trainingSeconds": 1.596,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6116,7 +4742,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.929,
+          "trainingSeconds": 1.493,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -6142,7 +4768,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.892,
+          "trainingSeconds": 1.388,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -6168,7 +4794,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.814,
+          "trainingSeconds": 1.331,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -6197,7 +4823,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.63,
+          "trainingSeconds": 1.045,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6226,7 +4852,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.769,
+          "trainingSeconds": 1.339,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6255,7 +4881,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.868,
+          "trainingSeconds": 2.052,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6281,7 +4907,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.855,
+          "trainingSeconds": 1.539,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -6307,7 +4933,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.885,
+          "trainingSeconds": 1.36,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -6333,7 +4959,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.952,
+          "trainingSeconds": 1.218,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -6362,7 +4988,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.67,
+          "trainingSeconds": 0.925,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6391,7 +5017,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.722,
+          "trainingSeconds": 1.267,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6420,7 +5046,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.214,
+          "trainingSeconds": 1.709,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6446,7 +5072,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.206,
+          "trainingSeconds": 1.889,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -6472,7 +5098,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.929,
+          "trainingSeconds": 1.357,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -6498,7 +5124,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.939,
+          "trainingSeconds": 1.796,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -6527,7 +5153,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.688,
+          "trainingSeconds": 1.547,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6556,7 +5182,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.871,
+          "trainingSeconds": 2.0,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6585,7 +5211,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.19,
+          "trainingSeconds": 2.35,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6611,7 +5237,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.033,
+          "trainingSeconds": 1.682,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -6637,7 +5263,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.927,
+          "trainingSeconds": 1.279,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -6663,7 +5289,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.891,
+          "trainingSeconds": 1.208,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -6692,7 +5318,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.964,
+          "trainingSeconds": 1.278,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6721,7 +5347,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.044,
+          "trainingSeconds": 1.482,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6750,7 +5376,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.367,
+          "trainingSeconds": 2.257,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6776,7 +5402,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.119,
+          "trainingSeconds": 1.736,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -6802,7 +5428,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.893,
+          "trainingSeconds": 1.522,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -6828,7 +5454,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.941,
+          "trainingSeconds": 1.605,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -6857,7 +5483,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.919,
+          "trainingSeconds": 1.161,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6886,7 +5512,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.043,
+          "trainingSeconds": 1.318,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6915,7 +5541,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.139,
+          "trainingSeconds": 1.618,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -6941,7 +5567,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.993,
+          "trainingSeconds": 1.519,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -6967,7 +5593,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.957,
+          "trainingSeconds": 1.302,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -6993,7 +5619,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.904,
+          "trainingSeconds": 1.306,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -7022,7 +5648,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.941,
+          "trainingSeconds": 1.03,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7051,7 +5677,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.054,
+          "trainingSeconds": 1.448,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7080,7 +5706,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.542,
+          "trainingSeconds": 1.662,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7106,7 +5732,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.126,
+          "trainingSeconds": 1.591,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -7132,7 +5758,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.971,
+          "trainingSeconds": 1.368,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -7158,7 +5784,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.931,
+          "trainingSeconds": 1.289,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -7187,7 +5813,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.734,
+          "trainingSeconds": 0.941,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7216,7 +5842,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.902,
+          "trainingSeconds": 1.191,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7245,7 +5871,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.424,
+          "trainingSeconds": 1.735,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7271,7 +5897,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.226,
+          "trainingSeconds": 1.496,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.9875,
@@ -7297,7 +5923,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.964,
+          "trainingSeconds": 1.541,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.9875,
@@ -7323,7 +5949,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.969,
+          "trainingSeconds": 1.661,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.9875,
@@ -7352,7 +5978,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.951,
+          "trainingSeconds": 1.233,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7381,7 +6007,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.976,
+          "trainingSeconds": 1.716,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7410,7 +6036,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.2,
+          "trainingSeconds": 2.131,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7436,7 +6062,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.111,
+          "trainingSeconds": 1.544,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -7462,7 +6088,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.075,
+          "trainingSeconds": 1.632,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -7488,7 +6114,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.941,
+          "trainingSeconds": 1.398,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -7517,7 +6143,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.822,
+          "trainingSeconds": 1.108,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7554,7 +6180,7 @@
             "split": "test"
           },
           "testEvaluated": true,
-          "trainingSeconds": 1.053,
+          "trainingSeconds": 1.702,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7583,7 +6209,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.222,
+          "trainingSeconds": 1.822,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7609,7 +6235,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.245,
+          "trainingSeconds": 1.442,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -7635,7 +6261,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.006,
+          "trainingSeconds": 1.387,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -7661,7 +6287,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.984,
+          "trainingSeconds": 1.487,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -7690,7 +6316,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.97,
+          "trainingSeconds": 1.405,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7719,7 +6345,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.51,
+          "trainingSeconds": 1.728,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7748,7 +6374,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.591,
+          "trainingSeconds": 1.988,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7774,7 +6400,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.128,
+          "trainingSeconds": 1.631,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -7800,7 +6426,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.993,
+          "trainingSeconds": 1.302,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -7826,7 +6452,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.994,
+          "trainingSeconds": 1.246,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -7855,7 +6481,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.857,
+          "trainingSeconds": 0.867,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7884,7 +6510,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.969,
+          "trainingSeconds": 1.16,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7913,7 +6539,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.353,
+          "trainingSeconds": 1.609,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -7939,7 +6565,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.25,
+          "trainingSeconds": 1.444,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -7965,7 +6591,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.093,
+          "trainingSeconds": 1.72,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -7991,7 +6617,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.989,
+          "trainingSeconds": 1.448,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -8020,7 +6646,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.929,
+          "trainingSeconds": 1.352,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8049,7 +6675,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.139,
+          "trainingSeconds": 1.819,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8078,7 +6704,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.449,
+          "trainingSeconds": 1.73,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8104,7 +6730,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.199,
+          "trainingSeconds": 1.671,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -8130,7 +6756,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.121,
+          "trainingSeconds": 1.437,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -8156,7 +6782,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.03,
+          "trainingSeconds": 1.409,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -8185,7 +6811,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.643,
+          "trainingSeconds": 1.734,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8214,7 +6840,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.437,
+          "trainingSeconds": 1.528,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8243,7 +6869,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.419,
+          "trainingSeconds": 1.686,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8269,7 +6895,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.408,
+          "trainingSeconds": 1.476,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -8295,7 +6921,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.103,
+          "trainingSeconds": 1.476,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -8321,7 +6947,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.008,
+          "trainingSeconds": 1.194,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -8350,7 +6976,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.015,
+          "trainingSeconds": 1.345,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8379,7 +7005,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.152,
+          "trainingSeconds": 1.475,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8408,7 +7034,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.516,
+          "trainingSeconds": 1.733,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8434,7 +7060,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.233,
+          "trainingSeconds": 1.634,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -8460,7 +7086,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.109,
+          "trainingSeconds": 1.504,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -8486,7 +7112,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.077,
+          "trainingSeconds": 1.538,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -8515,7 +7141,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.007,
+          "trainingSeconds": 1.047,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8544,7 +7170,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.258,
+          "trainingSeconds": 1.512,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8573,7 +7199,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.302,
+          "trainingSeconds": 1.567,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8599,7 +7225,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.348,
+          "trainingSeconds": 1.694,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -8625,7 +7251,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.47,
+          "trainingSeconds": 1.339,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -8651,7 +7277,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.462,
+          "trainingSeconds": 1.245,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -8680,7 +7306,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.172,
+          "trainingSeconds": 1.152,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8709,7 +7335,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.487,
+          "trainingSeconds": 1.503,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8738,7 +7364,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.867,
+          "trainingSeconds": 2.126,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8764,7 +7390,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.518,
+          "trainingSeconds": 1.621,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -8790,7 +7416,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.542,
+          "trainingSeconds": 1.289,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -8816,7 +7442,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.548,
+          "trainingSeconds": 1.279,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -8845,7 +7471,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.431,
+          "trainingSeconds": 1.17,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8874,7 +7500,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.572,
+          "trainingSeconds": 1.698,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8903,7 +7529,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.689,
+          "trainingSeconds": 2.24,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -8929,7 +7555,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.822,
+          "trainingSeconds": 1.944,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -8955,7 +7581,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.372,
+          "trainingSeconds": 1.823,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -8981,7 +7607,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.331,
+          "trainingSeconds": 1.434,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9010,7 +7636,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.038,
+          "trainingSeconds": 1.075,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9039,7 +7665,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.368,
+          "trainingSeconds": 1.49,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9068,7 +7694,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.748,
+          "trainingSeconds": 1.844,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9094,7 +7720,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.52,
+          "trainingSeconds": 1.586,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9120,7 +7746,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.365,
+          "trainingSeconds": 1.503,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9146,7 +7772,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.411,
+          "trainingSeconds": 1.439,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9175,7 +7801,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.068,
+          "trainingSeconds": 1.122,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9204,7 +7830,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.555,
+          "trainingSeconds": 1.511,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9233,7 +7859,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.912,
+          "trainingSeconds": 1.88,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9259,7 +7885,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 2.012,
+          "trainingSeconds": 1.607,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9285,7 +7911,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.643,
+          "trainingSeconds": 1.483,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9311,7 +7937,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.492,
+          "trainingSeconds": 1.383,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9340,7 +7966,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.125,
+          "trainingSeconds": 1.042,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9369,7 +7995,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 2.33,
+          "trainingSeconds": 1.836,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9398,7 +8024,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 2.038,
+          "trainingSeconds": 1.666,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9424,7 +8050,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.606,
+          "trainingSeconds": 1.82,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9450,7 +8076,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.431,
+          "trainingSeconds": 1.395,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9476,7 +8102,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.24,
+          "trainingSeconds": 1.324,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9505,7 +8131,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.006,
+          "trainingSeconds": 1.014,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9534,7 +8160,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.535,
+          "trainingSeconds": 1.364,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9563,7 +8189,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.902,
+          "trainingSeconds": 1.682,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9589,7 +8215,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.636,
+          "trainingSeconds": 1.515,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -9615,7 +8241,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.502,
+          "trainingSeconds": 1.278,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -9641,7 +8267,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.463,
+          "trainingSeconds": 1.334,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -9670,7 +8296,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 0.995,
+          "trainingSeconds": 0.907,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9699,7 +8325,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.553,
+          "trainingSeconds": 1.393,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9728,7 +8354,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 2.11,
+          "trainingSeconds": 2.284,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9754,7 +8380,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.507,
+          "trainingSeconds": 1.641,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9780,7 +8406,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.574,
+          "trainingSeconds": 1.583,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9806,7 +8432,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.952,
+          "trainingSeconds": 1.487,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9835,7 +8461,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.67,
+          "trainingSeconds": 1.108,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9864,7 +8490,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 2.14,
+          "trainingSeconds": 1.427,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9893,7 +8519,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 2.079,
+          "trainingSeconds": 1.636,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -9919,7 +8545,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.49,
+          "trainingSeconds": 1.622,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9945,7 +8571,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.464,
+          "trainingSeconds": 1.361,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -9971,7 +8597,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.261,
+          "trainingSeconds": 1.392,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -10000,7 +8626,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.026,
+          "trainingSeconds": 1.175,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10029,7 +8655,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.499,
+          "trainingSeconds": 1.386,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10058,7 +8684,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.504,
+          "trainingSeconds": 1.58,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10084,7 +8710,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.691,
+          "trainingSeconds": 1.527,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -10110,7 +8736,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.38,
+          "trainingSeconds": 1.521,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -10136,7 +8762,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.331,
+          "trainingSeconds": 1.213,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -10165,7 +8791,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.117,
+          "trainingSeconds": 0.975,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10194,7 +8820,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.315,
+          "trainingSeconds": 1.222,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10223,7 +8849,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.607,
+          "trainingSeconds": 1.622,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10249,7 +8875,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.91,
+          "trainingSeconds": 1.797,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.980556,
@@ -10275,7 +8901,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.698,
+          "trainingSeconds": 1.445,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.980556,
@@ -10301,7 +8927,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.725,
+          "trainingSeconds": 1.407,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.980556,
@@ -10330,7 +8956,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.087,
+          "trainingSeconds": 1.138,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10359,7 +8985,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.785,
+          "trainingSeconds": 1.512,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10388,7 +9014,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 2.188,
+          "trainingSeconds": 1.884,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10414,7 +9040,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.508,
+          "trainingSeconds": 1.548,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -10440,7 +9066,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.279,
+          "trainingSeconds": 1.322,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -10466,7 +9092,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.376,
+          "trainingSeconds": 1.347,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -10495,7 +9121,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.299,
+          "trainingSeconds": 1.165,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10524,7 +9150,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.488,
+          "trainingSeconds": 1.346,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10553,7 +9179,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.684,
+          "trainingSeconds": 1.7,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10579,7 +9205,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.542,
+          "trainingSeconds": 1.614,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -10605,7 +9231,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.348,
+          "trainingSeconds": 1.423,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -10631,7 +9257,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.199,
+          "trainingSeconds": 1.373,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.991667,
@@ -10689,7 +9315,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.513,
+          "trainingSeconds": 1.424,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10718,7 +9344,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.908,
+          "trainingSeconds": 1.756,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10744,7 +9370,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.476,
+          "trainingSeconds": 1.495,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -10770,7 +9396,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.314,
+          "trainingSeconds": 1.417,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -10796,7 +9422,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.226,
+          "trainingSeconds": 1.498,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -10825,7 +9451,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.99,
+          "trainingSeconds": 1.812,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10854,7 +9480,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 2.296,
+          "trainingSeconds": 2.078,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10883,7 +9509,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.815,
+          "trainingSeconds": 1.953,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -10909,7 +9535,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.454,
+          "trainingSeconds": 1.499,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -10935,7 +9561,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.572,
+          "trainingSeconds": 1.333,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -10961,7 +9587,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.52,
+          "trainingSeconds": 1.221,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -10990,7 +9616,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.114,
+          "trainingSeconds": 0.934,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -11019,7 +9645,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.538,
+          "trainingSeconds": 1.339,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -11048,7 +9674,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.987,
+          "trainingSeconds": 1.966,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -11074,7 +9700,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.882,
+          "trainingSeconds": 1.492,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -11100,7 +9726,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.667,
+          "trainingSeconds": 1.269,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -11126,7 +9752,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.688,
+          "trainingSeconds": 1.34,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -11155,7 +9781,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.264,
+          "trainingSeconds": 1.007,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -11184,7 +9810,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.557,
+          "trainingSeconds": 1.288,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -11213,7 +9839,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 2.945,
+          "trainingSeconds": 1.83,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -11239,7 +9865,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 2.018,
+          "trainingSeconds": 1.629,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -11265,7 +9891,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.561,
+          "trainingSeconds": 1.403,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -11291,7 +9917,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.654,
+          "trainingSeconds": 1.362,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 0.988889,
@@ -11320,7 +9946,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.7,
+          "trainingSeconds": 1.261,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -11349,7 +9975,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.711,
+          "trainingSeconds": 1.715,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -11378,7 +10004,7 @@
           "status": "completed",
           "test": null,
           "testEvaluated": false,
-          "trainingSeconds": 1.49,
+          "trainingSeconds": 1.657,
           "validation": {
             "labelSource": "weak_rule",
             "mrr": 1.0,
@@ -11392,7 +10018,7 @@
       ],
       "releaseBlockReason": "자동 검수 예외 확인 또는 Owner 배치 승인이 필요합니다.",
       "releaseReady": false,
-      "reportSha256": "bca893106020472e9c6acb8604648d5915bda20723271dad43d32f2bfb09084b",
+      "reportSha256": "d2a1d8c3a9423d1847ef355b39e87bda42a5ddf5945540730633174d5b3d72c9",
       "reportVersion": 2,
       "safety": {
         "ambiguousQuestionCount": 0,
@@ -11419,7 +10045,7 @@
         "selectionTolerance": 0.0,
         "validationNdcgAt4": 0.971748
       },
-      "startedAt": "2026-08-12T14:03:38.758356+00:00",
+      "startedAt": "2026-08-12T14:30:00.172536+00:00",
       "status": "candidate",
       "weightExperiments": {
         "fusionBaseline": {
@@ -11602,6 +10228,6 @@
       }
     }
   ],
-  "latestExperimentId": "cmq-v2-20260812-140338-de9a0235",
+  "latestExperimentId": "cmq-v2-20260812-143000-cad29ebe",
   "reportVersion": 2
 }

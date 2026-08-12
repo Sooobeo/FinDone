@@ -1,15 +1,15 @@
 {
   "automatedReview": {
-    "autoPassedCount": 331,
+    "autoPassedCount": 349,
     "blockedCount": 0,
-    "needsOwnerReviewCount": 74,
+    "needsOwnerReviewCount": 56,
     "ownerApprovedCount": 0,
     "ownerBatchApproved": false
   },
-  "automatedReviewPolicySha256": "8b692e3a59745dc8eba67a87cef0aa0502570a40480166944696911ae7d3ea39",
+  "automatedReviewPolicySha256": "d6715b2f72fdb283b0d0ca0f716de74ffd111bd51feb9914eeaf1cd39640147b",
   "automatedReviewPolicyVersion": "concept-auto-review-v2",
   "automatedReviewProfileId": "exception-only",
-  "bankSha256": "b99ef57f5f01915199c1b6a514e16ea3c57c1e5df3a168fef99858b069ed5a61",
+  "bankSha256": "17615e5da14e99acba15147c213ce933ebc2b8e22c57f9894f771dbd9b29c2af",
   "bankVersion": 2,
   "contentFingerprint": "1292a74307d173ea13e1790b1336359d6a5a6b458f7948b79b82306795f96535",
   "contractVersion": "2.0",
@@ -2479,7 +2479,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "ACC-12-term_to_intuition-01",
       "questionType": "term_to_intuition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "ACC-12:intuition:01"
       ],
@@ -4074,7 +4074,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "CF-10-term_to_definition-01",
       "questionType": "term_to_definition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "CF-10:definition:01"
       ],
@@ -6109,7 +6109,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "FI-01-term_to_intuition-01",
       "questionType": "term_to_intuition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "FI-01:intuition:01"
       ],
@@ -6164,7 +6164,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "FI-01-term_to_verbal_relation-01",
       "questionType": "term_to_verbal_relation",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "FI-01:verbal_relation:01"
       ],
@@ -6274,7 +6274,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "FI-02-term_to_intuition-01",
       "questionType": "term_to_intuition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "FI-02:intuition:01"
       ],
@@ -7429,7 +7429,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "FI-09-term_to_intuition-01",
       "questionType": "term_to_intuition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "FI-09:intuition:01"
       ],
@@ -7484,7 +7484,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "FI-09-term_to_verbal_relation-01",
       "questionType": "term_to_verbal_relation",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "FI-09:verbal_relation:01"
       ],
@@ -8309,7 +8309,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "DER-04-term_to_verbal_relation-01",
       "questionType": "term_to_verbal_relation",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "DER-04:verbal_relation:01"
       ],
@@ -8804,7 +8804,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "DER-07-term_to_verbal_relation-01",
       "questionType": "term_to_verbal_relation",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "DER-07:verbal_relation:01"
       ],
@@ -9684,7 +9684,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "EQV-03-term_to_definition-01",
       "questionType": "term_to_definition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "EQV-03:definition:01"
       ],
@@ -9849,7 +9849,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "EQV-04-term_to_definition-01",
       "questionType": "term_to_definition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "EQV-04:definition:01"
       ],
@@ -9959,7 +9959,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "EQV-04-term_to_verbal_relation-01",
       "questionType": "term_to_verbal_relation",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "EQV-04:verbal_relation:01"
       ],
@@ -10674,7 +10674,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "EQV-09-term_to_definition-01",
       "questionType": "term_to_definition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "EQV-09:definition:01"
       ],
@@ -11169,7 +11169,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "EQV-12-term_to_definition-01",
       "questionType": "term_to_definition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "EQV-12:definition:01"
       ],
@@ -12049,7 +12049,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "EQV-17-term_to_intuition-01",
       "questionType": "term_to_intuition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "EQV-17:intuition:01"
       ],
@@ -12159,7 +12159,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "EQV-18-term_to_definition-01",
       "questionType": "term_to_definition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "EQV-18:definition:01"
       ],
@@ -12269,7 +12269,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "EQV-18-term_to_verbal_relation-01",
       "questionType": "term_to_verbal_relation",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "EQV-18:verbal_relation:01"
       ],
@@ -15294,7 +15294,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "EQV-37-term_to_definition-01",
       "questionType": "term_to_definition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "automated_pass",
       "sourceFactIds": [
         "EQV-37:definition:01"
       ],
@@ -22837,7 +22837,7 @@
     }
   ],
   "releaseStatus": "candidate",
-  "reviewInputSha256": "541fc2c194e2a5fa387ba219b5c0f357938a0850f50593d09260de509057ad94",
+  "reviewInputSha256": "5cb70bb357160fd0976689c53a053c733f9790f593be989fe81babb8a315fe34",
   "selectedEmbedding": "multilingual-minilm-l12",
   "selectedRanker": "xgboost-shallow-medium",
   "selectedRetrievalProfile": "lexical-balanced",

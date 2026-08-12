@@ -1,6 +1,6 @@
 {
   "byteSize": 2174976,
-  "conceptQuestionBankSha256": "b99ef57f5f01915199c1b6a514e16ea3c57c1e5df3a168fef99858b069ed5a61",
+  "conceptQuestionBankSha256": "17615e5da14e99acba15147c213ce933ebc2b8e22c57f9894f771dbd9b29c2af",
   "conceptQuestionBankVersion": 2,
   "conceptQuestionModelVersion": "findone-concept-ranker-v2-baseline",
   "conceptQuestionReleaseStatus": "candidate",
@@ -29,7 +29,7 @@
     "sources": 174
   },
   "schemaVersion": 2,
-  "sha256": "feb6a23faf3dc30eed6f0c286b091547167d6a69445fa90bd76c9578223b0187",
+  "sha256": "f4bbaf20d15832bc7cafc6d52728f6297022d071e8b60bcb21215c3d0fe70e98",
   "sourceSha256": "b30667961fe81404d507baec5cc2f3af57c5b324c4abe6fc9fe325af27136a32",
   "sourceSpec": "finance_interview_app_final_spec.md"
 }

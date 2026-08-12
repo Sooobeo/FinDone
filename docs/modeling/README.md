@@ -9,7 +9,7 @@ Admin 시각화는 `admin/data/concept-model-experiments.generated.json`을 사�
 
 | 실험 | 시각 | 상태 | 후보 임베딩 | 실행 조합 | 선택 구성 | val NDCG@4 | test NDCG@4 | 사람 test | 보고서 |
 |---|---|---|---:|---:|---|---:|---:|---:|---|
-| `cmq-v2-20260812-140338-de9a0235` | 2026-08-12T14:03:38.758356+00:00 | candidate | 6 | 198 | `multilingual-minilm-l12/lexical-balanced/xgboost-shallow-medium` | 0.971748 | 0.938259 | 0.00% | [열기](experiments/cmq-v2-20260812-140338-de9a0235.md) |
+| `cmq-v2-20260812-143000-cad29ebe` | 2026-08-12T14:30:00.172536+00:00 | candidate | 6 | 198 | `multilingual-minilm-l12/lexical-balanced/xgboost-shallow-medium` | 0.971748 | 0.938259 | 0.00% | [열기](experiments/cmq-v2-20260812-143000-cad29ebe.md) |
 
 ## 수치 해석 주의
 

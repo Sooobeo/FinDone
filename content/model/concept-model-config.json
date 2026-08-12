@@ -302,11 +302,11 @@
         "provenance": "reference baseline에서 검토량을 낮춘 단방향 ablation"
       },
       {
-        "id": "exception-only",
-        "minimumMeanTop4Agreement": 0.25,
-        "minimumSelectedCandidateSupport": 0.1,
-        "minimumNormalizedBoundaryMargin": -0.1,
-        "provenance": "자동 하드 게이트를 유지하면서 극단적 순위 불일치만 올리는 최소 검토량 ablation"
+      "id": "exception-only",
+      "minimumMeanTop4Agreement": 0.25,
+      "minimumSelectedCandidateSupport": 0.05,
+      "minimumNormalizedBoundaryMargin": -0.2,
+      "provenance": "자동 하드 게이트를 유지하면서 극단적 순위 불일치만 올리는 최소 검토량 ablation; v2 검토량 완화"
       }
     ]
   }
