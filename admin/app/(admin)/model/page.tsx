@@ -252,6 +252,7 @@ export default async function ModelDashboardPage() {
         title="자동 검수와 Owner 예외 큐"
         description="validation에서 검수 프로필을 선택하고 전체 문항을 자동 검사한 뒤, 불안정하거나 차단된 문항만 남깁니다."
         meta={`${conceptReview.needsOwnerReviewCount + conceptReview.blockedCount}개 확인`}
+        open={conceptReview.queue.length > 0}
       >
         <div className="model-metric-grid concept-model-metrics" aria-label="자동 검수 요약">
           <article className="model-metric-card"><small>선택 프로필</small><strong>{conceptReview.selectedProfileId}</strong><p>{conceptReview.selectionReason}</p></article>
@@ -259,24 +260,9 @@ export default async function ModelDashboardPage() {
           <article className="model-metric-card"><small>Owner 확인</small><strong>{conceptReview.needsOwnerReviewCount}<em>문항</em></strong><p>불안정 경계·랭커 불일치</p></article>
           <article className="model-metric-card"><small>자동 차단</small><strong>{conceptReview.blockedCount}<em>문항</em></strong><p>수정 후 재실행 필요</p></article>
         </div>
-        <div className="table-scroll">
-          <table className="data-table">
-            <thead><tr><th>프로필</th><th>validation 예외</th><th>예외율</th><th>차단</th><th>근거</th></tr></thead>
-            <tbody>
-              {conceptReview.profileExperiments.map((profile) => (
-                <tr key={profile.profileId}>
-                  <td><code>{profile.profileId}</code>{profile.profileId === conceptReview.selectedProfileId ? " · 선택" : ""}</td>
-                  <td>{profile.validationReviewCount}/{profile.validationQuestionCount}</td>
-                  <td>{percent(profile.validationReviewRate)}</td>
-                  <td>{profile.validationBlockedCount}</td>
-                  <td>{profile.provenance}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
         {conceptReview.queue.length > 0 ? (
           <div className="model-rule-detail-body">
+            <h3>확인 대기 문항 {conceptReview.queue.length}개</h3>
             {conceptReview.queue.map((item) => (
               <details className="model-rule-details" key={item.questionId}>
                 <summary><ChevronDown size={17} /><span><strong>{item.severity === "block" ? "차단" : "확인"} · {item.questionId}</strong><small>{item.reasons.map((reason) => reason.label).join(" · ")}</small></span></summary>
@@ -294,6 +280,25 @@ export default async function ModelDashboardPage() {
             ))}
           </div>
         ) : <p className="model-panel-note">확인할 예외가 없습니다. Owner 배치 승인만 남았습니다.</p>}
+        <details className="model-rule-details">
+          <summary><ChevronDown size={17} /><span><strong>검수 프로필 실험값</strong><small>선택 기준과 validation 예외율 보기</small></span></summary>
+          <div className="table-scroll">
+            <table className="data-table">
+              <thead><tr><th>프로필</th><th>validation 예외</th><th>예외율</th><th>차단</th><th>근거</th></tr></thead>
+              <tbody>
+                {conceptReview.profileExperiments.map((profile) => (
+                  <tr key={profile.profileId}>
+                    <td><code>{profile.profileId}</code>{profile.profileId === conceptReview.selectedProfileId ? " · 선택" : ""}</td>
+                    <td>{profile.validationReviewCount}/{profile.validationQuestionCount}</td>
+                    <td>{percent(profile.validationReviewRate)}</td>
+                    <td>{profile.validationBlockedCount}</td>
+                    <td>{profile.provenance}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
       </ModelDisclosure>
 
       <ModelDisclosure
