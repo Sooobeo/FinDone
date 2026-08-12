@@ -168,7 +168,9 @@ export interface ConceptExperiment {
 
 export interface ConceptModelExperimentHistory {
   reportVersion: number;
-  latestExperimentId: string;
+  contractVersion?: string;
+  resetAt?: string;
+  latestExperimentId: string | null;
   experiments: ConceptExperiment[];
 }
 

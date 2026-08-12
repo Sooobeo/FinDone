@@ -12,6 +12,7 @@ on:
       - "tools/test_local_content_model.py"
       - "tools/train_concept_question_model.py"
       - "tools/review_concept_question_model.py"
+      - "tools/validate_concept_question_reset.py"
       - "tools/test_train_concept_question_model.py"
       - "tools/requirements-concept-model-core.txt"
       - "tools/repo_preflight.py"
@@ -48,37 +49,11 @@ jobs:
           --changes head
           --ci
 
-      - name: Install tree ranker for full automated review
-        run: python -m pip install --disable-pip-version-check xgboost==3.4.0
-
-      - name: Sync Owner decisions from Admin
-        env:
-          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
-          SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
-        run: |
-          if [ -n "$SUPABASE_SECRET_KEY" ] && [ -n "$SUPABASE_URL" ]; then
-            python tools/review_concept_question_model.py sync
-          else
-            echo "Supabase review sync skipped: repository secret or URL variable is not configured."
-          fi
-
-      - name: Run incremental concept-question automated review
-        run: >-
-          python tools/train_concept_question_model.py
-          --ranker all
-          --quiet
-          --write-question-bank
-          --write-admin-report
-          --write-markdown-report
-
-      - name: Upload concept-question review packet
-        uses: actions/upload-artifact@v4
-        with:
-          name: concept-question-review
-          path: |
-            build/concept-model/latest-report.json
-            content/model/concept-question-bank.generated.json
-          if-no-files-found: error
+      # The v1 description-to-term generator is intentionally retired. Restore
+      # training and review sync only after the v2 term-to-description contract
+      # is implemented and covered by the repository preflight.
+      - name: Verify concept-question v2 reset contract
+        run: python tools/validate_concept_question_reset.py
 
       - name: Upload measured model report
         uses: actions/upload-artifact@v4

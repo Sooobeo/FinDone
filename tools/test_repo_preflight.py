@@ -20,6 +20,10 @@ class RepositoryPreflightTest(unittest.TestCase):
             repo_preflight.scopes_for_path("tools/train_concept_question_model.py"),
         )
         self.assertEqual(
+            {"model"},
+            repo_preflight.scopes_for_path("tools/validate_concept_question_reset.py"),
+        )
+        self.assertEqual(
             {"admin", "model", "android"},
             repo_preflight.scopes_for_path("app/src/main/assets/content-manifest.json"),
         )

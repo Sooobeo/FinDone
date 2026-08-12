@@ -28,7 +28,7 @@
 ## Modeling
 
 - [모델링 문서 인덱스](modeling/README.md)
-- [개념형 5지선다 오프라인 모델링 설계](modeling/CONCEPT_MCQ_MODELING_DESIGN.md)
+- [개념형 5지선다 모델링 기준](modeling/CONCEPT_MCQ_MODELING_DESIGN.md)
 - `modeling/experiments/`: 가중치·정규화·임베딩 조합별 재현 가능한 실험 기록
 
 ## Operations

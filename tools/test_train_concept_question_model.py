@@ -6,6 +6,7 @@ from pathlib import Path
 
 from tools import train_concept_question_model as model
 from tools import review_concept_question_model as review_command
+from tools import validate_concept_question_reset as reset_validator
 
 
 class ConceptQuestionModelTest(unittest.TestCase):
@@ -157,6 +158,14 @@ class ConceptQuestionModelTest(unittest.TestCase):
 
     def test_markdown_history_contains_runs_and_primary_references(self) -> None:
         history = json.loads(model.DEFAULT_ADMIN_REPORT.read_text(encoding="utf-8"))
+        if not history["experiments"]:
+            self.assertEqual(2, history["reportVersion"])
+            self.assertEqual("2.0", history["contractVersion"])
+            self.assertIsNone(history["latestExperimentId"])
+            reset_state = reset_validator.validate_reset_state()
+            self.assertEqual("awaiting_v2_implementation", reset_state["state"])
+            self.assertFalse(reset_state["releaseReady"])
+            return
         latest = history["experiments"][0]
         rendered = model._render_experiment_markdown(latest)
 

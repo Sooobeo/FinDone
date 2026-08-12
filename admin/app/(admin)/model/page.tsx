@@ -93,14 +93,70 @@ export default async function ModelDashboardPage() {
       </div>
     );
   }
+  const conceptHistory = conceptModelExperiments;
+  const latestConcept = conceptHistory.experiments[0];
+  if (!latestConcept) {
+    const resetAt = conceptHistory.resetAt
+      ? new Intl.DateTimeFormat("ko-KR", {
+          dateStyle: "medium",
+          timeStyle: "short",
+          timeZone: "Asia/Seoul",
+        }).format(new Date(conceptHistory.resetAt))
+      : null;
+    return (
+      <div className="page-stack local-model-dashboard">
+        <PageHeader
+          eyebrow="CONCEPT MCQ V2"
+          title="개념형 문항 모델 재설계"
+          description="기존 설명→용어 문항과 실험·검수 이력을 폐기하고, 용어→설명 방식의 새 기준에서 다시 시작합니다."
+          actions={
+            <span className="model-health-badge failed">
+              <Clock3 size={15} /> 새 실험 준비 중
+            </span>
+          }
+        />
+
+        <ModelProcess section={copy["modeling-process"]} />
+
+        <div className="model-section-heading">
+          <div><p className="eyebrow">CONCEPT MCQ V2</p><h2>실험 이력이 초기화되었습니다</h2></div>
+          <p>새 문항 계약과 품질 검사를 구현한 뒤 첫 bootstrap 실험부터 기록합니다.</p>
+        </div>
+
+        <section className="panel concept-model-hero blocked">
+          <div className="concept-model-status">
+            <span><Database size={24} /></span>
+            <div>
+              <p className="eyebrow">NO ACTIVE EXPERIMENT</p>
+              <h2>등록된 모델·문항·검수 큐 없음</h2>
+              <code>contract v{conceptHistory.contractVersion ?? "2.0"}</code>
+            </div>
+          </div>
+          <div className="concept-model-run-meta">
+            <small>새 문항 방향</small>
+            <strong>용어 → 설명 선택</strong>
+            <code>term_to_definition · term_to_intuition · term_to_verbal_relation</code>
+            <span>{resetAt ? `${resetAt} 초기화` : "초기화 완료"}</span>
+          </div>
+        </section>
+
+        <section className="panel concept-model-warning" role="status">
+          <ShieldCheck size={20} />
+          <div>
+            <strong>현재 문항은행은 릴리스할 수 없습니다.</strong>
+            <p>설명형 선지 생성, 수식의 자연어 관계 변환, 새 독립 test와 Owner 검수가 모두 끝난 뒤에만 릴리스 게이트를 열 수 있습니다.</p>
+          </div>
+          <span>실험 0개</span>
+        </section>
+      </div>
+    );
+  }
   const report = localModelReport;
   const runtime = await getLocalModelOperationalMetrics();
   const conceptElements = await getConceptElements();
   const training = report.training;
   const evaluation = report.evaluation;
   const performance = report.performance;
-  const conceptHistory = conceptModelExperiments;
-  const latestConcept = conceptHistory.experiments[0];
   const conceptReview = latestConcept.automatedReview;
   const conceptQuestionDecisions = await getConceptQuestionDecisions(
     conceptReview.reviewInputSha256,
