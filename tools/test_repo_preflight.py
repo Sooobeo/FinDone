@@ -23,6 +23,14 @@ class RepositoryPreflightTest(unittest.TestCase):
             {"admin", "model", "android"},
             repo_preflight.scopes_for_path("app/src/main/assets/content-manifest.json"),
         )
+        self.assertEqual(
+            {"admin", "model", "android"},
+            repo_preflight.scopes_for_path("content/glossary/glossary-catalog.json"),
+        )
+        self.assertEqual(
+            {"admin", "android"},
+            repo_preflight.scopes_for_path("tools/build_glossary_db.py"),
+        )
 
     def test_all_does_not_request_a_release_build(self) -> None:
         scopes, release_requested = repo_preflight.resolve_scopes(["all"], [])

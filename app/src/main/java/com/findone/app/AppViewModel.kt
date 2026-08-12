@@ -20,6 +20,9 @@ import com.findone.app.data.ContentUpdateManager
 import com.findone.app.data.ContentUpdateResult
 import com.findone.app.data.ElementProgress
 import com.findone.app.data.GlossaryTermState
+import com.findone.app.data.GlossaryRepository
+import com.findone.app.data.GlossaryUpdateManager
+import com.findone.app.data.GlossaryUpdateResult
 import com.findone.app.data.LearningTextAnnotation
 import com.findone.app.data.StudyStats
 import com.findone.app.data.TextAnnotationStyle
@@ -28,6 +31,10 @@ import com.findone.app.data.buildLearningTextAnchor
 import com.findone.app.model.ContentElement
 import com.findone.app.model.ContentManifest
 import com.findone.app.model.Domain
+import com.findone.app.model.GlossaryCategory
+import com.findone.app.model.GlossaryManifest
+import com.findone.app.model.GlossaryTerm
+import com.findone.app.model.GlossaryTermSummary
 import com.findone.app.quiz.ElementSeed
 import com.findone.app.quiz.CuratedConceptQuestion
 import com.findone.app.quiz.ExplanationSteps
@@ -61,6 +68,8 @@ private const val STUDY_DOMAIN_STATE = "studyDomainId"
 private const val STUDY_QUERY_STATE = "studyQuery"
 private const val MAX_NAVIGATION_HISTORY = 32
 private const val ELEMENT_ROUTE_PREFIX = "ELEMENT:"
+private const val GLOSSARY_NOTE_TARGET_PREFIX = "GLOSSARY:"
+private const val GLOSSARY_UPDATE_CHECK_INTERVAL_MS = 5 * 60 * 1_000L
 
 private fun MainTab.routeKey(): String = name
 
@@ -159,6 +168,8 @@ class AppViewModel(
 ) : AndroidViewModel(application) {
     private val userRepository = UserRepository(application)
     private var contentRepository: ContentRepository? = null
+    private var glossaryRepository: GlossaryRepository? = null
+    private var lastGlossaryUpdateCheckAt = 0L
     private var conceptQuestionsByElement: Map<String, List<CuratedConceptQuestion>> = emptyMap()
 
     var domains by mutableStateOf<List<Domain>>(emptyList())
@@ -224,6 +235,34 @@ class AppViewModel(
         private set
     var glossaryTermStates by mutableStateOf<Map<String, GlossaryTermState>>(emptyMap())
         private set
+    var glossaryCategories by mutableStateOf<List<GlossaryCategory>>(emptyList())
+        private set
+    var glossaryResults by mutableStateOf<List<GlossaryTermSummary>>(emptyList())
+        private set
+    var glossaryManifest by mutableStateOf<GlossaryManifest?>(null)
+        private set
+    var glossaryCategoryId by mutableStateOf<String?>(null)
+        private set
+    var glossaryBookmarkedOnly by mutableStateOf(false)
+        private set
+    var glossaryQuery by mutableStateOf("")
+        private set
+    var selectedGlossaryTerm by mutableStateOf<GlossaryTerm?>(null)
+        private set
+    var glossaryError by mutableStateOf<String?>(null)
+        private set
+    var glossaryUpdateInProgress by mutableStateOf(false)
+        private set
+    var glossaryUpdateMessage by mutableStateOf<String?>(null)
+        private set
+    var glossaryNotes by mutableStateOf<List<ConceptNote>>(emptyList())
+        private set
+    var glossaryNoteError by mutableStateOf<String?>(null)
+        private set
+    var glossaryTextAnnotations by mutableStateOf<List<LearningTextAnnotation>>(emptyList())
+        private set
+    var glossaryTextAnnotationError by mutableStateOf<String?>(null)
+        private set
     var recordDomainId by mutableStateOf(savedStateHandle.get<String>("recordDomainId"))
         private set
     var recordElementId by mutableStateOf(savedStateHandle.get<String>("recordElementId"))
@@ -265,6 +304,14 @@ class AppViewModel(
         conceptQuestionsByElement = loadedConceptQuestions.groupBy { it.elementId }
         activeConceptQuestionCount = loadedConceptQuestions.size
         contentManifest = loadedManifest
+        runCatching {
+            GlossaryRepository(application).also { repository ->
+                glossaryRepository = repository
+                glossaryCategories = repository.categories()
+                glossaryManifest = repository.manifest
+            }
+        }.onFailure { glossaryError = it.message ?: "용어집 DB를 열지 못했습니다." }
+        refreshGlossaryResults()
         studyDomainId = studyDomainId?.takeIf { id -> domains.any { it.id == id } }
         if (studyDomainId == null) savedStateHandle.remove<String>(STUDY_DOMAIN_STATE)
         selectedElementId = selectedElementId?.takeIf { id -> allElements.any { it.id == id } }
@@ -299,6 +346,7 @@ class AppViewModel(
                 .onFailure { savedStateHandle.remove<String>("quizSession") }
         }
         checkForContentUpdate()
+        checkForGlossaryUpdate()
     }
 
     fun checkForContentUpdate() {
@@ -353,6 +401,51 @@ class AppViewModel(
         }
     }
 
+    fun checkForGlossaryUpdate(force: Boolean = false) {
+        if (BuildConfig.GLOSSARY_RELEASE_ENDPOINT.isBlank() || glossaryUpdateInProgress) return
+        val now = System.currentTimeMillis()
+        if (!force && now - lastGlossaryUpdateCheckAt < GLOSSARY_UPDATE_CHECK_INTERVAL_MS) return
+        val currentVersion = glossaryManifest?.glossaryDbVersion ?: return
+        lastGlossaryUpdateCheckAt = now
+        glossaryUpdateInProgress = true
+        glossaryUpdateMessage = null
+        viewModelScope.launch {
+            try {
+                when (val result = withContext(Dispatchers.IO) {
+                    GlossaryUpdateManager(getApplication()).updateIfAvailable(currentVersion)
+                }) {
+                    GlossaryUpdateResult.Disabled,
+                    GlossaryUpdateResult.Current -> Unit
+                    is GlossaryUpdateResult.Failed -> glossaryUpdateMessage = result.message
+                    is GlossaryUpdateResult.Installed -> {
+                        val loaded = withContext(Dispatchers.IO) {
+                            GlossaryRepository(getApplication()).let { repository ->
+                                LoadedGlossary(repository, repository.categories(), repository.manifest)
+                            }
+                        }
+                        val previous = glossaryRepository
+                        glossaryRepository = loaded.repository
+                        glossaryCategories = loaded.categories
+                        glossaryManifest = loaded.manifest
+                        glossaryCategoryId = glossaryCategoryId?.takeIf { id ->
+                            loaded.categories.any { it.id == id }
+                        }
+                        selectedGlossaryTerm = selectedGlossaryTerm?.id?.let(loaded.repository::term)
+                        if (selectedGlossaryTerm == null) clearGlossaryPersonalData()
+                        refreshGlossaryResults()
+                        previous?.close()
+                        glossaryUpdateMessage =
+                            "용어집 DB v${result.manifest.glossaryDbVersion} 업데이트 완료"
+                    }
+                }
+            } catch (error: Exception) {
+                glossaryUpdateMessage = error.message ?: "용어집 업데이트를 적용하지 못했습니다."
+            } finally {
+                glossaryUpdateInProgress = false
+            }
+        }
+    }
+
     private fun normalizeContentSelections() {
         val validElementIds = allElements.mapTo(hashSetOf()) { it.id }
         studyDomainId = studyDomainId?.takeIf { id -> domains.any { it.id == id } }
@@ -379,17 +472,25 @@ class AppViewModel(
         val manifest: ContentManifest,
     )
 
+    private data class LoadedGlossary(
+        val repository: GlossaryRepository,
+        val categories: List<GlossaryCategory>,
+        val manifest: GlossaryManifest,
+    )
+
     val selectedElement: ContentElement?
         get() = selectedElementId?.let { id -> allElements.firstOrNull { it.id == id } }
 
     val canNavigateBack: Boolean
-        get() = quizSession != null || selectedElementId != null ||
+        get() = quizSession != null || selectedGlossaryTerm != null || selectedElementId != null ||
             currentTab != MainTab.HOME || navigationHistory.isNotEmpty()
 
     fun selectTab(tab: MainTab) {
         val targetRoute = tab.routeKey()
         if (currentRouteKey() != targetRoute) pushCurrentRoute()
+        closeGlossaryTerm()
         applyRoute(targetRoute)
+        if (tab == MainTab.GLOSSARY) checkForGlossaryUpdate()
     }
 
     fun openElement(elementId: String) {
@@ -409,6 +510,10 @@ class AppViewModel(
 
     fun navigateBack(): Boolean {
         if (quizSession != null) return false
+        if (selectedGlossaryTerm != null) {
+            closeGlossaryTerm()
+            return true
+        }
         while (navigationHistory.isNotEmpty()) {
             val previous = navigationHistory.last()
             navigationHistory = navigationHistory.dropLast(1)
@@ -473,6 +578,7 @@ class AppViewModel(
 
         val tab = MainTab.entries.firstOrNull { it.routeKey() == route } ?: return false
         clearElementState()
+        closeGlossaryTerm()
         currentTab = tab
         savedStateHandle["tab"] = tab.name
         return true
@@ -621,6 +727,171 @@ class AppViewModel(
         runCatching { userRepository.setGlossaryTermBookmarked(termId, bookmarked) }
             .onSuccess { state -> glossaryTermStates = glossaryTermStates + (termId to state) }
             .onFailure { quizMessage = it.message ?: "용어 북마크를 저장하지 못했습니다." }
+    }
+
+    fun setGlossaryCategory(categoryId: String?) {
+        glossaryBookmarkedOnly = false
+        glossaryCategoryId = categoryId?.takeIf { candidate ->
+            glossaryCategories.any { it.id == candidate }
+        }
+        refreshGlossaryResults()
+    }
+
+    fun showBookmarkedGlossaryTerms() {
+        glossaryBookmarkedOnly = true
+        glossaryCategoryId = null
+        refreshGlossaryResults()
+    }
+
+    fun updateGlossaryQuery(query: String) {
+        glossaryQuery = query.take(120)
+        refreshGlossaryResults()
+    }
+
+    fun openGlossaryTerm(termId: String) {
+        val term = runCatching { glossaryRepository?.term(termId) }
+            .onFailure { glossaryError = it.message ?: "용어를 열지 못했습니다." }
+            .getOrNull() ?: return
+        selectedGlossaryTerm = term
+        glossaryError = null
+        refreshGlossaryPersonalData()
+    }
+
+    fun closeGlossaryTerm() {
+        selectedGlossaryTerm = null
+        clearGlossaryPersonalData()
+    }
+
+    fun addGlossaryNote(title: String, body: String): Boolean {
+        val targetId = selectedGlossaryTargetId() ?: return false
+        return runCatching {
+            userRepository.addConceptNote(targetId, title, body)
+            userRepository.conceptNotes(targetId)
+        }.fold(
+            onSuccess = {
+                glossaryNotes = it
+                glossaryNoteError = null
+                true
+            },
+            onFailure = {
+                glossaryNoteError = it.message ?: "용어 메모를 저장하지 못했습니다."
+                false
+            },
+        )
+    }
+
+    fun updateGlossaryNote(noteId: Long, title: String, body: String): Boolean {
+        val targetId = selectedGlossaryTargetId() ?: return false
+        return runCatching {
+            check(userRepository.updateConceptNote(noteId, targetId, title, body)) {
+                "수정할 용어 메모를 찾지 못했습니다."
+            }
+            userRepository.conceptNotes(targetId)
+        }.fold(
+            onSuccess = {
+                glossaryNotes = it
+                glossaryNoteError = null
+                true
+            },
+            onFailure = {
+                glossaryNoteError = it.message ?: "용어 메모를 수정하지 못했습니다."
+                false
+            },
+        )
+    }
+
+    fun deleteGlossaryNote(noteId: Long): Boolean {
+        val targetId = selectedGlossaryTargetId() ?: return false
+        return runCatching {
+            check(userRepository.deleteConceptNote(noteId, targetId)) {
+                "삭제할 용어 메모를 찾지 못했습니다."
+            }
+            userRepository.conceptNotes(targetId)
+        }.fold(
+            onSuccess = {
+                glossaryNotes = it
+                glossaryNoteError = null
+                true
+            },
+            onFailure = {
+                glossaryNoteError = it.message ?: "용어 메모를 삭제하지 못했습니다."
+                false
+            },
+        )
+    }
+
+    fun clearGlossaryNoteError() {
+        glossaryNoteError = null
+    }
+
+    fun addGlossaryTextAnnotation(
+        sectionKey: String,
+        sourceText: String,
+        startOffset: Int,
+        endOffset: Int,
+        style: TextAnnotationStyle,
+        comment: String? = null,
+    ): Boolean {
+        val targetId = selectedGlossaryTargetId() ?: return false
+        return runCatching {
+            val anchor = buildLearningTextAnchor(sectionKey, sourceText, startOffset, endOffset)
+            userRepository.addTextAnnotation(targetId, anchor, style, comment)
+            userRepository.textAnnotations(targetId)
+        }.fold(
+            onSuccess = {
+                glossaryTextAnnotations = it
+                glossaryTextAnnotationError = null
+                true
+            },
+            onFailure = {
+                glossaryTextAnnotationError = it.message ?: "용어 본문 표시를 저장하지 못했습니다."
+                false
+            },
+        )
+    }
+
+    fun setGlossaryTextAnnotationComment(annotationId: Long, comment: String?): Boolean {
+        val targetId = selectedGlossaryTargetId() ?: return false
+        return runCatching {
+            check(userRepository.setTextAnnotationComment(annotationId, targetId, comment)) {
+                "수정할 용어 코멘트를 찾지 못했습니다."
+            }
+            userRepository.textAnnotations(targetId)
+        }.fold(
+            onSuccess = {
+                glossaryTextAnnotations = it
+                glossaryTextAnnotationError = null
+                true
+            },
+            onFailure = {
+                glossaryTextAnnotationError = it.message ?: "용어 코멘트를 저장하지 못했습니다."
+                false
+            },
+        )
+    }
+
+    fun deleteGlossaryTextAnnotation(annotationId: Long): Boolean {
+        val targetId = selectedGlossaryTargetId() ?: return false
+        return runCatching {
+            check(userRepository.deleteTextAnnotation(annotationId, targetId)) {
+                "삭제할 용어 본문 표시를 찾지 못했습니다."
+            }
+            userRepository.textAnnotations(targetId)
+        }.fold(
+            onSuccess = {
+                glossaryTextAnnotations = it
+                glossaryTextAnnotationError = null
+                true
+            },
+            onFailure = {
+                glossaryTextAnnotationError = it.message ?: "용어 본문 표시를 삭제하지 못했습니다."
+                false
+            },
+        )
+    }
+
+    fun clearGlossaryTextAnnotationError() {
+        glossaryTextAnnotationError = null
     }
 
     fun setStudyDomain(domainId: String?) {
@@ -1089,6 +1360,7 @@ class AppViewModel(
         refreshGlossaryTermStates()
         refreshConceptNotes()
         refreshTextAnnotations()
+        refreshGlossaryPersonalData()
     }
 
     private fun refreshConceptNotes() {
@@ -1133,6 +1405,52 @@ class AppViewModel(
             .onFailure { glossaryTermStates = emptyMap() }
     }
 
+    private fun refreshGlossaryResults() {
+        glossaryResults = runCatching {
+            glossaryRepository?.terms(glossaryCategoryId, glossaryQuery).orEmpty()
+        }.onSuccess {
+            glossaryError = null
+        }.onFailure {
+            glossaryError = it.message ?: "용어집 검색을 수행하지 못했습니다."
+        }.getOrDefault(emptyList())
+    }
+
+    private fun selectedGlossaryTargetId(): String? =
+        selectedGlossaryTerm?.id?.let { "$GLOSSARY_NOTE_TARGET_PREFIX$it" }
+
+    private fun refreshGlossaryPersonalData() {
+        val targetId = selectedGlossaryTargetId()
+        if (targetId == null) {
+            clearGlossaryPersonalData()
+            return
+        }
+        runCatching { userRepository.conceptNotes(targetId) }
+            .onSuccess {
+                glossaryNotes = it
+                glossaryNoteError = null
+            }
+            .onFailure {
+                glossaryNotes = emptyList()
+                glossaryNoteError = it.message ?: "용어 메모를 불러오지 못했습니다."
+            }
+        runCatching { userRepository.textAnnotations(targetId) }
+            .onSuccess {
+                glossaryTextAnnotations = it
+                glossaryTextAnnotationError = null
+            }
+            .onFailure {
+                glossaryTextAnnotations = emptyList()
+                glossaryTextAnnotationError = it.message ?: "용어 본문 표시를 불러오지 못했습니다."
+            }
+    }
+
+    private fun clearGlossaryPersonalData() {
+        glossaryNotes = emptyList()
+        glossaryNoteError = null
+        glossaryTextAnnotations = emptyList()
+        glossaryTextAnnotationError = null
+    }
+
     private fun refreshUserData(refreshAllBookmarks: Boolean = true) {
         stats = userRepository.stats()
         progress = userRepository.allProgress()
@@ -1162,6 +1480,7 @@ class AppViewModel(
 
     override fun onCleared() {
         contentRepository?.close()
+        glossaryRepository?.close()
         userRepository.close()
         super.onCleared()
     }

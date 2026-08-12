@@ -7,6 +7,8 @@ on:
       - "supabase/**"
       - "tools/admin_*.py"
       - "tools/test_admin_*.py"
+      - "tools/*glossary*.py"
+      - "content/glossary/**"
       - "tools/requirements-source-worker.txt"
       - "tools/validate_supabase_sql.py"
       - "tools/repo_preflight.py"
@@ -17,6 +19,7 @@ on:
       - ".github/workflows/admin-ci.yml"
       - ".github/workflows/repository-preflight.yml"
       - ".github/workflows/admin-source-worker.yml"
+      - ".github/workflows/admin-glossary-worker.yml"
   push:
     branches: [main]
     paths:
@@ -24,6 +27,8 @@ on:
       - "supabase/**"
       - "tools/admin_*.py"
       - "tools/test_admin_*.py"
+      - "tools/*glossary*.py"
+      - "content/glossary/**"
       - "tools/requirements-source-worker.txt"
       - "tools/validate_supabase_sql.py"
       - "tools/repo_preflight.py"
@@ -34,6 +39,7 @@ on:
       - ".github/workflows/admin-ci.yml"
       - ".github/workflows/repository-preflight.yml"
       - ".github/workflows/admin-source-worker.yml"
+      - ".github/workflows/admin-glossary-worker.yml"
 
 permissions:
   contents: read

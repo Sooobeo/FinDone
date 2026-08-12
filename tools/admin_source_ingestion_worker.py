@@ -56,6 +56,7 @@ CLAIM_RPC = "claim_source_ingestion_job"
 PROGRESS_RPC = "update_source_ingestion_progress"
 COMPLETE_RPC = "complete_source_ingestion_job"
 FAIL_RPC = "fail_source_ingestion_job"
+STATE_RPC = "get_source_ingestion_job_state"
 PARSER_NAME = "findone-source-ingestion"
 PARSER_VERSION = "admin-v1"
 
@@ -1759,6 +1760,10 @@ class SourceIngestionWorker:
         self._last_stage = stage
         self._last_progress_at = now
 
+    def _is_paused(self, job_id: str) -> bool:
+        state = _rpc_object(self.client.rpc(STATE_RPC, {"p_job_id": job_id}), "source job state")
+        return bool(state and state.get("jobStatus") == "paused")
+
     def _catalog(self) -> list[dict[str, Any]]:
         elements = self.client.select(
             "elements",
@@ -2086,6 +2091,14 @@ class SourceIngestionWorker:
             parse_status = str((completed or {}).get("parseStatus") or ("needs_review" if result.requires_review else "ready"))
             return WorkerOutcome(job_id, source_version_id, parse_status, len(result.fragments), len(candidates))
         except Exception as error:
+            # Owner pause is a normal cooperative stop, not a failed job. The
+            # pause may arrive during parsing, so check state before reporting
+            # the exception as terminal failure.
+            try:
+                if self._is_paused(job_id):
+                    return WorkerOutcome(job_id, source_version_id, "paused", 0, 0)
+            except Exception:
+                pass
             safe_message = str(error).replace(self.client.secret_key, "[redacted]")[:1800]
             terminal = _rpc_object(
                 self.client.rpc(

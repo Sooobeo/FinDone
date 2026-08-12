@@ -35,6 +35,7 @@
 
 - [Codex 실행 전 오류 방지 게이트](operations/CODEX_PREFLIGHT.md)
 - [Admin 배포](operations/ADMIN_DEPLOYMENT.md)
+- [용어집 저작·컴파일·오프라인 배포](operations/GLOSSARY_PIPELINE.md)
 - [릴리스 자동화](operations/RELEASE_AUTOMATION.md)
 - [릴리스 체크리스트](operations/RELEASE_CHECKLIST.md)
 - [업데이트 작업 최적화](operations/UPDATE_WORKFLOW_OPTIMIZATION.md)

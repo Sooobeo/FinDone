@@ -36,6 +36,8 @@ ADMIN_PATTERNS = (
     "supabase/**",
     "tools/admin_*.py",
     "tools/test_admin_*.py",
+    "tools/*glossary*.py",
+    "content/glossary/**",
     "tools/validate_supabase_sql.py",
     "tools/requirements-source-worker.txt",
     "scripts/refresh_admin_content.ps1",
@@ -71,6 +73,7 @@ ANDROID_PATTERNS = (
     "content/**",
     "tools/build_content_db.py",
     "tools/compile_app_content.py",
+    "tools/*glossary*.py",
 )
 GUARD_PATTERNS = (
     "AGENTS.md",
@@ -477,6 +480,16 @@ def verification_commands(scopes: set[str], *, release_requested: bool) -> list[
                         "tools",
                         "-p",
                         "test_admin*.py",
+                        "-v",
+                    ),
+                ),
+                Command(
+                    "Glossary content regression tests",
+                    (
+                        python,
+                        "-m",
+                        "unittest",
+                        "tools.test_glossary_content",
                         "-v",
                     ),
                 ),

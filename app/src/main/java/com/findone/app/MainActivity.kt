@@ -248,6 +248,7 @@ private fun FinDoneApp(vm: AppViewModel) {
                     val tabs = listOf(
                         Triple(MainTab.HOME, "오늘", Icons.Outlined.Home),
                         Triple(MainTab.STUDY, "학습", Icons.AutoMirrored.Outlined.MenuBook),
+                        Triple(MainTab.GLOSSARY, "용어", Icons.Outlined.Search),
                         Triple(MainTab.QUIZ, "퀴즈", Icons.Outlined.Quiz),
                         Triple(MainTab.RECORDS, "기록", Icons.Outlined.Bookmark),
                     )
@@ -1857,7 +1858,10 @@ private fun DataSettingsCard(
             Column(Modifier.padding(17.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("앱 정보", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Text("FinDone ${BuildConfig.VERSION_NAME} · 개인 Android 사이드로드")
-                Text("콘텐츠 DB v${vm.contentManifest?.contentDbVersion ?: "-"} · 사용자 DB schema 5")
+                Text(
+                    "콘텐츠 DB v${vm.contentManifest?.contentDbVersion ?: "-"} · " +
+                        "용어집 DB v${vm.glossaryManifest?.glossaryDbVersion ?: "-"} · 사용자 DB schema 5"
+                )
                 Text(
                     buildString {
                         append("개념문항 ${vm.activeConceptQuestionCount}개 출제")
@@ -1875,7 +1879,10 @@ private fun DataSettingsCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Outlined.CloudOff, contentDescription = null)
                     Spacer(Modifier.width(8.dp))
-                    Text("INTERNET 권한·로그인·광고·분석·결제 없음", style = MaterialTheme.typography.labelLarge)
+                    Text(
+                        "INTERNET 권한은 검증된 DB 업데이트에만 사용 · 검색·열람은 오프라인 · 로그인·광고·분석·결제 없음",
+                        style = MaterialTheme.typography.labelLarge,
+                    )
                 }
             }
         }

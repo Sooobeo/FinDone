@@ -1,0 +1,122 @@
+{
+  "formatVersion": 1,
+  "overrides": {
+    "FIN-02-050": {
+      "oneLineDefinitionKo": "환매조건부채권 데스크는 repo 거래를 실행하고 담보·헤어컷·자금·상대방 위험을 관리하는 금융기관 내 거래 조직이다."
+    },
+    "FIN-02-092": {
+      "formulaLatex": "\\mathrm{NAV}=\\frac{\\mathrm{Total\\ Fund\\ Assets}-\\mathrm{Total\\ Fund\\ Liabilities}}{\\mathrm{Units\\ Outstanding}}"
+    },
+    "FIN-03-055": {
+      "formulaLatex": "\\mathrm{NAV}=\\frac{\\mathrm{Total\\ Assets}-\\mathrm{Total\\ Liabilities}}{\\mathrm{Units\\ Outstanding}}"
+    },
+    "FIN-05-059": {
+      "formulaLatex": "\\mathrm{P/E}=\\frac{P_0}{\\mathrm{EPS}}"
+    },
+    "FIN-05-061": {
+      "formulaLatex": "\\mathrm{ROE}=\\frac{\\mathrm{Net\\ Income}}{\\mathrm{Average\\ Equity}}"
+    },
+    "FIN-05-062": {
+      "formulaLatex": "\\mathrm{Size}=\\ln(\\mathrm{Market\\ Capitalization})"
+    },
+    "FIN-05-064": {
+      "formulaLatex": "\\mathrm{Carry}\\approx\\mathrm{Holding\\ Yield}-\\mathrm{Funding\\ Cost}"
+    },
+    "FIN-11-027": {
+      "formulaLatex": "\\mathrm{EPS}=\\frac{\\mathrm{Adjusted\\ Common\\ Earnings}}{\\mathrm{Weighted\\ Average\\ Common\\ Shares}}"
+    },
+    "FIN-11-028": {
+      "formulaLatex": "\\mathrm{Basic\\ EPS}=\\frac{\\mathrm{Adjusted\\ Common\\ Earnings}}{\\mathrm{Weighted\\ Average\\ Common\\ Shares}}"
+    },
+    "FIN-11-029": {
+      "formulaLatex": "\\mathrm{Diluted\\ EPS}=\\frac{\\mathrm{Common\\ Earnings}+\\mathrm{Dilutive\\ Numerator\\ Adjustments}}{\\mathrm{Basic\\ Weighted\\ Shares}+\\mathrm{Dilutive\\ Potential\\ Shares}}"
+    },
+    "FIN-13-047": {
+      "formulaLatex": "\\mathrm{Hit\\ Rate}=\\frac{\\mathrm{Successful\\ Cases}}{\\mathrm{Total\\ Cases}}"
+    },
+    "FIN-16-044": {
+      "formulaLatex": "F_T>S\\quad\\mathrm{or}\\quad F_{\\mathrm{far}}>F_{\\mathrm{near}}"
+    },
+    "FIN-16-045": {
+      "formulaLatex": "F_T<S\\quad\\mathrm{or}\\quad F_{\\mathrm{far}}<F_{\\mathrm{near}}"
+    },
+    "FIN-17-054": {
+      "formulaLatex": "\\mathrm{MOIC}=\\frac{\\mathrm{Cumulative\\ Distributions}+\\mathrm{Residual\\ Value}}{\\mathrm{Invested\\ Capital}}"
+    },
+    "FIN-17-055": {
+      "formulaLatex": "\\mathrm{TVPI}=\\frac{\\mathrm{Cumulative\\ Distributions}+\\mathrm{Residual\\ Value}}{\\mathrm{Paid\\text{-}In\\ Capital}}"
+    },
+    "FIN-17-056": {
+      "formulaLatex": "\\mathrm{DPI}=\\frac{\\mathrm{Cumulative\\ Distributions}}{\\mathrm{Paid\\text{-}In\\ Capital}}"
+    },
+    "FIN-17-057": {
+      "formulaLatex": "\\mathrm{RVPI}=\\frac{\\mathrm{Residual\\ NAV}}{\\mathrm{Paid\\text{-}In\\ Capital}}"
+    },
+    "FIN-18-069": {
+      "formulaLatex": "\\mathrm{Bit\\ Shipment\\ Growth}=\\frac{\\mathrm{Bits}_t-\\mathrm{Bits}_{t-1}}{\\mathrm{Bits}_{t-1}}"
+    },
+    "FIN-18-070": {
+      "formulaLatex": "\\mathrm{Semiconductor\\ ASP}=\\frac{\\mathrm{Revenue}}{\\mathrm{Units\\ Sold}}"
+    },
+    "FIN-18-071": {
+      "formulaLatex": "\\mathrm{Node\\ Mix}=\\frac{\\mathrm{Selected\\ Node\\ Volume}}{\\mathrm{Total\\ Volume}}"
+    },
+    "FIN-18-072": {
+      "formulaLatex": "\\mathrm{HBM\\ Mix}=\\frac{\\mathrm{HBM\\ Volume}}{\\mathrm{Total\\ Memory\\ Volume}}"
+    },
+    "FIN-18-073": {
+      "formulaLatex": "\\mathrm{Foundry\\ Share}=\\frac{\\mathrm{Foundry\\ Revenue}}{\\mathrm{Defined\\ Market\\ Revenue}}"
+    },
+    "FIN-18-074": {
+      "formulaLatex": "\\mathrm{Semiconductor\\ CapEx\\ Intensity}=\\frac{\\mathrm{CapEx}}{\\mathrm{Revenue}}"
+    },
+    "FIN-18-075": {
+      "formulaLatex": "\\mathrm{ARPU}=\\frac{\\mathrm{Service\\ Revenue}_t}{\\mathrm{Average\\ Subscribers}_t}"
+    },
+    "FIN-18-076": {
+      "formulaLatex": "\\mathrm{Subscriber\\ Churn}=\\frac{\\mathrm{Disconnected\\ Subscribers}_t}{\\mathrm{Average\\ Subscribers}_t}"
+    },
+    "FIN-18-077": {
+      "formulaLatex": "\\mathrm{Net\\ Adds}=\\mathrm{Gross\\ Adds}-\\mathrm{Disconnects}"
+    },
+    "FIN-18-078": {
+      "formulaLatex": "\\mathrm{Postpaid\\ Mix}=\\frac{\\mathrm{Postpaid\\ Subscribers}}{\\mathrm{Total\\ Subscribers}}"
+    },
+    "FIN-18-079": {
+      "formulaLatex": "\\mathrm{Data\\ Usage\\ per\\ Subscriber}=\\frac{\\mathrm{Data\\ Traffic}_t}{\\mathrm{Average\\ Subscribers}_t}"
+    },
+    "FIN-18-080": {
+      "formulaLatex": "\\mathrm{Telecom\\ CapEx\\ Intensity}=\\frac{\\mathrm{Telecom\\ CapEx}}{\\mathrm{Telecom\\ Revenue}}"
+    },
+    "FIN-18-081": {
+      "formulaLatex": "\\mathrm{ASK}=\\mathrm{Available\\ Seats}\\times\\mathrm{Distance}_{km}"
+    },
+    "FIN-18-082": {
+      "formulaLatex": "\\mathrm{ASM}=\\mathrm{Available\\ Seats}\\times\\mathrm{Distance}_{miles}"
+    },
+    "FIN-18-083": {
+      "formulaLatex": "\\mathrm{RPK}=\\mathrm{Revenue\\ Passengers}\\times\\mathrm{Distance}_{km}"
+    },
+    "FIN-18-084": {
+      "formulaLatex": "\\mathrm{RPM}=\\mathrm{Revenue\\ Passengers}\\times\\mathrm{Distance}_{miles}"
+    },
+    "FIN-18-086": {
+      "formulaLatex": "\\mathrm{Passenger\\ Yield}=\\frac{\\mathrm{Passenger\\ Revenue}}{\\mathrm{RPK\\ or\\ RPM}}"
+    },
+    "FIN-18-087": {
+      "formulaLatex": "\\mathrm{RASK}=\\frac{\\mathrm{Relevant\\ Revenue}}{\\mathrm{ASK}}"
+    },
+    "FIN-18-088": {
+      "formulaLatex": "\\mathrm{CASK}=\\frac{\\mathrm{Operating\\ Costs}}{\\mathrm{ASK}}"
+    },
+    "FIN-18-089": {
+      "formulaLatex": "\\mathrm{CASK}_{ex\\text{-}fuel}=\\frac{\\mathrm{Operating\\ Costs}-\\mathrm{Fuel\\ Cost}}{\\mathrm{ASK}}"
+    },
+    "FIN-18-092": {
+      "formulaLatex": "\\mathrm{RRR}=\\frac{\\mathrm{Reserve\\ Additions}}{\\mathrm{Production}}\\times100"
+    },
+    "FIN-18-093": {
+      "formulaLatex": "\\mathrm{Lifting\\ Cost}=\\frac{\\mathrm{Production\\ Costs}}{\\mathrm{Production\\ Volume}_{boe}}"
+    }
+  }
+}

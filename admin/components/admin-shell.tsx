@@ -4,6 +4,7 @@ import {
   BookOpenText,
   Cpu,
   Database,
+  BookMarked,
   FileArchive,
   FileSearch,
   LayoutDashboard,
@@ -24,6 +25,7 @@ import type { AdminRole } from "@/lib/types";
 const navItems = [
   { href: "/dashboard", label: "대시보드", icon: LayoutDashboard },
   { href: "/concepts", label: "개념 DB", icon: Database },
+  { href: "/glossary", label: "용어집", icon: BookMarked },
   { href: "/sources", label: "원본 자료", icon: FileSearch },
   { href: "/model", label: "로컬 모델 현황", icon: Cpu },
   { href: "/review", label: "앱 DB 최종 검토", icon: Sparkles },

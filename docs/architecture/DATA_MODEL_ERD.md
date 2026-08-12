@@ -4,17 +4,19 @@
 
 ## 데이터 저장소 분리
 
-FinDone에는 역할이 다른 세 데이터 모델이 있다.
+FinDone에는 역할이 다른 네 데이터 모델이 있다.
 
 | 저장소 | 목적 | 변경 주체 | 배포/보존 |
 |---|---|---|---|
 | Supabase PostgreSQL | 원본, 저작, 검토, 작업, 릴리스 이력 | Admin과 권한 분리 Worker | migration으로 관리 |
 | 앱 콘텐츠 SQLite | 검증된 읽기 전용 학습 콘텐츠 | 로컬 compiler 또는 Release Worker | APK 내장 또는 stable update |
+| 앱 용어집 SQLite | 검증된 읽기 전용 금융 용어와 FTS | Glossary Worker | APK baseline 또는 독립 glossary stable update |
 | 사용자 SQLite | 시도, 오답, 북마크, 메모, 주석, 용어 상태 | Android 앱 사용자 | 콘텐츠 교체와 독립, 기기 보존 |
 
 ERD는 읽을 수 있도록 bounded context별로 나눈다. 전체 컬럼과 trigger/RLS의
 최종 기준은 [Supabase migrations](../../supabase/migrations)와
 [`SCHEMA_SQL`](../../tools/build_content_db.py),
+[`glossary SCHEMA_SQL`](../../tools/build_glossary_db.py),
 [`UserDatabase`](../../app/src/main/java/com/findone/app/data/UserRepository.kt)다.
 
 ## Supabase: 원본과 저작
@@ -377,6 +379,64 @@ Admin의 `distractors`는 저작 후보 단위이고 앱의 5지선다 choice ro
 스키마가 아니다. question/choice ID가 없는 legacy distractor를 임의로 앱
 질문은행에 덮어쓰지 않는다.
 
+## 독립 용어집 SQLite schema 1
+
+```mermaid
+erDiagram
+    CATEGORIES ||--o{ TERMS : contains
+    TERMS ||--o{ ALIASES : names
+    TERMS ||--o{ LIMITATIONS : qualifies
+    TERMS ||--o{ TERM_SOURCES : cites
+    SOURCES ||--o{ TERM_SOURCES : supports
+    TERMS ||--o{ RELATED_TERMS : links
+
+    CATEGORIES {
+        text category_id PK
+        text name
+        int display_order UK
+        int term_count
+    }
+    TERMS {
+        text term_id PK
+        text category_id FK
+        int display_order
+        text canonical_name_en
+        text canonical_name_ko
+        text one_line_definition_ko
+        text core_definition_ko
+        text practical_context_ko
+        text example_ko
+    }
+    ALIASES {
+        text term_id PK, FK
+        text label PK
+        int display_order
+    }
+    LIMITATIONS {
+        text term_id PK, FK
+        int display_order PK
+        text body_ko
+    }
+    SOURCES {
+        text source_code PK
+        text title
+        text url
+    }
+    TERM_SOURCES {
+        text term_id PK, FK
+        text source_code PK, FK
+    }
+    RELATED_TERMS {
+        text term_id PK, FK
+        text related_term_id PK, FK
+    }
+```
+
+`glossary_fts`는 이름·별칭·정의·실무 문맥을 투영한 FTS5 table이다. Supabase의
+`glossary_term_admin_references`는 기존 비공개 `sources`와 용어를 연결하지만
+Glossary Worker snapshot과 이 SQLite schema에는 포함되지 않는다. Admin의
+soft archive는 감사 흔적을 보존하며 active row만 다음 독립 stable DB에 들어간다.
+
 ## 사용자 SQLite schema 5
 
 ```mermaid
@@ -440,8 +500,9 @@ erDiagram
     }
 ```
 
-`element_id`, `term_id`와 template 식별자는 콘텐츠 DB를 논리적으로 참조하지만
-서로 다른 SQLite 파일 사이에 물리 FK를 만들 수 없다. 앱은 콘텐츠 업데이트
+`element_id`, `term_id`와 template 식별자는 두 읽기 전용 DB를 논리적으로 참조하지만
+서로 다른 SQLite 파일 사이에 물리 FK를 만들 수 없다. 용어 메모와 본문 표시는
+`GLOSSARY:FIN-..` target을 사용한다. 앱은 콘텐츠·용어집 업데이트
 뒤에도 안정 ID를 유지하고, 사라진 콘텐츠를 조회할 때 안전하게 무시하거나
 정리한다. 사용자 DB의 유일한 물리 FK는 현재 `wrong_queue.last_attempt_id`에서
 `attempts.id`로 이어지며 삭제 시 `NULL`이 된다.
@@ -452,5 +513,5 @@ erDiagram
 - 승인 snapshot과 release item의 `content_hash`는 동일해야 한다.
 - release artifact의 저장 hash, release row hash와 실제 파일 hash가 같아야 한다.
 - 앱 DB의 manifest row count, byte size, SHA-256과 SQLite 실물이 같아야 한다.
-- 콘텐츠 DB schema와 사용자 DB schema version은 독립적으로 증가한다.
+- 학습 콘텐츠 DB, 용어집 DB와 사용자 DB schema/version은 독립적으로 증가한다.
 - RLS와 RPC 권한은 migration의 일부이며 ERD만 보고 권한을 추론하면 안 된다.

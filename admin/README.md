@@ -27,4 +27,15 @@ URL과 파일 등록은 비공개 Storage 및 작업 큐에 연결되고, Source
 
 Source Worker 실행·OCR·SSRF 방어·자동 scheduler 설정은 [`tools/README-admin-source-worker.md`](../tools/README-admin-source-worker.md)를 참고합니다.
 
+## 독립 용어집
+
+`/glossary`는 학습요소 검색과 별도의 금융 용어집을 편집합니다. 저장·삭제와
+컴파일 queue 등록은 같은 DB 트랜잭션에서 처리되고, deterministic Glossary Worker가
+활성 용어만 독립 SQLite FTS5 DB로 컴파일합니다. PDF와 업로드 원문은 Admin의
+비공개 source 링크로만 남으며 앱 DB에는 들어가지 않습니다. Android는 새 stable
+DB를 한 번 내려받고 검증한 뒤 검색·상세 보기·메모·밑줄·형광펜·코멘트를 모두
+오프라인에서 수행합니다. 초기 import, Worker와 endpoint 설정은
+[`docs/operations/GLOSSARY_PIPELINE.md`](../docs/operations/GLOSSARY_PIPELINE.md)를
+참고합니다.
+
 최초 콘텐츠 import 도구는 이 디렉터리의 `.env.local` 또는 `.env`에서 공개 Supabase URL을 자동으로 읽습니다. Secret key는 파일에 저장하지 않고 실행 중인 터미널의 `SUPABASE_SECRET_KEY` 환경변수로만 전달합니다.

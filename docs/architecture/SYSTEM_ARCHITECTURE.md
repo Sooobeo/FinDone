@@ -7,13 +7,16 @@
 FinDone은 Android 오프라인 학습 앱, Next.js Admin, Supabase 저작·검토 DB,
 Python Worker와 결정론적 콘텐츠 빌드 도구로 구성된다. 핵심 경계는 다음과 같다.
 
-- 앱 콘텐츠와 사용자 데이터는 서로 다른 SQLite 파일이다. 콘텐츠 교체가 학습
-  기록을 덮어쓰지 않는다.
+- 학습 콘텐츠, 독립 용어집, 사용자 데이터는 서로 다른 SQLite 파일이다. 어느
+  읽기 전용 DB를 교체해도 학습 기록·용어 메모·본문 주석을 덮어쓰지 않는다.
 - 원본 파일 업로드, 텍스트 추출, 앱 콘텐츠 후보 생성, 사람 검토, 릴리스는
   서로 다른 상태와 권한 경계를 가진다.
+- 용어 의미의 최초 초안은 개발/Admin 저작 Agent로 만들 수 있지만, 검증본만
+  Admin에 적재한다. Admin 편집·컴파일·배포와 Android 런타임에는 LLM 경로가 없다.
 - Admin은 온라인 LLM을 호출해 모델을 학습시키는 장소가 아니다. 저장소에
   체크인된 로컬 변환기와 오프라인 모델 실험 결과를 조회하고 최종 검토한다.
-- 외부 LLM API 없이 재현 가능한 Python·scikit-learn 파이프라인을 사용한다.
+- 학습 콘텐츠 모델링은 외부 LLM API 없이 재현 가능한 Python·scikit-learn
+  파이프라인을 사용한다.
 - `bootstrap_not_reviewed`와 `candidate`는 개발 상태이며 `release_ready`만
   릴리스할 수 있다.
 
@@ -34,6 +37,7 @@ flowchart LR
         generationWorker["Local Content Compiler Worker"]
         validationWorker["Validation Worker"]
         releaseWorker["Release Worker"]
+        glossaryWorker["Static Glossary Compiler Worker"]
         offlineBuilder["Offline Content and Model Build"]
     end
     subgraph datastore ["Data Stores"]
@@ -41,6 +45,7 @@ flowchart LR
         objectStorage["Supabase Private Storage"]
         releaseStorage["Release Bundle Storage"]
         packagedAssets["Packaged Content SQLite and Manifest"]
+        glossaryAssets["Glossary SQLite and Manifest"]
         sourceRepository["Specs and Checked-in Content"]
     end
     subgraph external ["External Inputs and Scheduling"]
@@ -60,16 +65,21 @@ flowchart LR
     validationWorker -->|"Validation results"| postgres
     releaseWorker -->|"Release state"| postgres
     releaseWorker -->|"Bundles"| releaseStorage
+    glossaryWorker -->|"Active glossary snapshot"| postgres
+    glossaryWorker -->|"Independent bundles"| releaseStorage
     offlineBuilder -->|"Reads build inputs"| sourceRepository
     offlineBuilder -->|"Promotes verified assets"| packagedAssets
+    offlineBuilder -->|"Promotes glossary baseline"| glossaryAssets
     sourceWorker -.->|"Fetches approved inputs"| sourceSites
     githubActions -.->|"Starts workflow"| sourceWorker
     githubActions -.->|"Starts workflow"| generationWorker
     githubActions -.->|"Starts workflow"| validationWorker
     githubActions -.->|"Starts workflow"| releaseWorker
+    githubActions -.->|"Starts workflow"| glossaryWorker
 ```
 
-`Supabase PostgreSQL`의 `ingestion_jobs`와 generation batch 테이블이 작업
+`Supabase PostgreSQL`의 `ingestion_jobs`, generation batch와
+`glossary_compile_jobs`가 작업
 큐 역할을 한다. 별도 메시지 브로커는 구현되어 있지 않다. Worker는 RPC로
 작업을 원자적으로 claim하고 lease, retry, 진행률과 오류를 DB에 기록한다.
 
@@ -106,6 +116,7 @@ flowchart TD
 | 원본 콘텐츠 변환 | `tools/admin_content_generation_worker.py`, `tools/local_content_model.py` | 검토 후보, evidence, model run audit | 승인 후에만 간접 반영 |
 | 개념문항 후보 순위화 | `tools/train_concept_question_model.py` | 질문은행 후보, ranker artifact, 실험 보고서 | Python 모델을 앱에 탑재하지 않고 생성 결과만 사용 |
 | 앱 DB 컴파일 | `tools/compile_app_content.py`, `tools/build_content_db.py` | `content.sqlite3`, `content-manifest.json` | 직접 사용 |
+| 용어집 저작·컴파일 | `tools/generate_glossary_content.py`, `tools/admin_glossary_worker.py` | 검토된 용어 JSON, `glossary.sqlite3`, manifest | 생성 Agent는 저작 시에만, 앱은 정적 결과만 사용 |
 | 앱 퀴즈 실행 | Kotlin `QuizEngine`과 패키지 질문은행 | seed 기반 문제 인스턴스 | 기기에서 오프라인 실행 |
 
 Admin의 모델 대시보드는 실험·데이터량·품질 게이트를 보여주는 관측 화면이다.
@@ -122,6 +133,7 @@ Admin의 모델 대시보드는 실험·데이터량·품질 게이트를 보여
 | Generation Worker | service role로 batch claim·완료 | Admin 사용자가 직접 queue 생성 불가 |
 | Validation Worker | revision 또는 release 검증 결과 기록 | authoring content 직접 수정 금지 |
 | Release Worker | 승인 snapshot으로 bundle 생성·활성화 | 미승인 revision, stale validation으로 공개 금지 |
+| Glossary Worker | active Admin snapshot을 결정론적으로 FTS5 DB로 컴파일 | 모델 호출, Admin 원문·source ID의 앱 DB 포함 금지 |
 | Android app | 공개 HTTPS stable endpoint 읽기 | Admin DB, source 원문, service secret 접근 금지 |
 | User SQLite | 기기 내 학습 기록 저장 | 콘텐츠 SQLite와 합치거나 서버에 자동 업로드 금지 |
 
@@ -137,6 +149,8 @@ Admin의 모델 대시보드는 실험·데이터량·품질 게이트를 보여
 6. 개념문항 은행은 독립 사람 검토가 완료된 `release_ready`여야 한다.
 7. Android 다운로드는 HTTPS, 크기 상한, manifest/database SHA-256과 SQLite
    검증을 통과한 뒤에만 기존 콘텐츠를 교체한다.
+8. 용어집은 학습 콘텐츠와 독립된 version/channel을 사용하고, Admin에서 archive된
+   용어와 비공개 원문 레퍼런스는 다음 앱 snapshot에서 제외한다.
 
 일상 개발 검증은 `testDebugUnitTest lintDebug assembleDebug`만 사용한다. Gradle의
 범용 `test`는 release variant까지 선택할 수 있으므로 미검토 문항은행 상태에서

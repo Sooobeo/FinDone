@@ -21,6 +21,21 @@ val contentReleaseEndpoint = (
 val escapedContentReleaseEndpoint = contentReleaseEndpoint
     .replace("\\", "\\\\")
     .replace("\"", "\\\"")
+val glossaryReleaseEndpoint = (
+    providers.gradleProperty("findone.glossaryReleaseEndpoint").orNull
+        ?: System.getenv("FINDONE_GLOSSARY_RELEASE_ENDPOINT")
+        ?: contentReleaseEndpoint.takeIf { it.endsWith("/api/content/stable") }
+            ?.removeSuffix("/api/content/stable")
+            ?.plus("/api/glossary/stable")
+        ?: ""
+).trim().also { value ->
+    if (value.isNotEmpty() && !value.startsWith("https://")) {
+        throw GradleException("findone.glossaryReleaseEndpoint must use HTTPS")
+    }
+}
+val escapedGlossaryReleaseEndpoint = glossaryReleaseEndpoint
+    .replace("\\", "\\\\")
+    .replace("\"", "\\\"")
 val appVersionCode = providers.gradleProperty("findone.versionCode").orNull?.let { value ->
     value.toIntOrNull()?.takeIf { it in 1..2_100_000_000 }
         ?: throw GradleException("findone.versionCode must be an integer from 1 to 2100000000")
@@ -41,6 +56,7 @@ android {
         versionName = appVersionName
         buildConfigField("String", "RELEASE_SUMMARY", "\"$declaredReleaseSummary\"")
         buildConfigField("String", "CONTENT_RELEASE_ENDPOINT", "\"$escapedContentReleaseEndpoint\"")
+        buildConfigField("String", "GLOSSARY_RELEASE_ENDPOINT", "\"$escapedGlossaryReleaseEndpoint\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

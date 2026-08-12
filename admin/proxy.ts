@@ -9,7 +9,9 @@ import {
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
   if (!hasSupabaseConfig) return response;
-  if (request.nextUrl.pathname === "/api/content/stable") return response;
+  if (["/api/content/stable", "/api/glossary/stable"].includes(request.nextUrl.pathname)) {
+    return response;
+  }
 
   const supabase = createServerClient(supabaseUrl, supabasePublishableKey, {
     cookies: {

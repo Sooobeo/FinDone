@@ -136,6 +136,7 @@ internal fun findHttpUrlRanges(text: String): List<HttpUrlRange> = buildList {
 @Composable
 fun ConceptNotesSection(
     elementId: String,
+    subjectName: String = "학습요소",
     notes: List<ConceptNote>,
     errorMessage: String?,
     onDismissError: () -> Unit,
@@ -161,7 +162,7 @@ fun ConceptNotesSection(
             Column(Modifier.weight(1f)) {
                 Text("개인 메모", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Text(
-                    "이 학습요소에만 저장되며 제목을 눌러 내용을 펼칠 수 있습니다.",
+                    "이 ${subjectName}에만 저장되며 제목을 눌러 내용을 펼칠 수 있습니다.",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

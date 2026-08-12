@@ -14,20 +14,47 @@ import java.sql.DriverManager
 class JLatexCorpusRegressionTest {
     @Test
     fun `packaged content and deterministic calculation quiz math builds TeX icons`() {
-        val database = copyPackagedDatabaseToTemp()
+        val database = copyPackagedDatabaseToTemp(DATABASE_ASSET, "findone-content-")
+        val glossaryDatabase = copyPackagedDatabaseToTemp(
+            GLOSSARY_DATABASE_ASSET,
+            "findone-glossary-",
+        )
         try {
             Class.forName("org.sqlite.JDBC")
             DriverManager.getConnection("jdbc:sqlite:${database.toAbsolutePath()}").use { connection ->
                 val content = readContentMath(connection)
                 val quiz = deterministicCalculationQuizMath()
+                val glossary = DriverManager.getConnection(
+                    "jdbc:sqlite:${glossaryDatabase.toAbsolutePath()}"
+                ).use(::readGlossaryMath)
 
                 assertEquals("Every packaged Markdown field must be scanned", 135 * MARKDOWN_COLUMNS.size, content.fieldCount)
                 assertTrue("The packaged content corpus unexpectedly contains no TeX", content.cases.isNotEmpty())
                 assertTrue("The deterministic calculation corpus unexpectedly contains no TeX", quiz.isNotEmpty())
-                assertEveryPayloadBuildsIcon(content.cases + quiz)
+                assertEquals("Every glossary formula must be rendered", 421, glossary.size)
+                assertEveryPayloadBuildsIcon(content.cases + quiz + glossary)
             }
         } finally {
             Files.deleteIfExists(database)
+            Files.deleteIfExists(glossaryDatabase)
+        }
+    }
+
+    private fun readGlossaryMath(connection: Connection): List<MathCase> = buildList {
+        connection.createStatement().use { statement ->
+            statement.executeQuery(
+                """SELECT term_id, formula_latex FROM terms
+                   WHERE length(trim(formula_latex)) > 0 ORDER BY term_id""".trimIndent()
+            ).use { rows ->
+                while (rows.next()) {
+                    val termId = rows.getString(1)
+                    val tex = rows.getString(2).trim()
+                    require('$' !in tex && '`' !in tex) {
+                        "Glossary formula contains its own Markdown delimiter: $termId"
+                    }
+                    add(MathCase("glossary:$termId", tex))
+                }
+            }
         }
     }
 
@@ -145,12 +172,12 @@ class JLatexCorpusRegressionTest {
         }
     }
 
-    private fun copyPackagedDatabaseToTemp(): Path {
+    private fun copyPackagedDatabaseToTemp(asset: String, prefix: String): Path {
         val classLoader = requireNotNull(javaClass.classLoader)
-        val stream = requireNotNull(classLoader.getResourceAsStream(DATABASE_ASSET)) {
-            "$DATABASE_ASSET was not present in merged debug assets"
+        val stream = requireNotNull(classLoader.getResourceAsStream(asset)) {
+            "$asset was not present in merged debug assets"
         }
-        return Files.createTempFile("findone-content-", ".sqlite3").also { target ->
+        return Files.createTempFile(prefix, ".sqlite3").also { target ->
             stream.use { input ->
                 Files.newOutputStream(target).use { output -> input.copyTo(output) }
             }
@@ -168,6 +195,7 @@ class JLatexCorpusRegressionTest {
 
     private companion object {
         const val DATABASE_ASSET = "content.sqlite3"
+        const val GLOSSARY_DATABASE_ASSET = "glossary.sqlite3"
         const val MATH_DELIMITER = "\u0024\u0024"
         const val QUIZ_SEED = 0x5F37_59DFL
         const val MAX_FAILURES_IN_MESSAGE = 40

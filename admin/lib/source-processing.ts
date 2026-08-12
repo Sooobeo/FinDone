@@ -64,6 +64,12 @@ export function sourceStatusPresentation(source: SourceItem): SourceStatusPresen
   if (source.jobStatus === "cancelled") {
     return { label: "처리 취소됨", detail: "다시 등록하거나 작업 기록을 확인해 주세요", loading: false };
   }
+  if (source.jobStatus === "pending_start") {
+    return { label: "가공 시작 전", detail: "Owner가 시작하면 외부 Worker가 처리합니다.", loading: false };
+  }
+  if (source.jobStatus === "paused") {
+    return { label: "가공 일시정지", detail: "현재 체크포인트에서 안전하게 멈춰 있습니다.", loading: false, progress: source.progressPercent };
+  }
   if (source.jobStatus === "queued") {
     return {
       label: "가공 대기 중",
@@ -95,7 +101,7 @@ export function sourceStatusPresentation(source: SourceItem): SourceStatusPresen
 
 export function hasActiveSourceProcessing(source: SourceItem): boolean {
   if (source.jobStatus === "succeeded" || source.jobStatus === "failed" || source.jobStatus === "cancelled") return false;
-  return source.status === "processing" || source.jobStatus === "queued" || source.jobStatus === "running";
+  return source.jobStatus === "queued" || source.jobStatus === "running";
 }
 
 export function mergeSourceStatus(source: SourceItem, row: SourceStatusRow): SourceItem {
@@ -114,7 +120,7 @@ export function mergeSourceStatus(source: SourceItem, row: SourceStatusRow): Sou
     linkedElements: numberOrUndefined(row.linked_element_count) ?? source.linkedElements,
     status: parseSourceStatus(row.latest_parse_status),
     jobId: stringOrUndefined(row.latest_job_id),
-    jobStatus: jobStatus === "queued" || jobStatus === "running" || jobStatus === "succeeded" || jobStatus === "failed" || jobStatus === "cancelled"
+    jobStatus: jobStatus === "pending_start" || jobStatus === "queued" || jobStatus === "running" || jobStatus === "paused" || jobStatus === "succeeded" || jobStatus === "failed" || jobStatus === "cancelled"
       ? jobStatus
       : undefined,
     progressPercent: numberOrUndefined(row.latest_job_progress_percent),

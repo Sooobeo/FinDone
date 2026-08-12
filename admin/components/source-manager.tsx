@@ -11,10 +11,13 @@ import {
   Globe2,
   Link2,
   LoaderCircle,
+  Pause,
+  Play,
   Plus,
   RefreshCw,
   Search,
   UploadCloud,
+  Trash2,
   X,
 } from "lucide-react";
 import { ChangeEvent, DragEvent, FormEvent, useEffect, useMemo, useRef, useState } from "react";
@@ -75,6 +78,7 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
   const [statusRefreshing, setStatusRefreshing] = useState(false);
   const [statusRefreshError, setStatusRefreshError] = useState("");
   const [catalogSubmitting, setCatalogSubmitting] = useState(false);
+  const [sourceAction, setSourceAction] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const domainOptions = useMemo(() => sourceDomainOptions(sources), [sources]);
@@ -250,9 +254,9 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
       setSources((current) => [{
         ...draft,
         jobId: registrationJobId(registration),
-        jobStatus: "queued",
+        jobStatus: "pending_start",
         progressPercent: 0,
-        processingStage: "starting",
+        processingStage: "pending_start",
         createdAt: "방금 등록",
       }, ...current]);
       setUrl("");
@@ -444,9 +448,9 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
         size: formatBytes(item.file.size),
         createdAt: "방금 등록",
         jobId: registeredJobId,
-        jobStatus: "queued",
+        jobStatus: "pending_start",
         progressPercent: 0,
-        processingStage: "starting",
+        processingStage: "pending_start",
       });
     }
     setSources((current) => [...uploaded, ...current]);
@@ -458,6 +462,38 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
       title: `${uploaded.length}개 파일의 서버 저장을 완료했습니다.`,
       detail: `자동 가공 대기열에도 등록했습니다.${reusedObjectCount ? ` 동일 SHA-256 원본 ${reusedObjectCount}개는 재전송하지 않았습니다.` : ""} 아래 목록에서 실제 처리 단계를 확인할 수 있습니다.`,
     });
+  }
+
+  async function controlSource(source: SourceItem, action: "start" | "pause" | "resume" | "delete") {
+    if (readOnly || sourceAction || !source.jobId && action !== "delete") return;
+    const supabase = getBrowserSupabase();
+    if (!supabase) return setMessage("Supabase 연결을 확인해 주세요.");
+    const label = action === "delete" ? "삭제" : action === "pause" ? "일시정지" : action === "resume" ? "재개" : "시작";
+    if (!window.confirm(`${source.label} 가공을 ${label}하시겠습니까?`)) return;
+    setSourceAction(`${source.id}:${action}`);
+    try {
+      if (action === "delete") {
+        if (source.linkedElements > 0) throw new Error("앱 콘텐츠와 연결된 원본은 삭제할 수 없습니다.");
+        const { error } = await supabase.rpc("archive_unconnected_source", { p_source_id: source.id });
+        if (error) throw error;
+        if (!source.locator.startsWith("http")) {
+          await supabase.storage.from("source-private").remove([source.locator]);
+        }
+        setSources((current) => current.filter((item) => item.id !== source.id));
+        setMessage("연결되지 않은 원본을 보관 처리했습니다. 기록은 복구를 위해 보존됩니다.");
+      } else {
+        const { data, error } = await supabase.rpc("control_source_ingestion_job", { p_job_id: source.jobId, p_action: action });
+        if (error) throw error;
+        const result = Array.isArray(data) ? data[0] : data;
+        const jobStatus = result && typeof result === "object" && "jobStatus" in result ? String((result as { jobStatus: unknown }).jobStatus) : undefined;
+        setSources((current) => current.map((item) => item.id === source.id ? { ...item, jobStatus: jobStatus as SourceItem["jobStatus"], status: jobStatus === "running" ? "processing" : item.status, processingStage: action === "pause" ? "paused" : action === "start" || action === "resume" ? "queued" : item.processingStage } : item));
+        setMessage(`${source.label}: 가공 ${label} 요청을 반영했습니다.`);
+      }
+    } catch (error) {
+      setMessage(`${source.label}: ${error instanceof Error ? error.message : "작업에 실패했습니다."}`);
+    } finally {
+      setSourceAction(null);
+    }
   }
 
   return (
@@ -674,7 +710,13 @@ export function SourceManager({ initialSources, readOnly, viewerMode = false }: 
                   </span>
                 </span>
                 <span className="source-links"><strong>{viewerMode ? "연결" : source.linkedElements}</strong><small>{viewerMode ? "기준 설명" : "연결 요소"}</small></span>
-                {source.locator.startsWith("http") ? <a className="icon-button" href={source.locator} target="_blank" rel="noreferrer" aria-label={`${source.label} 열기`}><ArrowUpRight size={17} /></a> : <span className="icon-button-placeholder" />}
+                <span className="source-actions">
+                  {!readOnly && source.jobId && source.jobStatus === "pending_start" ? <button className="icon-button" type="button" onClick={() => controlSource(source, "start")} disabled={Boolean(sourceAction)} aria-label={`${source.label} 가공 시작`}>{sourceAction === `${source.id}:start` ? <LoaderCircle className="spin" size={17} /> : <Play size={17} />}</button> : null}
+                  {!readOnly && source.jobId && (source.jobStatus === "queued" || source.jobStatus === "running") ? <button className="icon-button" type="button" onClick={() => controlSource(source, "pause")} disabled={Boolean(sourceAction)} aria-label={`${source.label} 가공 일시정지`}>{sourceAction === `${source.id}:pause` ? <LoaderCircle className="spin" size={17} /> : <Pause size={17} />}</button> : null}
+                  {!readOnly && source.jobId && source.jobStatus === "paused" ? <button className="icon-button" type="button" onClick={() => controlSource(source, "resume")} disabled={Boolean(sourceAction)} aria-label={`${source.label} 가공 재개`}>{sourceAction === `${source.id}:resume` ? <LoaderCircle className="spin" size={17} /> : <Play size={17} />}</button> : null}
+                  {!readOnly && source.linkedElements === 0 && source.jobStatus !== "queued" && source.jobStatus !== "running" && source.jobStatus !== "paused" ? <button className="icon-button source-delete-button" type="button" onClick={() => controlSource(source, "delete")} disabled={Boolean(sourceAction)} aria-label={`${source.label} 원본 삭제`}>{sourceAction === `${source.id}:delete` ? <LoaderCircle className="spin" size={17} /> : <Trash2 size={17} />}</button> : null}
+                  {source.locator.startsWith("http") ? <a className="icon-button" href={source.locator} target="_blank" rel="noreferrer" aria-label={`${source.label} 열기`}><ArrowUpRight size={17} /></a> : <span className="icon-button-placeholder" />}
+                </span>
               </article>
             );
           })}

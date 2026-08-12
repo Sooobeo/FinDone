@@ -11,6 +11,12 @@ import type {
   ContentGenerationItem,
   ConceptElement,
   DistractorItem,
+  GlossaryCategoryItem,
+  GlossaryAdminReferenceSource,
+  GlossaryCompileJobItem,
+  GlossaryReleaseItem,
+  GlossarySourceItem,
+  GlossaryTermItem,
   ReleaseRecord,
   SourceDomain,
   SourceItem,
@@ -82,6 +88,154 @@ export interface ReleaseWorkspace {
   releases: ReleaseRecord[];
   runs: ValidationRunRecord[];
   jobs: WorkflowJob[];
+}
+
+export interface GlossaryWorkspace {
+  categories: GlossaryCategoryItem[];
+  sources: GlossarySourceItem[];
+  adminReferenceSources: GlossaryAdminReferenceSource[];
+  terms: GlossaryTermItem[];
+  releases: GlossaryReleaseItem[];
+  jobs: GlossaryCompileJobItem[];
+}
+
+function stringArray(row: Row, key: string): string[] {
+  const value = row[key];
+  return Array.isArray(value)
+    ? value.filter((item): item is string => typeof item === "string" && item.trim().length > 0)
+    : [];
+}
+
+export async function getGlossaryWorkspace(): Promise<GlossaryWorkspace> {
+  const empty: GlossaryWorkspace = {
+    categories: [], sources: [], adminReferenceSources: [], terms: [], releases: [], jobs: [],
+  };
+  const supabase = await getServerSupabase();
+  if (!supabase) return empty;
+
+  const [
+    categoryResult,
+    sourceResult,
+    adminSourceResult,
+    referenceResult,
+    releaseResult,
+    jobResult,
+    channelResult,
+  ] = await Promise.all([
+    supabase.from("glossary_categories").select("*").order("display_order"),
+    supabase.from("glossary_sources").select("source_code,title,public_url").order("source_code"),
+    supabase.from("sources").select("source_id,label,kind,source_type").eq("is_active", true).order("label"),
+    supabase.from("glossary_term_admin_references").select("term_id,source_id"),
+    supabase.from("glossary_releases").select("*").order("glossary_version", { ascending: false }).limit(20),
+    supabase.from("glossary_compile_jobs").select("*").order("created_at", { ascending: false }).limit(20),
+    supabase.from("glossary_release_channels").select("release_id").eq("channel", "stable").maybeSingle(),
+  ]);
+  const firstError = categoryResult.error ?? sourceResult.error ?? adminSourceResult.error ??
+    referenceResult.error ?? releaseResult.error ?? jobResult.error ?? channelResult.error;
+  if (firstError) throw new Error(`용어집 작업 공간을 불러오지 못했습니다: ${firstError.message}`);
+
+  const termRows: Row[] = [];
+  const pageSize = 500;
+  for (let offset = 0; ; offset += pageSize) {
+    const { data, error } = await supabase
+      .from("glossary_terms")
+      .select("*")
+      .eq("is_active", true)
+      .order("category_id")
+      .order("display_order")
+      .range(offset, offset + pageSize - 1);
+    if (error) throw new Error(`용어집 용어를 불러오지 못했습니다: ${error.message}`);
+    const page = (data ?? []) as Row[];
+    termRows.push(...page);
+    if (page.length < pageSize) break;
+  }
+
+  const categoryCounts = new Map<string, number>();
+  const adminReferencesByTerm = new Map<string, string[]>();
+  ((referenceResult.data ?? []) as Row[]).forEach((row) => {
+    const termId = text(row, "term_id");
+    adminReferencesByTerm.set(termId, [
+      ...(adminReferencesByTerm.get(termId) ?? []),
+      text(row, "source_id"),
+    ]);
+  });
+  termRows.forEach((row) => {
+    const id = text(row, "category_id");
+    categoryCounts.set(id, (categoryCounts.get(id) ?? 0) + 1);
+  });
+  const stableReleaseId = channelResult.data?.release_id ?? null;
+  return {
+    categories: ((categoryResult.data ?? []) as Row[]).map((row) => ({
+      categoryId: text(row, "category_id"),
+      name: text(row, "name"),
+      displayOrder: number(row, "display_order"),
+      termCount: categoryCounts.get(text(row, "category_id")) ?? 0,
+    })),
+    sources: ((sourceResult.data ?? []) as Row[]).map((row) => ({
+      sourceCode: text(row, "source_code"),
+      title: text(row, "title"),
+      url: text(row, "public_url"),
+    })),
+    adminReferenceSources: ((adminSourceResult.data ?? []) as Row[]).map((row) => ({
+      sourceId: text(row, "source_id"),
+      label: text(row, "label"),
+      kind: text(row, "kind"),
+      sourceType: text(row, "source_type"),
+    })),
+    terms: termRows.map((row) => mapGlossaryTerm(row, adminReferencesByTerm.get(text(row, "term_id")) ?? [])),
+    releases: ((releaseResult.data ?? []) as Row[]).map((row) => ({
+      releaseId: text(row, "release_id"),
+      glossaryDbVersion: number(row, "glossary_version"),
+      versionName: text(row, "version_name"),
+      status: text(row, "status") as GlossaryReleaseItem["status"],
+      termCount: number(row, "term_count"),
+      releaseNotes: text(row, "release_notes"),
+      databaseByteSize: nullableNumber(row, "database_byte_size"),
+      publishedAt: nullableText(row, "published_at"),
+      createdAt: text(row, "created_at"),
+      stable: text(row, "release_id") === stableReleaseId,
+    })),
+    jobs: ((jobResult.data ?? []) as Row[]).map((row) => ({
+      jobId: text(row, "job_id"),
+      releaseId: text(row, "release_id"),
+      status: text(row, "status") as GlossaryCompileJobItem["status"],
+      progressPercent: number(row, "progress_percent"),
+      attemptCount: number(row, "attempt_count"),
+      errorMessage: nullableText(row, "error_message"),
+      createdAt: text(row, "created_at"),
+      updatedAt: text(row, "updated_at"),
+    })),
+  };
+}
+
+function mapGlossaryTerm(row: Row, adminReferenceSourceIds: string[]): GlossaryTermItem {
+  return {
+    termId: text(row, "term_id"),
+    categoryId: text(row, "category_id"),
+    displayOrder: number(row, "display_order"),
+    canonicalNameEn: text(row, "canonical_name_en"),
+    canonicalNameKo: text(row, "canonical_name_ko"),
+    aliases: stringArray(row, "aliases"),
+    conceptType: text(row, "concept_type"),
+    oneLineDefinitionKo: text(row, "one_line_definition_ko"),
+    coreDefinitionKo: text(row, "core_definition_ko"),
+    practicalContextKo: text(row, "practical_context_ko"),
+    whyItMattersKo: text(row, "why_it_matters_ko"),
+    exampleKo: text(row, "example_ko"),
+    limitationsKo: stringArray(row, "limitations_ko"),
+    sourceCodes: stringArray(row, "source_codes"),
+    jurisdictions: stringArray(row, "jurisdictions"),
+    asOfDate: text(row, "as_of_date"),
+    reviewStatus: text(row, "review_status") as GlossaryTermItem["reviewStatus"],
+    reviewFlags: stringArray(row, "review_flags"),
+    relatedTermIds: stringArray(row, "related_term_ids"),
+    formulaLatex: text(row, "formula_latex"),
+    formulaNotesKo: text(row, "formula_notes_ko"),
+    adminReferenceSourceIds,
+    contentRevision: number(row, "content_revision"),
+    updatedAt: text(row, "updated_at"),
+    isActive: row.is_active === true,
+  };
 }
 
 export interface LocalModelOperationalMetrics {

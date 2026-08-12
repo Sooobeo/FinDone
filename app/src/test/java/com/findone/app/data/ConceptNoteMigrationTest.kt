@@ -40,6 +40,24 @@ class ConceptNoteMigrationTest {
     }
 
     @Test
+    fun `notes and text marks accept only canonical glossary targets`() {
+        val target = "GLOSSARY:FIN-21-066"
+        assertEquals(target, requireConceptNoteElementId(target))
+        assertEquals(
+            target,
+            normalizeTextAnnotationDraft(
+                elementId = target,
+                anchor = buildLearningTextAnchor("glossary_core", "핵심 금융 용어 설명", 0, 2),
+                style = TextAnnotationStyle.HIGHLIGHT,
+                comment = "복습",
+            ).elementId,
+        )
+        assertThrows(IllegalArgumentException::class.java) {
+            requireConceptNoteElementId("GLOSSARY:FIN-99-999")
+        }
+    }
+
+    @Test
     fun `schema 4 migration only creates the notes table and its index`() {
         val statements = schema4MigrationStatements()
         val normalized = statements.map { it.trim().uppercase() }

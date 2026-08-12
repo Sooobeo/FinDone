@@ -1214,7 +1214,7 @@ class UserRepository(context: Context) {
             }
             "concept_notes" -> {
                 row.requiredLong("id", 1)
-                row.requireElementId()
+                row.requireNoteTargetId()
                 row.requiredText("title", CONCEPT_NOTE_TITLE_MAX_LENGTH)
                 row.requiredText("body", CONCEPT_NOTE_BODY_MAX_LENGTH)
                 val createdAt = row.requiredLong("created_at", 0)
@@ -1223,7 +1223,7 @@ class UserRepository(context: Context) {
             }
             "text_annotations" -> {
                 row.requiredLong("id", 1)
-                val elementId = row.requireElementId()
+                val elementId = row.requireNoteTargetId()
                 val sourceHash = if (row.isNull("source_hash")) null else
                     row.requiredText("source_hash", 64)
                 val comment = if (row.isNull("comment")) null else
@@ -1461,6 +1461,8 @@ internal fun mergeMigratingWrongRows(rows: List<MigratingWrongRow>): List<Migrat
     }
 
 private val ELEMENT_ID_PATTERN = Regex("^(ACC|CF|INV|FI|DER|EQV|IBT)-\\d{2}$")
+private val GLOSSARY_NOTE_TARGET_PATTERN =
+    Regex("^GLOSSARY:FIN-(?:0[1-9]|1\\d|2[01])-\\d{3}$")
 
 internal data class NormalizedConceptNoteDraft(
     val elementId: String,
@@ -1469,7 +1471,9 @@ internal data class NormalizedConceptNoteDraft(
 )
 
 internal fun requireConceptNoteElementId(elementId: String): String = elementId.also {
-    require(ELEMENT_ID_PATTERN.matches(it)) { "학습요소 ID 형식이 올바르지 않습니다." }
+    require(ELEMENT_ID_PATTERN.matches(it) || GLOSSARY_NOTE_TARGET_PATTERN.matches(it)) {
+        "메모 대상 ID 형식이 올바르지 않습니다."
+    }
 }
 
 internal fun backupFormatIncludesConceptNotes(format: String): Boolean =
@@ -1688,6 +1692,9 @@ private fun JSONObject.requiredInt(key: String, minimum: Int = Int.MIN_VALUE): I
 
 private fun JSONObject.requireElementId(key: String = "element_id"): String =
     requiredText(key, 8).also { require(ELEMENT_ID_PATTERN.matches(it)) { "$key 형식이 올바르지 않습니다." } }
+
+private fun JSONObject.requireNoteTargetId(key: String = "element_id"): String =
+    requiredText(key, 32).also { requireConceptNoteElementId(it) }
 
 private fun inferLegacyQuizMode(elementId: String, templateId: String): QuizMode =
     QuizMode.entries.firstOrNull { mode ->

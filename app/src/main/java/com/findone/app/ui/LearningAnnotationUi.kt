@@ -306,5 +306,12 @@ private fun String.sectionName(): String = when (this) {
     "formula_variables" -> "변수·항목 뜻"
     "learning_notes" -> "적용 유형"
     "checklist" -> "실무 사용 사례"
+    "glossary_one_line" -> "한 문장 정의"
+    "glossary_core" -> "핵심 의미"
+    "glossary_context" -> "실무 문맥"
+    "glossary_importance" -> "왜 중요한가"
+    "glossary_example" -> "예시"
+    "glossary_limitations" -> "주의·한계"
+    "glossary_formula" -> "공식"
     else -> if (startsWith("learning_notes_")) "적용 유형" else this
 }

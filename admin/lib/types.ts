@@ -149,7 +149,7 @@ export interface SourceItem {
   size?: string;
   createdAt: string;
   jobId?: string;
-  jobStatus?: "queued" | "running" | "succeeded" | "failed" | "cancelled";
+  jobStatus?: "pending_start" | "queued" | "running" | "paused" | "succeeded" | "failed" | "cancelled";
   progressPercent?: number;
   processingStage?: string;
   processingError?: string;
@@ -267,4 +267,76 @@ export interface ContentGenerationEvidence {
   sourceLocator: string;
   fragmentLocator: Record<string, unknown>;
   contentExcerpt: string;
+}
+
+export interface GlossaryCategoryItem {
+  categoryId: string;
+  name: string;
+  displayOrder: number;
+  termCount: number;
+}
+
+export interface GlossarySourceItem {
+  sourceCode: string;
+  title: string;
+  url: string;
+}
+
+export interface GlossaryAdminReferenceSource {
+  sourceId: string;
+  label: string;
+  kind: string;
+  sourceType: string;
+}
+
+export interface GlossaryTermItem {
+  termId: string;
+  categoryId: string;
+  displayOrder: number;
+  canonicalNameEn: string;
+  canonicalNameKo: string;
+  aliases: string[];
+  conceptType: string;
+  oneLineDefinitionKo: string;
+  coreDefinitionKo: string;
+  practicalContextKo: string;
+  whyItMattersKo: string;
+  exampleKo: string;
+  limitationsKo: string[];
+  sourceCodes: string[];
+  jurisdictions: string[];
+  asOfDate: string;
+  reviewStatus: "agent_reviewed" | "approved";
+  reviewFlags: string[];
+  relatedTermIds: string[];
+  formulaLatex: string;
+  formulaNotesKo: string;
+  adminReferenceSourceIds: string[];
+  contentRevision: number;
+  updatedAt: string;
+  isActive: boolean;
+}
+
+export interface GlossaryReleaseItem {
+  releaseId: string;
+  glossaryDbVersion: number;
+  versionName: string;
+  status: "building" | "published" | "failed" | "withdrawn";
+  termCount: number;
+  releaseNotes: string;
+  databaseByteSize: number | null;
+  publishedAt: string | null;
+  createdAt: string;
+  stable: boolean;
+}
+
+export interface GlossaryCompileJobItem {
+  jobId: string;
+  releaseId: string;
+  status: "queued" | "running" | "succeeded" | "failed" | "cancelled";
+  progressPercent: number;
+  attemptCount: number;
+  errorMessage: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
