@@ -52,6 +52,23 @@ class GlossaryAssetTest {
                                )""".trimIndent()
                         ),
                     )
+                    statement.executeQuery(
+                        """SELECT canonical_name_ko, canonical_name_en, term_id
+                           FROM terms
+                           ORDER BY canonical_name_ko COLLATE NOCASE ASC,
+                                    canonical_name_en COLLATE NOCASE ASC,
+                                    term_id ASC
+                           LIMIT 3""".trimIndent()
+                    ).use { rows ->
+                        assertTrue(rows.next())
+                        assertEquals("130/30 전략", rows.getString(1))
+                        assertEquals("130/30 Strategy", rows.getString(2))
+                        assertEquals("FIN-05-029", rows.getString(3))
+                        assertTrue(rows.next())
+                        assertEquals("1차 평가변수", rows.getString(1))
+                        assertTrue(rows.next())
+                        assertEquals("2단계 배당할인모형", rows.getString(1))
+                    }
                     assertEquals(
                         0L,
                         statement.count(

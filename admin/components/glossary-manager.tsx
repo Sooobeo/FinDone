@@ -101,18 +101,21 @@ export function GlossaryManager({
     }
   }
 
-  async function deleteTerm() {
-    if (!draft || readOnly || busy) return;
-    if (!window.confirm(`‘${draft.canonicalNameEn}’을 용어집에서 삭제할까요?\n다음 stable DB부터 앱 검색에서도 사라집니다.`)) return;
+  async function deleteTerm(termOverride?: GlossaryTermItem) {
+    const target = termOverride ?? draft;
+    if (!target || readOnly || busy) return;
+    if (!window.confirm(`‘${target.canonicalNameEn}’을 용어집에서 삭제할까요?\n다음 stable DB부터 앱 검색에서도 사라집니다.`)) return;
     setBusy("delete");
     setMessage("");
     try {
-      const response = await fetch(`/api/glossary/terms/${encodeURIComponent(draft.termId)}`, { method: "DELETE" });
+      const response = await fetch(`/api/glossary/terms/${encodeURIComponent(target.termId)}`, { method: "DELETE" });
       const payload = await response.json() as { error?: string };
       if (!response.ok) throw new Error(payload.error || "용어 삭제에 실패했습니다.");
-      setTerms((current) => current.filter((term) => term.termId !== draft.termId));
-      setSelectedId(null);
-      setDraft(null);
+      setTerms((current) => current.filter((term) => term.termId !== target.termId));
+      if (selectedId === target.termId) {
+        setSelectedId(null);
+        setDraft(null);
+      }
       setMessage("용어를 보관 처리했습니다. 삭제본을 반영하는 새 DB 컴파일이 자동으로 큐에 등록됐습니다.");
       router.refresh();
     } catch (error) {
@@ -194,10 +197,35 @@ export function GlossaryManager({
           <div className="glossary-list-count">검색 결과 {filtered.length.toLocaleString("ko-KR")}개</div>
           <div className="glossary-term-list">
             {filtered.slice(0, 400).map((term) => (
-              <button key={term.termId} type="button" className={term.termId === selectedId ? "active" : ""} onClick={() => openEditor(term)}>
+              <div
+                key={term.termId}
+                className={`glossary-term-row ${term.termId === selectedId ? "active" : ""}`}
+                role="button"
+                tabIndex={0}
+                onClick={() => openEditor(term)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    openEditor(term);
+                  }
+                }}
+              >
                 <span><small>{term.termId}</small><strong>{term.canonicalNameEn}</strong><em>{term.canonicalNameKo}</em></span>
                 <p>{term.oneLineDefinitionKo}</p>
-              </button>
+                <button
+                  className="button-ghost-danger glossary-row-delete"
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    void deleteTerm(term);
+                  }}
+                  disabled={readOnly || Boolean(busy)}
+                  aria-label={`${term.canonicalNameEn} 삭제`}
+                >
+                  {busy === "delete" && selectedId === term.termId ? <LoaderCircle className="spin" size={15} /> : <Trash2 size={15} />}
+                  삭제
+                </button>
+              </div>
             ))}
             {!filtered.length ? <div className="source-empty">조건에 맞는 용어가 없습니다.</div> : null}
           </div>
@@ -240,7 +268,7 @@ export function GlossaryManager({
               <Field label="공식 설명"><textarea value={draft.formulaNotesKo} onChange={(event) => update("formulaNotesKo", event.target.value)} disabled={readOnly} rows={3} /></Field>
             </div>
             <footer>
-              <button className="button-ghost-danger" type="button" onClick={deleteTerm} disabled={readOnly || Boolean(busy)}>{busy === "delete" ? <LoaderCircle className="spin" size={15} /> : <Trash2 size={15} />} 삭제</button>
+              <button className="button-ghost-danger" type="button" onClick={() => void deleteTerm()} disabled={readOnly || Boolean(busy)}>{busy === "delete" ? <LoaderCircle className="spin" size={15} /> : <Trash2 size={15} />} 삭제</button>
               <button className="button-primary" type="button" onClick={saveTerm} disabled={readOnly || Boolean(busy)}>{busy === "save" ? <LoaderCircle className="spin" size={15} /> : <Save size={15} />} 저장</button>
             </footer>
           </aside>

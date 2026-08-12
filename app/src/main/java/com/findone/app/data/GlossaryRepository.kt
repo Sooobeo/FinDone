@@ -138,7 +138,10 @@ class GlossaryRepository(context: Context) : Closeable {
             """SELECT $SUMMARY_PROJECTION
                FROM terms t JOIN categories c ON c.category_id = t.category_id
                $categoryClause
-               ORDER BY c.display_order, t.display_order LIMIT $MAX_RESULTS""".trimIndent(),
+               ORDER BY t.canonical_name_ko COLLATE NOCASE ASC,
+                        t.canonical_name_en COLLATE NOCASE ASC,
+                        t.term_id ASC
+               LIMIT $MAX_RESULTS""".trimIndent(),
             arguments,
         ) { it.readSummaries() }
     }
@@ -157,7 +160,9 @@ class GlossaryRepository(context: Context) : Closeable {
                JOIN terms t ON t.term_id = glossary_fts.term_id
                JOIN categories c ON c.category_id = t.category_id
                WHERE glossary_fts MATCH ? $categoryClause
-               ORDER BY bm25(glossary_fts), c.display_order, t.display_order
+               ORDER BY t.canonical_name_ko COLLATE NOCASE ASC,
+                        t.canonical_name_en COLLATE NOCASE ASC,
+                        t.term_id ASC
                LIMIT $MAX_RESULTS""".trimIndent(),
             arguments,
         ) { it.readSummaries() }
@@ -187,7 +192,10 @@ class GlossaryRepository(context: Context) : Closeable {
                    OR EXISTS(SELECT 1 FROM aliases a
                              WHERE a.term_id = t.term_id AND a.label LIKE ? ESCAPE '\\'))
                $categoryClause
-               ORDER BY c.display_order, t.display_order LIMIT $MAX_RESULTS""".trimIndent(),
+               ORDER BY t.canonical_name_ko COLLATE NOCASE ASC,
+                        t.canonical_name_en COLLATE NOCASE ASC,
+                        t.term_id ASC
+               LIMIT $MAX_RESULTS""".trimIndent(),
             arguments,
         ) { it.readSummaries() }
     }
