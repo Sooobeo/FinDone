@@ -329,6 +329,7 @@ export default async function ModelDashboardPage() {
             initialDecisions={conceptQuestionDecisions}
             conceptOptions={conceptElements.map(({ elementId, title, definition, intuition }) => ({ elementId, title, definition, intuition }))}
             canReview={context.role === "owner"}
+            exportMetadata={{ experimentId: latestConcept.experimentId, reviewInputSha256: conceptReview.reviewInputSha256 }}
           />
         ) : <p className="model-panel-note">확인할 예외가 없습니다. Owner 배치 승인만 남았습니다.</p>}
         <details className="model-rule-details">

@@ -1,10 +1,11 @@
 "use client";
 
-import { Check, ChevronDown, CircleAlert, LoaderCircle, Pencil, Save, X } from "lucide-react";
+import { Check, ChevronDown, CircleAlert, Download, LoaderCircle, Pencil, Save, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { ConceptExperiment } from "@/lib/concept-model-report";
 import type { ConceptQuestionDecision } from "@/lib/concept-model-review-store";
+import { buildConceptReviewWorkbook, conceptReviewWorkbookFilename } from "@/lib/concept-review-export";
 
 type QueueItem = ConceptExperiment["automatedReview"]["queue"][number];
 type DecisionKind = ConceptQuestionDecision["decision"];
@@ -46,11 +47,16 @@ export function ConceptExceptionReview({
   initialDecisions,
   conceptOptions,
   canReview,
+  exportMetadata,
 }: {
   items: QueueItem[];
   initialDecisions: Record<string, ConceptQuestionDecision>;
   conceptOptions: ConceptOption[];
   canReview: boolean;
+  exportMetadata: {
+    experimentId: string;
+    reviewInputSha256: string;
+  };
 }) {
   const router = useRouter();
   const [savedDecisions, setSavedDecisions] = useState(initialDecisions);
@@ -66,6 +72,24 @@ export function ConceptExceptionReview({
     () => items.filter((item) => savedDecisions[item.questionId]).length,
     [items, savedDecisions],
   );
+
+  function exportReviewQueue() {
+    const workbook = buildConceptReviewWorkbook(items, savedDecisions, {
+      ...exportMetadata,
+      generatedAt: new Date().toISOString(),
+    });
+    const binary = new ArrayBuffer(workbook.byteLength);
+    new Uint8Array(binary).set(workbook);
+    const blob = new Blob([binary], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = conceptReviewWorkbookFilename();
+    anchor.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
 
   function beginEdit(item: QueueItem) {
     setDrafts((current) => ({
@@ -191,7 +215,12 @@ export function ConceptExceptionReview({
     <div className="concept-review-queue">
       <div className="concept-review-queue-heading">
         <div><h3>확인 대기 문항 {items.length}개</h3><p>결정 저장 {decidedCount} · 미결 {items.length - decidedCount}</p></div>
-        {!canReview ? <span><CircleAlert size={15} /> Owner 계정에서만 결정할 수 있습니다.</span> : null}
+        <div className="concept-review-queue-tools">
+          <button className="button button-ghost" type="button" onClick={exportReviewQueue} disabled={!items.length}>
+            <Download size={15} /> Excel 내려받기
+          </button>
+          {!canReview ? <span><CircleAlert size={15} /> Owner 계정에서만 결정할 수 있습니다.</span> : null}
+        </div>
       </div>
       {items.map((item) => {
         const saved = savedDecisions[item.questionId];
