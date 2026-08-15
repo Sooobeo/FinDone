@@ -215,6 +215,37 @@ class ConceptQuestionModelTest(unittest.TestCase):
         self.assertEqual(60, self.config["fusionBaseline"]["rrfK"])
         self.assertEqual([0.1, 1.0, 10.0], self.config["pairwiseLogisticCValues"])
 
+    def test_exception_profile_reviews_only_completely_unsupported_candidates(self) -> None:
+        exception_profile = next(
+            profile
+            for profile in self.config["automatedReview"]["profiles"]
+            if profile["id"] == "exception-only"
+        )
+        minimum = exception_profile["minimumSelectedCandidateSupport"]
+
+        self.assertEqual(0.0, minimum)
+        reason = model._candidate_support_review_reason(
+            0.0,
+            minimum,
+            review_zero_support=self.config["automatedReview"]["reviewZeroCandidateSupport"],
+        )
+        self.assertIsNotNone(reason)
+        self.assertEqual("candidate-never-supported", reason["id"])
+        self.assertIsNone(
+            model._candidate_support_review_reason(
+                1 / 198,
+                minimum,
+                review_zero_support=True,
+            )
+        )
+        self.assertIsNone(
+            model._candidate_support_review_reason(
+                0.0,
+                minimum,
+                review_zero_support=False,
+            )
+        )
+
     def test_v3_weak_supervision_has_exactly_two_strong_candidates(self) -> None:
         profile = next(
             item
@@ -573,6 +604,37 @@ class ConceptQuestionModelTest(unittest.TestCase):
         self.assertIn(
             review["selectedProfileId"],
             {item["profileId"] for item in review["profileExperiments"]},
+        )
+
+    def test_checked_in_review_artifacts_match_active_policy(self) -> None:
+        history = json.loads(model.DEFAULT_ADMIN_REPORT.read_text(encoding="utf-8"))
+        latest = next(
+            experiment
+            for experiment in history["experiments"]
+            if experiment["experimentId"] == history["latestExperimentId"]
+        )
+        bank = json.loads(model.DEFAULT_BANK.read_text(encoding="utf-8"))
+        active_policy = self.config["automatedReview"]["policyVersion"]
+
+        self.assertEqual(
+            model._sha256_file(model.DEFAULT_CONFIG),
+            latest["dataset"]["configSha256"],
+        )
+        self.assertEqual(active_policy, latest["automatedReview"]["policyVersion"])
+        self.assertEqual(active_policy, bank["automatedReviewPolicyVersion"])
+        self.assertEqual(
+            latest["automatedReview"]["reviewInputSha256"],
+            bank["reviewInputSha256"],
+        )
+        self.assertEqual(
+            latest["artifacts"]["questionBankSha256"],
+            bank["bankSha256"],
+        )
+        bank_payload = dict(bank)
+        bank_sha256 = bank_payload.pop("bankSha256")
+        self.assertEqual(
+            bank_sha256,
+            model._sha256_bytes(model._stable_json_bytes(bank_payload)),
         )
 
     def test_owner_decisions_are_bound_to_exact_fingerprints(self) -> None:

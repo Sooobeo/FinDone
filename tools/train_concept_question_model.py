@@ -2353,6 +2353,29 @@ def _review_reason(
     }
 
 
+def _candidate_support_review_reason(
+    measured: float,
+    minimum: float,
+    *,
+    review_zero_support: bool,
+) -> dict[str, Any] | None:
+    if measured < minimum:
+        return _review_reason(
+            "candidate-support",
+            "선택 오답의 실험 조합 지지율 낮음",
+            measured,
+            minimum,
+        )
+    if review_zero_support and measured == 0.0:
+        return _review_reason(
+            "candidate-never-supported",
+            "선택 오답이 어떤 실험 조합에서도 Top-4 지지를 받지 못함",
+            measured,
+            "> 0",
+        )
+    return None
+
+
 def _apply_automated_review_profile(
     *,
     bank: dict[str, Any],
@@ -2376,6 +2399,7 @@ def _apply_automated_review_profile(
     minimum_margin = float(review_config.get("minimumNormalizedBoundaryMargin", 0.01))
     minimum_relevance = int(review_config.get("minimumDistractorRelevance", 2))
     review_changed_choices = bool(review_config.get("reviewChangedChoiceSet", True))
+    review_zero_support = bool(review_config.get("reviewZeroCandidateSupport", False))
 
     previous_element_fingerprints = (
         previous_bank.get("elementFingerprints")
@@ -2548,15 +2572,13 @@ def _apply_automated_review_profile(
                     minimum_agreement,
                 )
             )
-        if minimum_candidate_support < minimum_support:
-            review_reasons.append(
-                _review_reason(
-                    "candidate-support",
-                    "선택 오답의 실험 조합 지지율 낮음",
-                    minimum_candidate_support,
-                    minimum_support,
-                )
-            )
+        candidate_support_reason = _candidate_support_review_reason(
+            minimum_candidate_support,
+            minimum_support,
+            review_zero_support=review_zero_support,
+        )
+        if candidate_support_reason:
+            review_reasons.append(candidate_support_reason)
         if boundary_margin < minimum_margin:
             review_reasons.append(
                 _review_reason(
@@ -3543,6 +3565,17 @@ def run_experiment(
             )
         )
     completed_embeddings = [item for item in embeddings if item.status == "completed"]
+    failed_requested_embeddings = [
+        item
+        for item in embeddings
+        if item.candidate_id in embedding_ids and item.status != "completed"
+    ]
+    if failed_requested_embeddings:
+        details = "; ".join(
+            f"{item.candidate_id}: {item.error or item.status}"
+            for item in failed_requested_embeddings
+        )
+        raise ConceptModelError(f"Requested embedding candidates failed: {details}")
     if not completed_embeddings:
         raise ConceptModelError("No embedding candidate completed")
 

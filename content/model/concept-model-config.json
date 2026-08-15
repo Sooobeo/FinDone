@@ -315,8 +315,9 @@
     "requireDeterministicBank": true
   },
   "automatedReview": {
-    "policyVersion": "concept-auto-review-v2.1-source-backed-definition-role",
+    "policyVersion": "concept-auto-review-v2.2-source-backed-extreme-support",
     "minimumDistractorRelevance": 2,
+    "reviewZeroCandidateSupport": true,
     "requireOwnerBatchApproval": true,
     "reviewChangedChoiceSet": false,
     "targetValidationReviewRate": 0.05,
@@ -346,9 +347,9 @@
       {
       "id": "exception-only",
       "minimumMeanTop4Agreement": 0.25,
-      "minimumSelectedCandidateSupport": 0.05,
+      "minimumSelectedCandidateSupport": 0.0,
       "minimumNormalizedBoundaryMargin": -0.2,
-      "provenance": "자동 하드 게이트를 유지하면서 극단적 순위 불일치만 올리는 최소 검토량 ablation; v2 검토량 완화"
+      "provenance": "자동 하드 게이트를 유지하고 198개 실험 조합의 지지가 전혀 없는 오답 또는 극단적 순위 불일치만 올리는 evidence-backed 최소 검토 프로필"
       }
     ]
   }
