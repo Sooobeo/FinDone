@@ -27,6 +27,7 @@ from collections import Counter, defaultdict
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -74,6 +75,57 @@ V2_QUESTION_TYPES = {
     "term_to_verbal_relation",
 }
 
+# Definition distractors must answer the same kind of "what is it?" question as
+# the target.  These rules intentionally inspect only an explicit predicate at
+# the end of the reviewed definition.  They do not infer a kind from domain,
+# mode, title similarity, or a missing keyword.  Every hard-filter decision is
+# therefore traceable to source text on both sides.
+DEFINITION_ROLE_RULES: tuple[tuple[str, str, re.Pattern[str]], ...] = (
+    (
+        "financial_entity",
+        "definition-declares-financial-entity",
+        re.compile(
+            r"(?:계정|자산|부채|자본|청구권|금융상품|증권|채권|계약|거래|"
+            r"현금흐름|현금|영업소득|성과|손익|이익|비용|수익|완충분|순증가분)"
+            r"(?:이다|다)\.?$"
+        ),
+    ),
+    (
+        "quantitative_measure",
+        "definition-declares-quantitative-measure",
+        re.compile(
+            r"(?:지표|비율|배수|수익률|측정치|민감도|순기간|기간|금리|할인율|"
+            r"자본비용|가치|금액|가격|차이|값)(?:이다|다)\.?$"
+        ),
+    ),
+    (
+        "method_or_process",
+        "definition-declares-method-or-process",
+        re.compile(
+            r"(?:과정|절차|방법|모형|전략|작업|분석|도구|방식|연결표)"
+            r"(?:이다|다)\.?$"
+        ),
+    ),
+    (
+        "principle_or_relationship",
+        "definition-declares-principle-or-relationship",
+        re.compile(r"(?:원칙|원리|관계|구조|기준)(?:이다|다)\.?$"),
+    ),
+    (
+        "quantitative_measure",
+        "definition-ends-with-measurement-predicate",
+        re.compile(r"(?:측정한다|나타낸다|보여\s*준다|요약한다)\.?$"),
+    ),
+    (
+        "method_or_process",
+        "definition-ends-with-method-predicate",
+        re.compile(
+            r"(?:계산한다|추정한다|분석한다|연결한다|추적한다|분해한다|"
+            r"평가한다|조정한다|구한다|환산한다|반영한다)\.?$"
+        ),
+    ),
+)
+
 
 class ConceptModelError(RuntimeError):
     """Raised when the model pipeline cannot produce a valid artifact."""
@@ -97,6 +149,44 @@ class ElementRecord:
         return "\n".join(
             (self.title, self.definition, self.intuition, self.core_relation)
         )
+
+
+@dataclass(frozen=True)
+class DefinitionRoleEvidence:
+    role_id: str
+    rule_id: str
+    source_field: str
+    evidence_text: str
+    source_locator: str
+    source_sha256: str
+
+    def report_dict(self) -> dict[str, str]:
+        return {
+            "roleId": self.role_id,
+            "ruleId": self.rule_id,
+            "sourceField": self.source_field,
+            "evidenceText": self.evidence_text,
+            "sourceLocator": self.source_locator,
+            "sourceSha256": self.source_sha256,
+        }
+
+
+@dataclass(frozen=True)
+class CandidateFilterDecision:
+    allowed: bool
+    reason_id: str
+    target_evidence: tuple[DefinitionRoleEvidence, ...] = ()
+    candidate_evidence: tuple[DefinitionRoleEvidence, ...] = ()
+
+    def report_dict(self) -> dict[str, Any]:
+        return {
+            "allowed": self.allowed,
+            "reasonId": self.reason_id,
+            "targetEvidence": [item.report_dict() for item in self.target_evidence],
+            "candidateEvidence": [
+                item.report_dict() for item in self.candidate_evidence
+            ],
+        }
 
 
 @dataclass(frozen=True)
@@ -732,6 +822,7 @@ def title_alias_keys(value: str) -> set[str]:
     return {key for key in keys if key}
 
 
+@lru_cache(maxsize=None)
 def visible_title_aliases(value: str) -> tuple[str, ...]:
     """Return title phrases that would reveal a choice's source concept."""
     normalized = normalize_text(value)
@@ -971,6 +1062,7 @@ DISPLAY_FACT_OVERRIDES.update(
 )
 
 
+@lru_cache(maxsize=None)
 def verbal_relation_text(element: ElementRecord) -> str:
     """Derive a formula-free relation statement from reviewed source prose."""
     override = VERBAL_RELATION_OVERRIDES.get(element.element_id)
@@ -986,6 +1078,7 @@ def verbal_relation_text(element: ElementRecord) -> str:
     return sentences[-1]
 
 
+@lru_cache(maxsize=None)
 def display_fact_text(element: ElementRecord, fact_type: str) -> str:
     override = DISPLAY_FACT_OVERRIDES.get((element.element_id, fact_type))
     if override:
@@ -1020,6 +1113,7 @@ def fact_type_for_question(question_type: str) -> str:
         raise ConceptModelError(f"Unsupported v2 question type: {question_type}") from error
 
 
+@lru_cache(maxsize=None)
 def text_mentions_title(text: str, title: str) -> bool:
     normalized = normalize_text(text)
     for alias in visible_title_aliases(title):
@@ -1031,15 +1125,105 @@ def text_mentions_title(text: str, title: str) -> bool:
     return False
 
 
+@lru_cache(maxsize=None)
+def definition_role_evidence(
+    element: ElementRecord,
+) -> tuple[DefinitionRoleEvidence, ...]:
+    """Return source-backed answer-role evidence from a reviewed definition.
+
+    A role is emitted only when an explicit final predicate matches.  The
+    absence of a match is treated as insufficient evidence, never as proof of
+    another role.
+    """
+
+    definition = normalize_text(element.definition)
+    definition_sha256 = _sha256_bytes(definition.encode("utf-8"))
+    evidence: list[DefinitionRoleEvidence] = []
+    seen_roles: set[str] = set()
+    for role_id, rule_id, pattern in DEFINITION_ROLE_RULES:
+        match = pattern.search(definition)
+        if match is None or role_id in seen_roles:
+            continue
+        seen_roles.add(role_id)
+        evidence.append(
+            DefinitionRoleEvidence(
+                role_id=role_id,
+                rule_id=rule_id,
+                source_field="definition",
+                evidence_text=match.group(0).rstrip("."),
+                source_locator=element.source_locator,
+                source_sha256=definition_sha256,
+            )
+        )
+    return tuple(evidence)
+
+
+def candidate_filter_decision(
+    elements: Sequence[ElementRecord],
+    answer_index: int,
+    candidate_index: int,
+    question_type: str | None = None,
+) -> CandidateFilterDecision:
+    """Apply auditable hard filters before candidate retrieval and ranking."""
+
+    if candidate_index == answer_index:
+        return CandidateFilterDecision(False, "answer-element")
+    target = elements[answer_index]
+    candidate = elements[candidate_index]
+    if not title_alias_keys(candidate.title).isdisjoint(title_alias_keys(target.title)):
+        return CandidateFilterDecision(False, "duplicate-title-alias")
+    if question_type in V2_QUESTION_TYPES:
+        candidate_text = display_fact_text(
+            candidate,
+            fact_type_for_question(question_type),
+        )
+        if text_mentions_title(candidate_text, target.title):
+            return CandidateFilterDecision(False, "target-term-visible-in-candidate-fact")
+    if question_type != "term_to_definition":
+        return CandidateFilterDecision(True, "not-applicable")
+
+    target_evidence = definition_role_evidence(target)
+    candidate_evidence = definition_role_evidence(candidate)
+    if not target_evidence or not candidate_evidence:
+        return CandidateFilterDecision(
+            True,
+            "insufficient-source-evidence",
+            target_evidence,
+            candidate_evidence,
+        )
+    target_roles = {item.role_id for item in target_evidence}
+    candidate_roles = {item.role_id for item in candidate_evidence}
+    if target_roles.isdisjoint(candidate_roles):
+        return CandidateFilterDecision(
+            False,
+            "definition-role-mismatch",
+            target_evidence,
+            candidate_evidence,
+        )
+    return CandidateFilterDecision(
+        True,
+        "source-backed-role-match",
+        target_evidence,
+        candidate_evidence,
+    )
+
+
 def eligible_candidate_indices(
-    elements: Sequence[ElementRecord], answer_index: int
+    elements: Sequence[ElementRecord],
+    answer_index: int,
+    question_type: str | None = None,
 ) -> list[int]:
-    """Exclude the answer element and title aliases that would create two correct labels."""
-    answer_keys = title_alias_keys(elements[answer_index].title)
+    """Return candidates that pass alias and source-backed role filters."""
+
     return [
         index
-        for index, element in enumerate(elements)
-        if index != answer_index and title_alias_keys(element.title).isdisjoint(answer_keys)
+        for index in range(len(elements))
+        if candidate_filter_decision(
+            elements,
+            answer_index,
+            index,
+            question_type,
+        ).allowed
     ]
 
 
@@ -1124,7 +1308,11 @@ def build_feature_context(
         scores: list[tuple[float, str, int]] = []
         answer_index = question.element_index
         answer = elements[answer_index]
-        candidate_indices = eligible_candidate_indices(elements, answer_index)
+        candidate_indices = eligible_candidate_indices(
+            elements,
+            answer_index,
+            question.question_type,
+        )
         signal_values = {
             "questionWord": {
                 index: float(q_word[question_index, index]) for index in candidate_indices
@@ -1506,7 +1694,9 @@ def retrieve_candidates(
     for question_index, question in enumerate(context.questions):
         answer = context.elements[question.element_index]
         candidate_indices = eligible_candidate_indices(
-            context.elements, question.element_index
+            context.elements,
+            question.element_index,
+            question.question_type,
         )
         signal_values: dict[str, dict[int, float]] = {
             "questionWord": {
@@ -1742,7 +1932,9 @@ def evaluate_ranking(
         all_relevance = [
             _effective_relevance(context, question_index, candidate_index, human_labels)
             for candidate_index in eligible_candidate_indices(
-                context.elements, question.element_index
+                context.elements,
+                question.element_index,
+                question.question_type,
             )
         ]
         relevant_total = sum(value >= 2 for value in all_relevance)
@@ -1809,6 +2001,7 @@ def _question_bank(
     duplicate_choices = 0
     ambiguous_questions = 0
     ambiguous_question_ids: list[str] = []
+    definition_role_mismatch_ids: list[str] = []
     element_by_id = {element.element_id: element for element in context.elements}
     for question_index, question in enumerate(context.questions):
         target = context.elements[question.element_index]
@@ -1908,6 +2101,16 @@ def _question_bank(
             formula_choices += sum(
                 bool(FORMULA_CHOICE_RE.search(str(choice["text"]))) for choice in choices
             )
+        if question.question_type == "term_to_definition" and any(
+            not candidate_filter_decision(
+                context.elements,
+                question.element_index,
+                candidate_index,
+                question.question_type,
+            ).allowed
+            for candidate_index, _ in selected
+        ):
+            definition_role_mismatch_ids.append(question.question_id)
         difficulty = {
             "term_to_definition": 1,
             "term_to_intuition": 2,
@@ -1955,6 +2158,8 @@ def _question_bank(
         "termLeakCount": term_leaks,
         "formulaChoiceCount": formula_choices,
         "duplicateChoiceCount": duplicate_choices,
+        "definitionRoleMismatchCount": len(definition_role_mismatch_ids),
+        "definitionRoleMismatchIds": definition_role_mismatch_ids,
         "ambiguousQuestionCount": ambiguous_questions,
         "ambiguousQuestionIds": ambiguous_question_ids,
     }
@@ -2047,6 +2252,7 @@ def _recompute_question_safety(
     formula_choices = 0
     duplicate_choices = 0
     ambiguous_question_ids: list[str] = []
+    definition_role_mismatch_ids: list[str] = []
     questions = bank.get("questions", [])
     for question_index, question in enumerate(questions if isinstance(questions, list) else []):
         if not isinstance(question, Mapping):
@@ -2080,6 +2286,7 @@ def _recompute_question_safety(
             ):
                 formula_choices += 1
         weak_distractor = False
+        definition_role_mismatch = False
         for choice in choices:
             if not isinstance(choice, Mapping) or bool(choice.get("isCorrect")):
                 continue
@@ -2087,13 +2294,27 @@ def _recompute_question_safety(
             if candidate_index is not None and question_index < len(context.questions):
                 if int(context.weak_relevance[question_index, candidate_index]) < 2:
                     weak_distractor = True
+                if (
+                    str(question.get("questionType")) == "term_to_definition"
+                    and not candidate_filter_decision(
+                        context.elements,
+                        context.questions[question_index].element_index,
+                        candidate_index,
+                        "term_to_definition",
+                    ).allowed
+                ):
+                    definition_role_mismatch = True
         if weak_distractor:
             ambiguous_question_ids.append(str(question.get("questionId")))
+        if definition_role_mismatch:
+            definition_role_mismatch_ids.append(str(question.get("questionId")))
     return {
         "answerLeakCount": answer_leaks,
         "termLeakCount": term_leaks,
         "formulaChoiceCount": formula_choices,
         "duplicateChoiceCount": duplicate_choices,
+        "definitionRoleMismatchCount": len(definition_role_mismatch_ids),
+        "definitionRoleMismatchIds": definition_role_mismatch_ids,
         "ambiguousQuestionCount": len(ambiguous_question_ids),
         "ambiguousQuestionIds": ambiguous_question_ids,
     }
@@ -2285,6 +2506,30 @@ def _apply_automated_review_profile(
 
         hard_reasons: list[dict[str, Any]] = []
         review_reasons: list[dict[str, Any]] = []
+        definition_role_mismatches = [
+            {
+                "candidateElementId": context.elements[candidate_index].element_id,
+                **decision.report_dict(),
+            }
+            for candidate_index in sorted(selected_indices)
+            if not (
+                decision := candidate_filter_decision(
+                    context.elements,
+                    context.questions[question_index].element_index,
+                    candidate_index,
+                    str(raw_question.get("questionType")),
+                )
+            ).allowed
+        ]
+        if definition_role_mismatches:
+            hard_reasons.append(
+                _review_reason(
+                    "definition-role-mismatch",
+                    "정의형 대상과 오답의 출처 근거상 개념 성격이 호환되지 않음",
+                    definition_role_mismatches,
+                    [],
+                )
+            )
         if weakest_relevance < minimum_relevance:
             hard_reasons.append(
                 _review_reason(
@@ -2733,6 +2978,7 @@ def _render_experiment_markdown(experiment: Mapping[str, Any]) -> str:
             f"| 사실 레코드 | {_md_cell(dataset.get('factCount'))}개 |",
             f"| 문항 | {_md_cell(dataset.get('questionCount'))}개 |",
             f"| 오답 후보 | {_md_cell(dataset.get('candidateCount'))}개 |",
+            f"| 정의 역할 불일치 사전 제외 | {_md_cell(dataset.get('candidateFilterRejectionCount'))}개 |",
             f"| 요소 split | `{_md_cell(dataset.get('elementSplits'))}` |",
             f"| 문항 split | `{_md_cell(dataset.get('questionSplits'))}` |",
             f"| 문항 은행 SHA-256 | `{_md_cell(artifacts.get('questionBankSha256'))}` |",
@@ -2942,6 +3188,7 @@ def _render_experiment_markdown(experiment: Mapping[str, Any]) -> str:
             f"| 선택지 출처 용어 노출 | {_md_cell(safety.get('termLeakCount'))} |",
             f"| 관계 선택지 수식 노출 | {_md_cell(safety.get('formulaChoiceCount'))} |",
             f"| 중복 선택지 | {_md_cell(safety.get('duplicateChoiceCount'))} |",
+            f"| 정의 역할 불일치 문항 | {_md_cell(safety.get('definitionRoleMismatchCount'))} |",
             f"| 약한 오답 포함 문항 | {_md_cell(safety.get('ambiguousQuestionCount'))} |",
             "",
             "| 게이트 | 측정 | 기준 | 결과 |",
@@ -3181,6 +3428,17 @@ def run_experiment(
     renderer.update(2, "입력 설정과 콘텐츠 스냅샷 확인 중")
     config_hash = _sha256_file(config_path)
     config = _load_json_object(config_path)
+    definition_filter = config.get("definitionCandidateFilter")
+    if not isinstance(definition_filter, Mapping):
+        raise ConceptModelError("definitionCandidateFilter is missing from model config")
+    if (
+        definition_filter.get("sourceField") != "definition"
+        or definition_filter.get("hardFilterRequiresEvidenceOnBothSides") is not True
+        or definition_filter.get("unknownEvidencePolicy") != "keep_candidate"
+    ):
+        raise ConceptModelError(
+            "definitionCandidateFilter must use reviewed definitions, require evidence on both sides, and keep unknowns"
+        )
     previous_bank = _load_previous_question_bank(bank_path)
     elements = load_elements(elements_path)
     fingerprint = content_fingerprint(elements)
@@ -3215,27 +3473,47 @@ def run_experiment(
         owner_decisions_path
     )
     question_edits = load_question_edits(question_edits_path)
-    candidate_count = sum(
-        len(eligible_candidate_indices(elements, question.element_index))
-        for question in questions
-    )
-    _write_jsonl(
-        build_dir / "candidates.jsonl",
-        (
-            {
-                "questionId": question.question_id,
-                "candidateElementId": elements[candidate_index].element_id,
-                "split": question.split,
-                "weakRelevance": int(context.weak_relevance[question_index, candidate_index]),
-                "labelSource": "reviewer"
-                if (question.question_id, elements[candidate_index].element_id) in human_labels
-                else "weak_rule",
-            }
-            for question_index, question in enumerate(questions)
-            for candidate_index in eligible_candidate_indices(
-                elements, question.element_index
+    candidate_rows: list[dict[str, Any]] = []
+    candidate_filter_rejections: list[dict[str, Any]] = []
+    for question_index, question in enumerate(questions):
+        for candidate_index, candidate in enumerate(elements):
+            decision = candidate_filter_decision(
+                elements,
+                question.element_index,
+                candidate_index,
+                question.question_type,
             )
-        ),
+            if decision.allowed:
+                candidate_rows.append(
+                    {
+                        "questionId": question.question_id,
+                        "candidateElementId": candidate.element_id,
+                        "split": question.split,
+                        "weakRelevance": int(
+                            context.weak_relevance[question_index, candidate_index]
+                        ),
+                        "labelSource": "reviewer"
+                        if (question.question_id, candidate.element_id) in human_labels
+                        else "weak_rule",
+                        "definitionRoleCompatibility": decision.report_dict()
+                        if question.question_type == "term_to_definition"
+                        else None,
+                    }
+                )
+            elif decision.reason_id == "definition-role-mismatch":
+                candidate_filter_rejections.append(
+                    {
+                        "questionId": question.question_id,
+                        "candidateElementId": candidate.element_id,
+                        "split": question.split,
+                        "filter": decision.report_dict(),
+                    }
+                )
+    candidate_count = len(candidate_rows)
+    _write_jsonl(build_dir / "candidates.jsonl", candidate_rows)
+    _write_jsonl(
+        build_dir / "candidate-filter-rejections.jsonl",
+        candidate_filter_rejections,
     )
 
     candidate_specs = config.get("embeddingCandidates")
@@ -3575,6 +3853,14 @@ def run_experiment(
             safety["duplicateChoiceCount"] <= int(gates_config["maximumDuplicateChoiceCount"]),
         ),
         _gate(
+            "definition-role-mismatch",
+            "출처 근거상 개념 성격이 호환되지 않는 정의형 문항 수",
+            safety["definitionRoleMismatchCount"],
+            int(gates_config["maximumDefinitionRoleMismatchCount"]),
+            safety["definitionRoleMismatchCount"]
+            <= int(gates_config["maximumDefinitionRoleMismatchCount"]),
+        ),
+        _gate(
             "ambiguous-question",
             "약한 오답 포함 문항 수",
             safety["ambiguousQuestionCount"],
@@ -3632,6 +3918,7 @@ def run_experiment(
             "factCount": len(facts),
             "questionCount": len(questions),
             "candidateCount": candidate_count,
+            "candidateFilterRejectionCount": len(candidate_filter_rejections),
             "elementSplits": {
                 name: split_counts[name] for name in ("train", "validation", "test")
             },
@@ -3696,6 +3983,9 @@ def run_experiment(
             "split": _report_path(split_path),
             "facts": _report_path(build_dir / "facts.jsonl"),
             "candidates": _report_path(build_dir / "candidates.jsonl"),
+            "candidateFilterRejections": _report_path(
+                build_dir / "candidate-filter-rejections.jsonl"
+            ),
             "ownerDecisions": _report_path(owner_decisions_path),
             "questionEdits": _report_path(question_edits_path),
             "markdownReport": _report_path(markdown_report_dir / f"{experiment_id}.md"),

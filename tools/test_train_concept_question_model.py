@@ -1,10 +1,13 @@
 import json
+import math
 import tempfile
 import unittest
 from collections import Counter
 from pathlib import Path
 
 from tools import train_concept_question_model as model
+from tools import experiment_concept_question_model_v3 as v3_experiment
+from tools import generate_concept_question_preview_v3 as v3_preview
 from tools import review_concept_question_model as review_command
 from tools import validate_concept_question_reset as reset_validator
 
@@ -86,6 +89,112 @@ class ConceptQuestionModelTest(unittest.TestCase):
             model.eligible_candidate_indices(self.elements, terminal_value),
         )
 
+    def test_definition_candidate_filter_requires_source_backed_role_compatibility(self) -> None:
+        by_id = {element.element_id: index for index, element in enumerate(self.elements)}
+        receivable_account = by_id["ACC-03"]
+        subscription_metric = by_id["EQV-23"]
+        secured_transaction = by_id["FI-07"]
+
+        target_evidence = model.definition_role_evidence(self.elements[receivable_account])
+        metric_evidence = model.definition_role_evidence(self.elements[subscription_metric])
+        entity_evidence = model.definition_role_evidence(self.elements[secured_transaction])
+        self.assertEqual({"financial_entity"}, {item.role_id for item in target_evidence})
+        self.assertEqual({"quantitative_measure"}, {item.role_id for item in metric_evidence})
+        self.assertEqual({"financial_entity"}, {item.role_id for item in entity_evidence})
+        self.assertTrue(all(item.source_locator for item in target_evidence))
+        self.assertTrue(all(len(item.source_sha256) == 64 for item in target_evidence))
+
+        mismatch = model.candidate_filter_decision(
+            self.elements,
+            receivable_account,
+            subscription_metric,
+            "term_to_definition",
+        )
+        compatible = model.candidate_filter_decision(
+            self.elements,
+            receivable_account,
+            secured_transaction,
+            "term_to_definition",
+        )
+        self.assertFalse(mismatch.allowed)
+        self.assertEqual("definition-role-mismatch", mismatch.reason_id)
+        self.assertTrue(compatible.allowed)
+        self.assertEqual("source-backed-role-match", compatible.reason_id)
+
+    def test_definition_candidate_filter_keeps_unknowns_and_four_choice_capacity(self) -> None:
+        target = self.elements[0]
+        unknown = model.ElementRecord(
+            element_id="TEST-UNKNOWN",
+            domain_id=target.domain_id,
+            domain_name=target.domain_name,
+            title="근거 미확정 개념",
+            mode=target.mode,
+            definition="여러 금융 현상을 함께 살펴본다.",
+            intuition=target.intuition,
+            core_relation=target.core_relation,
+            source_label=target.source_label,
+            source_locator=target.source_locator,
+        )
+        probe_elements = [target, unknown]
+        decision = model.candidate_filter_decision(
+            probe_elements,
+            0,
+            1,
+            "term_to_definition",
+        )
+        self.assertTrue(decision.allowed)
+        self.assertEqual("insufficient-source-evidence", decision.reason_id)
+
+        definition_questions = [
+            question
+            for question in self.questions
+            if question.question_type == "term_to_definition"
+        ]
+        self.assertTrue(definition_questions)
+        self.assertGreater(
+            sum(
+                not model.candidate_filter_decision(
+                    self.elements,
+                    question.element_index,
+                    candidate_index,
+                    question.question_type,
+                ).allowed
+                for question in definition_questions
+                for candidate_index in range(len(self.elements))
+            ),
+            0,
+        )
+        for question in definition_questions:
+            self.assertGreaterEqual(
+                len(
+                    model.eligible_candidate_indices(
+                        self.elements,
+                        question.element_index,
+                        question.question_type,
+                    )
+                ),
+                4,
+            )
+
+    def test_cross_concept_filter_rejects_facts_that_expose_target_term(self) -> None:
+        by_id = {element.element_id: index for index, element in enumerate(self.elements)}
+        target = by_id["ACC-03"]
+        accrual = by_id["ACC-02"]
+
+        decision = model.candidate_filter_decision(
+            self.elements,
+            target,
+            accrual,
+            "term_to_intuition",
+        )
+
+        self.assertFalse(decision.allowed)
+        self.assertEqual("target-term-visible-in-candidate-fact", decision.reason_id)
+        self.assertIn(
+            "매출채권",
+            model.display_fact_text(self.elements[accrual], "intuition"),
+        )
+
     def test_reference_weight_profiles_are_normalized(self) -> None:
         weak = self.config["weakSupervisionProfiles"]
         retrieval = self.config["retrievalProfiles"]
@@ -105,6 +214,260 @@ class ConceptQuestionModelTest(unittest.TestCase):
             )
         self.assertEqual(60, self.config["fusionBaseline"]["rrfK"])
         self.assertEqual([0.1, 1.0, 10.0], self.config["pairwiseLogisticCValues"])
+
+    def test_v3_weak_supervision_has_exactly_two_strong_candidates(self) -> None:
+        profile = next(
+            item
+            for item in self.config["weakSupervisionProfiles"]
+            if item["id"] == self.config["canonicalWeakSupervisionProfile"]
+        )
+        context = v3_experiment.build_v3_feature_context(
+            self.elements,
+            self.questions,
+            profile,
+            self.config["fusionBaseline"]["rrfK"],
+        )
+
+        for row in context.weak_relevance:
+            self.assertEqual(2, sum(int(value) == 3 for value in row))
+            self.assertEqual(6, sum(int(value) >= 2 for value in row))
+
+    def test_v3_generated_ratio_profiles_are_normalized_and_include_baseline(self) -> None:
+        profiles = v3_experiment.fine_ratio_profiles(self.config["v3Experiment"])
+
+        self.assertEqual(25, len(profiles))
+        self.assertIn("ratio-s0.250-m0.250", {item["id"] for item in profiles})
+        for profile in profiles:
+            self.assertAlmostEqual(
+                1.0,
+                sum(float(profile[key]) for key in v3_experiment.RETRIEVAL_SIGNALS),
+                places=8,
+            )
+
+    def test_v3_embedding_revision_pins_are_full_commits(self) -> None:
+        pins = self.config["v3Experiment"]["embeddingRevisionPins"]
+
+        self.assertEqual(5, len(pins))
+        for revision in pins.values():
+            self.assertRegex(revision, r"^[0-9a-f]{40}$")
+
+    def test_v3_selection_never_reads_test_metrics(self) -> None:
+        def run(run_id: str, ndcg: float, test_ndcg: float) -> dict[str, object]:
+            return {
+                "stage": "probe",
+                "embeddingId": "tfidf-word-char",
+                "retrievalProfileId": run_id,
+                "rankerFamily": "pairwise-logistic",
+                "rankerId": run_id,
+                "status": "completed",
+                "validation": {
+                    "ndcgAt2": ndcg,
+                    "strongPrecisionAt2": ndcg,
+                    "precisionAt2": ndcg,
+                    "retrievalRecallAt20": 1.0,
+                    "mrr": 1.0,
+                },
+                "test": {"ndcgAt2": test_ndcg},
+            }
+
+        selected = v3_experiment.select_validation_run(
+            [run("validation-winner", 0.9, 0.0), run("test-winner", 0.8, 1.0)],
+            {"tfidf-word-char": 0},
+        )
+
+        self.assertEqual("validation-winner", selected["rankerId"])
+
+    def test_v3_output_policy_cannot_target_admin_or_question_bank(self) -> None:
+        output, build = v3_experiment._output_policy(
+            Path("docs/modeling/experiments"), Path("build/concept-model-v3")
+        )
+        self.assertTrue(str(output).startswith(str(model.ROOT / "docs" / "modeling")))
+        self.assertTrue(str(build).startswith(str(model.ROOT / "build")))
+        with self.assertRaises(model.ConceptModelError):
+            v3_experiment._output_policy(Path("admin/data"), Path("build/probe"))
+
+    def test_v3_source_anchors_have_evidence_and_cross_concept_capacity(self) -> None:
+        raw_by_id = v3_preview.load_raw_elements()
+        anchors = {
+            element.element_id: v3_preview.extract_anchor_evidence(
+                element, raw_by_id[element.element_id]
+            )
+            for element in self.elements
+        }
+        minimum_capacity = 999
+        for question in self.questions:
+            target = self.elements[question.element_index]
+            capacity = 0
+            for candidate_index in model.eligible_candidate_indices(
+                self.elements, question.element_index, question.question_type
+            ):
+                candidate = self.elements[candidate_index]
+                evidence = v3_preview.build_cross_concept_evidence(
+                    target, candidate, anchors
+                )
+                if evidence is None:
+                    continue
+                capacity += 1
+                self.assertTrue(evidence["sharedAnchorIds"])
+                self.assertTrue(evidence["distinctAxis"]["targetEvidence"])
+                self.assertTrue(evidence["distinctAxis"]["candidateEvidence"])
+            minimum_capacity = min(minimum_capacity, capacity)
+
+        self.assertGreaterEqual(minimum_capacity, 2)
+
+    def test_v3_every_general_question_has_two_auto_safe_mutations(self) -> None:
+        for question in self.questions:
+            mutations = v3_preview.generate_mutations(
+                question.correct_answer,
+                base_fact_id=question.fact_id,
+                target_element_id=question.element_id,
+            )
+            safe = [item for item in mutations if item["autoReviewPassed"]]
+            self.assertGreaterEqual(len(safe), 2, question.question_id)
+            for mutation in safe:
+                self.assertNotEqual(question.correct_answer, mutation["text"])
+                self.assertIn("→", mutation["changedClaim"])
+                self.assertEqual(False, mutation["statementTruth"])
+                self.assertTrue(mutation["sourceTruthText"])
+
+    def test_v3_selected_mutation_lint_rejects_broken_boundaries(self) -> None:
+        self.assertIn(
+            "broken-korean-particle",
+            v3_preview.selected_mutation_lint_reasons(
+                "부채, 이자비용, 세율를 나누면 결과가 달라진다."
+            ),
+        )
+        self.assertIn(
+            "broken-comparative-ending",
+            v3_preview.selected_mutation_lint_reasons(
+                "현재가치가 투자액보다 작면 부가 줄어든다."
+            ),
+        )
+
+    def test_v3_reference_exception_policy_records_exact_corpus_threshold(self) -> None:
+        raw_by_id = v3_preview.load_raw_elements()
+        anchors = {
+            element.element_id: v3_preview.extract_anchor_evidence(
+                element, raw_by_id[element.element_id]
+            )
+            for element in self.elements
+        }
+
+        policy = v3_preview.reference_gate_policy(anchors)
+        corpus = policy["anchorCorpus"]
+        frequencies = sorted(
+            v3_preview.anchor_document_frequency(anchors).values()
+        )
+        expected_rank = math.ceil(0.75 * len(frequencies))
+
+        self.assertEqual(expected_rank, corpus["nearestRank"])
+        self.assertEqual(frequencies[expected_rank - 1], corpus["documentFrequencyP75"])
+        self.assertEqual(
+            "displayedSharedAnchorCount == 0",
+            policy["softReviewFormulas"]["no-displayed-fact-anchor-overlap"],
+        )
+        self.assertEqual(540, policy["hardGateThresholds"]["questionCount"])
+        self.assertEqual(5, policy["hardGateThresholds"]["choiceCount"])
+
+    def test_v3_relation_metadata_uses_source_scoped_participant_ids(self) -> None:
+        element = self.elements[0]
+        metadata = v3_preview.relation_metadata(
+            element=element,
+            text=element.core_relation,
+            anchor_ids=("cash", "assets"),
+        )
+
+        self.assertEqual(element.element_id, metadata["participantIds"][0])
+        self.assertEqual(
+            f"{element.element_id}:source-anchor:cash",
+            metadata["participantIds"][1],
+        )
+        self.assertGreaterEqual(len(metadata["participantIds"]), 2)
+        self.assertGreaterEqual(len(metadata["relationEdges"]), 1)
+        self.assertEqual(
+            "checked-in-source-anchor-v1",
+            metadata["relationEvidence"]["participantPolicy"],
+        )
+
+        mutation = {
+            "mutationRuleId": "increase-decrease-forward",
+            "changedClaim": "증가 → 감소",
+        }
+        changed = v3_preview._attach_relation_mutation_metadata(
+            mutation,
+            metadata,
+        )
+        self.assertEqual(
+            metadata["participantIds"],
+            changed["participantIds"],
+        )
+        self.assertEqual(
+            1,
+            changed["changedRelation"]["changedBindingOrEdgeCount"],
+        )
+        self.assertEqual(
+            "replace_edge_predicate",
+            changed["changedRelation"]["operation"],
+        )
+
+    def test_v3_hard_gate_checks_answer_choice_key(self) -> None:
+        question = {
+            "questionId": "probe",
+            "elementId": "ACC-01",
+            "elementTitle": "표시되지 않는 대상",
+            "questionType": "term_to_incorrect_statement",
+            "answerChoiceKey": "B",
+            "choices": [
+                {
+                    "key": "A",
+                    "choiceSourceType": "target_mutation",
+                    "sourceElementId": "ACC-01",
+                    "text": "거짓 설명",
+                    "isAnswer": True,
+                    "statementTruth": False,
+                    "baseFactId": "fact-1",
+                    "mutationRuleId": "rule-1",
+                    "changedClaim": "참 → 거짓",
+                    "falsityRationale": "출처 주장 하나를 뒤집었다.",
+                    "sourceTruthText": "참 설명",
+                },
+                *[
+                    {
+                        "key": key,
+                        "choiceSourceType": "target_fact",
+                        "sourceElementId": "ACC-01",
+                        "text": f"참 설명 {key}",
+                        "isAnswer": False,
+                        "statementTruth": True,
+                    }
+                    for key in "BCDE"
+                ],
+            ],
+        }
+
+        self.assertIn(
+            "answer-choice-key-mismatch",
+            v3_preview.hard_gate_reasons(question),
+        )
+
+    def test_v3_every_element_has_four_name_masked_atomic_facts(self) -> None:
+        raw_by_id = v3_preview.load_raw_elements()
+
+        for element in self.elements:
+            facts = v3_preview.build_atomic_facts(
+                element,
+                raw_by_id[element.element_id],
+                v3_preview.extract_anchor_evidence(
+                    element,
+                    raw_by_id[element.element_id],
+                ),
+            )
+            self.assertGreaterEqual(len(facts), 4, element.element_id)
+            for fact in facts:
+                self.assertFalse(
+                    model.text_mentions_title(fact["text"], element.title),
+                    f"{element.element_id}/{fact['factId']}",
+                )
 
     def test_cli_relative_paths_are_resolved_and_reported_from_repo_root(self) -> None:
         relative = Path("build/concept-ci/probe.json")

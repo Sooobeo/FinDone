@@ -54,6 +54,8 @@ MODEL_PATTERNS = (
     "tools/test_local_content_model.py",
     "tools/test_build_content_db.py",
     "tools/train_concept_question_model.py",
+    "tools/experiment_concept_question_model_v3.py",
+    "tools/generate_concept_question_preview_v3.py",
     "tools/review_concept_question_model.py",
     "tools/validate_concept_question_reset.py",
     "tools/test_train_concept_question_model.py",

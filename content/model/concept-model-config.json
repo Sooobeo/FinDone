@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "modelVersion": "findone-concept-ranker-v2-baseline",
-  "featureVersion": "concept-ranker-features-v2-term-to-description",
+  "featureVersion": "concept-ranker-features-v2.1-source-backed-definition-role",
   "splitVersion": "element-split-v2",
   "splitSeed": 20260811,
   "splitCounts": {
@@ -17,6 +17,13 @@
   "retrievalLimit": 30,
   "choiceCount": 5,
   "distractorCount": 4,
+  "definitionCandidateFilter": {
+    "policyVersion": "source-backed-definition-role-v1",
+    "sourceField": "definition",
+    "hardFilterRequiresEvidenceOnBothSides": true,
+    "unknownEvidencePolicy": "keep_candidate",
+    "provenance": "검토된 정의문의 명시적 종결 술어만 사용하며 도메인, mode, 제목 유사도 또는 키워드 부재로 개념 성격을 추정하지 않는다. 대상과 후보 양쪽에 출처 근거가 있고 역할이 불일치할 때만 제외한다."
+  },
   "pairwiseMaxPairsPerQuestion": 80,
   "embeddingSelectionTolerance": 0.0,
   "canonicalWeakSupervisionProfile": "balanced",
@@ -260,6 +267,40 @@
       "priority": 5
     }
   ],
+  "v3Experiment": {
+    "contractVersion": "3.1",
+    "designPath": "docs/modeling/CONCEPT_MCQ_MODELING_DESIGN.md",
+    "outputPolicy": "docs/modeling review artifacts only; no Admin, question-bank, Supabase, or Android writes",
+    "generalQuestionTypes": [
+      "term_to_definition",
+      "term_to_intuition",
+      "term_to_verbal_relation"
+    ],
+    "strongCandidateCount": 2,
+    "relevantCandidateCount": 6,
+    "weakReviewDepth": 20,
+    "fineSearchEmbeddingCount": 2,
+    "embeddingRevisionPins": {
+      "multilingual-e5-small": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+      "multilingual-minilm-l12": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+      "kure-v1": "d14c8a9423946e268a0c9952fecf3a7aabd73bd9",
+      "bge-m3": "5617a9f61b028005a4858fdac845db406aefb181",
+      "multilingual-e5-base": "d128750597153bb5987e10b1c3493a34e5a4502a"
+    },
+    "fineRatioSearch": {
+      "semanticTotals": [0.15, 0.2, 0.25, 0.3, 0.35],
+      "metadataTotals": [0.15, 0.2, 0.25, 0.3, 0.35],
+      "provenance": "equal-weight sparse/dense RRF baseline is semantic=0.25, metadata=0.25; validation-only symmetric search"
+    },
+    "refinementSearch": {
+      "wordFractions": [0.35, 0.425, 0.5, 0.575, 0.65],
+      "domainFractions": [0.4, 0.5, 0.6],
+      "provenance": "validation-only refinement around the best total-weight profile"
+    },
+    "selectionMetric": "validation NDCG@2, then strong Precision@2, Precision@2, Recall@20; cost only on exact metric ties",
+    "testPolicy": "evaluate exactly one selected configuration after all validation-only selection",
+    "sharedAnchorPolicy": "do not infer reviewed sharedAnchorIds from embedding similarity, domain, or mode; emit review-required evidence only"
+  },
   "qualityGates": {
     "minimumRetrievalRecallAt20": 0.95,
     "minimumTestNdcgAt4": 0.8,
@@ -269,11 +310,12 @@
     "maximumTermLeakCount": 0,
     "maximumFormulaChoiceCount": 0,
     "maximumDuplicateChoiceCount": 0,
+    "maximumDefinitionRoleMismatchCount": 0,
     "maximumAmbiguousQuestionCount": 0,
     "requireDeterministicBank": true
   },
   "automatedReview": {
-    "policyVersion": "concept-auto-review-v2",
+    "policyVersion": "concept-auto-review-v2.1-source-backed-definition-role",
     "minimumDistractorRelevance": 2,
     "requireOwnerBatchApproval": true,
     "reviewChangedChoiceSet": false,
