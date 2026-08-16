@@ -12,19 +12,17 @@ vi.mock("@/lib/supabase/server", () => ({
   getServerSupabase: vi.fn(async () => ({ rpc: mocks.rpc })),
 }));
 vi.mock("@/lib/concept-model-report", () => ({
-  conceptModelExperiments: {
-    experiments: [{
-      automatedReview: {
-        reviewInputSha256: "c".repeat(64),
-        queue: [{
-          questionId: "CF-07-term_to_verbal_relation-01",
-          elementId: "CF-07",
-          questionFingerprint: "a".repeat(64),
-          severity: "block",
-        }],
-      },
-    }],
-  },
+  getLatestConceptExperiment: vi.fn(() => ({
+    automatedReview: {
+      reviewInputSha256: "c".repeat(64),
+      queue: [{
+        questionId: "CF-07-term_to_verbal_relation-01",
+        elementId: "CF-07",
+        questionFingerprint: "a".repeat(64),
+        severity: "block",
+      }],
+    },
+  })),
 }));
 
 import { POST } from "@/app/api/model/edit/route";

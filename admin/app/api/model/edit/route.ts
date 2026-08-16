@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAdminContext } from "@/lib/auth";
-import { conceptModelExperiments } from "@/lib/concept-model-report";
+import { getLatestConceptExperiment } from "@/lib/concept-model-report";
 import { getAdminCapabilities } from "@/lib/data";
 import { getServerSupabase } from "@/lib/supabase/server";
 
@@ -83,8 +83,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "문항 수정 정보가 올바르지 않습니다." }, { status: 400 });
   }
 
-  const latest = conceptModelExperiments.experiments[0];
-  const item = latest?.automatedReview.queue.find((candidate) => candidate.questionId === questionId);
+  const latest = getLatestConceptExperiment();
+  if (!latest) {
+    return NextResponse.json({ error: "현재 수정 가능한 모델 실험이 없습니다." }, { status: 409 });
+  }
+  const item = latest.automatedReview.queue.find((candidate) => candidate.questionId === questionId);
   if (!item) {
     return NextResponse.json({ error: "현재 검수 대기열에 없는 문항입니다. 화면을 새로고침해 주세요." }, { status: 409 });
   }

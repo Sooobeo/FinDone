@@ -20,7 +20,11 @@ import { MarkdownCopy } from "@/components/markdown-copy";
 import { ConceptExceptionReview } from "@/components/concept-exception-review";
 import { ModelProcess } from "@/components/model-process";
 import {
+  conceptQualityGateValueKind,
   conceptModelExperiments,
+  getConceptExperimentSummary,
+  getLatestConceptExperiment,
+  type ConceptExperiment,
   type ConceptQualityGate,
 } from "@/lib/concept-model-report";
 import { getConceptElements, getLocalModelOperationalMetrics } from "@/lib/data";
@@ -51,10 +55,18 @@ function seconds(value: number) {
 
 function conceptGateMetric(gate: ConceptQualityGate, value: number | boolean) {
   if (typeof value === "boolean") return value ? "충족" : "미충족";
-  if (["answer-leak", "duplicate-choice", "ambiguous-question", "questions-per-element"].includes(gate.id)) {
-    return value.toLocaleString("ko-KR");
-  }
-  return percent(value);
+  return conceptQualityGateValueKind(gate.id) === "ratio"
+    ? percent(value)
+    : value.toLocaleString("ko-KR");
+}
+
+function conceptExperimentStatusLabel(status: ConceptExperiment["status"]) {
+  return {
+    bootstrap: "BOOTSTRAP",
+    candidate: "CANDIDATE",
+    release_ready: "READY",
+    failed: "FAILED",
+  }[status];
 }
 
 function ModelDisclosure({
@@ -94,7 +106,7 @@ export default async function ModelDashboardPage() {
     );
   }
   const conceptHistory = conceptModelExperiments;
-  const latestConcept = conceptHistory.experiments[0];
+  const latestConcept = getLatestConceptExperiment(conceptHistory);
   if (!latestConcept) {
     const resetAt = conceptHistory.resetAt
       ? new Intl.DateTimeFormat("ko-KR", {
@@ -158,6 +170,20 @@ export default async function ModelDashboardPage() {
   const evaluation = report.evaluation;
   const performance = report.performance;
   const conceptReview = latestConcept.automatedReview;
+  const conceptSummary = getConceptExperimentSummary(latestConcept);
+  const selectedReviewProfile = conceptReview.profileExperiments.find(
+    (profile) => profile.profileId === conceptReview.selectedProfileId,
+  );
+  const selectedBoundaryThreshold = selectedReviewProfile
+    ?.thresholds.minimumNormalizedBoundaryMargin ?? -0.2;
+  const neverSupportedReviewCount = conceptSummary.reasonCounts["candidate-never-supported"] ?? 0;
+  const boundaryReviewCount = conceptSummary.reasonCounts["boundary-margin"] ?? 0;
+  const ownerReasonSummary = [
+    neverSupportedReviewCount > 0 ? `후보 지지 0회 ${neverSupportedReviewCount}건` : null,
+    boundaryReviewCount > 0 ? `경계 기준 미달 ${boundaryReviewCount}건` : null,
+  ].filter(Boolean).join(" · ") || (conceptSummary.ownerReviewCount > 0
+    ? `기타 정책 예외 ${conceptSummary.ownerReviewCount}건`
+    : "Owner 예외 없음");
   const conceptQuestionDecisions = await getConceptQuestionDecisions(
     conceptReview.reviewInputSha256,
     conceptReview.queue,
@@ -257,7 +283,7 @@ export default async function ModelDashboardPage() {
           <span><Layers3 size={19} /></span>
           <small>전체 오답 후보</small>
           <strong>{latestConcept.dataset.candidateCount.toLocaleString("ko-KR")}<em>쌍</em></strong>
-          <p>문항당 4개 오답을 골라 5지선다 {latestConcept.dataset.questionCount}개 생성</p>
+          <p>출처 역할 필터로 {(latestConcept.dataset.candidateFilterRejectionCount ?? 0).toLocaleString("ko-KR")}쌍 사전 제외</p>
         </article>
         <article className="panel model-metric-card">
           <span><GitCompareArrows size={19} /></span>
@@ -267,15 +293,30 @@ export default async function ModelDashboardPage() {
         </article>
         <article className="panel model-metric-card">
           <span><FileCheck2 size={19} /></span>
-          <small>증분 재검수</small>
-          <strong>{conceptReview.affectedQuestionCount}<em>문항</em></strong>
-          <p>변경 요소 {conceptReview.changedElementCount}개 · 기존 결과 재사용 {conceptReview.reusedQuestionCount}개</p>
+          <small>Owner 검수 필요</small>
+          <strong>{conceptSummary.ownerReviewCount}<em>문항</em></strong>
+          <p>{ownerReasonSummary}</p>
         </article>
+      </section>
+
+      <section className="panel model-runtime-strip" aria-label="이번 개념형 모델 실행 감사 지표">
+        <div>
+          <p className="eyebrow">AUTO-REVIEW POLICY SNAPSHOT</p>
+          <h2>{conceptReview.policyVersion}</h2>
+          <p>출처 근거 정의 역할 필터 뒤, 전체 {latestConcept.rankerRuns.length}개 랭커 구성에서 지지 0회이거나 선택 경계 기준을 크게 벗어난 문항만 Owner 큐로 올립니다.</p>
+        </div>
+        <dl>
+          <div><dt>사전 제외 후보</dt><dd>{(latestConcept.dataset.candidateFilterRejectionCount ?? 0).toLocaleString("ko-KR")}<small>쌍</small></dd></div>
+          <div><dt>증분 재평가 범위</dt><dd>{conceptSummary.affectedQuestionCount}<small>문항</small></dd></div>
+          <div><dt>결과 재사용</dt><dd>{conceptSummary.reusedQuestionCount}<small>문항</small></dd></div>
+          <div><dt>임베딩 완료</dt><dd>{conceptSummary.completedEmbeddingCount}<small>/{latestConcept.embeddings.length}</small></dd></div>
+          <div><dt>랭커 완료</dt><dd>{conceptSummary.completedRankerRunCount}<small>/{latestConcept.rankerRuns.length}</small></dd></div>
+        </dl>
       </section>
 
       <section className="panel concept-model-warning" role="status">
         <Activity size={20} />
-        <div><strong>랭킹 점수와 자동 검수 통과율은 교육 품질 정확도가 아닙니다.</strong><p>자동 검수는 랭커 합의도·선택 경계·약지도 타당성·변경 영향을 검사하고, 예외만 Owner 확인 대상으로 올립니다.</p></div>
+        <div><strong>랭킹 점수와 자동 검수 통과율은 교육 품질 정확도가 아닙니다.</strong><p>하드 안전 게이트는 그대로 유지하며, 소프트 예외는 후보 지지 0회 또는 정규화 경계 {selectedBoundaryThreshold} 미만만 Owner 확인 대상으로 올립니다.</p></div>
         <span>{passedConceptGates}/{latestConcept.qualityGates.length} 게이트 통과</span>
       </section>
 
@@ -292,9 +333,10 @@ export default async function ModelDashboardPage() {
         eyebrow="EMBEDDING BAKE-OFF"
         title={copy["embedding-comparison"].title}
         description={copy["embedding-comparison"].lead}
-        meta={`완료 실행 ${completedConceptRuns.length}개`}
+        meta={`임베딩 ${conceptSummary.completedEmbeddingCount}/${latestConcept.embeddings.length} · 랭커 ${conceptSummary.completedRankerRunCount}/${latestConcept.rankerRuns.length}`}
       >
           <MarkdownCopy source={copy["embedding-comparison"].body} className="model-explanation-copy compact" />
+          <p className="model-panel-note"><strong>선택 근거:</strong> {latestConcept.selection.reason} · maxDepth {String(latestConcept.selection.hyperparameters.maxDepth ?? "-")} · learningRate {String(latestConcept.selection.hyperparameters.learningRate ?? "-")} · 허용오차 {latestConcept.selection.selectionTolerance}</p>
           <div className="concept-embedding-list">
             {bestByEmbedding.map((embedding) => {
               const selected = embedding.candidateId === latestConcept.selection.embeddingId;
@@ -313,14 +355,14 @@ export default async function ModelDashboardPage() {
       <ModelDisclosure
         eyebrow="AUTOMATED EXCEPTION REVIEW"
         title="자동 검수와 Owner 예외 큐"
-        description="validation에서 검수 프로필을 선택하고 전체 문항을 자동 검사한 뒤, 불안정하거나 차단된 문항만 남깁니다."
+        description={`validation 목표 예외율 ${percent(conceptReview.targetValidationReviewRate ?? 0)}에 가장 가까운 프로필을 선택하고, 근거가 강한 예외만 남깁니다.`}
         meta={`${conceptReview.needsOwnerReviewCount + conceptReview.blockedCount}개 확인`}
         open={conceptReview.queue.length > 0}
       >
         <div className="model-metric-grid concept-model-metrics" aria-label="자동 검수 요약">
-          <article className="model-metric-card"><small>선택 프로필</small><strong>{conceptReview.selectedProfileId}</strong><p>{conceptReview.selectionReason}</p></article>
-          <article className="model-metric-card"><small>자동 통과</small><strong>{conceptReview.autoPassedCount}<em>문항</em></strong><p>Owner 확인 없이 재사용 가능</p></article>
-          <article className="model-metric-card"><small>Owner 확인</small><strong>{conceptReview.needsOwnerReviewCount}<em>문항</em></strong><p>불안정 경계·랭커 불일치</p></article>
+          <article className="model-metric-card"><small>선택 프로필</small><strong>{conceptReview.selectedProfileId}</strong><p>{conceptReview.selectionReason} · test 미사용</p></article>
+          <article className="model-metric-card"><small>자동 통과</small><strong>{conceptReview.autoPassedCount}<em>문항</em></strong><p>현재 모델 실행에서 자동 정책 통과</p></article>
+          <article className="model-metric-card"><small>Owner 확인</small><strong>{conceptReview.needsOwnerReviewCount}<em>문항</em></strong><p>{ownerReasonSummary}</p></article>
           <article className="model-metric-card"><small>자동 차단</small><strong>{conceptReview.blockedCount}<em>문항</em></strong><p>수정 후 재실행 필요</p></article>
         </div>
         {conceptReview.queue.length > 0 ? (
@@ -332,6 +374,27 @@ export default async function ModelDashboardPage() {
             exportMetadata={{ experimentId: latestConcept.experimentId, reviewInputSha256: conceptReview.reviewInputSha256 }}
           />
         ) : <p className="model-panel-note">확인할 예외가 없습니다. Owner 배치 승인만 남았습니다.</p>}
+        <details className="model-rule-details">
+          <summary><ChevronDown size={17} /><span><strong>정책·데이터 감사값</strong><small>이번 실행의 선택 규칙과 재현 해시 보기</small></span></summary>
+          <div className="table-scroll">
+            <table className="data-table">
+              <thead><tr><th>항목</th><th>값</th></tr></thead>
+              <tbody>
+                <tr><td>자동 검수 정책</td><td><code>{conceptReview.policyVersion}</code></td></tr>
+                <tr><td>프로필 선택 규칙</td><td>{conceptReview.selectionRule ?? conceptReview.selectionReason}</td></tr>
+                <tr><td>목표 validation 예외율</td><td>{percent(conceptReview.targetValidationReviewRate ?? 0)}</td></tr>
+                <tr><td>증분 실행 범위</td><td>{conceptReview.baselineMode} · 변경 요소 {conceptReview.changedElementCount}개 · 변경 문항 {conceptReview.changedQuestionCount}개 · 재평가 {conceptReview.affectedQuestionCount}개 · 재사용 {conceptReview.reusedQuestionCount}개</td></tr>
+                <tr><td>모델 설정 SHA-256</td><td><code>{latestConcept.dataset.configSha256 ?? "기록 없음"}</code></td></tr>
+                <tr><td>데이터 지문 SHA-256</td><td><code>{latestConcept.dataset.contentFingerprint ?? "기록 없음"}</code></td></tr>
+                <tr><td>분할 SHA-256</td><td><code>{latestConcept.dataset.splitSha256 ?? "기록 없음"}</code></td></tr>
+                <tr><td>검수 정책 SHA-256</td><td><code>{conceptReview.policyConfigSha256}</code></td></tr>
+                <tr><td>검수 입력 SHA-256</td><td><code>{conceptReview.reviewInputSha256}</code></td></tr>
+                <tr><td>문항은행 SHA-256</td><td><code>{latestConcept.artifacts.questionBankSha256}</code></td></tr>
+                <tr><td>선택 랭커 SHA-256</td><td><code>{latestConcept.selection.modelSha256 ?? "기록 없음"}</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
         <details className="model-rule-details">
           <summary><ChevronDown size={17} /><span><strong>검수 프로필 실험값</strong><small>선택 기준과 validation 예외율 보기</small></span></summary>
           <div className="table-scroll">
@@ -390,7 +453,7 @@ export default async function ModelDashboardPage() {
                   <td>{percent(experiment.evaluation.validation.ndcgAt4)}</td>
                   <td>{percent(experiment.evaluation.test.ndcgAt4)}</td>
                   <td>{percent(experiment.labels.humanTestCoverage)}</td>
-                  <td><span className={`model-history-status ${experiment.releaseReady ? "ready" : "blocked"}`}>{experiment.releaseReady ? "READY" : "BOOTSTRAP"}</span></td>
+                  <td><span className={`model-history-status ${experiment.status}`}>{conceptExperimentStatusLabel(experiment.status)}</span></td>
                   <td><code>{experiment.artifacts.markdownReport.split("/").at(-1)}</code></td>
                 </tr>
               ))}

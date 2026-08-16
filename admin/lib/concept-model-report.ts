@@ -45,6 +45,10 @@ export interface ConceptExperiment {
     factCount: number;
     questionCount: number;
     candidateCount: number;
+    candidateFilterRejectionCount?: number;
+    configSha256?: string;
+    contentFingerprint?: string;
+    splitSha256?: string;
     elementSplits: Record<string, number>;
     questionSplits: Record<string, number>;
   };
@@ -60,10 +64,13 @@ export interface ConceptExperiment {
   };
   automatedReview: {
     policyVersion: string;
+    selectionRule?: string;
+    targetValidationReviewRate?: number;
     selectedProfileId: string;
     selectionReason: string;
     reviewInputSha256: string;
     policyConfigSha256: string;
+    previousBankSha256?: string | null;
     baselineMode: "initial" | "incremental";
     changedElementCount: number;
     changedElementIds: string[];
@@ -145,6 +152,7 @@ export interface ConceptExperiment {
     selectionTolerance: number;
     reason: string;
     modelBytes: number;
+    modelSha256?: string;
   };
   evaluation: {
     labelSource: string;
@@ -156,6 +164,7 @@ export interface ConceptExperiment {
     termLeakCount: number;
     formulaChoiceCount: number;
     duplicateChoiceCount: number;
+    definitionRoleMismatchCount?: number;
     ambiguousQuestionCount: number;
   };
   qualityGates: ConceptQualityGate[];
@@ -179,3 +188,71 @@ export interface ConceptModelExperimentHistory {
 }
 
 export const conceptModelExperiments = reportData as unknown as ConceptModelExperimentHistory;
+
+export function getLatestConceptExperiment(
+  history: ConceptModelExperimentHistory = conceptModelExperiments,
+): ConceptExperiment | undefined {
+  if (!history.latestExperimentId) return history.experiments[0];
+
+  const latest = history.experiments.find(
+    (experiment) => experiment.experimentId === history.latestExperimentId,
+  );
+  if (!latest) {
+    throw new Error(
+      `Latest concept experiment ${history.latestExperimentId} is missing from the report history.`,
+    );
+  }
+
+  const review = latest.automatedReview;
+  const classifiedQuestionCount = review.autoPassedCount
+    + review.ownerApprovedCount
+    + review.needsOwnerReviewCount
+    + review.blockedCount;
+  if (classifiedQuestionCount !== latest.dataset.questionCount) {
+    throw new Error(
+      `Concept experiment ${latest.experimentId} classifies ${classifiedQuestionCount} of ${latest.dataset.questionCount} questions.`,
+    );
+  }
+  if (review.queue.length !== review.needsOwnerReviewCount + review.blockedCount) {
+    throw new Error(
+      `Concept experiment ${latest.experimentId} queue count does not match its review summary.`,
+    );
+  }
+
+  return latest;
+}
+
+export function getConceptExperimentSummary(experiment: ConceptExperiment) {
+  const reasonCounts = experiment.automatedReview.queue
+    .filter((item) => item.severity === "review")
+    .reduce<Record<string, number>>(
+      (counts, item) => {
+        for (const reason of item.reasons) counts[reason.id] = (counts[reason.id] ?? 0) + 1;
+        return counts;
+      },
+      {},
+    );
+
+  return {
+    ownerReviewCount: experiment.automatedReview.needsOwnerReviewCount,
+    affectedQuestionCount: experiment.automatedReview.affectedQuestionCount,
+    reusedQuestionCount: experiment.automatedReview.reusedQuestionCount,
+    completedEmbeddingCount: experiment.embeddings.filter(
+      (embedding) => embedding.status === "completed",
+    ).length,
+    completedRankerRunCount: experiment.rankerRuns.filter(
+      (run) => run.status === "completed",
+    ).length,
+    reasonCounts,
+  };
+}
+
+const ratioQualityGateIds = new Set([
+  "retrieval-recall-at-20",
+  "test-ndcg-at-4",
+  "test-precision-at-4",
+]);
+
+export function conceptQualityGateValueKind(gateId: string): "ratio" | "count" {
+  return ratioQualityGateIds.has(gateId) ? "ratio" : "count";
+}
