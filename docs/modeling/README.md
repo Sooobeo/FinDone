@@ -1,6 +1,7 @@
 # FinDone 개념형 모델 실험 기록
 
 이 디렉터리는 오프라인 개념형 5지선다 모델링 실험의 사람이 읽을 수 있는 영구 기록이다.
+Admin 시각화는 `admin/data/concept-model-experiments.generated.json`을 사용하고, 이 MD들은 감사·비교·의사결정 이력으로 유지한다.
 v3.1 실험은 Admin에 바로 올리지 않고 이 디렉터리의 보고서와 선지 사전 검수본으로 먼저 확인한다.
 
 - 설계 기준: [개념형 5지선다 오프라인 모델링 설계서](CONCEPT_MCQ_MODELING_DESIGN.md)
@@ -11,6 +12,7 @@ v3.1 실험은 Admin에 바로 올리지 않고 이 디렉터리의 보고서와
 
 | 실험 | 시각 | 계약/상태 | 후보 임베딩 | 실행 조합 | 선택 구성 | val 지표 | test 지표 | 검수본 | 보고서 |
 |---|---|---|---:|---:|---|---:|---:|---|---|
+| `cmq-v2-20260816-014214-89cf4e66` | 2026-08-16T01:42:14.952565+00:00 | v2.2 / release_ready | 6 | 198 | `bge-m3/semantic-conservative/xgboost-shallow-medium` | NDCG@4 0.969918 | NDCG@4 0.922445 | Owner 승인 3/3 | [열기](experiments/cmq-v2-20260816-014214-89cf4e66.md) |
 | `cmq-v3-20260813-075147-6a618c72` | 2026-08-13T07:51:47+00:00 | v3.1 / review_required | 6 | 263 | `multilingual-e5-base/ratio-s0.250-m0.350/xgboost-shallow-medium` | NDCG@2 0.936115 | NDCG@2 0.887592 | [810개 선지](experiments/cmq-v3-20260813-075147-6a618c72-choice-review.md) | [열기](experiments/cmq-v3-20260813-075147-6a618c72.md) |
 | `cmq-v2-20260815-094223-89cf4e66` | 2026-08-15T09:42:23.542191+00:00 | v2.2 / candidate | 6 | 198 | `bge-m3/semantic-conservative/xgboost-shallow-medium` | NDCG@4 0.969918 | NDCG@4 0.922445 | — | [열기](experiments/cmq-v2-20260815-094223-89cf4e66.md) |
 | `cmq-v2-20260815-091940-f5531553` | 2026-08-15T09:19:40.344686+00:00 | v2.1 / superseded | 1/6 성공 | 18 | `tfidf-word-char/lexical-balanced/xgboost-shallow-medium` | NDCG@4 0.965142 | NDCG@4 0.928408 | — | [열기](experiments/cmq-v2-20260815-091940-f5531553.md) |
@@ -35,4 +37,4 @@ v3.1 실험은 Admin에 바로 올리지 않고 이 디렉터리의 보고서와
 
 ## 수치 해석 주의
 
-자동 검수 전 test 수치는 약지도 규칙 재현도이므로 실제 교육 품질이나 일반화 성능으로 해석하면 안 된다. 810개 선지 문서는 랭커 선택 당시의 중간 산출물이고, 검수 대상 수가 아니다. 최신 전체 preview는 540문항을 먼저 완성한 뒤 레퍼런스 하드 게이트를 모두 통과시키고 소프트 예외 43문항만 검수 큐에 남겼다. 아직 사람 검수 전이며 문항은행이나 Admin에 반영하지 않았다. Admin 최신 v2.2 문항은행은 402문항 자동 통과, Owner 확인 3문항, 자동 차단 0문항이다. 독립 검수와 모든 릴리스 게이트를 통과한 실험만 `release_ready`가 될 수 있다.
+자동 검수 전 test 수치는 약지도 규칙 재현도이므로 실제 교육 품질이나 일반화 성능으로 해석하면 안 된다. 810개 선지 문서는 랭커 선택 당시의 중간 산출물이고, 검수 대상 수가 아니다. 최신 전체 v3 preview는 540문항을 먼저 완성한 뒤 레퍼런스 하드 게이트를 모두 통과시키고 소프트 예외 43문항만 검수 큐에 남겼으며 아직 Admin 문항은행에 반영하지 않았다. Admin 최신 v2.2 문항은행은 402문항 자동 통과, Owner 승인 3문항, 미확인·자동 차단 0문항이며 Owner 배치 승인과 14개 릴리스 게이트를 모두 통과해 `release_ready`가 되었다.

@@ -25,33 +25,33 @@ describe("concept model report", () => {
     })).toThrow(/missing from the report history/u);
   });
 
-  it("keeps the v2.2 Owner queue separate from the incremental reevaluation scope", () => {
+  it("keeps the Owner queue separate from the incremental reevaluation scope", () => {
     const latest = getLatestConceptExperiment();
     expect(latest).toBeDefined();
     if (!latest) return;
 
-    const summary = getConceptExperimentSummary(latest);
+    const summary = getConceptExperimentSummary({
+      ...latest,
+      automatedReview: {
+        ...latest.automatedReview,
+        needsOwnerReviewCount: 3,
+        affectedQuestionCount: 57,
+        reusedQuestionCount: 348,
+      },
+    });
     expect({
-      total: latest.dataset.questionCount,
-      automatedPass: latest.automatedReview.autoPassedCount,
       ownerReview: summary.ownerReviewCount,
-      blocked: latest.automatedReview.blockedCount,
       reevaluated: summary.affectedQuestionCount,
       reused: summary.reusedQuestionCount,
     }).toEqual({
-      total: 405,
-      automatedPass: 402,
       ownerReview: 3,
-      blocked: 0,
       reevaluated: 57,
       reused: 348,
     });
-    expect(summary.completedEmbeddingCount).toBe(6);
-    expect(summary.completedRankerRunCount).toBe(198);
-    expect(summary.reasonCounts).toMatchObject({
-      "candidate-never-supported": 1,
-      "boundary-margin": 2,
-    });
+    expect(summary.completedEmbeddingCount)
+      .toBe(latest.embeddings.filter((embedding) => embedding.status === "completed").length);
+    expect(summary.completedRankerRunCount)
+      .toBe(latest.rankerRuns.filter((run) => run.status === "completed").length);
   });
 
   it("formats only ranking metric gates as ratios", () => {

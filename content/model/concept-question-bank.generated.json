@@ -2,14 +2,14 @@
   "automatedReview": {
     "autoPassedCount": 402,
     "blockedCount": 0,
-    "needsOwnerReviewCount": 3,
-    "ownerApprovedCount": 0,
-    "ownerBatchApproved": false
+    "needsOwnerReviewCount": 0,
+    "ownerApprovedCount": 3,
+    "ownerBatchApproved": true
   },
   "automatedReviewPolicySha256": "80c7b07fac42b83892137a11492466116057197ae1722ef40d9d1e893b1cb1de",
   "automatedReviewPolicyVersion": "concept-auto-review-v2.2-source-backed-extreme-support",
   "automatedReviewProfileId": "exception-only",
-  "bankSha256": "e60118f865b2761d7ccc1e2f590bcb73769f02fcb09bb8ef4827b3ce4e542780",
+  "bankSha256": "f1dc139ae25df55ea4a8fc702fd31aa96a79fe4da2dff6d3aa57ed2b2b5e9dd0",
   "bankVersion": 2,
   "contentFingerprint": "1292a74307d173ea13e1790b1336359d6a5a6b458f7948b79b82306795f96535",
   "contractVersion": "2.0",
@@ -3579,7 +3579,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "CF-07-term_to_definition-01",
       "questionType": "term_to_definition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "owner_approved",
       "sourceFactIds": [
         "CF-07:definition:01"
       ],
@@ -11334,7 +11334,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "EQV-13-term_to_definition-01",
       "questionType": "term_to_definition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "owner_approved",
       "sourceFactIds": [
         "EQV-13:definition:01"
       ],
@@ -11664,7 +11664,7 @@
       "modelVersion": "findone-concept-ranker-v2-baseline",
       "questionId": "EQV-15-term_to_definition-01",
       "questionType": "term_to_definition",
-      "reviewStatus": "needs_owner_review",
+      "reviewStatus": "owner_approved",
       "sourceFactIds": [
         "EQV-15:definition:01"
       ],
@@ -22836,7 +22836,7 @@
       "stem": "용어: 리서치 위험·기대 하방\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?"
     }
   ],
-  "releaseStatus": "candidate",
+  "releaseStatus": "release_ready",
   "reviewInputSha256": "428a71bed20c45f2066c47eafd45cecc38cb52798fedadee7334ffa6c5c965be",
   "selectedEmbedding": "bge-m3",
   "selectedRanker": "xgboost-shallow-medium",

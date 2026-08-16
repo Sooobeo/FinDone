@@ -3,7 +3,7 @@
     "changedFromPackagedBaseline": true,
     "contentDbVersion": 7,
     "multipleSourceElementCount": 113,
-    "previousDatabaseSha256": "4e6a360ec284cea39304605375a4c9b90953d12bcb187f2123d4ec7fed0d952c",
+    "previousDatabaseSha256": "3ca00d33d9a67676b066422c69a7e961e90d3912b431eea374fa061a8a43886e",
     "requiredFieldCount": 2160,
     "resolvedRequiredFieldCount": 2160,
     "rowCounts": {
@@ -28,9 +28,9 @@
   },
   "evaluation": {
     "buildHashes": [
-      "3ca00d33d9a67676b066422c69a7e961e90d3912b431eea374fa061a8a43886e",
-      "3ca00d33d9a67676b066422c69a7e961e90d3912b431eea374fa061a8a43886e",
-      "3ca00d33d9a67676b066422c69a7e961e90d3912b431eea374fa061a8a43886e"
+      "a6eb1d7b59c78ec266d80d75d11e4d4ef7029df360e8996539bc7f6c6682949f",
+      "a6eb1d7b59c78ec266d80d75d11e4d4ef7029df360e8996539bc7f6c6682949f",
+      "a6eb1d7b59c78ec266d80d75d11e4d4ef7029df360e8996539bc7f6c6682949f"
     ],
     "caseAccuracy": 1.0,
     "caseAccuracyWilson95LowerBound": 0.72246,
@@ -80,7 +80,7 @@
       }
     ]
   },
-  "generatedAt": "2026-08-15T09:51:42.948983+00:00",
+  "generatedAt": "2026-08-16T05:07:25.693682+00:00",
   "model": {
     "externalLlmApiCalls": 0,
     "name": "FinDone Local Content Model",
@@ -100,16 +100,16 @@
   "performance": {
     "benchmarkRounds": 3,
     "buildDurationsMs": [
-      743.46,
-      445.18,
-      409.82
+      781.04,
+      795.63,
+      785.57
     ],
     "databaseByteSize": 2170880,
-    "databaseSha256": "3ca00d33d9a67676b066422c69a7e961e90d3912b431eea374fa061a8a43886e",
-    "elementsPerSecond": 303.25,
-    "maximumBuildMs": 743.46,
-    "medianBuildMs": 445.18,
-    "minimumBuildMs": 409.82
+    "databaseSha256": "a6eb1d7b59c78ec266d80d75d11e4d4ef7029df360e8996539bc7f6c6682949f",
+    "elementsPerSecond": 171.85,
+    "maximumBuildMs": 795.63,
+    "medianBuildMs": 785.57,
+    "minimumBuildMs": 781.04
   },
   "reportVersion": 1,
   "status": "passed",

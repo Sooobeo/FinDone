@@ -29,6 +29,16 @@ class AdminReleaseWorkerTest(unittest.TestCase):
             database.commit()
         return base
 
+    def candidate_base(self, directory: Path) -> Path:
+        base = directory / "candidate-base.sqlite3"
+        shutil.copyfile(worker.PACKAGED_DATABASE, base)
+        with closing(sqlite3.connect(base)) as database:
+            database.execute(
+                "UPDATE metadata SET value='candidate' WHERE key='concept_question_release_status'"
+            )
+            database.commit()
+        return base
+
     def test_concept_revision_requires_question_model_rerun(self) -> None:
         with closing(sqlite3.connect(worker.PACKAGED_DATABASE)) as database:
             row = database.execute(
@@ -69,12 +79,13 @@ class AdminReleaseWorkerTest(unittest.TestCase):
                     [revision],
                 )
 
-    def test_bootstrap_question_bank_blocks_stable_release(self) -> None:
+    def test_candidate_question_bank_blocks_stable_release(self) -> None:
         with tempfile.TemporaryDirectory() as directory_name:
             directory = Path(directory_name)
+            base_database = self.candidate_base(directory)
             with self.assertRaisesRegex(worker.ReleaseWorkerError, "human review"):
                 worker.build_release_bundle(
-                    worker.PACKAGED_DATABASE,
+                    base_database,
                     directory / "content.sqlite3",
                     directory / "content-manifest.json",
                     self.release(),
