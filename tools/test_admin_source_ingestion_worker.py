@@ -332,6 +332,21 @@ class SupabaseSourceClientTests(unittest.TestCase):
         self.assertEqual(b"snapshot-body", b"".join(call.args[0] for call in connection.send.call_args_list))
 
 
+EMPTY_JOB_ROW: dict[str, Any] = {
+    # PostgREST renders a NULL `returns public.ingestion_jobs` result as a row of
+    # null columns, so an idle queue must be recognised from this shape.
+    "job_id": None,
+    "job_kind": None,
+    "status": None,
+    "source_version_id": None,
+    "progress_percent": None,
+    "attempt_count": None,
+    "input": None,
+    "output": None,
+    "error_message": None,
+}
+
+
 class FakeSourceClient:
     def __init__(self, source_path: Path, *, filename: str = "source.txt") -> None:
         self.source_path = source_path
@@ -350,7 +365,7 @@ class FakeSourceClient:
             return {"queuedCount": payload["p_limit"], "queued": []}
         if name == worker.CLAIM_RPC:
             if self.claimed:
-                return None
+                return dict(EMPTY_JOB_ROW)
             self.claimed = True
             return {
                 "job_id": self.job_id,
@@ -437,7 +452,7 @@ class FakeURLSourceClient(FakeSourceClient):
         self.rpc_calls.append((name, payload))
         if name == worker.CLAIM_RPC:
             if self.claimed:
-                return None
+                return dict(EMPTY_JOB_ROW)
             self.claimed = True
             return {
                 "job_id": self.job_id,
@@ -479,6 +494,12 @@ class FakeURLSourceClient(FakeSourceClient):
 
 
 class SourceWorkerTests(unittest.TestCase):
+    def test_all_null_claim_row_reads_as_an_idle_queue(self) -> None:
+        self.assertIsNone(worker._rpc_object(dict(EMPTY_JOB_ROW), "claim source ingestion"))
+        self.assertIsNone(worker._rpc_object([dict(EMPTY_JOB_ROW)], "claim source ingestion"))
+        claimed = worker._rpc_object({**EMPTY_JOB_ROW, "status": "running"}, "claim source ingestion")
+        self.assertEqual("running", (claimed or {})["status"])
+
     def test_worker_queues_initial_catalog_urls_once_before_claiming(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             source_path = Path(directory) / "input.txt"
