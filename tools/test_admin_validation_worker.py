@@ -369,6 +369,16 @@ class ContentRevisionValidationTest(unittest.TestCase):
         self.assertIn("formula_variable_meaning_invalid", formula_codes)
 
 
+class IdleClaimShapeTest(unittest.TestCase):
+    def test_all_null_job_row_reads_as_an_idle_queue(self) -> None:
+        empty = {"job_id": None, "status": None, "revision_id": None}
+        rpc_object = worker.ContentValidationWorker._rpc_object
+        self.assertIsNone(rpc_object(dict(empty), "claim"))
+        self.assertIsNone(rpc_object([dict(empty)], "claim"))
+        claimed = rpc_object({**empty, "status": "running"}, "claim")
+        self.assertEqual("running", (claimed or {})["status"])
+
+
 class ContentValidationWorkerTest(unittest.TestCase):
     def test_worker_claims_only_content_validation_and_completes_passed_run(
         self,

@@ -10,6 +10,15 @@ from pathlib import Path
 from tools import admin_release_worker as worker
 
 
+class IdleClaimShapeTest(unittest.TestCase):
+    def test_all_null_job_row_reads_as_an_idle_queue(self) -> None:
+        empty = {"job_id": None, "status": None, "release_id": None}
+        self.assertIsNone(worker._rpc_object(dict(empty), "claim"))
+        self.assertIsNone(worker._rpc_object([dict(empty)], "claim"))
+        claimed = worker._rpc_object({**empty, "status": "running"}, "claim")
+        self.assertEqual("running", (claimed or {})["status"])
+
+
 class AdminReleaseWorkerTest(unittest.TestCase):
     def release(self) -> dict[str, object]:
         packaged = json.loads(worker.PACKAGED_MANIFEST.read_text(encoding="utf-8"))
