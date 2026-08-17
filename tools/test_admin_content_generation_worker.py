@@ -194,6 +194,15 @@ class CandidateValidationTest(unittest.TestCase):
         self.assertEqual([], evidence_rows)
 
 
+class IdleClaimShapeTest(unittest.TestCase):
+    def test_all_null_batch_row_reads_as_an_idle_queue(self) -> None:
+        empty = {"batch_id": None, "status": None, "claimed_by": None}
+        self.assertIsNone(worker._rpc_object(dict(empty), "claim generation"))
+        self.assertIsNone(worker._rpc_object([dict(empty)], "claim generation"))
+        claimed = worker._rpc_object({**empty, "status": "running"}, "claim generation")
+        self.assertEqual("running", (claimed or {})["status"])
+
+
 class GenerationWorkerTest(unittest.TestCase):
     @mock.patch.object(worker, "load_element_contexts", return_value=[context()])
     def test_worker_persists_only_validated_candidate_and_progress(self, _load):

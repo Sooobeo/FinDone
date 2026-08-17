@@ -125,6 +125,15 @@ def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
+def _none_if_empty_row(row: dict[str, Any]) -> dict[str, Any] | None:
+    # A `returns <table>` function that returns NULL reaches PostgREST as a row
+    # whose every column is null, not as JSON null. Treating that row as a real
+    # claim makes an empty queue look like a malformed batch.
+    if row and all(column is None for column in row.values()):
+        return None
+    return row
+
+
 def _rpc_object(value: Any, label: str) -> dict[str, Any] | None:
     if value is None:
         return None
@@ -132,9 +141,9 @@ def _rpc_object(value: Any, label: str) -> dict[str, Any] | None:
         if not value:
             return None
         if len(value) == 1 and isinstance(value[0], dict):
-            return value[0]
+            return _none_if_empty_row(value[0])
     if isinstance(value, dict):
-        return value
+        return _none_if_empty_row(value)
     raise GenerationWorkerError(f"{label} RPC returned an unexpected response")
 
 

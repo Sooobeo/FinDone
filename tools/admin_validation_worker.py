@@ -1189,6 +1189,15 @@ class SupabaseRestClient:
         return result[0]
 
 
+def _none_if_empty_row(row: dict[str, Any]) -> dict[str, Any] | None:
+    # A `returns <table>` function that returns NULL reaches PostgREST as a row
+    # whose every column is null, not as JSON null. Treating that row as a real
+    # claim makes an empty queue look like a malformed job.
+    if row and all(column is None for column in row.values()):
+        return None
+    return row
+
+
 class ContentValidationWorker:
     def __init__(self, client: SupabaseRestClient, worker_id: str) -> None:
         if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,127}", worker_id) is None:
@@ -1204,9 +1213,9 @@ class ContentValidationWorker:
             if not value:
                 return None
             if len(value) == 1 and isinstance(value[0], dict):
-                return value[0]
+                return _none_if_empty_row(value[0])
         if isinstance(value, dict):
-            return value
+            return _none_if_empty_row(value)
         raise ValidationWorkerError(f"{label} RPC returned an unexpected response")
 
     def process_one(self) -> WorkerOutcome | None:
