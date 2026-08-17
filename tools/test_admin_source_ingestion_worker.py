@@ -33,6 +33,25 @@ class SourceParserTests(unittest.TestCase):
         self.assertIn("formula", {fragment.kind for fragment in result.fragments})
         self.assertFalse(result.requires_review)
 
+    def test_html_head_without_meta_name_or_property_still_extracts(self) -> None:
+        # Real pages open <head> with tags carrying neither attribute.
+        page = (
+            "<html><head>"
+            '<meta charset="utf-8">'
+            '<meta http-equiv="X-UA-Compatible" content="IE=edge">'
+            '<meta name="author" content="홍길동">'
+            '<meta property="article:published_time" content="2026-08-17">'
+            "<title>순현재가치</title></head>"
+            "<body>NPV는 미래 현금흐름을 할인한다.</body></html>"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "page.html"
+            path.write_text(page, encoding="utf-8")
+            result = worker.extract_plain_text(path, "html")
+        self.assertIn("미래 현금흐름", result.extracted_text)
+        self.assertEqual("홍길동", result.metadata["author"])
+        self.assertEqual("2026-08-17", result.metadata["publishedAt"])
+
     def test_csv_extracts_bounded_table_fragments(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "source.csv"

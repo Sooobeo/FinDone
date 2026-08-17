@@ -510,7 +510,8 @@ class _VisibleHTMLParser(HTMLParser):
         if lowered == "link" and "canonical" in attributes.get("rel", "").casefold().split():
             self.canonical_url = attributes.get("href", "")[:2048]
         if lowered == "meta":
-            key = (attributes.get("name") or attributes.get("property")).casefold()
+            # <meta charset> and <meta http-equiv> carry neither attribute.
+            key = (attributes.get("name") or attributes.get("property") or "").casefold()
             content = normalize_text(attributes.get("content", ""))
             if key in {"author", "article:author"} and content:
                 self.author = content[:500]
