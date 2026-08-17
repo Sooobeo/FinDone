@@ -62,6 +62,33 @@ describe("source processing state", () => {
     expect(sourceStatusPresentation(merged).detail).toContain("CF-01");
   });
 
+  it("stops the spinner once a queued job has clearly outlived the worker", () => {
+    const now = Date.parse("2026-08-17T12:00:00Z");
+    const queuedAt = (minutesAgo: number) => ({
+      ...base,
+      jobStatus: "queued" as const,
+      processingUpdatedAt: new Date(now - minutesAgo * 60_000).toISOString(),
+    });
+
+    const fresh = queuedAt(2);
+    expect(hasActiveSourceProcessing(fresh, now)).toBe(true);
+    expect(sourceStatusPresentation(fresh, now)).toMatchObject({ label: "가공 대기 중", loading: true });
+
+    const abandoned = queuedAt(40);
+    expect(hasActiveSourceProcessing(abandoned, now)).toBe(false);
+    expect(sourceStatusPresentation(abandoned, now)).toMatchObject({
+      label: "Worker 대기 초과",
+      loading: false,
+    });
+
+    const unresponsive = { ...base, jobStatus: "running" as const, processingUpdatedAt: new Date(now - 40 * 60_000).toISOString() };
+    expect(hasActiveSourceProcessing(unresponsive, now)).toBe(false);
+    expect(sourceStatusPresentation(unresponsive, now)).toMatchObject({ label: "Worker 응답 없음", loading: false });
+
+    // Without a timestamp we cannot tell age, so never accuse a live worker.
+    expect(hasActiveSourceProcessing({ ...base, jobStatus: "queued" }, now)).toBe(true);
+  });
+
   it("surfaces the worker failure instead of an endless spinner", () => {
     const failed = mergeSourceStatus(base, {
       latest_parse_status: "failed",

@@ -16,11 +16,24 @@ const STAGE_LABELS: Record<string, string> = {
   failed: "처리 실패",
 };
 
+// The queue only advances when the external source worker runs. If it is not
+// running, a job keeps its status forever, so age is the only signal the UI has
+// that nobody is coming. Stop the spinner instead of implying live progress.
+const STALE_QUEUED_MS = 15 * 60 * 1000;
+const STALE_RUNNING_MS = 25 * 60 * 1000;
+
 export interface SourceStatusPresentation {
   label: string;
   detail: string;
   loading: boolean;
   progress?: number;
+}
+
+function isStale(source: SourceItem, thresholdMs: number, now: number): boolean {
+  if (!source.processingUpdatedAt) return false;
+  const updatedAt = Date.parse(source.processingUpdatedAt);
+  if (!Number.isFinite(updatedAt)) return false;
+  return now - updatedAt > thresholdMs;
 }
 
 export interface SourceStatusRow {
@@ -46,7 +59,7 @@ export function parseSourceStatus(value: unknown): SourceItem["status"] {
   return "processing";
 }
 
-export function sourceStatusPresentation(source: SourceItem): SourceStatusPresentation {
+export function sourceStatusPresentation(source: SourceItem, now: number = Date.now()): SourceStatusPresentation {
   if (source.catalogOnly) {
     return {
       label: "원문 수집 전",
@@ -71,11 +84,27 @@ export function sourceStatusPresentation(source: SourceItem): SourceStatusPresen
     return { label: "가공 일시정지", detail: "현재 체크포인트에서 안전하게 멈춰 있습니다.", loading: false, progress: source.progressPercent };
   }
   if (source.jobStatus === "queued") {
+    if (isStale(source, STALE_QUEUED_MS, now)) {
+      return {
+        label: "Worker 대기 초과",
+        detail: "자동 가공 Worker가 실행되지 않고 있습니다. Worker 상태를 확인해 주세요.",
+        loading: false,
+        progress: source.progressPercent ?? 0,
+      };
+    }
     return {
       label: "가공 대기 중",
       detail: "자동 Worker 시작 대기",
       loading: true,
       progress: source.progressPercent ?? 0,
+    };
+  }
+  if (source.jobStatus === "running" && isStale(source, STALE_RUNNING_MS, now)) {
+    return {
+      label: "Worker 응답 없음",
+      detail: "가공을 시작한 Worker가 응답하지 않습니다. 재개하면 다른 Worker가 이어받습니다.",
+      loading: false,
+      progress: source.progressPercent,
     };
   }
   if (source.jobStatus === "running" || source.status === "processing") {
@@ -99,9 +128,11 @@ export function sourceStatusPresentation(source: SourceItem): SourceStatusPresen
   return { label: "처리 완료", detail: match, loading: false, progress: 100 };
 }
 
-export function hasActiveSourceProcessing(source: SourceItem): boolean {
+export function hasActiveSourceProcessing(source: SourceItem, now: number = Date.now()): boolean {
   if (source.jobStatus === "succeeded" || source.jobStatus === "failed" || source.jobStatus === "cancelled") return false;
-  return source.jobStatus === "queued" || source.jobStatus === "running";
+  if (source.jobStatus === "queued") return !isStale(source, STALE_QUEUED_MS, now);
+  if (source.jobStatus === "running") return !isStale(source, STALE_RUNNING_MS, now);
+  return false;
 }
 
 export function mergeSourceStatus(source: SourceItem, row: SourceStatusRow): SourceItem {
