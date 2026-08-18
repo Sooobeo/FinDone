@@ -2130,6 +2130,24 @@ class SourceIngestionWorker:
             )
             if terminal is not None and terminal.get("jobStatus") == "succeeded":
                 return WorkerOutcome(job_id, source_version_id, "ready", 0, 0)
+            # The sealed reason only reaches the DB, so operators reading the
+            # Worker log would otherwise see no cause at all.
+            print(
+                json.dumps(
+                    {
+                        "status": "failed",
+                        "jobId": job_id,
+                        "sourceVersionId": source_version_id,
+                        "jobKind": job_kind,
+                        "failureType": error.__class__.__name__,
+                        "errorMessage": safe_message or error.__class__.__name__,
+                        **({"requestedUrl": snapshot_details["requestedUrl"]} if "requestedUrl" in snapshot_details else {}),
+                    },
+                    ensure_ascii=False,
+                    sort_keys=True,
+                ),
+                file=sys.stderr,
+            )
             raise SourceWorkerError("claimed source job failed safely") from error
 
 
