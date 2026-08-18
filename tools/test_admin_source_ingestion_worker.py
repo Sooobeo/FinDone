@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import contextlib
 import hashlib
+import io
 import json
 import shutil
 import sqlite3
@@ -565,14 +567,21 @@ class SourceWorkerTests(unittest.TestCase):
         self.assertIn("saving", stages)
 
     def test_worker_fails_unsupported_file_safely(self) -> None:
+        stderr = io.StringIO()
         with tempfile.TemporaryDirectory() as directory:
             source_path = Path(directory) / "input.bin"
             source_path.write_bytes(b"binary")
             client = FakeSourceClient(source_path, filename="source.bin")
-            with self.assertRaisesRegex(worker.SourceWorkerError, "failed safely"):
-                worker.SourceIngestionWorker(client, "source-test-fail").process_one()
+            with contextlib.redirect_stderr(stderr):
+                with self.assertRaisesRegex(worker.SourceWorkerError, "failed safely"):
+                    worker.SourceIngestionWorker(client, "source-test-fail").process_one()
         fail = next(payload for name, payload in client.rpc_calls if name == worker.FAIL_RPC)
         self.assertIn("지원하지 않는 파일 형식", fail["p_error_message"])
+        logged = json.loads(stderr.getvalue().strip())
+        self.assertEqual("failed", logged["status"])
+        self.assertEqual(fail["p_job_id"], logged["jobId"])
+        self.assertEqual("file_extract", logged["jobKind"])
+        self.assertIn("지원하지 않는 파일 형식", logged["errorMessage"])
 
     def test_worker_fetches_archives_extracts_and_completes_url(self) -> None:
         body = (
