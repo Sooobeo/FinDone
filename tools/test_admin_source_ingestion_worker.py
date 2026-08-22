@@ -304,6 +304,41 @@ class URLFetchTests(unittest.TestCase):
         self.assertEqual(["public.example.com", "cdn.example.com"], dns_calls)
         self.assertTrue(all(connection.closed for connection in connections))
 
+    def test_url_fetch_follows_and_flags_https_to_http_redirect(self) -> None:
+        body = b"<html><body>NPV</body></html>"
+        dns_calls: list[str] = []
+        resolver = self._resolver_for(
+            {
+                "public.example.com": ["93.184.216.34"],
+                "legacy.example.com": ["1.1.1.1"],
+            },
+            dns_calls,
+        )
+
+        def opener(parsed: Any, addresses: Any, timeout: float, context: Any) -> tuple[Any, Any]:
+            del addresses, timeout, context
+            if parsed.hostname == "public.example.com":
+                return FakeHTTPConnection(), FakeHTTPResponse(
+                    302, headers={"Location": "http://legacy.example.com/source"}
+                )
+            return FakeHTTPConnection(), FakeHTTPResponse(
+                200, body, {"Content-Type": "text/html", "Content-Length": str(len(body))}
+            )
+
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory) / "snapshot"
+            result = worker.fetch_public_url_to_path(
+                "https://public.example.com/start",
+                destination,
+                max_bytes=1024 * 1024,
+                timeout_seconds=5,
+                resolver=resolver,
+                opener=opener,
+            )
+        self.assertEqual("http://legacy.example.com/source", result.final_url)
+        self.assertTrue(result.insecure_redirect)
+        self.assertEqual(["public.example.com", "legacy.example.com"], dns_calls)
+
     def test_url_fetch_rejects_compressed_response_before_writing(self) -> None:
         resolver = self._resolver_for({"public.example.com": ["93.184.216.34"]})
 
@@ -573,10 +608,11 @@ class SourceWorkerTests(unittest.TestCase):
             source_path.write_bytes(b"binary")
             client = FakeSourceClient(source_path, filename="source.bin")
             with contextlib.redirect_stderr(stderr):
-                with self.assertRaisesRegex(worker.SourceWorkerError, "failed safely"):
-                    worker.SourceIngestionWorker(client, "source-test-fail").process_one()
+                outcome = worker.SourceIngestionWorker(client, "source-test-fail").process_one()
         fail = next(payload for name, payload in client.rpc_calls if name == worker.FAIL_RPC)
         self.assertIn("지원하지 않는 파일 형식", fail["p_error_message"])
+        assert outcome is not None
+        self.assertEqual("failed", outcome.parse_status)
         logged = json.loads(stderr.getvalue().strip())
         self.assertEqual("failed", logged["status"])
         self.assertEqual(fail["p_job_id"], logged["jobId"])

@@ -222,6 +222,7 @@ class URLFetchResult:
     byte_size: int
     sha256: str
     response_headers: dict[str, str]
+    insecure_redirect: bool = False
 
 
 def normalize_text(value: str) -> str:
@@ -1438,6 +1439,7 @@ def fetch_public_url_to_path(
     ssl_context = ssl.create_default_context()
     current_url = requested_url
     redirect_chain: list[str] = []
+    insecure_redirect = False
 
     for redirect_index in range(MAX_URL_REDIRECTS + 1):
         parsed, addresses = resolve_public_source_url(current_url, resolver)
@@ -1453,7 +1455,11 @@ def fetch_public_url_to_path(
                     raise SourceWorkerError("URL redirect 횟수 또는 Location header가 안전 기준을 벗어났습니다")
                 next_url = urllib.parse.urljoin(normalized_url, location)
                 if parsed.scheme == "https" and urllib.parse.urlsplit(next_url).scheme.casefold() == "http":
-                    raise SourceWorkerError("HTTPS에서 HTTP로 내려가는 redirect는 차단했습니다")
+                    # Catalog sources routinely redirect to plain HTTP, so the
+                    # downgrade is followed and recorded instead of blocked.
+                    # The address checks and DNS rebinding defence below still
+                    # apply to the downgraded hop.
+                    insecure_redirect = True
                 current_url = next_url
                 continue
             if response.status != 200:
@@ -1507,6 +1513,7 @@ def fetch_public_url_to_path(
                 byte_size=downloaded,
                 sha256=digest.hexdigest(),
                 response_headers=selected_headers,
+                insecure_redirect=insecure_redirect,
             )
         except (OSError, ssl.SSLError, http.client.HTTPException) as error:
             raise SourceWorkerError("URL 원본을 읽는 중 연결이 끊겼습니다") from error
@@ -2027,6 +2034,7 @@ class SourceIngestionWorker:
                         "requestedUrl": fetched.requested_url,
                         "finalUrl": fetched.final_url,
                         "redirectChain": list(fetched.redirect_chain),
+                        "insecureRedirect": fetched.insecure_redirect,
                         "responseHeaders": fetched.response_headers,
                         "fetchedAt": datetime.now(timezone.utc).isoformat(),
                         **snapshot_details,
@@ -2148,7 +2156,11 @@ class SourceIngestionWorker:
                 ),
                 file=sys.stderr,
             )
-            raise SourceWorkerError("claimed source job failed safely") from error
+            if terminal is None:
+                # Sealing itself did not confirm, so the job may still be
+                # running and this is a Worker fault rather than a bad source.
+                raise SourceWorkerError("claimed source job failed safely") from error
+            return WorkerOutcome(job_id, source_version_id, "failed", 0, 0)
 
 
 def default_worker_id() -> str:
