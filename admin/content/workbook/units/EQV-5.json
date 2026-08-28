@@ -1,0 +1,3150 @@
+{
+  "schemaVersion": 1,
+  "sourceSha256": "edf526c295d299916bf873cb74900ff31765990280f362f42994c8ded873be52",
+  "id": "EQV-5",
+  "anchor": "unit-EQV-5",
+  "subjectId": "subject-03",
+  "subjectTitle": "03. 주식 리서치·기업가치평가",
+  "title": "EQV-5 · 투하자본·가치창출·지분가치 브리지",
+  "subtitle": "정본 이론 + 검증·파생·계산 문항",
+  "meta": [
+    "핵심개념 정본 전체",
+    "문제 30",
+    "상세 해설 30"
+  ],
+  "sourceNote": "기존 FinDone 완성본 복원 · 원본 PDF 419–449쪽",
+  "theory": [
+    {
+      "kind": "section",
+      "text": "개념 압축"
+    },
+    {
+      "kind": "body",
+      "text": "작은 글자와 옅은 박스로 밀도 있게 정리했습니다."
+    },
+    {
+      "kind": "label",
+      "text": "범위"
+    },
+    {
+      "kind": "body",
+      "text": "FinDone 학습요소 EQV-37, EQV-38, EQV-39, EQV-40, EQV-41, EQV-42, EQV-43, EQV-44, EQV-45"
+    },
+    {
+      "kind": "label",
+      "text": "문항 구성"
+    },
+    {
+      "kind": "body",
+      "text": "검증 문항은행 27 · 신규 계산·응용 3 · 합계 30문항"
+    },
+    {
+      "kind": "label",
+      "text": "풀이 원칙"
+    },
+    {
+      "kind": "body",
+      "text": "정답만 제시하지 않고 핵심 조건, 계산 또는 판단 과정, 결과 해석, 대표 오답의 이유를 순서대로 설명합니다."
+    },
+    {
+      "kind": "section",
+      "text": "핵심 이론"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-37 · 연금 적립상태"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "연금 적립상태는 확정급여채무와 이를 충당할 사외적립자산의 차이로, 부족분은 기업의 장기 재무부담을 나타낸다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "직원에게 약속한 퇴직급여가 100인데 별도 자산이 80이면 경제적으로 20의 부족분이 남는다. 할인율이 조금만 바뀌어도 먼 미래 채무 현재가치가 크"
+    },
+    {
+      "kind": "body",
+      "text": "게 움직일 수 있다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "FundedStatus=PlanAssets-DBO; debt-like deficit=max(DBO-PlanAssets,0)"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• FundedStatus=PlanAssets-DBO"
+    },
+    {
+      "kind": "bullet",
+      "text": "• debt-like deficit=max(DBO-PlanAssets,0)"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 순부채 조정 - 미적립 연금부족을 debt-like 항목으로 EV-지분가치 브리지에 반영할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 민감도 분석 - 할인율·임금상승률·자산수익률 변화가 재무상태에 미칠 영향을 볼 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "IAS 19 Employee Benefits · finance_interview_app_final_spec.md:L1739 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소"
+    },
+    {
+      "kind": "body",
+      "text": "(EQV-20 약 64) > F.3.2 이익의 질과 회계 조정 > EQV-37"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-38 · 실효세율·NOL"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "실효세율·NOL 분석은 회계상 세금비용, 실제 현금세금, 이월결손금이 미래 세후이익과 현금흐름에 미치는 차이를 추적한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "세율이 낮아도 일회성 세액공제 때문이면 지속되지 않을 수 있다. 과거 손실로 만든 NOL도 미래 과세소득이 있어야 쓸 수 있으므로 장부상 세금자산"
+    },
+    {
+      "kind": "body",
+      "text": "전액을 현금가치로 보면 안 된다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "BookETR=TaxExpense/PBT; 진단용 CashTaxRate=CashTaxesPaid/PBT; NOLShield=UsableNOL×TaxRate"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• BookETR=TaxExpense/PBT"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 진단용 CashTaxRate=CashTaxesPaid/PBT"
+    },
+    {
+      "kind": "bullet",
+      "text": "• NOLShield=UsableNOL × TaxRate"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 세후이익 예측 - 낮은 실효세율의 지속가능성과 정상세율 복귀 시점을 추정할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• DCF 세금모델 - NOL 사용기간의 현금세금 절감과 소진 후 세율을 반영할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "SEC Financial Reporting Manual · finance_interview_app_final_spec.md:L1740 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소"
+    },
+    {
+      "kind": "body",
+      "text": "(EQV-20 약 64) > F.3.2 이익의 질과 회계 조정 > EQV-38"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-39 · 영업권"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "영업권은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "회사를 장부자산보다 비싸게 사면 그 차액이 자동으로 성공을 뜻하지 않는다. 인수 후 기대 현금흐름이 약해지면 영업권 손상이 발생하며, 이는 과거"
+    },
+    {
+      "kind": "body",
+      "text": "인수가격이 과했을 가능성을 보여 준다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "Goodwill=Consideration+NCI+FVPreviousInterest-FVIdentifiableNetAssets"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "body",
+      "text": "Goodwill=Consideration+NCI+FVPreviousInterest-FVIdentifiableNetAssets"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• M&A 회계 - 인수가격배분 뒤 남는 영업권을 계산할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 인수성과 평가 - 반복 인수와 손상 이력을 통해 경영진의 자본배분 성과를 점검할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "SEC Financial Reporting Manual · finance_interview_app_final_spec.md:L1741 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소"
+    },
+    {
+      "kind": "body",
+      "text": "(EQV-20 약 64) > F.3.2 이익의 질과 회계 조정 > EQV-39"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-40 · 보통주 지분가치 브리지"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "보통주 지분가치 브리지는 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현금을 EV 계산과 브리지 양쪽에서 더하면 이중계상"
+    },
+    {
+      "kind": "body",
+      "text": "이므로 포함 기준을 한 번만 적용한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "CommonEquityValue=OperatingEV+NonOperatingAssets-Debt-Preferred-NCI-OtherDebtLikeClaims"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "body",
+      "text": "CommonEquityValue=OperatingEV+NonOperatingAssets-Debt-Preferred-NCI-OtherDebtLikeClaims"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 목표주가 산출 - 영업가치에서 모든 비영업자산과 debt-like 청구권을 조정할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 모델 검증 - 리스·연금·지분법투자·비지배지분의 분자·분모 포함기준을 맞출 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran Valuation Tools · finance_interview_app_final_spec.md:L1742 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소"
+    },
+    {
+      "kind": "body",
+      "text": "(EQV-20 약 64) > F.3.2 이익의 질과 회계 조정 > EQV-40"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-41 · ROIC·투하자본"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. ROIC를 자본비용과 비교하면 투입한 1원이 가치를"
+    },
+    {
+      "kind": "body",
+      "text": "만들었는지 알 수 있다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "ROIC=NOPAT/AverageInvestedCapital; IC=OperatingAssets-NonInterestBearingOperatingLiabilities"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• ROIC=NOPAT/AverageInvestedCapital"
+    },
+    {
+      "kind": "body",
+      "text": "IC=OperatingAssets-NonInterestBearingOperatingLiabilities"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 경쟁우위 분석 - 높은 ROIC가 얼마나 오래 지속되는지 기업의 질을 평가할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 가치창출 점검 - 성장투자의 수익률이 WACC를 넘는지 판단할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran Valuation Tools · finance_interview_app_final_spec.md:L1748 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소"
+    },
+    {
+      "kind": "body",
+      "text": "(EQV-20 약 64) > F.3.3 ROIC·ROE·성장·재투자 > EQV-41"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-42 · ROIC 마진·회전율 분해"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "ROIC 분해는 자본수익률을 세후 영업마진과 투하자본 회전율로 나눠 수익성의 원천을 설명한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "명품회사는 높은 마진과 낮은 회전율로, 유통회사는 낮은 마진과 높은 회전율로 비슷한 ROIC를 만들 수 있다. 두 모델의 개선 방법과 위험은 서로 다"
+    },
+    {
+      "kind": "body",
+      "text": "르다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "ROIC=NOPATMargin×InvestedCapitalTurnover"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• ROIC=NOPATMargin × InvestedCapitalTurnover"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 사업모델 비교 - 마진형과 회전율형 기업의 자본효율을 같은 틀에서 비교할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 개선원인 분석 - ROIC 상승이 가격·비용 개선인지 자산 활용 개선인지 나눌 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran Valuation Tools · finance_interview_app_final_spec.md:L1749 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소"
+    },
+    {
+      "kind": "body",
+      "text": "(EQV-20 약 64) > F.3.3 ROIC·ROE·성장·재투자 > EQV-42"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-43 · 증분 ROIC"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "증분 ROIC는 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "과거 좋은 사업이 높은 ROIC를 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해 수치는 인수·환율·시차에 흔들리므로 여"
+    },
+    {
+      "kind": "body",
+      "text": "러 해 누적으로 보는 편이 낫다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "IncrementalROIC=ΔNOPAT/ΔInvestedCapital; 실무는 3 약 5년 누적값 권장"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• IncrementalROIC=Δ NOPAT/Δ InvestedCapital"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 실무는 3 약 5년 누적값 권장"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 성장 품질 평가 - 최근 재투자가 기존 사업만큼 높은 수익을 내는지 볼 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 자본배분 검토 - CAPEX·인수 확대 뒤 이익증가가 투입자본을 정당화하는지 판단할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran Valuation Tools · finance_interview_app_final_spec.md:L1750 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소"
+    },
+    {
+      "kind": "body",
+      "text": "(EQV-20 약 64) > F.3.3 ROIC·ROE·성장·재투자 > EQV-43"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-44 · 5단계 DuPont"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "5단계 DuPont은 ROE를 세금부담, 이자부담, 영업마진, 자산회전율, 재무레버리지로 세분한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "ROE 개선이 제품가격 때문인지, 이자비용 감소인지, 세율 하락인지, 더 많은 부채 사용인지 한 숫자만으로 알 수 없다. 다섯 단계로 나누면 영업개선"
+    },
+    {
+      "kind": "body",
+      "text": "과 재무효과가 분리된다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "5단계 DuPont ROE=(NI/EBT)×(EBT/EBIT)×(EBIT/Sales)×(Sales/AvgAssets)×(AvgAssets/AvgEquity)"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 5단계 DuPont"
+    },
+    {
+      "kind": "body",
+      "text": "ROE=(NI/EBT) × (EBT/EBIT) × (EBIT/Sales) × (Sales/AvgAssets) × (AvgAssets/AvgEquity)"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• ROE 브리지 - 전년 대비 주주수익성 변화의 원인을 단계별로 설명할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업 비교 - 같은 ROE라도 레버리지 의존도와 영업경쟁력이 다른 회사를 구분할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "SEC Financial Reporting Manual · finance_interview_app_final_spec.md:L1751 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소"
+    },
+    {
+      "kind": "body",
+      "text": "(EQV-20 약 64) > F.3.3 ROIC·ROE·성장·재투자 > EQV-44"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-45 · 성장·재투자"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "성장·재투자 관계는 회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속가능한 성장률을 결정한다는 원리다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "돈을 많이 재투자한다고 좋은 성장은 아니다. 신규투자 수익률이 자본비용보다 낮으면 규모와 이익은 커져도 가치가 파괴되며, 높은 수익률의 투자기"
+    },
+    {
+      "kind": "body",
+      "text": "회가 있을 때 재투자가 가치가 된다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "기업 성장 g 약 ReinvestmentRate×IncrementalROIC; 주주이익 g 약 RetentionRatio×ROE"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업 성장 g 약 ReinvestmentRate × IncrementalROIC"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 주주이익 g 약 RetentionRatio × ROE"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 장기성장 추정 - 임의의 성장률 대신 재투자율과 증분 ROIC로 예측할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 자본배분 판단 - 배당·자사주보다 내부재투자가 유리한지 비교할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran Valuation Tools · finance_interview_app_final_spec.md:L1752 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소"
+    },
+    {
+      "kind": "body",
+      "text": "(EQV-20 약 64) > F.3.3 ROIC·ROE·성장·재투자 > EQV-45"
+    }
+  ],
+  "questions": [
+    {
+      "id": "EQV-5-Q01",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 연금 적립상태\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다.",
+        "이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
+        "옵션·제한조건부주식·전환증권이 미래 보통주식수를 얼마나 늘려 기존 주주의 몫을 줄이는지 측정한다.",
+        "이 개념은 NOPAT에서 투하자본에 대한 요구수익을 차감해 회계이익 중 자본비용을 넘은 경제적 이익을 측정한다.",
+        "이 개념은 확정급여채무와 이를 충당할 사외적립자산의 차이로, 부족분은 기업의 장기 재무부담을 나타낸다."
+      ],
+      "evidence": "EQV-37 · EQV-37:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 확정급여채무와 이를 충당할 사외적립자산의 차이로, 부족분은 기업의 장기 재무부담을 나타낸다. 용"
+        },
+        {
+          "labelled": false,
+          "text": "어: 연금 적립상태."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 연금 적립상태는 확정급여채무와 이를 충당할 사외적립자산의 차이로, 부족분은 기업의 장기 재무부담을 나타낸다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 직원에게 약속한 퇴직급여가 100인데 별도 자산이 80이면 경제적으로 20의 부족분이 남는다. 할인율이 조금만 바뀌어도 먼"
+        },
+        {
+          "labelled": false,
+          "text": "미래 채무 현재가치가 크게 움직일 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: FundedStatus=PlanAssets-DBO; debt-like deficit=max(DBO-PlanAssets,0)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 영업권: 이 개념은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): WACC: 이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 주식보상·희석주식수: 옵션·제한조건부주식·전환증권이 미래 보통주식수를 얼마나 늘려 기존 주주의 몫을 줄이는지 측정한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): EVA·가치 스프레드: 이 개념은 NOPAT에서 투하자본에 대한 요구수익을 차감해 회계이익 중 자본비용을 넘은 경제적 이익"
+        },
+        {
+          "labelled": false,
+          "text": "을 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 연금 적립상태: 이 개념은 확정급여채무와 이를 충당할 사외적립자산의 차이로, 부족분은 기업의 장기 재무부담을 나타낸다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-37 · EQV-37:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q02",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 연금 적립상태\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "직원에게 약속한 퇴직급여가 100인데 별도 자산이 80이면 경제적으로 20의 부족분이 남는다. 할인율이 조금만 바뀌어도 먼 미래 채무 현\n재가치가 크게 움직일 수 있다.",
+        "매달 같은 월세를 받는 계약은 각 지급액을 따로 할인할 수도 있지만, 반복 구조를 이용하면 한 번에 계산할 수 있다. 영원히 성장한다고 가\n정할 때는 성장률이 할인율보다 낮아야 가치가 유한하게 남는다.",
+        "과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해 수치는 인수·환율·시차에\n흔들리므로 여러 해 누적으로 보는 편이 낫다.",
+        "연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현금을 EV 계산과 브리지 양쪽에서 더하면\n이중계상이므로 포함 기준을 한 번만 적용한다.",
+        "이 개념은 현금이 바로 나가지 않아도 직원에게 회사 지분 일부를 이전하는 경제적 비용이다. 현금흐름에서 가산하면서 주식수 희석까지\n무시하면 같은 항목을 두 번 좋게 보는 오류가 생긴다."
+      ],
+      "evidence": "EQV-37 · EQV-37:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 직원에게 약속한 퇴직급여가 100인데 별도 자산이 80이면 경제적으로 20의 부족분이 남는다. 할인율이 조금만"
+        },
+        {
+          "labelled": false,
+          "text": "바뀌어도 먼 미래 채무 현재가치가 크게 움직일 수 있다. 용어: 연금 적립상태."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 연금 적립상태는 확정급여채무와 이를 충당할 사외적립자산의 차이로, 부족분은 기업의 장기 재무부담을 나타낸다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 직원에게 약속한 퇴직급여가 100인데 별도 자산이 80이면 경제적으로 20의 부족분이 남는다. 할인율이 조금만 바뀌어도 먼"
+        },
+        {
+          "labelled": false,
+          "text": "미래 채무 현재가치가 크게 움직일 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: FundedStatus=PlanAssets-DBO; debt-like deficit=max(DBO-PlanAssets,0)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 연금 적립상태: 직원에게 약속한 퇴직급여가 100인데 별도 자산이 80이면 경제적으로 20의 부족분이 남는다. 할인율이 조금"
+        },
+        {
+          "labelled": false,
+          "text": "만 바뀌어도 먼 미래 채무 현재가치가 크게 움직일 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 연금·영구연금·성장영구연금: 매달 같은 월세를 받는 계약은 각 지급액을 따로 할인할 수도 있지만, 반복 구조를 이용하면 한"
+        },
+        {
+          "labelled": false,
+          "text": "번에 계산할 수 있다. 영원히 성장한다고 가정할 때는 성장률이 할인율보다 낮아야 가치가 유한하게 남는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 증분 ROIC: 과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해"
+        },
+        {
+          "labelled": false,
+          "text": "수치는 인수·환율·시차에 흔들리므로 여러 해 누적으로 보는 편이 낫다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 보통주 지분가치 브리지: 연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현"
+        },
+        {
+          "labelled": false,
+          "text": "금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 주식보상·희석주식수: 이 개념은 현금이 바로 나가지 않아도 직원에게 회사 지분 일부를 이전하는 경제적 비용이다. 현금흐"
+        },
+        {
+          "labelled": false,
+          "text": "름에서 가산하면서 주식수 희석까지 무시하면 같은 항목을 두 번 좋게 보는 오류가 생긴다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-37 · EQV-37:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q03",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 연금 적립상태\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "할인율이 조금만 바뀌어도 먼 미래 채무 현재가치가 크게 움직일 수 있다.",
+        "현금흐름에서 가산하면서 주식수 희석까지 무시하면 같은 항목을 두 번 좋게 보는 오류가 생긴다.",
+        "영원히 성장한다고 가정할 때는 성장률이 할인율보다 낮아야 가치가 유한하게 남는다.",
+        "절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요하다.",
+        "현금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+      ],
+      "evidence": "EQV-37 · EQV-37:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 할인율이 조금만 바뀌어도 먼 미래 채무 현재가치가 크게 움직일 수 있다. 용어: 연금 적립상태."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 연금 적립상태는 확정급여채무와 이를 충당할 사외적립자산의 차이로, 부족분은 기업의 장기 재무부담을 나타낸다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 직원에게 약속한 퇴직급여가 100인데 별도 자산이 80이면 경제적으로 20의 부족분이 남는다. 할인율이 조금만 바뀌어도 먼"
+        },
+        {
+          "labelled": false,
+          "text": "미래 채무 현재가치가 크게 움직일 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: FundedStatus=PlanAssets-DBO; debt-like deficit=max(DBO-PlanAssets,0)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 연금 적립상태: 할인율이 조금만 바뀌어도 먼 미래 채무 현재가치가 크게 움직일 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 주식보상·희석주식수: 현금흐름에서 가산하면서 주식수 희석까지 무시하면 같은 항목을 두 번 좋게 보는 오류가 생긴다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 연금·영구연금·성장영구연금: 영원히 성장한다고 가정할 때는 성장률이 할인율보다 낮아야 가치가 유한하게 남는다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 추정치 괴리·실적 서프라이즈: 절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요"
+        },
+        {
+          "labelled": false,
+          "text": "하다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 보통주 지분가치 브리지: 현금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-37 · EQV-37:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q04",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 실효세율·NOL\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다.",
+        "이 개념 분석은 회계상 세금비용, 실제 현금세금, 이월결손금이 미래 세후이익과 현금흐름에 미치는 차이를 추적한다.",
+        "이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다.",
+        "이 개념은 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다.",
+        "이 개념 조정은 당기 연구개발비를 장기투자로 보고 과거 투자분의 상각과 바꿔 영업이익과 투하자본을 함께 재작성하는 분석이다."
+      ],
+      "evidence": "EQV-38 · EQV-38:definition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념 분석은 회계상 세금비용, 실제 현금세금, 이월결손금이 미래 세후이익과 현금흐름에 미치는 차이를 추적"
+        },
+        {
+          "labelled": false,
+          "text": "한다. 용어: 실효세율·NOL."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 실효세율·NOL 분석은 회계상 세금비용, 실제 현금세금, 이월결손금이 미래 세후이익과 현금흐름에 미치는 차이를 추적한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 세율이 낮아도 일회성 세액공제 때문이면 지속되지 않을 수 있다. 과거 손실로 만든 NOL도 미래 과세소득이 있어야 쓸 수"
+        },
+        {
+          "labelled": false,
+          "text": "있으므로 장부상 세금자산 전액을 현금가치로 보면 안 된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: BookETR=TaxExpense/PBT; 진단용 CashTaxRate=CashTaxesPaid/PBT; NOLShield=UsableNOL×TaxRate"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 경기민감·원자재 정상화: 이 개념은 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 실효세율·NOL: 이 개념 분석은 회계상 세금비용, 실제 현금세금, 이월결손금이 미래 세후이익과 현금흐름에 미치는 차이를"
+        },
+        {
+          "labelled": false,
+          "text": "추적한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 생명보험 CSM·지급여력: 이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께"
+        },
+        {
+          "labelled": false,
+          "text": "본다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 증분 ROIC: 이 개념은 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): R&D 자산화·순설비투자: 이 개념 조정은 당기 연구개발비를 장기투자로 보고 과거 투자분의 상각과 바꿔 영업이익과 투하"
+        },
+        {
+          "labelled": false,
+          "text": "자본을 함께 재작성하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-38 · EQV-38:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q05",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 실효세율·NOL\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "순이익은 늘지만 매출채권과 재고가 더 빠르게 늘면 현금은 따라오지 않을 수 있다. 한 분기의 운전자본 변동은 일시적일 수 있으므로 절대\n값보다 여러 기간의 지속성을 봐야 한다.",
+        "세율이 낮아도 일회성 세액공제 때문이면 지속되지 않을 수 있다. 과거 손실로 만든 이 개념도 미래 과세소득이 있어야 쓸 수 있으므로 장\n부상 세금자산 전액을 현금가치로 보면 안 된다.",
+        "오늘의 R&D가 여러 해 매출을 만든다면 전액을 당기비용으로 처리한 이익은 성장투자를 많이 하는 회사를 불리하게 보일 수 있다. 비용만\n되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다.",
+        "과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해 수치는 인수·환율·시차에\n흔들리므로 여러 해 누적으로 보는 편이 낫다.",
+        "매년 구조조정비를 일회성이라 빼는 회사라면 그 비용은 사실 반복적일 수 있다. 좋은 항목만 제외하지 말고 일회성 이익도 대칭적으로 빼\n야 정상화 수치가 낙관적으로 왜곡되지 않는다."
+      ],
+      "evidence": "EQV-38 · EQV-38:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 세율이 낮아도 일회성 세액공제 때문이면 지속되지 않을 수 있다. 과거 손실로 만든 이 개념도 미래 과세소득이"
+        },
+        {
+          "labelled": false,
+          "text": "있어야 쓸 수 있으므로 장부상 세금자산 전액을 현금가치로 보면 안 된다. 용어: 실효세율·NOL."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 실효세율·NOL 분석은 회계상 세금비용, 실제 현금세금, 이월결손금이 미래 세후이익과 현금흐름에 미치는 차이를 추적한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 세율이 낮아도 일회성 세액공제 때문이면 지속되지 않을 수 있다. 과거 손실로 만든 NOL도 미래 과세소득이 있어야 쓸 수"
+        },
+        {
+          "labelled": false,
+          "text": "있으므로 장부상 세금자산 전액을 현금가치로 보면 안 된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: BookETR=TaxExpense/PBT; 진단용 CashTaxRate=CashTaxesPaid/PBT; NOLShield=UsableNOL×TaxRate"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 발생액비율·현금전환: 순이익은 늘지만 매출채권과 재고가 더 빠르게 늘면 현금은 따라오지 않을 수 있다. 한 분기의 운전자"
+        },
+        {
+          "labelled": false,
+          "text": "본 변동은 일시적일 수 있으므로 절대값보다 여러 기간의 지속성을 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 실효세율·NOL: 세율이 낮아도 일회성 세액공제 때문이면 지속되지 않을 수 있다. 과거 손실로 만든 이 개념도 미래 과세소"
+        },
+        {
+          "labelled": false,
+          "text": "득이 있어야 쓸 수 있으므로 장부상 세금자산 전액을 현금가치로 보면 안 된다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): R&D 자산화·순설비투자: 오늘의 R&D가 여러 해 매출을 만든다면 전액을 당기비용으로 처리한 이익은 성장투자를 많이 하"
+        },
+        {
+          "labelled": false,
+          "text": "는 회사를 불리하게 보일 수 있다. 비용만 되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 증분 ROIC: 과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해"
+        },
+        {
+          "labelled": false,
+          "text": "수치는 인수·환율·시차에 흔들리므로 여러 해 누적으로 보는 편이 낫다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 정상화 영업이익·일회성 조정: 매년 구조조정비를 일회성이라 빼는 회사라면 그 비용은 사실 반복적일 수 있다. 좋은 항목만"
+        },
+        {
+          "labelled": false,
+          "text": "제외하지 말고 일회성 이익도 대칭적으로 빼야 정상화 수치가 낙관적으로 왜곡되지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-38 · EQV-38:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q06",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 실효세율·NOL\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "과거 평균이익만 쓰기보다 현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다.",
+        "좋은 항목만 제외하지 말고 일회성 이익도 대칭적으로 빼야 정상화 수치가 낙관적으로 왜곡되지 않는다.",
+        "회계이익에 비해 영업현금이 약할수록 비현금 조정 비중은 커지고 이익이 현금으로 이어지는 정도는 나빠진다.",
+        "과거의 세무상 손실은 미래 과세소득이 충분할 때만 절세에 사용할 수 있다.",
+        "추가로 투입한 자본에서 생긴 세후 영업성과가 클수록 신규투자의 수익성은 높아진다."
+      ],
+      "evidence": "EQV-38 · EQV-38:verbal_relation:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 과거의 세무상 손실은 미래 과세소득이 충분할 때만 절세에 사용할 수 있다. 용어: 실효세율·NOL."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 실효세율·NOL 분석은 회계상 세금비용, 실제 현금세금, 이월결손금이 미래 세후이익과 현금흐름에 미치는 차이를 추적한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 세율이 낮아도 일회성 세액공제 때문이면 지속되지 않을 수 있다. 과거 손실로 만든 NOL도 미래 과세소득이 있어야 쓸 수"
+        },
+        {
+          "labelled": false,
+          "text": "있으므로 장부상 세금자산 전액을 현금가치로 보면 안 된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: BookETR=TaxExpense/PBT; 진단용 CashTaxRate=CashTaxesPaid/PBT; NOLShield=UsableNOL×TaxRate"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 경기민감·원자재 정상화: 과거 평균이익만 쓰기보다 현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 정상화 영업이익·일회성 조정: 좋은 항목만 제외하지 말고 일회성 이익도 대칭적으로 빼야 정상화 수치가 낙관적으로 왜곡"
+        },
+        {
+          "labelled": false,
+          "text": "되지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 발생액비율·현금전환: 회계이익에 비해 영업현금이 약할수록 비현금 조정 비중은 커지고 이익이 현금으로 이어지는 정도는"
+        },
+        {
+          "labelled": false,
+          "text": "나빠진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 실효세율·NOL: 과거의 세무상 손실은 미래 과세소득이 충분할 때만 절세에 사용할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 증분 ROIC: 추가로 투입한 자본에서 생긴 세후 영업성과가 클수록 신규투자의 수익성은 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-38 · EQV-38:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q07",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 영업권\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념 조정은 당기 연구개발비를 장기투자로 보고 과거 투자분의 상각과 바꿔 영업이익과 투하자본을 함께 재작성하는 분석이다.",
+        "이 개념은 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구한다.",
+        "이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
+        "이 개념은 보고이익에서 영업 외 이익과 진짜 일회성 항목을 일관되게 조정해 반복 가능한 수익력을 추정한 값이다.",
+        "이 개념은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다."
+      ],
+      "evidence": "EQV-39 · EQV-39:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담"
+        },
+        {
+          "labelled": false,
+          "text": "는다. 용어: 영업권."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 영업권은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 회사를 장부자산보다 비싸게 사면 그 차액이 자동으로 성공을 뜻하지 않는다. 인수 후 기대 현금흐름이 약해지면 영업권 손"
+        },
+        {
+          "labelled": false,
+          "text": "상이 발생하며, 이는 과거 인수가격이 과했을 가능성을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Goodwill=Consideration+NCI+FVPreviousInterest-FVIdentifiableNetAssets"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): R&D 자산화·순설비투자: 이 개념 조정은 당기 연구개발비를 장기투자로 보고 과거 투자분의 상각과 바꿔 영업이익과 투하"
+        },
+        {
+          "labelled": false,
+          "text": "자본을 함께 재작성하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 보통주 지분가치 브리지: 이 개념은 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주"
+        },
+        {
+          "labelled": false,
+          "text": "몫을 구한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): ROIC·투하자본: 이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 정상화 영업이익·일회성 조정: 이 개념은 보고이익에서 영업 외 이익과 진짜 일회성 항목을 일관되게 조정해 반복 가능한 수"
+        },
+        {
+          "labelled": false,
+          "text": "익력을 추정한 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 영업권: 이 개념은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-39 · EQV-39:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q08",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 영업권\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "회사를 장부자산보다 비싸게 사면 그 차액이 자동으로 성공을 뜻하지 않는다. 인수 후 기대 현금흐름이 약해지면 이 개념 손상이 발생하며,\n이는 과거 인수가격이 과했을 가능성을 보여 준다.",
+        "매년 구조조정비를 일회성이라 빼는 회사라면 그 비용은 사실 반복적일 수 있다. 좋은 항목만 제외하지 말고 일회성 이익도 대칭적으로 빼\n야 정상화 수치가 낙관적으로 왜곡되지 않는다.",
+        "연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현금을 EV 계산과 브리지 양쪽에서 더하면\n이중계상이므로 포함 기준을 한 번만 적용한다.",
+        "오늘의 R&D가 여러 해 매출을 만든다면 전액을 당기비용으로 처리한 이익은 성장투자를 많이 하는 회사를 불리하게 보일 수 있다. 비용만\n되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다.",
+        "매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을 자본비용과 비교하면 투입한 1\n원이 가치를 만들었는지 알 수 있다."
+      ],
+      "evidence": "EQV-39 · EQV-39:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 회사를 장부자산보다 비싸게 사면 그 차액이 자동으로 성공을 뜻하지 않는다. 인수 후 기대 현금흐름이 약해지면"
+        },
+        {
+          "labelled": false,
+          "text": "이 개념 손상이 발생하며, 이는 과거 인수가격이 과했을 가능성을 보여 준다. 용어: 영업권."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 영업권은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 회사를 장부자산보다 비싸게 사면 그 차액이 자동으로 성공을 뜻하지 않는다. 인수 후 기대 현금흐름이 약해지면 영업권 손"
+        },
+        {
+          "labelled": false,
+          "text": "상이 발생하며, 이는 과거 인수가격이 과했을 가능성을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Goodwill=Consideration+NCI+FVPreviousInterest-FVIdentifiableNetAssets"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 영업권: 회사를 장부자산보다 비싸게 사면 그 차액이 자동으로 성공을 뜻하지 않는다. 인수 후 기대 현금흐름이 약해지면 이"
+        },
+        {
+          "labelled": false,
+          "text": "개념 손상이 발생하며, 이는 과거 인수가격이 과했을 가능성을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 정상화 영업이익·일회성 조정: 매년 구조조정비를 일회성이라 빼는 회사라면 그 비용은 사실 반복적일 수 있다. 좋은 항목만"
+        },
+        {
+          "labelled": false,
+          "text": "제외하지 말고 일회성 이익도 대칭적으로 빼야 정상화 수치가 낙관적으로 왜곡되지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 보통주 지분가치 브리지: 연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현"
+        },
+        {
+          "labelled": false,
+          "text": "금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): R&D 자산화·순설비투자: 오늘의 R&D가 여러 해 매출을 만든다면 전액을 당기비용으로 처리한 이익은 성장투자를 많이 하"
+        },
+        {
+          "labelled": false,
+          "text": "는 회사를 불리하게 보일 수 있다. 비용만 되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): ROIC·투하자본: 매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을"
+        },
+        {
+          "labelled": false,
+          "text": "자본비용과 비교하면 투입한 1원이 가치를 만들었는지 알 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-39 · EQV-39:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q09",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 영업권\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "인수가격 중 식별 가능한 순자산을 넘는 부분은 인수 후 기대 현금흐름이 약해지면 손상될 수 있다.",
+        "세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다.",
+        "좋은 항목만 제외하지 말고 일회성 이익도 대칭적으로 빼야 정상화 수치가 낙관적으로 왜곡되지 않는다.",
+        "비용만 되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다.",
+        "현금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+      ],
+      "evidence": "EQV-39 · EQV-39:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 인수가격 중 식별 가능한 순자산을 넘는 부분은 인수 후 기대 현금흐름이 약해지면 손상될 수 있다. 용어: 영업권."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 영업권은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 회사를 장부자산보다 비싸게 사면 그 차액이 자동으로 성공을 뜻하지 않는다. 인수 후 기대 현금흐름이 약해지면 영업권 손"
+        },
+        {
+          "labelled": false,
+          "text": "상이 발생하며, 이는 과거 인수가격이 과했을 가능성을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Goodwill=Consideration+NCI+FVPreviousInterest-FVIdentifiableNetAssets"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 영업권: 인수가격 중 식별 가능한 순자산을 넘는 부분은 인수 후 기대 현금흐름이 약해지면 손상될 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): ROIC·투하자본: 세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 정상화 영업이익·일회성 조정: 좋은 항목만 제외하지 말고 일회성 이익도 대칭적으로 빼야 정상화 수치가 낙관적으로 왜곡"
+        },
+        {
+          "labelled": false,
+          "text": "되지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): R&D 자산화·순설비투자: 비용만 되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 보통주 지분가치 브리지: 현금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-39 · EQV-39:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q10",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 보통주 지분가치 브리지\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "매출변화를 판매단가 변화와 판매수량 변화로 나누고 두 변화가 겹치는 효과의 귀속 기준을 정하는 분석이다.",
+        "이 개념은 성격이 다른 사업부를 각자 맞는 비교기업·배수·DCF로 평가한 뒤 본사비용과 순부채 등을 조정해 합산하는 방법이다.",
+        "이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다.",
+        "이 개념은 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구한다.",
+        "이 개념은 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다."
+      ],
+      "evidence": "EQV-40 · EQV-40:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구한다."
+        },
+        {
+          "labelled": false,
+          "text": "용어: 보통주 지분가치 브리지."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 보통주 지분가치 브리지는 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현금을 EV 계산과 브리지"
+        },
+        {
+          "labelled": false,
+          "text": "양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: CommonEquityValue=OperatingEV+NonOperatingAssets-Debt-Preferred-NCI-OtherDebtLikeClaims"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 가격·물량 매출 브리지: 매출변화를 판매단가 변화와 판매수량 변화로 나누고 두 변화가 겹치는 효과의 귀속 기준을 정하는"
+        },
+        {
+          "labelled": false,
+          "text": "분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): SOTP: 이 개념은 성격이 다른 사업부를 각자 맞는 비교기업·배수·DCF로 평가한 뒤 본사비용과 순부채 등을 조정해 합산하는"
+        },
+        {
+          "labelled": false,
+          "text": "방법이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 생명보험 CSM·지급여력: 이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께"
+        },
+        {
+          "labelled": false,
+          "text": "본다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 보통주 지분가치 브리지: 이 개념은 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주"
+        },
+        {
+          "labelled": false,
+          "text": "몫을 구한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 매출 브리지: 이 개념은 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분"
+        },
+        {
+          "labelled": false,
+          "text": "석이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-40 · EQV-40:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q11",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 보통주 지분가치 브리지\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현금을 EV 계산과 브리지 양쪽에서 더하면\n이중계상이므로 포함 기준을 한 번만 적용한다.",
+        "가격과 수량이 동시에 바뀌면 두 효과를 단순히 더할 수 없다. 어느 값을 먼저 적용하느냐에 따라 교호효과가 가격 또는 물량에 들어가므로\n일관된 순서를 써야 기간 비교가 가능하다.",
+        "어떤 모형이든 현금 또는 이익의 귀속주체와 할인율을 맞춰야 한다. 은행처럼 부채가 영업재료인 회사는 전체 자본 기준 현금보다 주주 현\n금이나 초과이익 기준이 더 자연스럽다.",
+        "이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정\n변경, 환율, 해제 속도를 따로 봐야 한다.",
+        "원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성\n장의 질과 지속성을 판단할 수 있다."
+      ],
+      "evidence": "EQV-40 · EQV-40:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현금을 EV 계산"
+        },
+        {
+          "labelled": false,
+          "text": "과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다. 용어: 보통주 지분가치 브리지."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 보통주 지분가치 브리지는 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현금을 EV 계산과 브리지"
+        },
+        {
+          "labelled": false,
+          "text": "양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: CommonEquityValue=OperatingEV+NonOperatingAssets-Debt-Preferred-NCI-OtherDebtLikeClaims"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 보통주 지분가치 브리지: 연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현"
+        },
+        {
+          "labelled": false,
+          "text": "금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 가격·물량 매출 브리지: 가격과 수량이 동시에 바뀌면 두 효과를 단순히 더할 수 없다. 어느 값을 먼저 적용하느냐에 따라 교"
+        },
+        {
+          "labelled": false,
+          "text": "호효과가 가격 또는 물량에 들어가므로 일관된 순서를 써야 기간 비교가 가능하다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): FCFF·FCFE·잔여이익: 어떤 모형이든 현금 또는 이익의 귀속주체와 할인율을 맞춰야 한다. 은행처럼 부채가 영업재료인 회사"
+        },
+        {
+          "labelled": false,
+          "text": "는 전체 자본 기준 현금보다 주주 현금이나 초과이익 기준이 더 자연스럽다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 생명보험 CSM·지급여력: 이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며"
+        },
+        {
+          "labelled": false,
+          "text": "이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 매출 브리지: 원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마"
+        },
+        {
+          "labelled": false,
+          "text": "나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-40 · EQV-40:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q12",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 보통주 지분가치 브리지\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다.",
+        "기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다.",
+        "판매단가와 판매수량이 모두 변하면 어느 요인을 먼저 적용하는지에 따라 둘의 교호효과가 귀속되는 곳이 달라진다.",
+        "현금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다.",
+        "전체 자본 제공자에게 남는 현금, 보통주주에게 남는 현금, 요구수익을 넘는 이익은 귀속주체에 맞는 할인율과 연결해야 한다."
+      ],
+      "evidence": "EQV-40 · EQV-40:verbal_relation:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 현금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다. 용어: 보통주 지분가"
+        },
+        {
+          "labelled": false,
+          "text": "치 브리지."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 보통주 지분가치 브리지는 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현금을 EV 계산과 브리지"
+        },
+        {
+          "labelled": false,
+          "text": "양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: CommonEquityValue=OperatingEV+NonOperatingAssets-Debt-Preferred-NCI-OtherDebtLikeClaims"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 생명보험 CSM·지급여력: 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐"
+        },
+        {
+          "labelled": false,
+          "text": "야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 매출 브리지: 기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 가격·물량 매출 브리지: 판매단가와 판매수량이 모두 변하면 어느 요인을 먼저 적용하는지에 따라 둘의 교호효과가 귀속되"
+        },
+        {
+          "labelled": false,
+          "text": "는 곳이 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 보통주 지분가치 브리지: 현금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): FCFF·FCFE·잔여이익: 전체 자본 제공자에게 남는 현금, 보통주주에게 남는 현금, 요구수익을 넘는 이익은 귀속주체에 맞는 할"
+        },
+        {
+          "labelled": false,
+          "text": "인율과 연결해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-40 · EQV-40:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q13",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: ROIC·투하자본\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다.",
+        "이 개념은 ROE를 세금부담, 이자부담, 영업마진, 자산회전율, 재무레버리지로 세분한다.",
+        "이 개념은 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다.",
+        "이 개념은 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다.",
+        "이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다."
+      ],
+      "evidence": "EQV-41 · EQV-41:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다. 용어: ROIC·"
+        },
+        {
+          "labelled": false,
+          "text": "투하자본."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. ROIC를 자본비용과 비교"
+        },
+        {
+          "labelled": false,
+          "text": "하면 투입한 1원이 가치를 만들었는지 알 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ROIC=NOPAT/AverageInvestedCapital; IC=OperatingAssets-NonInterestBearingOperatingLiabilities"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): CAC·LTV·회수기간: 이 개념은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지"
+        },
+        {
+          "labelled": false,
+          "text": "표다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 5단계 DuPont: 이 개념은 ROE를 세금부담, 이자부담, 영업마진, 자산회전율, 재무레버리지로 세분한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): ROE: 이 개념은 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 증분 ROIC: 이 개념은 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): ROIC·투하자본: 이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-41 · EQV-41:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q14",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: ROIC·투하자본\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "회사가 영원히 성장하려면 그 성장을 지탱할 재투자가 필요하다. 성장률만 높이고 재투자를 그대로 두면 공짜 성장을 가정한 셈이며, 이 개\n념이 과도하게 커진다.",
+        "매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을 자본비용과 비교하면 투입한 1\n원이 가치를 만들었는지 알 수 있다.",
+        "목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한지를 사업자료와 비교하면 시\n장과 내 관점의 차이가 선명해진다.",
+        "과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해 수치는 인수·환율·시차에\n흔들리므로 여러 해 누적으로 보는 편이 낫다.",
+        "명품회사는 높은 마진과 낮은 회전율로, 유통회사는 낮은 마진과 높은 회전율로 비슷한 이 개념을 만들 수 있다. 두 모델의 개선 방법과 위\n험은 서로 다르다."
+      ],
+      "evidence": "EQV-41 · EQV-41:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을 자"
+        },
+        {
+          "labelled": false,
+          "text": "본비용과 비교하면 투입한 1원이 가치를 만들었는지 알 수 있다. 용어: ROIC·투하자본."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. ROIC를 자본비용과 비교"
+        },
+        {
+          "labelled": false,
+          "text": "하면 투입한 1원이 가치를 만들었는지 알 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ROIC=NOPAT/AverageInvestedCapital; IC=OperatingAssets-NonInterestBearingOperatingLiabilities"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 계속가치·안정기 재투자: 회사가 영원히 성장하려면 그 성장을 지탱할 재투자가 필요하다. 성장률만 높이고 재투자를 그대로"
+        },
+        {
+          "labelled": false,
+          "text": "두면 공짜 성장을 가정한 셈이며, 이 개념이 과도하게 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): ROIC·투하자본: 매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을"
+        },
+        {
+          "labelled": false,
+          "text": "자본비용과 비교하면 투입한 1원이 가치를 만들었는지 알 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Reverse DCF: 목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한"
+        },
+        {
+          "labelled": false,
+          "text": "지를 사업자료와 비교하면 시장과 내 관점의 차이가 선명해진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 증분 ROIC: 과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해"
+        },
+        {
+          "labelled": false,
+          "text": "수치는 인수·환율·시차에 흔들리므로 여러 해 누적으로 보는 편이 낫다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): ROIC 마진·회전율 분해: 명품회사는 높은 마진과 낮은 회전율로, 유통회사는 낮은 마진과 높은 회전율로 비슷한 이 개념을"
+        },
+        {
+          "labelled": false,
+          "text": "만들 수 있다. 두 모델의 개선 방법과 위험은 서로 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-41 · EQV-41:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q15",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: ROIC·투하자본\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다.",
+        "장기 성장속도를 높게 잡을수록 이를 뒷받침하는 자본 투입도 늘어야 하며 그렇지 않으면 먼 미래 가치가 과대해진다.",
+        "추가로 투입한 자본에서 생긴 세후 영업성과가 클수록 신규투자의 수익성은 높아진다.",
+        "현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다.",
+        "세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다."
+      ],
+      "evidence": "EQV-41 · EQV-41:verbal_relation:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "ROIC·투하자본."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. ROIC를 자본비용과 비교"
+        },
+        {
+          "labelled": false,
+          "text": "하면 투입한 1원이 가치를 만들었는지 알 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ROIC=NOPAT/AverageInvestedCapital; IC=OperatingAssets-NonInterestBearingOperatingLiabilities"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): CAC·LTV·회수기간: 평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 계속가치·안정기 재투자: 장기 성장속도를 높게 잡을수록 이를 뒷받침하는 자본 투입도 늘어야 하며 그렇지 않으면 먼 미래"
+        },
+        {
+          "labelled": false,
+          "text": "가치가 과대해진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 증분 ROIC: 추가로 투입한 자본에서 생긴 세후 영업성과가 클수록 신규투자의 수익성은 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Reverse DCF: 현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): ROIC·투하자본: 세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-41 · EQV-41:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q16",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: ROIC 마진·회전율 분해\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "마진 분석은 매출에서 원가와 판관비가 차지하는 비중을 연결해 이 개념의 변화를 설명한다.",
+        "이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
+        "이 개념 분해는 자본수익률을 세후 영업마진과 투하자본 회전율로 나눠 수익성의 원천을 설명한다.",
+        "이 개념은 NOPAT에서 투하자본에 대한 요구수익을 차감해 회계이익 중 자본비용을 넘은 경제적 이익을 측정한다.",
+        "이 개념은 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다."
+      ],
+      "evidence": "EQV-42 · EQV-42:definition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념 분해는 자본수익률을 세후 영업마진과 투하자본 회전율로 나눠 수익성의 원천을 설명한다. 용어: ROIC"
+        },
+        {
+          "labelled": false,
+          "text": "마진·회전율 분해."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: ROIC 분해는 자본수익률을 세후 영업마진과 투하자본 회전율로 나눠 수익성의 원천을 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 명품회사는 높은 마진과 낮은 회전율로, 유통회사는 낮은 마진과 높은 회전율로 비슷한 ROIC를 만들 수 있다. 두 모델의 개"
+        },
+        {
+          "labelled": false,
+          "text": "선 방법과 위험은 서로 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ROIC=NOPATMargin×InvestedCapitalTurnover"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 마진과 영업이익: 마진 분석은 매출에서 원가와 판관비가 차지하는 비중을 연결해 이 개념의 변화를 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): ROIC·투하자본: 이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): ROIC 마진·회전율 분해: 이 개념 분해는 자본수익률을 세후 영업마진과 투하자본 회전율로 나눠 수익성의 원천을 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): EVA·가치 스프레드: 이 개념은 NOPAT에서 투하자본에 대한 요구수익을 차감해 회계이익 중 자본비용을 넘은 경제적 이익"
+        },
+        {
+          "labelled": false,
+          "text": "을 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 증분 ROIC: 이 개념은 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-42 · EQV-42:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q17",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: ROIC 마진·회전율 분해\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을 자본비용과 비교하면 투입한 1\n원이 가치를 만들었는지 알 수 있다.",
+        "목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한지를 사업자료와 비교하면 시\n장과 내 관점의 차이가 선명해진다.",
+        "명품회사는 높은 마진과 낮은 회전율로, 유통회사는 낮은 마진과 높은 회전율로 비슷한 이 개념을 만들 수 있다. 두 모델의 개선 방법과 위\n험은 서로 다르다.",
+        "과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해 수치는 인수·환율·시차에\n흔들리므로 여러 해 누적으로 보는 편이 낫다.",
+        "회사가 영원히 성장하려면 그 성장을 지탱할 재투자가 필요하다. 성장률만 높이고 재투자를 그대로 두면 공짜 성장을 가정한 셈이며, 이 개\n념이 과도하게 커진다."
+      ],
+      "evidence": "EQV-42 · EQV-42:intuition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 명품회사는 높은 마진과 낮은 회전율로, 유통회사는 낮은 마진과 높은 회전율로 비슷한 이 개념을 만들 수 있다."
+        },
+        {
+          "labelled": false,
+          "text": "두 모델의 개선 방법과 위험은 서로 다르다. 용어: ROIC 마진·회전율 분해."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: ROIC 분해는 자본수익률을 세후 영업마진과 투하자본 회전율로 나눠 수익성의 원천을 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 명품회사는 높은 마진과 낮은 회전율로, 유통회사는 낮은 마진과 높은 회전율로 비슷한 ROIC를 만들 수 있다. 두 모델의 개"
+        },
+        {
+          "labelled": false,
+          "text": "선 방법과 위험은 서로 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ROIC=NOPATMargin×InvestedCapitalTurnover"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): ROIC·투하자본: 매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을"
+        },
+        {
+          "labelled": false,
+          "text": "자본비용과 비교하면 투입한 1원이 가치를 만들었는지 알 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Reverse DCF: 목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한"
+        },
+        {
+          "labelled": false,
+          "text": "지를 사업자료와 비교하면 시장과 내 관점의 차이가 선명해진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): ROIC 마진·회전율 분해: 명품회사는 높은 마진과 낮은 회전율로, 유통회사는 낮은 마진과 높은 회전율로 비슷한 이 개념을"
+        },
+        {
+          "labelled": false,
+          "text": "만들 수 있다. 두 모델의 개선 방법과 위험은 서로 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 증분 ROIC: 과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해"
+        },
+        {
+          "labelled": false,
+          "text": "수치는 인수·환율·시차에 흔들리므로 여러 해 누적으로 보는 편이 낫다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 계속가치·안정기 재투자: 회사가 영원히 성장하려면 그 성장을 지탱할 재투자가 필요하다. 성장률만 높이고 재투자를 그대로"
+        },
+        {
+          "labelled": false,
+          "text": "두면 공짜 성장을 가정한 셈이며, 이 개념이 과도하게 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-42 · EQV-42:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q18",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: ROIC 마진·회전율 분해\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "장기 성장속도를 높게 잡을수록 이를 뒷받침하는 자본 투입도 늘어야 하며 그렇지 않으면 먼 미래 가치가 과대해진다.",
+        "세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다.",
+        "같은 투하자본 수익성이라도 영업마진을 높이거나 자본을 더 빠르게 회전시키는 두 경로로 만들 수 있다.",
+        "현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다.",
+        "추가로 투입한 자본에서 생긴 세후 영업성과가 클수록 신규투자의 수익성은 높아진다."
+      ],
+      "evidence": "EQV-42 · EQV-42:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 같은 투하자본 수익성이라도 영업마진을 높이거나 자본을 더 빠르게 회전시키는 두 경로로 만들 수 있다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "ROIC 마진·회전율 분해."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: ROIC 분해는 자본수익률을 세후 영업마진과 투하자본 회전율로 나눠 수익성의 원천을 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 명품회사는 높은 마진과 낮은 회전율로, 유통회사는 낮은 마진과 높은 회전율로 비슷한 ROIC를 만들 수 있다. 두 모델의 개"
+        },
+        {
+          "labelled": false,
+          "text": "선 방법과 위험은 서로 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ROIC=NOPATMargin×InvestedCapitalTurnover"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 계속가치·안정기 재투자: 장기 성장속도를 높게 잡을수록 이를 뒷받침하는 자본 투입도 늘어야 하며 그렇지 않으면 먼 미래"
+        },
+        {
+          "labelled": false,
+          "text": "가치가 과대해진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): ROIC·투하자본: 세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): ROIC 마진·회전율 분해: 같은 투하자본 수익성이라도 영업마진을 높이거나 자본을 더 빠르게 회전시키는 두 경로로 만들 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Reverse DCF: 현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 증분 ROIC: 추가로 투입한 자본에서 생긴 세후 영업성과가 클수록 신규투자의 수익성은 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-42 · EQV-42:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q19",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 증분 ROIC\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념 분해는 자본수익률을 세후 영업마진과 투하자본 회전율로 나눠 수익성의 원천을 설명한다.",
+        "이 개념은 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다.",
+        "회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속 가능한 확장 속도를 결정한다는 원리다.",
+        "이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
+        "이 개념은 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다."
+      ],
+      "evidence": "EQV-43 · EQV-43:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다. 용"
+        },
+        {
+          "labelled": false,
+          "text": "어: 증분 ROIC."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 증분 ROIC는 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 과거 좋은 사업이 높은 ROIC를 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해 수치는 인수·"
+        },
+        {
+          "labelled": false,
+          "text": "환율·시차에 흔들리므로 여러 해 누적으로 보는 편이 낫다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: IncrementalROIC=ΔNOPAT/ΔInvestedCapital; 실무는 3 약 5년 누적값 권장"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): ROIC 마진·회전율 분해: 이 개념 분해는 자본수익률을 세후 영업마진과 투하자본 회전율로 나눠 수익성의 원천을 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 매출 브리지: 이 개념은 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분"
+        },
+        {
+          "labelled": false,
+          "text": "석이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 성장·재투자: 회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속 가능한 확장 속도를 결정한다는"
+        },
+        {
+          "labelled": false,
+          "text": "원리다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): ROIC·투하자본: 이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 증분 ROIC: 이 개념은 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-43 · EQV-43:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q20",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 증분 ROIC\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한지를 사업자료와 비교하면 시\n장과 내 관점의 차이가 선명해진다.",
+        "과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해 수치는 인수·환율·시차에\n흔들리므로 여러 해 누적으로 보는 편이 낫다.",
+        "명품회사는 높은 마진과 낮은 회전율로, 유통회사는 낮은 마진과 높은 회전율로 비슷한 이 개념을 만들 수 있다. 두 모델의 개선 방법과 위\n험은 서로 다르다.",
+        "돈을 많이 다시 넣는다고 좋은 확장은 아니다. 신규투자 수익률이 자본비용보다 낮으면 규모와 이익은 커져도 가치가 파괴되며, 높은 수익\n률의 투자기회가 있을 때 재투입이 가치가 된다.",
+        "매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을 자본비용과 비교하면 투입한 1\n원이 가치를 만들었는지 알 수 있다."
+      ],
+      "evidence": "EQV-43 · EQV-43:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해"
+        },
+        {
+          "labelled": false,
+          "text": "수치는 인수·환율·시차에 흔들리므로 여러 해 누적으로 보는 편이 낫다. 용어: 증분 ROIC."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 증분 ROIC는 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 과거 좋은 사업이 높은 ROIC를 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해 수치는 인수·"
+        },
+        {
+          "labelled": false,
+          "text": "환율·시차에 흔들리므로 여러 해 누적으로 보는 편이 낫다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: IncrementalROIC=ΔNOPAT/ΔInvestedCapital; 실무는 3 약 5년 누적값 권장"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Reverse DCF: 목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한"
+        },
+        {
+          "labelled": false,
+          "text": "지를 사업자료와 비교하면 시장과 내 관점의 차이가 선명해진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 증분 ROIC: 과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해"
+        },
+        {
+          "labelled": false,
+          "text": "수치는 인수·환율·시차에 흔들리므로 여러 해 누적으로 보는 편이 낫다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): ROIC 마진·회전율 분해: 명품회사는 높은 마진과 낮은 회전율로, 유통회사는 낮은 마진과 높은 회전율로 비슷한 이 개념을"
+        },
+        {
+          "labelled": false,
+          "text": "만들 수 있다. 두 모델의 개선 방법과 위험은 서로 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 성장·재투자: 돈을 많이 다시 넣는다고 좋은 확장은 아니다. 신규투자 수익률이 자본비용보다 낮으면 규모와 이익은 커져도"
+        },
+        {
+          "labelled": false,
+          "text": "가치가 파괴되며, 높은 수익률의 투자기회가 있을 때 재투입이 가치가 된다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): ROIC·투하자본: 매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을"
+        },
+        {
+          "labelled": false,
+          "text": "자본비용과 비교하면 투입한 1원이 가치를 만들었는지 알 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-43 · EQV-43:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q21",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 증분 ROIC\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다.",
+        "현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다.",
+        "같은 투하자본 수익성이라도 영업마진을 높이거나 자본을 더 빠르게 회전시키는 두 경로로 만들 수 있다.",
+        "이익을 사업에 다시 투입하는 비중과 신규자본의 수익성이 높을수록 지속 가능한 확장 속도는 빨라진다.",
+        "추가로 투입한 자본에서 생긴 세후 영업성과가 클수록 신규투자의 수익성은 높아진다."
+      ],
+      "evidence": "EQV-43 · EQV-43:verbal_relation:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 추가로 투입한 자본에서 생긴 세후 영업성과가 클수록 신규투자의 수익성은 높아진다. 용어: 증분 ROIC."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 증분 ROIC는 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 과거 좋은 사업이 높은 ROIC를 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해 수치는 인수·"
+        },
+        {
+          "labelled": false,
+          "text": "환율·시차에 흔들리므로 여러 해 누적으로 보는 편이 낫다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: IncrementalROIC=ΔNOPAT/ΔInvestedCapital; 실무는 3 약 5년 누적값 권장"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): ROIC·투하자본: 세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Reverse DCF: 현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): ROIC 마진·회전율 분해: 같은 투하자본 수익성이라도 영업마진을 높이거나 자본을 더 빠르게 회전시키는 두 경로로 만들 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 성장·재투자: 이익을 사업에 다시 투입하는 비중과 신규자본의 수익성이 높을수록 지속 가능한 확장 속도는 빨라진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 증분 ROIC: 추가로 투입한 자본에서 생긴 세후 영업성과가 클수록 신규투자의 수익성은 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-43 · EQV-43:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q22",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 5단계 DuPont\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "주주수익성을 이익률, 자산 효율, 재무레버리지로 나누어 성과의 원인을 설명하는 방법이다.",
+        "대출·증권의 이자수익, 예금·차입의 이자비용, 평균이자수익자산과 예금금리 전가속도를 연결해 은행의 핵심 영업수익성을 본다.",
+        "이 개념 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한다.",
+        "이 개념은 ROE를 세금부담, 이자부담, 영업마진, 자산회전율, 재무레버리지로 세분한다.",
+        "점포 이 개념은 전체 매출을 점포 수와 점포당 매출로, 점포당 매출을 트래픽·전환율·객단가로 분해한다."
+      ],
+      "evidence": "EQV-44 · EQV-44:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 ROE를 세금부담, 이자부담, 영업마진, 자산회전율, 재무레버리지로 세분한다. 용어: 5단계 DuPont."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 5단계 DuPont은 ROE를 세금부담, 이자부담, 영업마진, 자산회전율, 재무레버리지로 세분한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: ROE 개선이 제품가격 때문인지, 이자비용 감소인지, 세율 하락인지, 더 많은 부채 사용인지 한 숫자만으로 알 수 없다. 다섯"
+        },
+        {
+          "labelled": false,
+          "text": "단계로 나누면 영업개선과 재무효과가 분리된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 5단계 DuPont ROE=(NI/EBT)×(EBT/EBIT)×(EBIT/Sales)×(Sales/AvgAssets)×(AvgAssets/AvgEquity)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): ROA·ROE·DuPont 분해: 주주수익성을 이익률, 자산 효율, 재무레버리지로 나누어 성과의 원인을 설명하는 방법이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 은행 수익성·NIM: 대출·증권의 이자수익, 예금·차입의 이자비용, 평균이자수익자산과 예금금리 전가속도를 연결해 은행의 핵"
+        },
+        {
+          "labelled": false,
+          "text": "심 영업수익성을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 사업부 믹스·연결 EBIT: 이 개념 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 5단계 DuPont: 이 개념은 ROE를 세금부담, 이자부담, 영업마진, 자산회전율, 재무레버리지로 세분한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 점포 매출·단위경제성: 점포 이 개념은 전체 매출을 점포 수와 점포당 매출로, 점포당 매출을 트래픽·전환율·객단가로 분해한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-44 · EQV-44:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q23",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 5단계 DuPont\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "전체 매출이 늘어도 새 점포 수만 늘고 기존점 매출이 약해졌다면 사업의 건강도는 다르다. 방문객, 구매전환, 객단가를 나누면 어떤 운영\n레버가 실제 성장을 만들었는지 보인다.",
+        "이 개념이 높다는 사실만으로 사업이 좋다고 말할 수 없다. 많이 남겨서 높을 수도, 자산을 빠르게 돌려서 높을 수도, 자기자본을 적게 두고\n빚을 많이 써서 높을 수도 있다.",
+        "시장금리가 올라도 대출금리는 늦게 오르고 예금금리는 빠르게 오르면 이 개념은 줄 수 있다. 자산과 부채의 재가격 시점, 예금구성, 고객\n이탈 압력을 함께 봐야 한다.",
+        "ROE 개선이 제품가격 때문인지, 이자비용 감소인지, 세율 하락인지, 더 많은 부채 사용인지 한 숫자만으로 알 수 없다. 다섯 단계로 나누면\n영업개선과 재무효과가 분리된다.",
+        "모든 사업부 매출이 늘어도 저마진 사업의 비중이 더 빨리 커지면 연결마진은 하락할 수 있다. 사업부 이익 합계에서 본사비용과 내부거래\n제거까지 반영해야 연결 수치와 맞는다."
+      ],
+      "evidence": "EQV-44 · EQV-44:intuition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: ROE 개선이 제품가격 때문인지, 이자비용 감소인지, 세율 하락인지, 더 많은 부채 사용인지 한 숫자만으로 알 수"
+        },
+        {
+          "labelled": false,
+          "text": "없다. 다섯 단계로 나누면 영업개선과 재무효과가 분리된다. 용어: 5단계 DuPont."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 5단계 DuPont은 ROE를 세금부담, 이자부담, 영업마진, 자산회전율, 재무레버리지로 세분한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: ROE 개선이 제품가격 때문인지, 이자비용 감소인지, 세율 하락인지, 더 많은 부채 사용인지 한 숫자만으로 알 수 없다. 다섯"
+        },
+        {
+          "labelled": false,
+          "text": "단계로 나누면 영업개선과 재무효과가 분리된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 5단계 DuPont ROE=(NI/EBT)×(EBT/EBIT)×(EBIT/Sales)×(Sales/AvgAssets)×(AvgAssets/AvgEquity)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 점포 매출·단위경제성: 전체 매출이 늘어도 새 점포 수만 늘고 기존점 매출이 약해졌다면 사업의 건강도는 다르다. 방문객,"
+        },
+        {
+          "labelled": false,
+          "text": "구매전환, 객단가를 나누면 어떤 운영 레버가 실제 성장을 만들었는지 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): ROA·ROE·DuPont 분해: 이 개념이 높다는 사실만으로 사업이 좋다고 말할 수 없다. 많이 남겨서 높을 수도, 자산을 빠르게"
+        },
+        {
+          "labelled": false,
+          "text": "돌려서 높을 수도, 자기자본을 적게 두고 빚을 많이 써서 높을 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 은행 수익성·NIM: 시장금리가 올라도 대출금리는 늦게 오르고 예금금리는 빠르게 오르면 이 개념은 줄 수 있다. 자산과 부채"
+        },
+        {
+          "labelled": false,
+          "text": "의 재가격 시점, 예금구성, 고객 이탈 압력을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 5단계 DuPont: ROE 개선이 제품가격 때문인지, 이자비용 감소인지, 세율 하락인지, 더 많은 부채 사용인지 한 숫자만으로"
+        },
+        {
+          "labelled": false,
+          "text": "알 수 없다. 다섯 단계로 나누면 영업개선과 재무효과가 분리된다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 사업부 믹스·연결 EBIT: 모든 사업부 매출이 늘어도 저마진 사업의 비중이 더 빨리 커지면 연결마진은 하락할 수 있다. 사업"
+        },
+        {
+          "labelled": false,
+          "text": "부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-44 · EQV-44:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q24",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 5단계 DuPont\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "대출 등 자산금리가 예금 등 조달금리보다 더 빠르게 오르면 이자마진이 개선되고 반대면 축소된다.",
+        "주주수익성은 세금부담, 이자부담, 영업마진, 자산회전, 재무레버리지의 결합으로 나뉜다.",
+        "방문객, 구매전환, 객단가를 나누면 어떤 운영 레버가 실제 성장을 만들었는지 보인다.",
+        "사업부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다.",
+        "많이 남겨서 높을 수도, 자산을 빠르게 돌려서 높을 수도, 자기자본을 적게 두고 빚을 많이 써서 높을 수도 있다."
+      ],
+      "evidence": "EQV-44 · EQV-44:verbal_relation:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 주주수익성은 세금부담, 이자부담, 영업마진, 자산회전, 재무레버리지의 결합으로 나뉜다. 용어: 5단계 DuPont."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 5단계 DuPont은 ROE를 세금부담, 이자부담, 영업마진, 자산회전율, 재무레버리지로 세분한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: ROE 개선이 제품가격 때문인지, 이자비용 감소인지, 세율 하락인지, 더 많은 부채 사용인지 한 숫자만으로 알 수 없다. 다섯"
+        },
+        {
+          "labelled": false,
+          "text": "단계로 나누면 영업개선과 재무효과가 분리된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 5단계 DuPont ROE=(NI/EBT)×(EBT/EBIT)×(EBIT/Sales)×(Sales/AvgAssets)×(AvgAssets/AvgEquity)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 은행 수익성·NIM: 대출 등 자산금리가 예금 등 조달금리보다 더 빠르게 오르면 이자마진이 개선되고 반대면 축소된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 5단계 DuPont: 주주수익성은 세금부담, 이자부담, 영업마진, 자산회전, 재무레버리지의 결합으로 나뉜다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 점포 매출·단위경제성: 방문객, 구매전환, 객단가를 나누면 어떤 운영 레버가 실제 성장을 만들었는지 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 사업부 믹스·연결 EBIT: 사업부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): ROA·ROE·DuPont 분해: 많이 남겨서 높을 수도, 자산을 빠르게 돌려서 높을 수도, 자기자본을 적게 두고 빚을 많이 써서 높"
+        },
+        {
+          "labelled": false,
+          "text": "을 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-44 · EQV-44:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q25",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 성장·재투자\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 배당, 순자사주매입, 순부채상환을 시가총액과 비교해 주주에게 돌아가는 자본의 규모를 본다.",
+        "이 개념 분해는 자본수익률을 세후 영업마진과 투하자본 회전율로 나눠 수익성의 원천을 설명한다.",
+        "회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속 가능한 확장 속도를 결정한다는 원리다.",
+        "이 개념은 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다.",
+        "이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다."
+      ],
+      "evidence": "EQV-45 · EQV-45:definition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속 가능한 확장 속도를 결정한다는"
+        },
+        {
+          "labelled": false,
+          "text": "원리다. 용어: 성장·재투자."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 성장·재투자 관계는 회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속가능한 성장률을 결정한"
+        },
+        {
+          "labelled": false,
+          "text": "다는 원리다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 돈을 많이 재투자한다고 좋은 성장은 아니다. 신규투자 수익률이 자본비용보다 낮으면 규모와 이익은 커져도 가치가 파괴"
+        },
+        {
+          "labelled": false,
+          "text": "되며, 높은 수익률의 투자기회가 있을 때 재투자가 가치가 된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 기업 성장 g 약 ReinvestmentRate×IncrementalROIC; 주주이익 g 약 RetentionRatio×ROE"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 주주환원수익률·자본배분: 이 개념은 배당, 순자사주매입, 순부채상환을 시가총액과 비교해 주주에게 돌아가는 자본의 규모"
+        },
+        {
+          "labelled": false,
+          "text": "를 본다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): ROIC 마진·회전율 분해: 이 개념 분해는 자본수익률을 세후 영업마진과 투하자본 회전율로 나눠 수익성의 원천을 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 성장·재투자: 회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속 가능한 확장 속도를 결정한다는"
+        },
+        {
+          "labelled": false,
+          "text": "원리다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 증분 ROIC: 이 개념은 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 기대 TSR·촉매: 이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-45 · EQV-45:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q26",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 성장·재투자\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "돈을 많이 다시 넣는다고 좋은 확장은 아니다. 신규투자 수익률이 자본비용보다 낮으면 규모와 이익은 커져도 가치가 파괴되며, 높은 수익\n률의 투자기회가 있을 때 재투입이 가치가 된다.",
+        "목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한지를 사업자료와 비교하면 시\n장과 내 관점의 차이가 선명해진다.",
+        "과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해 수치는 인수·환율·시차에\n흔들리므로 여러 해 누적으로 보는 편이 낫다.",
+        "자사주를 사도 내재가치보다 비싼 가격이면 남은 주주의 가치를 파괴할 수 있다. 배당·상환·M&A·재투자 중 어디에 돈을 쓰는지가 수익률\n숫자만큼 중요하다.",
+        "회사가 영원히 성장하려면 그 성장을 지탱할 재투자가 필요하다. 성장률만 높이고 재투자를 그대로 두면 공짜 성장을 가정한 셈이며, 이 개\n념이 과도하게 커진다."
+      ],
+      "evidence": "EQV-45 · EQV-45:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 돈을 많이 다시 넣는다고 좋은 확장은 아니다. 신규투자 수익률이 자본비용보다 낮으면 규모와 이익은 커져도 가"
+        },
+        {
+          "labelled": false,
+          "text": "치가 파괴되며, 높은 수익률의 투자기회가 있을 때 재투입이 가치가 된다. 용어: 성장·재투자."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 성장·재투자 관계는 회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속가능한 성장률을 결정한"
+        },
+        {
+          "labelled": false,
+          "text": "다는 원리다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 돈을 많이 재투자한다고 좋은 성장은 아니다. 신규투자 수익률이 자본비용보다 낮으면 규모와 이익은 커져도 가치가 파괴"
+        },
+        {
+          "labelled": false,
+          "text": "되며, 높은 수익률의 투자기회가 있을 때 재투자가 가치가 된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 기업 성장 g 약 ReinvestmentRate×IncrementalROIC; 주주이익 g 약 RetentionRatio×ROE"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 성장·재투자: 돈을 많이 다시 넣는다고 좋은 확장은 아니다. 신규투자 수익률이 자본비용보다 낮으면 규모와 이익은 커져도"
+        },
+        {
+          "labelled": false,
+          "text": "가치가 파괴되며, 높은 수익률의 투자기회가 있을 때 재투입이 가치가 된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Reverse DCF: 목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한"
+        },
+        {
+          "labelled": false,
+          "text": "지를 사업자료와 비교하면 시장과 내 관점의 차이가 선명해진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 증분 ROIC: 과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해"
+        },
+        {
+          "labelled": false,
+          "text": "수치는 인수·환율·시차에 흔들리므로 여러 해 누적으로 보는 편이 낫다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 주주환원수익률·자본배분: 자사주를 사도 내재가치보다 비싼 가격이면 남은 주주의 가치를 파괴할 수 있다. 배당·상환·M&A·"
+        },
+        {
+          "labelled": false,
+          "text": "재투자 중 어디에 돈을 쓰는지가 수익률 숫자만큼 중요하다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 계속가치·안정기 재투자: 회사가 영원히 성장하려면 그 성장을 지탱할 재투자가 필요하다. 성장률만 높이고 재투자를 그대로"
+        },
+        {
+          "labelled": false,
+          "text": "두면 공짜 성장을 가정한 셈이며, 이 개념이 과도하게 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-45 · EQV-45:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q27",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 성장·재투자\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "배당·상환·M&A·재투자 중 어디에 돈을 쓰는지가 수익률 숫자만큼 중요하다.",
+        "현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다.",
+        "장기 성장속도를 높게 잡을수록 이를 뒷받침하는 자본 투입도 늘어야 하며 그렇지 않으면 먼 미래 가치가 과대해진다.",
+        "이익을 사업에 다시 투입하는 비중과 신규자본의 수익성이 높을수록 지속 가능한 확장 속도는 빨라진다.",
+        "비용만 되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다."
+      ],
+      "evidence": "EQV-45 · EQV-45:verbal_relation:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이익을 사업에 다시 투입하는 비중과 신규자본의 수익성이 높을수록 지속 가능한 확장 속도는 빨라진다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "성장·재투자."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 성장·재투자 관계는 회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속가능한 성장률을 결정한"
+        },
+        {
+          "labelled": false,
+          "text": "다는 원리다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 돈을 많이 재투자한다고 좋은 성장은 아니다. 신규투자 수익률이 자본비용보다 낮으면 규모와 이익은 커져도 가치가 파괴"
+        },
+        {
+          "labelled": false,
+          "text": "되며, 높은 수익률의 투자기회가 있을 때 재투자가 가치가 된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 기업 성장 g 약 ReinvestmentRate×IncrementalROIC; 주주이익 g 약 RetentionRatio×ROE"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 주주환원수익률·자본배분: 배당·상환·M&A·재투자 중 어디에 돈을 쓰는지가 수익률 숫자만큼 중요하다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Reverse DCF: 현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 계속가치·안정기 재투자: 장기 성장속도를 높게 잡을수록 이를 뒷받침하는 자본 투입도 늘어야 하며 그렇지 않으면 먼 미래"
+        },
+        {
+          "labelled": false,
+          "text": "가치가 과대해진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 성장·재투자: 이익을 사업에 다시 투입하는 비중과 신규자본의 수익성이 높을수록 지속 가능한 확장 속도는 빨라진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): R&D 자산화·순설비투자: 비용만 되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-45 · EQV-45:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q28",
+      "difficulty": 3,
+      "kind": "신규 계산·응용",
+      "stem": "영업 EV 10,000억원, 비영업자산 500억원, 이자부부채 2,500억원, 우선주 200억원, 비지배지분 300억원인 회사가 있다. 확\n정급여채무는 900억원, 사외적립자산은 650억원이며 연금부족 외 다른 debt-like 청구권은 없다. 보통주 지분가치는?",
+      "choices": [
+        "7,000억원",
+        "7,100억원",
+        "7,250억원",
+        "7,500억원",
+        "7,750억원"
+      ],
+      "evidence": "EQV-37 · EQV-40",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "1) 연금부족은 max(900억원-650억원, 0)=250억원이며 debt-like 청구권으로 차감한다. 2) 보통주 지분가치는 10,000억원+500억원"
+        },
+        {
+          "labelled": false,
+          "text": "-2,500억원-200억원-300억원-250억원=7,250억원이다. 모든 항이 억원 단위이고 반올림은 없다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "EQV-37 연금 적립상태: 연금 적립상태는 확정급여채무와 이를 충당할 사외적립자산의 차이로, 부족분은 기업의 장기 재무부담을 나타"
+        },
+        {
+          "labelled": false,
+          "text": "낸다. 핵심 관계는 FundedStatus=PlanAssets-DBO; debt-like deficit=max(DBO-PlanAssets,0) 적용 가정은 - 지표의 분자·분모·기간을"
+        },
+        {
+          "labelled": false,
+          "text": "일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": false,
+          "text": "EQV-40 보통주 지분가치 브리지: 보통주 지분가치 브리지는 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구"
+        },
+        {
+          "labelled": false,
+          "text": "권을 빼 보통주 몫을 구한다. 핵심 관계는 CommonEquityValue=OperatingEV+NonOperatingAssets-Debt-Preferred-NCI-OtherDebtLi"
+        },
+        {
+          "labelled": false,
+          "text": "keClaims 적용 가정은 - 지표의 분자·분모·기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-37 · EQV-40"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q29",
+      "difficulty": 3,
+      "kind": "신규 계산·응용",
+      "stem": "회사의 NOPAT 마진은 8%, 투하자본회전율은 2.5회이다. 향후 재투자율은 40%, 신규투자의 증분 ROIC는 15%로 예상된다.\n현재 사업의 ROIC와 신규투자에 의해 암시되는 성장률은?",
+      "choices": [
+        "20%와 6%",
+        "20%와 8%",
+        "15%와 6%",
+        "8%와 15%",
+        "3.2%와 6%"
+      ],
+      "evidence": "EQV-41 · EQV-42 · EQV-45",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "1) 현재 사업의 ROIC는 8%×2.5회=20%다. 2) 성장률은 재투자율 40%×증분 ROIC 15%=0.40×0.15=0.06, 즉 6%다. 현재 ROIC와 증분"
+        },
+        {
+          "labelled": false,
+          "text": "ROIC는 서로 다른 입력이므로 바꾸어 쓰지 않는다. 결과는 정수 %로 정확하다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "EQV-41 ROIC·투하자본: ROIC는 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다. 핵심 관계는"
+        },
+        {
+          "labelled": false,
+          "text": "ROIC=NOPAT/AverageInvestedCapital; IC=OperatingAssets-NonInterestBearingOperatingLiabilities 적용 가정은 - 지표의 분자·분모·"
+        },
+        {
+          "labelled": false,
+          "text": "기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": false,
+          "text": "EQV-42 ROIC 마진·회전율 분해: ROIC 분해는 자본수익률을 세후 영업마진과 투하자본 회전율로 나눠 수익성의 원천을 설명한다. 핵심"
+        },
+        {
+          "labelled": false,
+          "text": "관계는 ROIC=NOPATMargin×InvestedCapitalTurnover 적용 가정은 - 지표의 분자·분모·기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": false,
+          "text": "EQV-45 성장·재투자: 성장·재투자 관계는 회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속가능한 성장률"
+        },
+        {
+          "labelled": false,
+          "text": "을 결정한다는 원리다. 핵심 관계는 기업 성장 g 약 ReinvestmentRate×IncrementalROIC; 주주이익 g 약 RetentionRatio×ROE 적용 가"
+        },
+        {
+          "labelled": false,
+          "text": "정은 - 지표의 분자·분모·기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-41 · EQV-42 · EQV-45"
+        }
+      ]
+    },
+    {
+      "id": "EQV-5-Q30",
+      "difficulty": 2,
+      "kind": "신규 계산·응용",
+      "stem": "한 회사의 세 부담 계수 NI/EBT는 80%, 이자 부담 계수 EBT/EBIT는 75%, EBIT 마진은 20%, 총자산회전율은 1.5회, 자기자\n본승수는 2.0배이다. 5단계 DuPont ROE는?",
+      "choices": [
+        "18%",
+        "24%",
+        "30%",
+        "36%",
+        "48%"
+      ],
+      "evidence": "EQV-44",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "ROE는 0.80×0.75×0.20×1.5×2.0=0.36, 즉 36%다. 앞의 세 비율은 소수로 바꾸고 회전율과 승수는 배수 그대로 곱한다. 결과가 정확한"
+        },
+        {
+          "labelled": false,
+          "text": "정수 %이므로 반올림하지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "EQV-44 5단계 DuPont: 5단계 DuPont은 ROE를 세금부담, 이자부담, 영업마진, 자산회전율, 재무레버리지로 세분한다. 핵심 관계는 5단"
+        },
+        {
+          "labelled": false,
+          "text": "계 DuPont ROE=(NI/EBT)×(EBT/EBIT)×(EBIT/Sales)×(Sales/AvgAssets)×(AvgAssets/AvgEquity) 적용 가정은 - 지표의 분자·분모·기간을"
+        },
+        {
+          "labelled": false,
+          "text": "일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-44"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,3662 @@
+{
+  "schemaVersion": 1,
+  "sourceSha256": "edf526c295d299916bf873cb74900ff31765990280f362f42994c8ded873be52",
+  "id": "FI",
+  "anchor": "unit-FI",
+  "subjectId": "subject-04",
+  "subjectTitle": "04. 채권·금리",
+  "title": "FI · 채권·금리 전 범위",
+  "subtitle": "정본 이론 + 검증·파생·계산 문항",
+  "meta": [
+    "핵심개념 정본 전체",
+    "문제 30",
+    "상세 해설 30"
+  ],
+  "sourceNote": "기존 FinDone 완성본 복원 · 원본 PDF 522–559쪽",
+  "theory": [
+    {
+      "kind": "section",
+      "text": "개념 압축"
+    },
+    {
+      "kind": "body",
+      "text": "작은 글자와 옅은 박스로 밀도 있게 정리했습니다."
+    },
+    {
+      "kind": "label",
+      "text": "범위"
+    },
+    {
+      "kind": "body",
+      "text": "FinDone 학습요소 FI-01, FI-02, FI-03, FI-04, FI-05, FI-06, FI-07, FI-08, FI-09, FI-10"
+    },
+    {
+      "kind": "label",
+      "text": "문항 구성"
+    },
+    {
+      "kind": "body",
+      "text": "검증 문항은행 30 · 합계 30문항"
+    },
+    {
+      "kind": "label",
+      "text": "풀이 원칙"
+    },
+    {
+      "kind": "body",
+      "text": "정답만 제시하지 않고 핵심 조건, 계산 또는 판단 과정, 결과 해석, 대표 오답의 이유를 순서대로 설명합니다."
+    },
+    {
+      "kind": "section",
+      "text": "핵심 이론"
+    },
+    {
+      "kind": "element",
+      "text": "FI-01 · 채권가격·YTM"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "채권가격은 약정된 쿠폰과 원금을 시장이 요구하는 수익률로 할인한 현재가치이며, YTM은 그 가격을 설명하는 만기수익률이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "새 채권이 더 높은 이자를 주기 시작하면 낮은 쿠폰의 기존 채권은 같은 가격에 팔리지 않는다. 구매자가 새 채권과 비슷한 수익을 얻도록 기존 채권"
+    },
+    {
+      "kind": "body",
+      "text": "가격이 내려가므로 가격과 YTM은 반대로 움직인다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "쿠폰채 P=Σ_(t=1)^n C/(1+y)^t+F/(1+y)^n; 무이표채 P=F/(1+y)^n. 가격과 YTM은 다른 조건이 같으면 반대로 움직인다."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 쿠폰채 P=Σ _(t=1)^n C/(1+y)^t+F/(1+y)^n"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 무이표채 P=F/(1+y)^n."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 가격과 YTM은 다른 조건이 같으면 반대로 움직인다."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 쿠폰·원금·만기 현금흐름을 먼저 그린다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리와 가격의 방향 및 민감도를 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 채권 매매 - 시장가격이 약정 현금흐름 대비 어느 수익률을 제공하는지 비교할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리 시나리오 - 시장수익률 변화가 보유 채권의 공정가치에 미치는 방향을 판단할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 15.401 Fixed-Income Securities 강의·PDF · finance_interview_app_final_spec.md:L1451 · D. 채권·금리 계산 문제 (FI) > FI-01. 채권가격·YTM"
+    },
+    {
+      "kind": "element",
+      "text": "FI-02 · 현물이자율·선도금리"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "현물이자율은 오늘부터 특정 만기까지의 금리이고, 선도금리는 서로 다른 만기 현물금리가 암시하는 미래 구간의 금리다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "2년 투자 결과는 2년 금리로 한 번에 계산해도, 1년 투자 뒤 다시 1년 투자하는 경로로 계산해도 무차익 조건에서는 같아야 한다. 두 경로를 같게 만드"
+    },
+    {
+      "kind": "body",
+      "text": "는 두 번째 구간 금리가 선도금리다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "연복리 기준 (1+s_2)^2=(1+s_1)(1+f_(1,2)); 일반형 (1+s_n)^n=(1+s_m)^m(1+f_(m,n))^(n-m)."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 연복리 기준 (1+s_2)^2=(1+s_1)(1+f_(1,2))"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 일반형 (1+s_n)^n=(1+s_m)^m(1+f_(m,n))^((n-m))."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 쿠폰·원금·만기 현금흐름을 먼저 그린다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리와 가격의 방향 및 민감도를 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 수익률곡선 해석 - 시장이 미래 금리 구간에 어떤 수준을 가격에 반영했는지 볼 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리상품 평가 - 스왑과 선도계약의 미래 현금흐름 기준금리를 만들 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 15.401 Fixed-Income Securities 강의·PDF · finance_interview_app_final_spec.md:L1462 · D. 채권·금리 계산 문제 (FI) > FI-02. 현물이자율·선도금"
+    },
+    {
+      "kind": "body",
+      "text": "리"
+    },
+    {
+      "kind": "element",
+      "text": "FI-03 · Macaulay Duration·Modified Duration"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "Macaulay duration은 채권 현금흐름을 회수하는 가중평균 시점이고, modified duration은 수익률 변화에 대한 가격 민감도로 바꾼 값이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. Modified duration이 5라면 작은 금리 상승에 가격"
+    },
+    {
+      "kind": "body",
+      "text": "이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "D_Mac=Σ[t×PV(CF_t)]/P; 연 1회 복리에서 D_Mod=D_Mac/(1+y). Modified duration은 작은 수익률 변화에 대한 가격 민감도다."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• D_(Mac)=Σ [t × PV(CF_t)]/P"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 연 1회 복리에서 D_(Mod)=D_(Mac)/(1+y)."
+    },
+    {
+      "kind": "bullet",
+      "text": "• Modified duration은 작은 수익률 변화에 대한 가격 민감도다."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 쿠폰·원금·만기 현금흐름을 먼저 그린다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리와 가격의 방향 및 민감도를 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리위험 비교 - 만기만으로 드러나지 않는 채권별 가격 민감도를 비교할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 자산부채관리 - 자산과 부채의 금리 민감도를 맞추는 면역화의 기준으로 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 15.401 Fixed-Income Securities 강의·PDF · finance_interview_app_final_spec.md:L1473 · D. 채권·금리 계산 문제 (FI) > FI-03. Macaulay"
+    },
+    {
+      "kind": "body",
+      "text": "Duration·Modified Duration"
+    },
+    {
+      "kind": "element",
+      "text": "FI-04 · DV01·Convexity 가격변화"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "DV01은 금리가 1bp 움직일 때의 금액 변화이고, convexity는 큰 금리 변화에서 duration의 직선 근사를 보정한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이면 실제 가격곡선이 휘어 있으므로 convexity를 더해야"
+    },
+    {
+      "kind": "body",
+      "text": "상승과 하락의 비대칭을 더 정확히 잡는다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "DV01 약 D_Mod×MV×0.0001; ΔP/P 약 -D_ModΔy+0.5×Convexity×(Δy)². 수익률 상승이면 duration 항에 의해 가격이 하락한다."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• DV01 약 D_(Mod) × MV × 0.0001"
+    },
+    {
+      "kind": "bullet",
+      "text": "• Δ P/P 약 -D_(Mod)Δ y+0.5 × Convexity × (Δ y)^(2)."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 수익률 상승이면 duration 항에 의해 가격이 하락한다."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 쿠폰·원금·만기 현금흐름을 먼저 그린다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리와 가격의 방향 및 민감도를 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 트레이딩 위험관리 - 포트폴리오의 1bp 금리 충격 손익을 금액으로 집계할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 시나리오 분석 - 큰 금리 충격에서 duration만 쓴 오차를 convexity로 보정할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "CME Calculating the Dollar Value of a Basis Point PDF · finance_interview_app_final_spec.md:L1484 · D. 채권·금리 계산 문제 (FI) > FI-04."
+    },
+    {
+      "kind": "body",
+      "text": "DV01·Convexity 가격변화"
+    },
+    {
+      "kind": "element",
+      "text": "FI-05 · Duration Immunization"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "Duration immunization은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는 영향을 줄이는 전략이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현재가치와 duration을 맞추면 한쪽 가치 변화가 다른"
+    },
+    {
+      "kind": "body",
+      "text": "쪽 변화로 대체로 상쇄된다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "1차 면역화는 보통 PV(자산)=PV(부채)와 D_A=D_L을 동시에 맞춘다. 두 자산이면 wD_1+(1-w)D_2=D_L, w=(D_2-D_L)/(D_2-D_1)."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 1차 면역화는 보통 PV(자산)=PV(부채)와 D_A=D_L을 동시에 맞춘다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 두 자산이면 w × D_1+(1-w) × D_2=D_L"
+    },
+    {
+      "kind": "bullet",
+      "text": "• w=(D_2-D_L)/(D_2-D_1)."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 쿠폰·원금·만기 현금흐름을 먼저 그린다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리와 가격의 방향 및 민감도를 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 연기금·보험 ALM - 미래 지급의무와 채권자산의 금리민감도를 맞출 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 채권 포트폴리오 구성 - 목표 duration을 만들기 위해 두 채권의 비중을 정할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 15.401 Fixed-Income Securities 강의·PDF · finance_interview_app_final_spec.md:L1495 · D. 채권·금리 계산 문제 (FI) > FI-05. Duration"
+    },
+    {
+      "kind": "body",
+      "text": "Immunization"
+    },
+    {
+      "kind": "element",
+      "text": "FI-06 · 금리위험 헤징·계약수"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를 줄이는 작업이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한 계약수만큼 더하면 두 손익이 상쇄되며, 계약수"
+    },
+    {
+      "kind": "body",
+      "text": "는 명목금액이 아니라 민감도를 기준으로 잡아야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "DV01 중립 헤지계약수 N=DV01_portfolio/DV01_futures; 일반 duration hedge N=(V_PD_P)/(V_FD_F). 롱 채권의 금리상승 위험은 보통 금리선물을 매"
+    },
+    {
+      "kind": "body",
+      "text": "도해 헤지한다."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• DV01 중립 헤지계약수 N=DV01_(portfolio)/DV01_(futures)"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 일반 duration hedge N=(V_P × D_P)/(V_F × D_F)."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 롱 채권의 금리상승 위험은 보통 금리선물을 매도해 헤지한다."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 쿠폰·원금·만기 현금흐름을 먼저 그린다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리와 가격의 방향 및 민감도를 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 채권 운용 - 매각하지 않고도 일시적으로 포트폴리오 duration을 낮출 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 인수·발행 전 헤지 - 가격이 확정되기 전 금리 변동으로 조달비용이 바뀌는 위험을 줄일 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "CME Calculating the Dollar Value of a Basis Point PDF · finance_interview_app_final_spec.md:L1506 · D. 채권·금리 계산 문제 (FI) > FI-06. 금리위험"
+    },
+    {
+      "kind": "body",
+      "text": "헤징·계약수"
+    },
+    {
+      "kind": "element",
+      "text": "FI-07 · Repo·Haircut"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "Repo는 증권을 담보로 현금을 빌리고 나중에 더 높은 가격으로 되사는 단기금융 거래이며, haircut은 담보가치 중 대출하지 않는 완충분이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "100원짜리 담보라도 가격이 떨어질 수 있어 전액을 빌려주지 않는다. Haircut이 5%면 95원만 대출해 가격변동과 처분비용에 대비하고, 만기에는 대"
+    },
+    {
+      "kind": "body",
+      "text": "출원금과 repo 이자를 합쳐 되산다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "현금대출액 Cash=Collateral×(1-h); repo 이자 I=Cash×r×days/B, B=360 또는 365; 재매입가격 RP=Cash+I."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 현금대출액 Cash=Collateral × (1-h)"
+    },
+    {
+      "kind": "bullet",
+      "text": "• repo 이자 I=Cash × r × days/B"
+    },
+    {
+      "kind": "bullet",
+      "text": "• B=360 또는 365"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 재매입가격 RP=Cash+I."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 쿠폰·원금·만기 현금흐름을 먼저 그린다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리와 가격의 방향 및 민감도를 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 단기자금 조달 - 보유채권을 매각하지 않고 담보로 현금을 확보할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 담보위험 관리 - 자산 변동성과 유동성에 맞춰 haircut과 현금대출액을 정할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "뉴욕연은 Tri-Party Repo Mechanics PDF · finance_interview_app_final_spec.md:L1517 · D. 채권·금리 계산 문제 (FI) > FI-07. Repo·Haircut"
+    },
+    {
+      "kind": "element",
+      "text": "FI-08 · 채권선물 Basis·CTD"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "채권선물 basis는 현물채권 가격과 전환계수로 조정한 선물가격의 차이고, CTD는 인도 선택권을 고려할 때 가장 유리한 후보 채권이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도"
+    },
+    {
+      "kind": "body",
+      "text": "할 수 있는 채권이 선물가격을 주로 좌우한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "단순화한 conversion-factor-adjusted basis Basis=P_cash-F_futures×CF; 여러 인도가능채권 중 조정 basis가 가장 작은 채권을 CTD 후보로 본다. 실제"
+    },
+    {
+      "kind": "body",
+      "text": "거래의 accrued interest·carry·delivery option은 심화 카드에서 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 단순화한 conversion-factor-adjusted basis Basis=P_(cash)-F_(futures) × CF"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 여러 인도가능채권 중 조정 basis가 가장 작은 채권을 CTD 후보로 본다. 실제 거래의 accrued interest·carry·delivery option은 심화 카드에서 분리한"
+    },
+    {
+      "kind": "body",
+      "text": "다."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 쿠폰·원금·만기 현금흐름을 먼저 그린다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리와 가격의 방향 및 민감도를 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 채권선물 차익거래 - 현물과 선물의 조정가격 차이가 carry 비용을 넘는지 볼 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 헤지 정밀화 - 실제 CTD와 전환계수를 반영해 선물의 금리민감도와 계약수를 계산할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "CME Calculating the Dollar Value of a Basis Point PDF · finance_interview_app_final_spec.md:L1528 · D. 채권·금리 계산 문제 (FI) > FI-08. 채권선물"
+    },
+    {
+      "kind": "body",
+      "text": "Basis·CTD"
+    },
+    {
+      "kind": "element",
+      "text": "FI-09 · 금리스왑 고정금리·현금흐름"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "금리스왑은 같은 명목원금에 대해 고정금리 현금흐름과 변동금리 현금흐름을 교환하는 계약이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느"
+    },
+    {
+      "kind": "body",
+      "text": "한쪽도 초기 가치가 없게 만든다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "단일통화 plain-vanilla swap의 순지급액은 결제일 기준 Net=N×(L_prev-K)×d/B(고정금리 수취자 기준 부호는 반대). 할인계수 D_i가 있을 때 par"
+    },
+    {
+      "kind": "body",
+      "text": "fixed rate K=(1-D_n)/(ΣD_i×accrual_i)."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 단일통화 plain-vanilla swap의 순지급액은 결제일 기준 Net=N × (L_(prev)-K) × d/B(고정금리 수취자 기준 부호는 반대)."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 할인계수 D_i가 있을 때 par fixed rate K=(1-D_n)/(Σ D_i × accrual_i)."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 쿠폰·원금·만기 현금흐름을 먼저 그린다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리와 가격의 방향 및 민감도를 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 부채구조 전환 - 변동금리 차입을 고정금리 부담으로 바꾸거나 그 반대로 바꿀 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 스왑 평가 - 할인계수와 직전 확정 변동금리로 순현금흐름과 공정가치를 계산할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 15.433 Investments 강의노트 · finance_interview_app_final_spec.md:L1539 · D. 채권·금리 계산 문제 (FI) > FI-09. 금리스왑 고정금리·현금흐름"
+    },
+    {
+      "kind": "element",
+      "text": "FI-10 · 신용위험·Credit Spread·Expected Loss"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험 등을 가격에 반영한 추가 수익률이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다. 실제 스프레드에는 이 평균손실뿐 아니라 예상 밖 손실, 유동성,"
+    },
+    {
+      "kind": "body",
+      "text": "위험회피 보상도 들어간다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "LGD=1-Recovery; 1기간 기대손실 EL=EAD×PD×LGD; 단순화한 위험중립 근사 spread s 약 PD×LGD. 실제 spread에는 유동성·위험프리미엄·만기구조"
+    },
+    {
+      "kind": "body",
+      "text": "가 포함된다."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• LGD=1-Recovery"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 1기간 기대손실 EL=EAD × PD × LGD"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 단순화한 위험중립 근사 spread s 약 PD × LGD."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 실제 spread에는 유동성·위험프리미엄·만기구조가 포함된다."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 쿠폰·원금·만기 현금흐름을 먼저 그린다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리와 가격의 방향 및 민감도를 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 대출·채권 심사 - 차주의 신용위험을 가격과 충당금에 반영할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 스프레드 해석 - 회사채 수익률 상승이 부도위험, 유동성, 시장위험 중 무엇 때문인지 분해할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "FINRA Bond Spreads 설명 · finance_interview_app_final_spec.md:L1550 · D. 채권·금리 계산 문제 (FI) > FI-10. 신용위험·Credit Spread·Expected Loss"
+    }
+  ],
+  "questions": [
+    {
+      "id": "FI-Q01",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 채권가격·YTM\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함께 측정한다.",
+        "채권 현금흐름을 회수하는 가중평균 시점과 이를 수익률 변화에 대한 가격 민감도로 바꾼 값을 구분한다.",
+        "약정된 쿠폰과 원금을 시장 요구수익률로 할인한 현재가치와, 그 현재가치를 설명하는 만기수익률을 연결한다.",
+        "이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지 duration으로 근사한다.",
+        "옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다."
+      ],
+      "evidence": "FI-01 · FI-01:definition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 약정된 쿠폰과 원금을 시장 요구수익률로 할인한 현재가치와, 그 현재가치를 설명하는 만기수익률을 연결한다."
+        },
+        {
+          "labelled": false,
+          "text": "용어: 채권가격·YTM."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 채권가격은 약정된 쿠폰과 원금을 시장이 요구하는 수익률로 할인한 현재가치이며, YTM은 그 가격을 설명하는 만기수익률"
+        },
+        {
+          "labelled": false,
+          "text": "이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 새 채권이 더 높은 이자를 주기 시작하면 낮은 쿠폰의 기존 채권은 같은 가격에 팔리지 않는다. 구매자가 새 채권과 비슷한"
+        },
+        {
+          "labelled": false,
+          "text": "수익을 얻도록 기존 채권 가격이 내려가므로 가격과 YTM은 반대로 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 쿠폰채 P=Σ_(t=1)^n C/(1+y)^t+F/(1+y)^n; 무이표채 P=F/(1+y)^n. 가격과 YTM은 다른 조건이 같으면 반대로 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): DV01·Convexity 가격변화: 금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함"
+        },
+        {
+          "labelled": false,
+          "text": "께 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Macaulay Duration·Modified Duration: 채권 현금흐름을 회수하는 가중평균 시점과 이를 수익률 변화에 대한 가격 민감도로"
+        },
+        {
+          "labelled": false,
+          "text": "바꾼 값을 구분한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 채권가격·YTM: 약정된 쿠폰과 원금을 시장 요구수익률로 할인한 현재가치와, 그 현재가치를 설명하는 만기수익률을 연결한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 신용스프레드·가격민감도: 이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는"
+        },
+        {
+          "labelled": false,
+          "text": "지 duration으로 근사한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Call·Put Payoff: 옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지"
+        },
+        {
+          "labelled": false,
+          "text": "않는다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-01 · FI-01:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q02",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 채권가격·YTM\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장\n싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이면 실제 가격곡선이 휘어 있으므로 이 개념\n을 더해야 상승과 하락의 비대칭을 더 정확히 잡는다.",
+        "담보가격이 떨어질 수 있어 전액을 빌려주지 않는다. 담보에서 떼어 두는 완충 비율이 커질수록 대출액은 줄고 보호는 커지며, 만기에는 원\n금과 약정 이자를 합쳐 되산다.",
+        "같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격\n이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다.",
+        "새 채권이 더 높은 이자를 주기 시작하면 낮은 쿠폰의 기존 채권은 같은 가격에 팔리지 않는다. 구매자가 새 채권과 비슷한 수익을 얻도록\n기존 채권 가격이 내려가므로 가격과 이 개념은 반대로 움직인다."
+      ],
+      "evidence": "FI-01 · FI-01:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 새 채권이 더 높은 이자를 주기 시작하면 낮은 쿠폰의 기존 채권은 같은 가격에 팔리지 않는다. 구매자가 새 채"
+        },
+        {
+          "labelled": false,
+          "text": "권과 비슷한 수익을 얻도록 기존 채권 가격이 내려가므로 가격과 이 개념은 반대로 움직인다. 용어: 채권가격·YTM."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 채권가격은 약정된 쿠폰과 원금을 시장이 요구하는 수익률로 할인한 현재가치이며, YTM은 그 가격을 설명하는 만기수익률"
+        },
+        {
+          "labelled": false,
+          "text": "이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 새 채권이 더 높은 이자를 주기 시작하면 낮은 쿠폰의 기존 채권은 같은 가격에 팔리지 않는다. 구매자가 새 채권과 비슷한"
+        },
+        {
+          "labelled": false,
+          "text": "수익을 얻도록 기존 채권 가격이 내려가므로 가격과 YTM은 반대로 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 쿠폰채 P=Σ_(t=1)^n C/(1+y)^t+F/(1+y)^n; 무이표채 P=F/(1+y)^n. 가격과 YTM은 다른 조건이 같으면 반대로 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 채권선물 Basis·CTD: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품"
+        },
+        {
+          "labelled": false,
+          "text": "질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): DV01·Convexity 가격변화: Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이"
+        },
+        {
+          "labelled": false,
+          "text": "면 실제 가격곡선이 휘어 있으므로 이 개념을 더해야 상승과 하락의 비대칭을 더 정확히 잡는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Repo·Haircut: 담보가격이 떨어질 수 있어 전액을 빌려주지 않는다. 담보에서 떼어 두는 완충 비율이 커질수록 대출액은 줄"
+        },
+        {
+          "labelled": false,
+          "text": "고 보호는 커지며, 만기에는 원금과 약정 이자를 합쳐 되산다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Macaulay Duration·Modified Duration: 같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에"
+        },
+        {
+          "labelled": false,
+          "text": "덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 채권가격·YTM: 새 채권이 더 높은 이자를 주기 시작하면 낮은 쿠폰의 기존 채권은 같은 가격에 팔리지 않는다. 구매자가 새"
+        },
+        {
+          "labelled": false,
+          "text": "채권과 비슷한 수익을 얻도록 기존 채권 가격이 내려가므로 가격과 이 개념은 반대로 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-01 · FI-01:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q03",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 채권가격·YTM\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간다.",
+        "금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을 잘 설명한다.",
+        "금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으로 더 크게 움직인다.",
+        "담보가치에서 더 큰 완충 비율을 떼어 둘수록 빌려주는 현금은 줄고 가격변동 보호는 커진다."
+      ],
+      "evidence": "FI-01 · FI-01:verbal_relation:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간다."
+        },
+        {
+          "labelled": false,
+          "text": "용어: 채권가격·YTM."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 채권가격은 약정된 쿠폰과 원금을 시장이 요구하는 수익률로 할인한 현재가치이며, YTM은 그 가격을 설명하는 만기수익률"
+        },
+        {
+          "labelled": false,
+          "text": "이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 새 채권이 더 높은 이자를 주기 시작하면 낮은 쿠폰의 기존 채권은 같은 가격에 팔리지 않는다. 구매자가 새 채권과 비슷한"
+        },
+        {
+          "labelled": false,
+          "text": "수익을 얻도록 기존 채권 가격이 내려가므로 가격과 YTM은 반대로 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 쿠폰채 P=Σ_(t=1)^n C/(1+y)^t+F/(1+y)^n; 무이표채 P=F/(1+y)^n. 가격과 YTM은 다른 조건이 같으면 반대로 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 채권선물 Basis·CTD: 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 채권가격·YTM: 시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): DV01·Convexity 가격변화: 금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을"
+        },
+        {
+          "labelled": false,
+          "text": "잘 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Macaulay Duration·Modified Duration: 금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으"
+        },
+        {
+          "labelled": false,
+          "text": "로 더 크게 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Repo·Haircut: 담보가치에서 더 큰 완충 비율을 떼어 둘수록 빌려주는 현금은 줄고 가격변동 보호는 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-01 · FI-01:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q04",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 현물이자율·선도금리\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 투자안의 NPV를 0으로 만드는 수익률로, 투자 자체가 내재적으로 제공하는 연환산 수익률을 나타낸다.",
+        "금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한다.",
+        "선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가격을 정한 값이다.",
+        "오늘부터 특정 만기까지 적용되는 금리와 서로 다른 만기의 금리가 암시하는 미래 구간 금리를 연결한다.",
+        "금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함께 측정한다."
+      ],
+      "evidence": "FI-02 · FI-02:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 오늘부터 특정 만기까지 적용되는 금리와 서로 다른 만기의 금리가 암시하는 미래 구간 금리를 연결한다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "현물이자율·선도금리."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 현물이자율은 오늘부터 특정 만기까지의 금리이고, 선도금리는 서로 다른 만기 현물금리가 암시하는 미래 구간의 금리다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 2년 투자 결과는 2년 금리로 한 번에 계산해도, 1년 투자 뒤 다시 1년 투자하는 경로로 계산해도 무차익 조건에서는 같아야"
+        },
+        {
+          "labelled": false,
+          "text": "한다. 두 경로를 같게 만드는 두 번째 구간 금리가 선도금리다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 연복리 기준 (1+s_2)^2=(1+s_1)(1+f_(1,2)); 일반형 (1+s_n)^n=(1+s_m)^m(1+f_(m,n))^(n-m)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): IRR: 이 개념은 투자안의 NPV를 0으로 만드는 수익률로, 투자 자체가 내재적으로 제공하는 연환산 수익률을 나타낸다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 통화정책·이자수익 전이: 금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되"
+        },
+        {
+          "labelled": false,
+          "text": "는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Forward·Futures 이론가격: 선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가"
+        },
+        {
+          "labelled": false,
+          "text": "격을 정한 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 현물이자율·선도금리: 오늘부터 특정 만기까지 적용되는 금리와 서로 다른 만기의 금리가 암시하는 미래 구간 금리를 연결"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): DV01·Convexity 가격변화: 금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함"
+        },
+        {
+          "labelled": false,
+          "text": "께 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-02 · FI-02:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q05",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 현물이자율·선도금리\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경로의 비용이 같아야 차익거래가 없다. 배당\n이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다.",
+        "2년 투자 결과는 2년 금리로 한 번에 계산해도, 1년 투자 뒤 다시 1년 투자하는 경로로 계산해도 무차익 조건에서는 같아야 한다. 두 경로\n를 같게 만드는 두 번째 구간 금리가 이 개념다.",
+        "원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정\n해져 어느 한쪽도 초기 가치가 없게 만든다.",
+        "선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다. 반대로 선도가 싸면 공매도가 가능할 때 현물\n을 팔고 선도를 매수하는 반대 경로를 쓴다.",
+        "선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장\n싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+      ],
+      "evidence": "FI-02 · FI-02:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 2년 투자 결과는 2년 금리로 한 번에 계산해도, 1년 투자 뒤 다시 1년 투자하는 경로로 계산해도 무차익 조건에"
+        },
+        {
+          "labelled": false,
+          "text": "서는 같아야 한다. 두 경로를 같게 만드는 두 번째 구간 금리가 이 개념다. 용어: 현물이자율·선도금리."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 현물이자율은 오늘부터 특정 만기까지의 금리이고, 선도금리는 서로 다른 만기 현물금리가 암시하는 미래 구간의 금리다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 2년 투자 결과는 2년 금리로 한 번에 계산해도, 1년 투자 뒤 다시 1년 투자하는 경로로 계산해도 무차익 조건에서는 같아야"
+        },
+        {
+          "labelled": false,
+          "text": "한다. 두 경로를 같게 만드는 두 번째 구간 금리가 선도금리다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 연복리 기준 (1+s_2)^2=(1+s_1)(1+f_(1,2)); 일반형 (1+s_n)^n=(1+s_m)^m(1+f_(m,n))^(n-m)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Forward·Futures 이론가격: 오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경"
+        },
+        {
+          "labelled": false,
+          "text": "로의 비용이 같아야 차익거래가 없다. 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 현물이자율·선도금리: 2년 투자 결과는 2년 금리로 한 번에 계산해도, 1년 투자 뒤 다시 1년 투자하는 경로로 계산해도 무차"
+        },
+        {
+          "labelled": false,
+          "text": "익 조건에서는 같아야 한다. 두 경로를 같게 만드는 두 번째 구간 금리가 이 개념다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 금리스왑 고정금리·현금흐름: 원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다"
+        },
+        {
+          "labelled": false,
+          "text": "리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Forward·Futures 무차익거래: 선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다."
+        },
+        {
+          "labelled": false,
+          "text": "반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 채권선물 Basis·CTD: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품"
+        },
+        {
+          "labelled": false,
+          "text": "질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-02 · FI-02:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q06",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 현물이자율·선도금리\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다.",
+        "배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다.",
+        "전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다.",
+        "서로 다른 만기의 누적 투자수익이 같아지도록 중간 구간의 미래 금리가 정해진다."
+      ],
+      "evidence": "FI-02 · FI-02:verbal_relation:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 서로 다른 만기의 누적 투자수익이 같아지도록 중간 구간의 미래 금리가 정해진다. 용어: 현물이자율·선도금리."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 현물이자율은 오늘부터 특정 만기까지의 금리이고, 선도금리는 서로 다른 만기 현물금리가 암시하는 미래 구간의 금리다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 2년 투자 결과는 2년 금리로 한 번에 계산해도, 1년 투자 뒤 다시 1년 투자하는 경로로 계산해도 무차익 조건에서는 같아야"
+        },
+        {
+          "labelled": false,
+          "text": "한다. 두 경로를 같게 만드는 두 번째 구간 금리가 선도금리다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 연복리 기준 (1+s_2)^2=(1+s_1)(1+f_(1,2)); 일반형 (1+s_n)^n=(1+s_m)^m(1+f_(m,n))^(n-m)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Forward·Futures 무차익거래: 반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Forward·Futures 이론가격: 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 채권선물 Basis·CTD: 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 금리스왑 고정금리·현금흐름: 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽"
+        },
+        {
+          "labelled": false,
+          "text": "도 초기 가치가 없게 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 현물이자율·선도금리: 서로 다른 만기의 누적 투자수익이 같아지도록 중간 구간의 미래 금리가 정해진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-02 · FI-02:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q07",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: Macaulay Duration·Modified Duration\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함께 측정한다.",
+        "약정된 쿠폰과 원금을 시장 요구수익률로 할인한 현재가치와, 그 현재가치를 설명하는 만기수익률을 연결한다.",
+        "벤치마크 대비 수익의 흔들림과 그 위험 한 단위당 평균 초과수익을 함께 측정하는 두 지표다.",
+        "이 개념은 명목금리에서 물가상승 효과를 제거해 돈의 구매력이 실제로 얼마나 늘어나는지 보여 준다.",
+        "채권 현금흐름을 회수하는 가중평균 시점과 이를 수익률 변화에 대한 가격 민감도로 바꾼 값을 구분한다."
+      ],
+      "evidence": "FI-03 · FI-03:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 채권 현금흐름을 회수하는 가중평균 시점과 이를 수익률 변화에 대한 가격 민감도로 바꾼 값을 구분한다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "Macaulay Duration·Modified Duration."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Macaulay duration은 채권 현금흐름을 회수하는 가중평균 시점이고, modified duration은 수익률 변화에 대한 가격 민감도"
+        },
+        {
+          "labelled": false,
+          "text": "로 바꾼 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. Modified duration이 5라"
+        },
+        {
+          "labelled": false,
+          "text": "면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: D_Mac=Σ[t×PV(CF_t)]/P; 연 1회 복리에서 D_Mod=D_Mac/(1+y). Modified duration은 작은 수익률 변화에 대한 가격 민감"
+        },
+        {
+          "labelled": false,
+          "text": "도다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): DV01·Convexity 가격변화: 금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함"
+        },
+        {
+          "labelled": false,
+          "text": "께 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 채권가격·YTM: 약정된 쿠폰과 원금을 시장 요구수익률로 할인한 현재가치와, 그 현재가치를 설명하는 만기수익률을 연결한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Tracking Error·Information Ratio: 벤치마크 대비 수익의 흔들림과 그 위험 한 단위당 평균 초과수익을 함께 측정하는 두 지"
+        },
+        {
+          "labelled": false,
+          "text": "표다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 시장금리·실질금리: 이 개념은 명목금리에서 물가상승 효과를 제거해 돈의 구매력이 실제로 얼마나 늘어나는지 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): Macaulay Duration·Modified Duration: 채권 현금흐름을 회수하는 가중평균 시점과 이를 수익률 변화에 대한 가격 민감도로"
+        },
+        {
+          "labelled": false,
+          "text": "바꾼 값을 구분한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-03 · FI-03:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q08",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: Macaulay Duration·Modified Duration\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현재가치와 이 개념을 맞추면 한쪽 가치\n변화가 다른 쪽 변화로 대체로 상쇄된다.",
+        "같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격\n이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다.",
+        "채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한 계약수만큼 더하면 두 손익이 상쇄되\n며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다.",
+        "선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장\n싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정\n해져 어느 한쪽도 초기 가치가 없게 만든다."
+      ],
+      "evidence": "FI-03 · FI-03:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. 이 개념이 5라"
+        },
+        {
+          "labelled": false,
+          "text": "면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다. 용어: Macaulay Duration·Modified Duration."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Macaulay duration은 채권 현금흐름을 회수하는 가중평균 시점이고, modified duration은 수익률 변화에 대한 가격 민감도"
+        },
+        {
+          "labelled": false,
+          "text": "로 바꾼 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. Modified duration이 5라"
+        },
+        {
+          "labelled": false,
+          "text": "면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: D_Mac=Σ[t×PV(CF_t)]/P; 연 1회 복리에서 D_Mod=D_Mac/(1+y). Modified duration은 작은 수익률 변화에 대한 가격 민감"
+        },
+        {
+          "labelled": false,
+          "text": "도다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Duration Immunization: 부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현"
+        },
+        {
+          "labelled": false,
+          "text": "재가치와 이 개념을 맞추면 한쪽 가치 변화가 다른 쪽 변화로 대체로 상쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): Macaulay Duration·Modified Duration: 같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에"
+        },
+        {
+          "labelled": false,
+          "text": "덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 금리위험 헤징·계약수: 채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한"
+        },
+        {
+          "labelled": false,
+          "text": "계약수만큼 더하면 두 손익이 상쇄되며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 채권선물 Basis·CTD: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품"
+        },
+        {
+          "labelled": false,
+          "text": "질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 금리스왑 고정금리·현금흐름: 원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다"
+        },
+        {
+          "labelled": false,
+          "text": "리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-03 · FI-03:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q09",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: Macaulay Duration·Modified Duration\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으로 더 크게 움직인다.",
+        "계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다.",
+        "현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄된다.",
+        "자산과 부채의 현재가치 및 금리 민감도를 맞추면 작은 금리 변화에서 양쪽 가치 변동이 대체로 상쇄된다.",
+        "금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을 잘 설명한다."
+      ],
+      "evidence": "FI-03 · FI-03:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으로 더 크게 움직인다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "Macaulay Duration·Modified Duration."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Macaulay duration은 채권 현금흐름을 회수하는 가중평균 시점이고, modified duration은 수익률 변화에 대한 가격 민감도"
+        },
+        {
+          "labelled": false,
+          "text": "로 바꾼 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. Modified duration이 5라"
+        },
+        {
+          "labelled": false,
+          "text": "면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: D_Mac=Σ[t×PV(CF_t)]/P; 연 1회 복리에서 D_Mod=D_Mac/(1+y). Modified duration은 작은 수익률 변화에 대한 가격 민감"
+        },
+        {
+          "labelled": false,
+          "text": "도다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): Macaulay Duration·Modified Duration: 금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으"
+        },
+        {
+          "labelled": false,
+          "text": "로 더 크게 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 금리스왑 고정금리·현금흐름: 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽"
+        },
+        {
+          "labelled": false,
+          "text": "도 초기 가치가 없게 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 금리위험 헤징·계약수: 현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄"
+        },
+        {
+          "labelled": false,
+          "text": "된다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Duration Immunization: 자산과 부채의 현재가치 및 금리 민감도를 맞추면 작은 금리 변화에서 양쪽 가치 변동이 대체로 상"
+        },
+        {
+          "labelled": false,
+          "text": "쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): DV01·Convexity 가격변화: 금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을"
+        },
+        {
+          "labelled": false,
+          "text": "잘 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-03 · FI-03:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q10",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: DV01·Convexity 가격변화\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "채권 현금흐름을 회수하는 가중평균 시점과 이를 수익률 변화에 대한 가격 민감도로 바꾼 값을 구분한다.",
+        "이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지 duration으로 근사한다.",
+        "현물채권 가격과 전환계수로 조정한 선물가격의 차이를 비교해 인도자에게 가장 유리한 후보 채권을 찾는다.",
+        "금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함께 측정한다.",
+        "이 개념은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는 영향을 줄이는 전략이다."
+      ],
+      "evidence": "FI-04 · FI-04:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함께 측정한다. 용"
+        },
+        {
+          "labelled": false,
+          "text": "어: DV01·Convexity 가격변화."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: DV01은 금리가 1bp 움직일 때의 금액 변화이고, convexity는 큰 금리 변화에서 duration의 직선 근사를 보정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이면 실제 가격곡선이 휘어 있"
+        },
+        {
+          "labelled": false,
+          "text": "으므로 convexity를 더해야 상승과 하락의 비대칭을 더 정확히 잡는다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: DV01 약 D_Mod×MV×0.0001; ΔP/P 약 -D_ModΔy+0.5×Convexity×(Δy)². 수익률 상승이면 duration 항에 의해 가격이 하락"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Macaulay Duration·Modified Duration: 채권 현금흐름을 회수하는 가중평균 시점과 이를 수익률 변화에 대한 가격 민감도로"
+        },
+        {
+          "labelled": false,
+          "text": "바꾼 값을 구분한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 신용스프레드·가격민감도: 이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는"
+        },
+        {
+          "labelled": false,
+          "text": "지 duration으로 근사한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 채권선물 Basis·CTD: 현물채권 가격과 전환계수로 조정한 선물가격의 차이를 비교해 인도자에게 가장 유리한 후보 채권을"
+        },
+        {
+          "labelled": false,
+          "text": "찾는다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): DV01·Convexity 가격변화: 금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함"
+        },
+        {
+          "labelled": false,
+          "text": "께 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Duration Immunization: 이 개념은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는"
+        },
+        {
+          "labelled": false,
+          "text": "영향을 줄이는 전략이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-04 · FI-04:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q11",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: DV01·Convexity 가격변화\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격\n이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다.",
+        "채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한 계약수만큼 더하면 두 손익이 상쇄되\n며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다.",
+        "Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이면 실제 가격곡선이 휘어 있으므로 이 개념\n을 더해야 상승과 하락의 비대칭을 더 정확히 잡는다.",
+        "부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현재가치와 이 개념을 맞추면 한쪽 가치\n변화가 다른 쪽 변화로 대체로 상쇄된다.",
+        "선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장\n싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+      ],
+      "evidence": "FI-04 · FI-04:intuition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이면 실제 가격곡선"
+        },
+        {
+          "labelled": false,
+          "text": "이 휘어 있으므로 이 개념을 더해야 상승과 하락의 비대칭을 더 정확히 잡는다. 용어: DV01·Convexity 가격변화."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: DV01은 금리가 1bp 움직일 때의 금액 변화이고, convexity는 큰 금리 변화에서 duration의 직선 근사를 보정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이면 실제 가격곡선이 휘어 있"
+        },
+        {
+          "labelled": false,
+          "text": "으므로 convexity를 더해야 상승과 하락의 비대칭을 더 정확히 잡는다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: DV01 약 D_Mod×MV×0.0001; ΔP/P 약 -D_ModΔy+0.5×Convexity×(Δy)². 수익률 상승이면 duration 항에 의해 가격이 하락"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Macaulay Duration·Modified Duration: 같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에"
+        },
+        {
+          "labelled": false,
+          "text": "덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 금리위험 헤징·계약수: 채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한"
+        },
+        {
+          "labelled": false,
+          "text": "계약수만큼 더하면 두 손익이 상쇄되며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): DV01·Convexity 가격변화: Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이"
+        },
+        {
+          "labelled": false,
+          "text": "면 실제 가격곡선이 휘어 있으므로 이 개념을 더해야 상승과 하락의 비대칭을 더 정확히 잡는다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Duration Immunization: 부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현"
+        },
+        {
+          "labelled": false,
+          "text": "재가치와 이 개념을 맞추면 한쪽 가치 변화가 다른 쪽 변화로 대체로 상쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 채권선물 Basis·CTD: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품"
+        },
+        {
+          "labelled": false,
+          "text": "질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-04 · FI-04:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q12",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: DV01·Convexity 가격변화\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄된다.",
+        "자산과 부채의 현재가치 및 금리 민감도를 맞추면 작은 금리 변화에서 양쪽 가치 변동이 대체로 상쇄된다.",
+        "금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을 잘 설명한다.",
+        "전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으로 더 크게 움직인다."
+      ],
+      "evidence": "FI-04 · FI-04:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을 잘 설명한다. 용"
+        },
+        {
+          "labelled": false,
+          "text": "어: DV01·Convexity 가격변화."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: DV01은 금리가 1bp 움직일 때의 금액 변화이고, convexity는 큰 금리 변화에서 duration의 직선 근사를 보정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이면 실제 가격곡선이 휘어 있"
+        },
+        {
+          "labelled": false,
+          "text": "으므로 convexity를 더해야 상승과 하락의 비대칭을 더 정확히 잡는다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: DV01 약 D_Mod×MV×0.0001; ΔP/P 약 -D_ModΔy+0.5×Convexity×(Δy)². 수익률 상승이면 duration 항에 의해 가격이 하락"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 금리위험 헤징·계약수: 현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄"
+        },
+        {
+          "labelled": false,
+          "text": "된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Duration Immunization: 자산과 부채의 현재가치 및 금리 민감도를 맞추면 작은 금리 변화에서 양쪽 가치 변동이 대체로 상"
+        },
+        {
+          "labelled": false,
+          "text": "쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): DV01·Convexity 가격변화: 금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을"
+        },
+        {
+          "labelled": false,
+          "text": "잘 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 채권선물 Basis·CTD: 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Macaulay Duration·Modified Duration: 금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으"
+        },
+        {
+          "labelled": false,
+          "text": "로 더 크게 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-04 · FI-04:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q13",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: Duration Immunization\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는 영향을 줄이는 전략이다.",
+        "이 개념 모형은 무배당 유럽형 옵션을 주가, 행사가, 시간, 금리, 변동성으로 연결해 이론가를 계산한다.",
+        "배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다.",
+        "금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함께 측정한다.",
+        "이 개념 분석은 부채 사용이 세금효과, 주주위험, 자본비용과 기업가치에 미치는 영향을 연결한다."
+      ],
+      "evidence": "FI-05 · FI-05:definition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는 영향을 줄이는"
+        },
+        {
+          "labelled": false,
+          "text": "전략이다. 용어: Duration Immunization."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Duration immunization은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는 영향을 줄"
+        },
+        {
+          "labelled": false,
+          "text": "이는 전략이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현재가치와 duration을 맞"
+        },
+        {
+          "labelled": false,
+          "text": "추면 한쪽 가치 변화가 다른 쪽 변화로 대체로 상쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 1차 면역화는 보통 PV(자산)=PV(부채)와 D_A=D_L을 동시에 맞춘다. 두 자산이면 wD_1+(1-w)D_2=D_L,"
+        },
+        {
+          "labelled": false,
+          "text": "w=(D_2-D_L)/(D_2-D_1)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): Duration Immunization: 이 개념은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는"
+        },
+        {
+          "labelled": false,
+          "text": "영향을 줄이는 전략이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Black-Scholes-Merton: 이 개념 모형은 무배당 유럽형 옵션을 주가, 행사가, 시간, 금리, 변동성으로 연결해 이론가를 계산한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 민감도: 배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): DV01·Convexity 가격변화: 금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함"
+        },
+        {
+          "labelled": false,
+          "text": "께 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 레버리지·자본구조: 이 개념 분석은 부채 사용이 세금효과, 주주위험, 자본비용과 기업가치에 미치는 영향을 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-05 · FI-05:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q14",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: Duration Immunization\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현재가치와 이 개념을 맞추면 한쪽 가치\n변화가 다른 쪽 변화로 대체로 상쇄된다.",
+        "같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격\n이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다.",
+        "콜 가치는 단순히 현재 주가에서 행사가를 뺀 값이 아니다. 만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출에서 행사가의\n현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인다.",
+        "채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한 계약수만큼 더하면 두 손익이 상쇄되\n며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다.",
+        "DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가\n정 변화가 큰 가치 차이를 만든다."
+      ],
+      "evidence": "FI-05 · FI-05:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현재가치와 이"
+        },
+        {
+          "labelled": false,
+          "text": "개념을 맞추면 한쪽 가치 변화가 다른 쪽 변화로 대체로 상쇄된다. 용어: Duration Immunization."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Duration immunization은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는 영향을 줄"
+        },
+        {
+          "labelled": false,
+          "text": "이는 전략이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현재가치와 duration을 맞"
+        },
+        {
+          "labelled": false,
+          "text": "추면 한쪽 가치 변화가 다른 쪽 변화로 대체로 상쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 1차 면역화는 보통 PV(자산)=PV(부채)와 D_A=D_L을 동시에 맞춘다. 두 자산이면 wD_1+(1-w)D_2=D_L,"
+        },
+        {
+          "labelled": false,
+          "text": "w=(D_2-D_L)/(D_2-D_1)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): Duration Immunization: 부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현"
+        },
+        {
+          "labelled": false,
+          "text": "재가치와 이 개념을 맞추면 한쪽 가치 변화가 다른 쪽 변화로 대체로 상쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Macaulay Duration·Modified Duration: 같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에"
+        },
+        {
+          "labelled": false,
+          "text": "덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Black-Scholes-Merton: 콜 가치는 단순히 현재 주가에서 행사가를 뺀 값이 아니다. 만기까지 오를 가능성과 남은 시간, 변동"
+        },
+        {
+          "labelled": false,
+          "text": "성을 반영한 주식 노출에서 행사가의 현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 금리위험 헤징·계약수: 채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한"
+        },
+        {
+          "labelled": false,
+          "text": "계약수만큼 더하면 두 손익이 상쇄되며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 계속가치: DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에"
+        },
+        {
+          "labelled": false,
+          "text": "매우 민감하므로, 작은 가정 변화가 큰 가치 차이를 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-05 · FI-05:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q15",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: Duration Immunization\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을 잘 설명한다.",
+        "현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄된다.",
+        "자산과 부채의 현재가치 및 금리 민감도를 맞추면 작은 금리 변화에서 양쪽 가치 변동이 대체로 상쇄된다.",
+        "만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출에서 행사가의 현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인\n다.",
+        "금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으로 더 크게 움직인다."
+      ],
+      "evidence": "FI-05 · FI-05:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 자산과 부채의 현재가치 및 금리 민감도를 맞추면 작은 금리 변화에서 양쪽 가치 변동이 대체로 상쇄된다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "Duration Immunization."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Duration immunization은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는 영향을 줄"
+        },
+        {
+          "labelled": false,
+          "text": "이는 전략이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현재가치와 duration을 맞"
+        },
+        {
+          "labelled": false,
+          "text": "추면 한쪽 가치 변화가 다른 쪽 변화로 대체로 상쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 1차 면역화는 보통 PV(자산)=PV(부채)와 D_A=D_L을 동시에 맞춘다. 두 자산이면 wD_1+(1-w)D_2=D_L,"
+        },
+        {
+          "labelled": false,
+          "text": "w=(D_2-D_L)/(D_2-D_1)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): DV01·Convexity 가격변화: 금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을"
+        },
+        {
+          "labelled": false,
+          "text": "잘 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 금리위험 헤징·계약수: 현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄"
+        },
+        {
+          "labelled": false,
+          "text": "된다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): Duration Immunization: 자산과 부채의 현재가치 및 금리 민감도를 맞추면 작은 금리 변화에서 양쪽 가치 변동이 대체로 상"
+        },
+        {
+          "labelled": false,
+          "text": "쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Black-Scholes-Merton: 만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출에서 행사가의 현재가치를 차감한 구"
+        },
+        {
+          "labelled": false,
+          "text": "조로 이해하면 각 입력의 방향이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Macaulay Duration·Modified Duration: 금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으"
+        },
+        {
+          "labelled": false,
+          "text": "로 더 크게 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-05 · FI-05:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q16",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 금리위험 헤징·계약수\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다.",
+        "금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함께 측정한다.",
+        "이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오의 비용으로 현재가를 구한다.",
+        "이 개념은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는 영향을 줄이는 전략이다.",
+        "금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를 줄이는 작업이다."
+      ],
+      "evidence": "FI-06 · FI-06:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를 줄이는 작업"
+        },
+        {
+          "labelled": false,
+          "text": "이다. 용어: 금리위험 헤징·계약수."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를 줄이는 작업이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한 계약수만큼 더하면 두"
+        },
+        {
+          "labelled": false,
+          "text": "손익이 상쇄되며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: DV01 중립 헤지계약수 N=DV01_portfolio/DV01_futures; 일반 duration hedge N=(V_PD_P)/(V_FD_F). 롱 채권의 금리상승"
+        },
+        {
+          "labelled": false,
+          "text": "위험은 보통 금리선물을 매도해 헤지한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 최소분산 Hedge Ratio·선물계약수: 최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장"
+        },
+        {
+          "labelled": false,
+          "text": "작게 만드는 선물 비중이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): DV01·Convexity 가격변화: 금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함"
+        },
+        {
+          "labelled": false,
+          "text": "께 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Binomial Option Pricing: 이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오"
+        },
+        {
+          "labelled": false,
+          "text": "의 비용으로 현재가를 구한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Duration Immunization: 이 개념은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는"
+        },
+        {
+          "labelled": false,
+          "text": "영향을 줄이는 전략이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 금리위험 헤징·계약수: 금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를"
+        },
+        {
+          "labelled": false,
+          "text": "줄이는 작업이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-06 · FI-06:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q17",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 금리위험 헤징·계약수\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한 계약수만큼 더하면 두 손익이 상쇄되\n며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다.",
+        "부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현재가치와 이 개념을 맞추면 한쪽 가치\n변화가 다른 쪽 변화로 대체로 상쇄된다.",
+        "Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이면 실제 가격곡선이 휘어 있으므로 이 개념\n을 더해야 상승과 하락의 비대칭을 더 정확히 잡는다.",
+        "선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장\n싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "현물과 선물이 완전히 같이 움직이지 않으면 명목금액을 1대1로 맞춰도 위험이 남는다. 상관이 낮거나 선물 변동성이 크면 필요한 계약수\n가 달라지며, 주식 포트폴리오는 시장 베타까지 반영한다."
+      ],
+      "evidence": "FI-06 · FI-06:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한 계약수만큼"
+        },
+        {
+          "labelled": false,
+          "text": "더하면 두 손익이 상쇄되며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다. 용어: 금리위험 헤징·계약수."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를 줄이는 작업이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한 계약수만큼 더하면 두"
+        },
+        {
+          "labelled": false,
+          "text": "손익이 상쇄되며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: DV01 중립 헤지계약수 N=DV01_portfolio/DV01_futures; 일반 duration hedge N=(V_PD_P)/(V_FD_F). 롱 채권의 금리상승"
+        },
+        {
+          "labelled": false,
+          "text": "위험은 보통 금리선물을 매도해 헤지한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 금리위험 헤징·계약수: 채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한"
+        },
+        {
+          "labelled": false,
+          "text": "계약수만큼 더하면 두 손익이 상쇄되며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Duration Immunization: 부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현"
+        },
+        {
+          "labelled": false,
+          "text": "재가치와 이 개념을 맞추면 한쪽 가치 변화가 다른 쪽 변화로 대체로 상쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): DV01·Convexity 가격변화: Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이"
+        },
+        {
+          "labelled": false,
+          "text": "면 실제 가격곡선이 휘어 있으므로 이 개념을 더해야 상승과 하락의 비대칭을 더 정확히 잡는다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 채권선물 Basis·CTD: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품"
+        },
+        {
+          "labelled": false,
+          "text": "질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 최소분산 Hedge Ratio·선물계약수: 현물과 선물이 완전히 같이 움직이지 않으면 명목금액을 1대1로 맞춰도 위험이 남는다."
+        },
+        {
+          "labelled": false,
+          "text": "상관이 낮거나 선물 변동성이 크면 필요한 계약수가 달라지며, 주식 포트폴리오는 시장 베타까지 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-06 · FI-06:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q18",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 금리위험 헤징·계약수\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄된다.",
+        "상관이 낮거나 선물 변동성이 크면 필요한 계약수가 달라지며, 주식 포트폴리오는 시장 베타까지 반영한다.",
+        "자산과 부채의 현재가치 및 금리 민감도를 맞추면 작은 금리 변화에서 양쪽 가치 변동이 대체로 상쇄된다.",
+        "전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을 잘 설명한다."
+      ],
+      "evidence": "FI-06 · FI-06:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄된다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "금리위험 헤징·계약수."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를 줄이는 작업이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한 계약수만큼 더하면 두"
+        },
+        {
+          "labelled": false,
+          "text": "손익이 상쇄되며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: DV01 중립 헤지계약수 N=DV01_portfolio/DV01_futures; 일반 duration hedge N=(V_PD_P)/(V_FD_F). 롱 채권의 금리상승"
+        },
+        {
+          "labelled": false,
+          "text": "위험은 보통 금리선물을 매도해 헤지한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 금리위험 헤징·계약수: 현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄"
+        },
+        {
+          "labelled": false,
+          "text": "된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 최소분산 Hedge Ratio·선물계약수: 상관이 낮거나 선물 변동성이 크면 필요한 계약수가 달라지며, 주식 포트폴리오는 시장"
+        },
+        {
+          "labelled": false,
+          "text": "베타까지 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Duration Immunization: 자산과 부채의 현재가치 및 금리 민감도를 맞추면 작은 금리 변화에서 양쪽 가치 변동이 대체로 상"
+        },
+        {
+          "labelled": false,
+          "text": "쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 채권선물 Basis·CTD: 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): DV01·Convexity 가격변화: 금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을"
+        },
+        {
+          "labelled": false,
+          "text": "잘 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-06 · FI-06:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q19",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: Repo·Haircut\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "현물채권 가격과 전환계수로 조정한 선물가격의 차이를 비교해 인도자에게 가장 유리한 후보 채권을 찾는다.",
+        "옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다.",
+        "이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다.",
+        "이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지 duration으로 근사한다.",
+        "증권을 담보로 현금을 빌린 뒤 더 높은 가격으로 되사는 단기금융 거래와, 담보가치 중 대출하지 않는 완충분을 뜻한다."
+      ],
+      "evidence": "FI-07 · FI-07:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 증권을 담보로 현금을 빌린 뒤 더 높은 가격으로 되사는 단기금융 거래와, 담보가치 중 대출하지 않는 완충분을"
+        },
+        {
+          "labelled": false,
+          "text": "뜻한다. 용어: Repo·Haircut."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Repo는 증권을 담보로 현금을 빌리고 나중에 더 높은 가격으로 되사는 단기금융 거래이며, haircut은 담보가치 중 대출하지"
+        },
+        {
+          "labelled": false,
+          "text": "않는 완충분이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 100원짜리 담보라도 가격이 떨어질 수 있어 전액을 빌려주지 않는다. Haircut이 5%면 95원만 대출해 가격변동과 처분비용"
+        },
+        {
+          "labelled": false,
+          "text": "에 대비하고, 만기에는 대출원금과 repo 이자를 합쳐 되산다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 현금대출액 Cash=Collateral×(1-h); repo 이자 I=Cash×r×days/B, B=360 또는 365; 재매입가격 RP=Cash+I."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 채권선물 Basis·CTD: 현물채권 가격과 전환계수로 조정한 선물가격의 차이를 비교해 인도자에게 가장 유리한 후보 채권을"
+        },
+        {
+          "labelled": false,
+          "text": "찾는다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Call·Put Payoff: 옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지"
+        },
+        {
+          "labelled": false,
+          "text": "않는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): IPO 지분희석: 이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 신용스프레드·가격민감도: 이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는"
+        },
+        {
+          "labelled": false,
+          "text": "지 duration으로 근사한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): Repo·Haircut: 증권을 담보로 현금을 빌린 뒤 더 높은 가격으로 되사는 단기금융 거래와, 담보가치 중 대출하지 않는 완충분"
+        },
+        {
+          "labelled": false,
+          "text": "을 뜻한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-07 · FI-07:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q20",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: Repo·Haircut\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "새 채권이 더 높은 이자를 주기 시작하면 낮은 쿠폰의 기존 채권은 같은 가격에 팔리지 않는다. 구매자가 새 채권과 비슷한 수익을 얻도록\n기존 채권 가격이 내려가므로 가격과 이 개념은 반대로 움직인다.",
+        "담보가격이 떨어질 수 있어 전액을 빌려주지 않는다. 담보에서 떼어 두는 완충 비율이 커질수록 대출액은 줄고 보호는 커지며, 만기에는 원\n금과 약정 이자를 합쳐 되산다.",
+        "선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장\n싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "회사를 인수해 순이익이 늘어도 그 대가로 더 많은 신주를 발행하면 주당이익은 줄 수 있다. 반대로 이 개념이 늘어도 과도한 부채나 낮은\nROIC로 가치를 파괴할 수 있어 거래가치 판단과 같지는 않다.",
+        "명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금\n리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다."
+      ],
+      "evidence": "FI-07 · FI-07:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 담보가격이 떨어질 수 있어 전액을 빌려주지 않는다. 담보에서 떼어 두는 완충 비율이 커질수록 대출액은 줄고"
+        },
+        {
+          "labelled": false,
+          "text": "보호는 커지며, 만기에는 원금과 약정 이자를 합쳐 되산다. 용어: Repo·Haircut."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Repo는 증권을 담보로 현금을 빌리고 나중에 더 높은 가격으로 되사는 단기금융 거래이며, haircut은 담보가치 중 대출하지"
+        },
+        {
+          "labelled": false,
+          "text": "않는 완충분이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 100원짜리 담보라도 가격이 떨어질 수 있어 전액을 빌려주지 않는다. Haircut이 5%면 95원만 대출해 가격변동과 처분비용"
+        },
+        {
+          "labelled": false,
+          "text": "에 대비하고, 만기에는 대출원금과 repo 이자를 합쳐 되산다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 현금대출액 Cash=Collateral×(1-h); repo 이자 I=Cash×r×days/B, B=360 또는 365; 재매입가격 RP=Cash+I."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 채권가격·YTM: 새 채권이 더 높은 이자를 주기 시작하면 낮은 쿠폰의 기존 채권은 같은 가격에 팔리지 않는다. 구매자가 새"
+        },
+        {
+          "labelled": false,
+          "text": "채권과 비슷한 수익을 얻도록 기존 채권 가격이 내려가므로 가격과 이 개념은 반대로 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): Repo·Haircut: 담보가격이 떨어질 수 있어 전액을 빌려주지 않는다. 담보에서 떼어 두는 완충 비율이 커질수록 대출액은 줄"
+        },
+        {
+          "labelled": false,
+          "text": "고 보호는 커지며, 만기에는 원금과 약정 이자를 합쳐 되산다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 채권선물 Basis·CTD: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품"
+        },
+        {
+          "labelled": false,
+          "text": "질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): EPS accretion/dilution: 회사를 인수해 순이익이 늘어도 그 대가로 더 많은 신주를 발행하면 주당이익은 줄 수 있다. 반대로"
+        },
+        {
+          "labelled": false,
+          "text": "이 개념이 늘어도 과도한 부채나 낮은 ROIC로 가치를 파괴할 수 있어 거래가치 판단과 같지는 않다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Swap Cash Flows·Netting: 명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되"
+        },
+        {
+          "labelled": false,
+          "text": "어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-07 · FI-07:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q21",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: Repo·Haircut\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "담보가치에서 더 큰 완충 비율을 떼어 둘수록 빌려주는 현금은 줄고 가격변동 보호는 커진다.",
+        "인수 후 합산 이익이 늘어도 대가로 발행한 주식수가 더 빠르게 늘면 기존 주주의 주당이익은 줄 수 있다.",
+        "변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다.",
+        "살 권리는 시장가격이 약정가격보다 높을 때, 팔 권리는 시장가격이 약정가격보다 낮을 때 만기 가치가 생긴다.",
+        "시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간다."
+      ],
+      "evidence": "FI-07 · FI-07:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 담보가치에서 더 큰 완충 비율을 떼어 둘수록 빌려주는 현금은 줄고 가격변동 보호는 커진다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "Repo·Haircut."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Repo는 증권을 담보로 현금을 빌리고 나중에 더 높은 가격으로 되사는 단기금융 거래이며, haircut은 담보가치 중 대출하지"
+        },
+        {
+          "labelled": false,
+          "text": "않는 완충분이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 100원짜리 담보라도 가격이 떨어질 수 있어 전액을 빌려주지 않는다. Haircut이 5%면 95원만 대출해 가격변동과 처분비용"
+        },
+        {
+          "labelled": false,
+          "text": "에 대비하고, 만기에는 대출원금과 repo 이자를 합쳐 되산다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 현금대출액 Cash=Collateral×(1-h); repo 이자 I=Cash×r×days/B, B=360 또는 365; 재매입가격 RP=Cash+I."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): Repo·Haircut: 담보가치에서 더 큰 완충 비율을 떼어 둘수록 빌려주는 현금은 줄고 가격변동 보호는 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): EPS accretion/dilution: 인수 후 합산 이익이 늘어도 대가로 발행한 주식수가 더 빠르게 늘면 기존 주주의 주당이익은 줄 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Swap Cash Flows·Netting: 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지"
+        },
+        {
+          "labelled": false,
+          "text": "급·수취 방향을 먼저 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Call·Put Payoff: 살 권리는 시장가격이 약정가격보다 높을 때, 팔 권리는 시장가격이 약정가격보다 낮을 때 만기 가치가 생긴"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 채권가격·YTM: 시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-07 · FI-07:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q22",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 채권선물 Basis·CTD\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "현물채권 가격과 전환계수로 조정한 선물가격의 차이를 비교해 인도자에게 가장 유리한 후보 채권을 찾는다.",
+        "최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다.",
+        "금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함께 측정한다.",
+        "증권을 담보로 현금을 빌린 뒤 더 높은 가격으로 되사는 단기금융 거래와, 담보가치 중 대출하지 않는 완충분을 뜻한다.",
+        "이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다."
+      ],
+      "evidence": "FI-08 · FI-08:definition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 현물채권 가격과 전환계수로 조정한 선물가격의 차이를 비교해 인도자에게 가장 유리한 후보 채권을 찾는다. 용"
+        },
+        {
+          "labelled": false,
+          "text": "어: 채권선물 Basis·CTD."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 채권선물 basis는 현물채권 가격과 전환계수로 조정한 선물가격의 차이고, CTD는 인도 선택권을 고려할 때 가장 유리한 후"
+        },
+        {
+          "labelled": false,
+          "text": "보 채권이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤"
+        },
+        {
+          "labelled": false,
+          "text": "상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 단순화한 conversion-factor-adjusted basis Basis=P_cash-F_futures×CF; 여러 인도가능채권 중 조정 basis가 가장 작은 채권"
+        },
+        {
+          "labelled": false,
+          "text": "을 CTD 후보로 본다. 실제 거래의 accrued interest·carry·delivery option은 심화 카드에서 분리한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 채권선물 Basis·CTD: 현물채권 가격과 전환계수로 조정한 선물가격의 차이를 비교해 인도자에게 가장 유리한 후보 채권을"
+        },
+        {
+          "labelled": false,
+          "text": "찾는다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 최소분산 Hedge Ratio·선물계약수: 최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장"
+        },
+        {
+          "labelled": false,
+          "text": "작게 만드는 선물 비중이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): DV01·Convexity 가격변화: 금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함"
+        },
+        {
+          "labelled": false,
+          "text": "께 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Repo·Haircut: 증권을 담보로 현금을 빌린 뒤 더 높은 가격으로 되사는 단기금융 거래와, 담보가치 중 대출하지 않는 완충분"
+        },
+        {
+          "labelled": false,
+          "text": "을 뜻한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 생명보험 CSM·지급여력: 이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께"
+        },
+        {
+          "labelled": false,
+          "text": "본다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-08 · FI-08:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q23",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 채권선물 Basis·CTD\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이면 실제 가격곡선이 휘어 있으므로 이 개념\n을 더해야 상승과 하락의 비대칭을 더 정확히 잡는다.",
+        "새 채권이 더 높은 이자를 주기 시작하면 낮은 쿠폰의 기존 채권은 같은 가격에 팔리지 않는다. 구매자가 새 채권과 비슷한 수익을 얻도록\n기존 채권 가격이 내려가므로 가격과 이 개념은 반대로 움직인다.",
+        "선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장\n싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격\n이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다.",
+        "채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한 계약수만큼 더하면 두 손익이 상쇄되\n며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다."
+      ],
+      "evidence": "FI-08 · FI-08:intuition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를"
+        },
+        {
+          "labelled": false,
+          "text": "조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다. 용어: 채권선물 Basis·CTD."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 채권선물 basis는 현물채권 가격과 전환계수로 조정한 선물가격의 차이고, CTD는 인도 선택권을 고려할 때 가장 유리한 후"
+        },
+        {
+          "labelled": false,
+          "text": "보 채권이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤"
+        },
+        {
+          "labelled": false,
+          "text": "상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 단순화한 conversion-factor-adjusted basis Basis=P_cash-F_futures×CF; 여러 인도가능채권 중 조정 basis가 가장 작은 채권"
+        },
+        {
+          "labelled": false,
+          "text": "을 CTD 후보로 본다. 실제 거래의 accrued interest·carry·delivery option은 심화 카드에서 분리한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): DV01·Convexity 가격변화: Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이"
+        },
+        {
+          "labelled": false,
+          "text": "면 실제 가격곡선이 휘어 있으므로 이 개념을 더해야 상승과 하락의 비대칭을 더 정확히 잡는다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 채권가격·YTM: 새 채권이 더 높은 이자를 주기 시작하면 낮은 쿠폰의 기존 채권은 같은 가격에 팔리지 않는다. 구매자가 새"
+        },
+        {
+          "labelled": false,
+          "text": "채권과 비슷한 수익을 얻도록 기존 채권 가격이 내려가므로 가격과 이 개념은 반대로 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 채권선물 Basis·CTD: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품"
+        },
+        {
+          "labelled": false,
+          "text": "질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Macaulay Duration·Modified Duration: 같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에"
+        },
+        {
+          "labelled": false,
+          "text": "덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 금리위험 헤징·계약수: 채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한"
+        },
+        {
+          "labelled": false,
+          "text": "계약수만큼 더하면 두 손익이 상쇄되며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-08 · FI-08:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q24",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 채권선물 Basis·CTD\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간다.",
+        "금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을 잘 설명한다.",
+        "금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으로 더 크게 움직인다.",
+        "전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄된다."
+      ],
+      "evidence": "FI-08 · FI-08:verbal_relation:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다. 용"
+        },
+        {
+          "labelled": false,
+          "text": "어: 채권선물 Basis·CTD."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 채권선물 basis는 현물채권 가격과 전환계수로 조정한 선물가격의 차이고, CTD는 인도 선택권을 고려할 때 가장 유리한 후"
+        },
+        {
+          "labelled": false,
+          "text": "보 채권이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤"
+        },
+        {
+          "labelled": false,
+          "text": "상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 단순화한 conversion-factor-adjusted basis Basis=P_cash-F_futures×CF; 여러 인도가능채권 중 조정 basis가 가장 작은 채권"
+        },
+        {
+          "labelled": false,
+          "text": "을 CTD 후보로 본다. 실제 거래의 accrued interest·carry·delivery option은 심화 카드에서 분리한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 채권가격·YTM: 시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): DV01·Convexity 가격변화: 금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을"
+        },
+        {
+          "labelled": false,
+          "text": "잘 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Macaulay Duration·Modified Duration: 금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으"
+        },
+        {
+          "labelled": false,
+          "text": "로 더 크게 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 채권선물 Basis·CTD: 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 금리위험 헤징·계약수: 현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄"
+        },
+        {
+          "labelled": false,
+          "text": "된다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-08 · FI-08:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q25",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 금리스왑 고정금리·현금흐름\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "같은 명목원금에 대해 고정 이자와 변동 이자를 교환하고 두 지급 흐름의 현재가치가 같아지는 고정금리를 찾는다.",
+        "옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다.",
+        "금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함께 측정한다.",
+        "이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지 duration으로 근사한다.",
+        "현물채권 가격과 전환계수로 조정한 선물가격의 차이를 비교해 인도자에게 가장 유리한 후보 채권을 찾는다."
+      ],
+      "evidence": "FI-09 · FI-09:definition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 같은 명목원금에 대해 고정 이자와 변동 이자를 교환하고 두 지급 흐름의 현재가치가 같아지는 고정금리를 찾는"
+        },
+        {
+          "labelled": false,
+          "text": "다. 용어: 금리스왑 고정금리·현금흐름."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 금리스왑은 같은 명목원금에 대해 고정금리 현금흐름과 변동금리 현금흐름을 교환하는 계약이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가"
+        },
+        {
+          "labelled": false,
+          "text": "같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 단일통화 plain-vanilla swap의 순지급액은 결제일 기준 Net=N×(L_prev-K)×d/B(고정금리 수취자 기준 부호는 반대). 할인계"
+        },
+        {
+          "labelled": false,
+          "text": "수 D_i가 있을 때 par fixed rate K=(1-D_n)/(ΣD_i×accrual_i)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 금리스왑 고정금리·현금흐름: 같은 명목원금에 대해 고정 이자와 변동 이자를 교환하고 두 지급 흐름의 현재가치가 같아지"
+        },
+        {
+          "labelled": false,
+          "text": "는 고정금리를 찾는다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Call·Put Payoff: 옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지"
+        },
+        {
+          "labelled": false,
+          "text": "않는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): DV01·Convexity 가격변화: 금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함"
+        },
+        {
+          "labelled": false,
+          "text": "께 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 신용스프레드·가격민감도: 이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는"
+        },
+        {
+          "labelled": false,
+          "text": "지 duration으로 근사한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 채권선물 Basis·CTD: 현물채권 가격과 전환계수로 조정한 선물가격의 차이를 비교해 인도자에게 가장 유리한 후보 채권을"
+        },
+        {
+          "labelled": false,
+          "text": "찾는다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-09 · FI-09:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q26",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 금리스왑 고정금리·현금흐름\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수\n익 변화가 달라진다.",
+        "명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금\n리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다.",
+        "같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격\n이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다.",
+        "원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정\n해져 어느 한쪽도 초기 가치가 없게 만든다.",
+        "2년 투자 결과는 2년 금리로 한 번에 계산해도, 1년 투자 뒤 다시 1년 투자하는 경로로 계산해도 무차익 조건에서는 같아야 한다. 두 경로\n를 같게 만드는 두 번째 구간 금리가 이 개념다."
+      ],
+      "evidence": "FI-09 · FI-09:intuition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의"
+        },
+        {
+          "labelled": false,
+          "text": "현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다. 용어: 금리스왑 고정금리·현금흐름."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 금리스왑은 같은 명목원금에 대해 고정금리 현금흐름과 변동금리 현금흐름을 교환하는 계약이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가"
+        },
+        {
+          "labelled": false,
+          "text": "같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 단일통화 plain-vanilla swap의 순지급액은 결제일 기준 Net=N×(L_prev-K)×d/B(고정금리 수취자 기준 부호는 반대). 할인계"
+        },
+        {
+          "labelled": false,
+          "text": "수 D_i가 있을 때 par fixed rate K=(1-D_n)/(ΣD_i×accrual_i)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 통화정책·이자수익 전이: 기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리"
+        },
+        {
+          "labelled": false,
+          "text": "floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Swap Cash Flows·Netting: 명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되"
+        },
+        {
+          "labelled": false,
+          "text": "어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Macaulay Duration·Modified Duration: 같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에"
+        },
+        {
+          "labelled": false,
+          "text": "덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 금리스왑 고정금리·현금흐름: 원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다"
+        },
+        {
+          "labelled": false,
+          "text": "리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 현물이자율·선도금리: 2년 투자 결과는 2년 금리로 한 번에 계산해도, 1년 투자 뒤 다시 1년 투자하는 경로로 계산해도 무차"
+        },
+        {
+          "labelled": false,
+          "text": "익 조건에서는 같아야 한다. 두 경로를 같게 만드는 두 번째 구간 금리가 이 개념다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-09 · FI-09:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q27",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 금리스왑 고정금리·현금흐름\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다.",
+        "서로 다른 만기의 누적 투자수익이 같아지도록 중간 구간의 미래 금리가 정해진다.",
+        "재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다.",
+        "금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으로 더 크게 움직인다.",
+        "계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다."
+      ],
+      "evidence": "FI-09 · FI-09:verbal_relation:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없"
+        },
+        {
+          "labelled": false,
+          "text": "게 만든다. 용어: 금리스왑 고정금리·현금흐름."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 금리스왑은 같은 명목원금에 대해 고정금리 현금흐름과 변동금리 현금흐름을 교환하는 계약이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가"
+        },
+        {
+          "labelled": false,
+          "text": "같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 단일통화 plain-vanilla swap의 순지급액은 결제일 기준 Net=N×(L_prev-K)×d/B(고정금리 수취자 기준 부호는 반대). 할인계"
+        },
+        {
+          "labelled": false,
+          "text": "수 D_i가 있을 때 par fixed rate K=(1-D_n)/(ΣD_i×accrual_i)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Swap Cash Flows·Netting: 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지"
+        },
+        {
+          "labelled": false,
+          "text": "급·수취 방향을 먼저 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 현물이자율·선도금리: 서로 다른 만기의 누적 투자수익이 같아지도록 중간 구간의 미래 금리가 정해진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 통화정책·이자수익 전이: 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Macaulay Duration·Modified Duration: 금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으"
+        },
+        {
+          "labelled": false,
+          "text": "로 더 크게 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 금리스왑 고정금리·현금흐름: 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽"
+        },
+        {
+          "labelled": false,
+          "text": "도 초기 가치가 없게 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-09 · FI-09:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q28",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 신용위험·Credit Spread·Expected Loss\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다.",
+        "이 개념은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표다.",
+        "이 개념은 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다.",
+        "이 개념은 여러 공통 위험요인에 대한 민감도와 각 요인의 위험보상을 합해 자산의 기대수익률을 설명한다.",
+        "기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험 등을 가격에 반영한 추가\n수익률이다."
+      ],
+      "evidence": "FI-10 · FI-10:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험"
+        },
+        {
+          "labelled": false,
+          "text": "등을 가격에 반영한 추가 수익률이다. 용어: 신용위험·Credit Spread·Expected Loss."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험 등을 가격"
+        },
+        {
+          "labelled": false,
+          "text": "에 반영한 추가 수익률이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다. 실제 스프레드에는 이 평균손실뿐 아"
+        },
+        {
+          "labelled": false,
+          "text": "니라 예상 밖 손실, 유동성, 위험회피 보상도 들어간다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: LGD=1-Recovery; 1기간 기대손실 EL=EAD×PD×LGD; 단순화한 위험중립 근사 spread s 약 PD×LGD. 실제 spread에는 유동"
+        },
+        {
+          "labelled": false,
+          "text": "성·위험프리미엄·만기구조가 포함된다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 기대손실·유동성 런웨이: 이 개념은 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 리서치 위험·기대 하방: 이 개념은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 시나리오 가중가치: 이 개념은 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): APT 다요인 기대수익률: 이 개념은 여러 공통 위험요인에 대한 민감도와 각 요인의 위험보상을 합해 자산의 기대수익률을"
+        },
+        {
+          "labelled": false,
+          "text": "설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 신용위험·Credit Spread·Expected Loss: 기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실"
+        },
+        {
+          "labelled": false,
+          "text": "이고 신용스프레드는 그 위험 등을 가격에 반영한 추가 수익률이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-10 · FI-10:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q29",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 신용위험·Credit Spread·Expected Loss\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부분 0원이고 드물게 50원을 잃는다. 평\n균값이 tail risk와 사건 간 동시발생을 숨길 수 있다.",
+        "외상매출 100원이 있어도 전부 받을 수 있다고 보장할 수는 없다. 3원을 못 받을 것으로 예상하면 장부에는 받을 돈 100원과 예상 손실 3\n원을 따로 보여 주고, 경제적으로 회수할 금액은 97원으로 읽는다.",
+        "선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장\n싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "회사의 부도 우려가 커지면 투자자는 더 높은 수익률을 요구한다. 약정 현금흐름은 그대로이므로 그 높은 수익률에 맞추려면 채권가격이\n내려가며 duration이 길수록 하락폭이 커진다.",
+        "100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다. 실제 스프레드에는 이 평균손실뿐 아니라 예상 밖 손\n실, 유동성, 위험회피 보상도 들어간다."
+      ],
+      "evidence": "FI-10 · FI-10:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다. 실제 스프레드에는 이 평균"
+        },
+        {
+          "labelled": false,
+          "text": "손실뿐 아니라 예상 밖 손실, 유동성, 위험회피 보상도 들어간다. 용어: 신용위험·Credit Spread·Expected Loss."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험 등을 가격"
+        },
+        {
+          "labelled": false,
+          "text": "에 반영한 추가 수익률이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다. 실제 스프레드에는 이 평균손실뿐 아"
+        },
+        {
+          "labelled": false,
+          "text": "니라 예상 밖 손실, 유동성, 위험회피 보상도 들어간다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: LGD=1-Recovery; 1기간 기대손실 EL=EAD×PD×LGD; 단순화한 위험중립 근사 spread s 약 PD×LGD. 실제 spread에는 유동"
+        },
+        {
+          "labelled": false,
+          "text": "성·위험프리미엄·만기구조가 포함된다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 리서치 위험·기대 하방: 10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부"
+        },
+        {
+          "labelled": false,
+          "text": "분 0원이고 드물게 50원을 잃는다. 평균값이 tail risk와 사건 간 동시발생을 숨길 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 매출채권·대손충당금: 외상매출 100원이 있어도 전부 받을 수 있다고 보장할 수는 없다. 3원을 못 받을 것으로 예상하면 장"
+        },
+        {
+          "labelled": false,
+          "text": "부에는 받을 돈 100원과 예상 손실 3원을 따로 보여 주고, 경제적으로 회수할 금액은 97원으로 읽는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 채권선물 Basis·CTD: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품"
+        },
+        {
+          "labelled": false,
+          "text": "질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 신용스프레드·가격민감도: 회사의 부도 우려가 커지면 투자자는 더 높은 수익률을 요구한다. 약정 현금흐름은 그대로이므로"
+        },
+        {
+          "labelled": false,
+          "text": "그 높은 수익률에 맞추려면 채권가격이 내려가며 duration이 길수록 하락폭이 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 신용위험·Credit Spread·Expected Loss: 100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다."
+        },
+        {
+          "labelled": false,
+          "text": "실제 스프레드에는 이 평균손실뿐 아니라 예상 밖 손실, 유동성, 위험회피 보상도 들어간다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-10 · FI-10:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "FI-Q30",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 신용위험·Credit Spread·Expected Loss\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "사용 가능한 현금과 미사용 한도가 많고 단기 의무나 현금소진이 작을수록 버틸 수 있는 기간이 길어진다.",
+        "전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "부도 가능성이나 손실률이 커질수록 평균 신용손실과 투자자가 요구하는 보상은 커진다.",
+        "약정 현금흐름은 그대로이므로 그 높은 수익률에 맞추려면 채권가격이 내려가며 duration이 길수록 하락폭이 커진다.",
+        "위험사건의 발생 가능성이나 발생 시 손실이 커질수록 평균 손실 추정치도 커진다."
+      ],
+      "evidence": "FI-10 · FI-10:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 부도 가능성이나 손실률이 커질수록 평균 신용손실과 투자자가 요구하는 보상은 커진다. 용어: 신용위험·Credit"
+        },
+        {
+          "labelled": false,
+          "text": "Spread·Expected Loss."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험 등을 가격"
+        },
+        {
+          "labelled": false,
+          "text": "에 반영한 추가 수익률이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다. 실제 스프레드에는 이 평균손실뿐 아"
+        },
+        {
+          "labelled": false,
+          "text": "니라 예상 밖 손실, 유동성, 위험회피 보상도 들어간다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: LGD=1-Recovery; 1기간 기대손실 EL=EAD×PD×LGD; 단순화한 위험중립 근사 spread s 약 PD×LGD. 실제 spread에는 유동"
+        },
+        {
+          "labelled": false,
+          "text": "성·위험프리미엄·만기구조가 포함된다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 기대손실·유동성 런웨이: 사용 가능한 현금과 미사용 한도가 많고 단기 의무나 현금소진이 작을수록 버틸 수 있는 기간이 길"
+        },
+        {
+          "labelled": false,
+          "text": "어진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 채권선물 Basis·CTD: 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 신용위험·Credit Spread·Expected Loss: 부도 가능성이나 손실률이 커질수록 평균 신용손실과 투자자가 요구하는 보상은 커"
+        },
+        {
+          "labelled": false,
+          "text": "진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 신용스프레드·가격민감도: 약정 현금흐름은 그대로이므로 그 높은 수익률에 맞추려면 채권가격이 내려가며 duration이 길수"
+        },
+        {
+          "labelled": false,
+          "text": "록 하락폭이 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 리서치 위험·기대 하방: 위험사건의 발생 가능성이나 발생 시 손실이 커질수록 평균 손실 추정치도 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: FI-10 · FI-10:verbal_relation:01"
+        }
+      ]
+    }
+  ]
+}

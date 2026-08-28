@@ -1,0 +1,3106 @@
+{
+  "schemaVersion": 1,
+  "sourceSha256": "edf526c295d299916bf873cb74900ff31765990280f362f42994c8ded873be52",
+  "id": "EQV-2",
+  "anchor": "unit-EQV-2",
+  "subjectId": "subject-03",
+  "subjectTitle": "03. 주식 리서치·기업가치평가",
+  "title": "EQV-2 · 배수·DCF·목표주가",
+  "subtitle": "정본 이론 + 검증·파생·계산 문항",
+  "meta": [
+    "핵심개념 정본 전체",
+    "문제 30",
+    "상세 해설 30"
+  ],
+  "sourceNote": "기존 FinDone 완성본 복원 · 원본 PDF 320–351쪽",
+  "theory": [
+    {
+      "kind": "section",
+      "text": "개념 압축"
+    },
+    {
+      "kind": "body",
+      "text": "작은 글자와 옅은 박스로 밀도 있게 정리했습니다."
+    },
+    {
+      "kind": "label",
+      "text": "범위"
+    },
+    {
+      "kind": "body",
+      "text": "FinDone 학습요소 EQV-10, EQV-11, EQV-12, EQV-13, EQV-14, EQV-15, EQV-16, EQV-17, EQV-18"
+    },
+    {
+      "kind": "label",
+      "text": "문항 구성"
+    },
+    {
+      "kind": "body",
+      "text": "검증 문항은행 27 · 신규 계산·응용 3 · 합계 30문항"
+    },
+    {
+      "kind": "label",
+      "text": "풀이 원칙"
+    },
+    {
+      "kind": "body",
+      "text": "정답만 제시하지 않고 핵심 조건, 계산 또는 판단 과정, 결과 해석, 대표 오답의 이유를 순서대로 설명합니다."
+    },
+    {
+      "kind": "section",
+      "text": "핵심 이론"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-10 · PBR"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "PBR은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "장부자본을 높은 수익률로 굴리는 회사와 자본비용도 못 버는 회사는 같은 순자산을 가져도 가치가 다르다. 그래서 PBR은 장부가의 크기보다 앞으로"
+    },
+    {
+      "kind": "body",
+      "text": "낼 ROE와 자본비용을 함께 해석해야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "PBR: PBR=Price/BPS, 보조관계 PBR 약 PER×ROE"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• PBR: PBR=Price/BPS"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 보조관계 PBR 약 PER × ROE"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금융주 상대가치 - 장부가가 사업규모를 잘 나타내는 은행·보험사를 비교할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 저평가 진단 - 낮은 PBR이 기회인지 낮은 수익성·자산손상 위험의 반영인지 판단할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran 상대가치 문제와 풀이 · 가치평가 문제 목록 · finance_interview_app_final_spec.md:L1689 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념"
+    },
+    {
+      "kind": "body",
+      "text": "·문제 유형·난수 명세 > EQV-10"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-11 · EV와 EV/EBITDA"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는 배수다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "시가총액만 비교하면 부채가 많은 회사를 싸게 볼 수 있다. EV는 주주와 채권자 몫을 함께 보고, EBITDA는 자본구조 전 성과를 쓰므로 두 기준을 맞춰"
+    },
+    {
+      "kind": "body",
+      "text": "비교한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "EV와 EV/EBITDA: EV=MarketCap+Debt+Preferred+Minority-Cash; EV/EBITDA=EV/EBITDA"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• EV와 EV/EBITDA:"
+    },
+    {
+      "kind": "body",
+      "text": "EV=MarketCap+Debt+Preferred+Minority-Cash"
+    },
+    {
+      "kind": "bullet",
+      "text": "• EV/EBITDA=EV/EBITDA"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 인수·상대가치 - 자본구조가 다른 기업의 영업가치를 비교할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• EV 브리지 - 시가총액에 순부채·우선주·비지배지분을 조정해 거래가치를 만들 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran 상대가치 문제와 풀이 · 가치평가 문제 목록 · finance_interview_app_final_spec.md:L1690 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념"
+    },
+    {
+      "kind": "body",
+      "text": "·문제 유형·난수 명세 > EQV-11"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-12 · FCFF"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "FCFF는 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "회계이익이 커도 설비와 운전자본에 계속 돈을 넣어야 하면 투자자에게 돌아갈 현금은 적다. FCFF는 사업이 번 돈과 다시 묶어 둔 돈을 구분해 영업자"
+    },
+    {
+      "kind": "body",
+      "text": "산의 현금창출력을 보여 준다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "FCFF: FCFF=EBIT(1-t)+D&A-Capex-ΔNWC = NOPAT+D&A-Capex-ΔNWC"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• FCFF:"
+    },
+    {
+      "kind": "body",
+      "text": "FCFF=EBIT(1-t)+D&A-Capex-Δ NWC = NOPAT+D&A-Capex-Δ NWC"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• DCF 가치평가 - 자본구조와 무관한 기업 현금을 WACC로 할인할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 현금전환 분석 - EBITDA 성장과 실제 잉여현금 증가가 다른 이유를 재투자로 설명할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran DCF 문제와 풀이 · Valuation 자료·PDF 허브 · finance_interview_app_final_spec.md:L1691 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념"
+    },
+    {
+      "kind": "body",
+      "text": "·문제 유형·난수 명세 > EQV-12"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-13 · WACC"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "WACC는 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "싼 부채를 더 쓰면 평균비용이 무조건 낮아지는 것은 아니다. 레버리지가 커질수록 주주와 채권자의 위험도 높아져 각 요구수익률이 변하므로 시장가"
+    },
+    {
+      "kind": "body",
+      "text": "치와 위험을 함께 봐야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "WACC: wE×kE + wD×kD×(1-t); 문제에는 세후부채비용을 직접 줄 수도 있다."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• WACC: w_E × kE + w_D × kD × (1-t)"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 문제에는 세후부채비용을 직접 줄 수도 있다."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• DCF 할인 - FCFF와 계속가치를 현재가치로 바꿀 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 투자안 기준 - 기존 사업과 위험이 비슷한 프로젝트가 넘어야 할 수익률로 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran DCF 문제와 풀이 · Valuation 자료·PDF 허브 · finance_interview_app_final_spec.md:L1692 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념"
+    },
+    {
+      "kind": "body",
+      "text": "·문제 유형·난수 명세 > EQV-13"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-14 · 명시기간 DCF"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "명시기간 DCF는 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "내년의 현금과 3년 뒤 현금은 같은 금액이어도 오늘 가치가 다르다. 각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간만큼 할인해야 현금 시점"
+    },
+    {
+      "kind": "body",
+      "text": "이 정확히 반영된다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "명시기간 DCF: EVexplicit=Σ FCFF_t/(1+WACC)^t"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 명시기간 DCF: EVexplicit=Σ FCFF_t/(1+WACC)^t"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치 모델 - 경영계획을 현금흐름으로 바꿔 명시기간 영업가치를 계산할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 가치변동 설명 - 특정 연도 실적 수정이 현재 EV에 얼마나 영향을 주는지 추적할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 15.401 문제세트·해설 · 시험·해설 · finance_interview_app_final_spec.md:L1693 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념·문제 유형·난수 명"
+    },
+    {
+      "kind": "body",
+      "text": "세 > EQV-14"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-15 · 계속가치"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "계속가치는 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가정 변화가"
+    },
+    {
+      "kind": "body",
+      "text": "큰 가치 차이를 만든다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "계속가치: TV=FCFF_(n+1)/(WACC-g)"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 계속가치: TV=FCFF_((n+1))/(WACC-g)"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• DCF 완성 - 명시기간 가치에 안정기 사업가치를 더할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 가정 검증 - 장기 성장률이 경제성장과 자본수익성·재투자 가정에 맞는지 확인할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran DCF 문제와 풀이 · Valuation 자료·PDF 허브 · finance_interview_app_final_spec.md:L1694 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념"
+    },
+    {
+      "kind": "body",
+      "text": "·문제 유형·난수 명세 > EQV-15"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-16 · Peer multiple"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "Peer multiple 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "비슷한 기업들이 EBITDA 8배에 거래된다면 목표기업도 비슷한 출발점에서 볼 수 있다. 그러나 성장, 마진, 회계정책, 경기시점이 다르면 같은 배수를"
+    },
+    {
+      "kind": "body",
+      "text": "기계적으로 적용할 수 없다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "Peer multiple: ImpliedEV=PeerMedianMultiple×TargetMetric"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• Peer multiple:"
+    },
+    {
+      "kind": "body",
+      "text": "ImpliedEV=PeerMedianMultiple × TargetMetric"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 상대가치 평가 - 비교기업 중앙값 배수로 목표 EV나 지분가치를 추정할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• IPO·M&A 가격검토 - 제시된 거래배수가 시장 사례와 얼마나 다른지 비교할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran 상대가치 문제와 풀이 · 가치평가 문제 목록 · finance_interview_app_final_spec.md:L1695 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념"
+    },
+    {
+      "kind": "body",
+      "text": "·문제 유형·난수 명세 > EQV-16"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-17 · 목표주가·상승여력"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "목표주가 상승여력은 현재 주가가 분석가의 목표가까지 움직일 경우 얻을 수 있는 가격수익률이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "목표가가 현재가보다 높다는 사실만으로 충분하지 않다. 상승여력이 위험과 시간, 배당, 목표가 도달 가능성을 보상할 만큼 큰지 함께 봐야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "목표주가·상승여력: Upside=(Target/Current-1)×100"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 목표주가·상승여력: Upside=(Target/Current-1) × 100"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 리서치 의견 - 목표주가와 현재가의 차이를 매수·보유 판단의 한 입력으로 제시할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 시나리오 비교 - 이익·배수 가정 변화가 예상 상승여력에 미치는 영향을 볼 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "YIG Research 전체 · 공개 기업분석 리포트 예시 · 예시 PDF · finance_interview_app_final_spec.md:L1696 · F. 주식 리서치·기업가치평가 (EQV) > F.1"
+    },
+    {
+      "kind": "body",
+      "text": "개념·문제 유형·난수 명세 > EQV-17"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-18 · 민감도"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "배수 민감도는 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는지는 순부채와 주식수 브리지를 거쳐"
+    },
+    {
+      "kind": "body",
+      "text": "확인해야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "민감도: ΔEV=EBITDA×ΔMultiple; ΔPrice=ΔEV/Shares"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 민감도: Δ EV=EBITDA × Δ Multiple"
+    },
+    {
+      "kind": "bullet",
+      "text": "• Δ Price=Δ EV/Shares"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 목표가 민감도 - 시장 리레이팅·디레이팅이 주당가치에 미치는 영향을 표로 보여 줄 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래가격 협상 - 제안 배수 한 턴의 가치 차이를 금액으로 환산할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran 상대가치 문제와 풀이 · 가치평가 문제 목록 · finance_interview_app_final_spec.md:L1697 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념"
+    },
+    {
+      "kind": "body",
+      "text": "·문제 유형·난수 명세 > EQV-18"
+    }
+  ],
+  "questions": [
+    {
+      "id": "EQV-2-Q01",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: PBR\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다.",
+        "이 개념은 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다.",
+        "이 개념은 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다.",
+        "이 개념은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다.",
+        "이 개념은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다."
+      ],
+      "evidence": "EQV-10 · EQV-10:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다. 용어: PBR."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: PBR은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 장부자본을 높은 수익률로 굴리는 회사와 자본비용도 못 버는 회사는 같은 순자산을 가져도 가치가 다르다. 그래서 PBR은"
+        },
+        {
+          "labelled": false,
+          "text": "장부가의 크기보다 앞으로 낼 ROE와 자본비용을 함께 해석해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: PBR: PBR=Price/BPS, 보조관계 PBR 약 PER×ROE"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 기본 EPS: 이 개념은 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): ROE: 이 개념은 보통주주가 투입한 평균 자기자본으로 회사가 얼마의 순이익을 냈는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 명시기간 DCF: 이 개념은 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): PER: 이 개념은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): PBR: 이 개념은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-10 · EQV-10:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q02",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: PBR\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "매출이 10% 늘었다는 결과보다 가격을 올렸는지, 더 많이 팔았는지가 중요하다. 수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우\n의 비용·지속가능성은 다르다.",
+        "내년의 현금과 3년 뒤 현금은 같은 금액이어도 오늘 가치가 다르다. 각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간만큼 할인해야\n현금 시점이 정확히 반영된다.",
+        "이 개념 20배는 현재 이익 1원에 시장이 20원을 지불한다는 뜻이다. 높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으\n로 낮아져 분모가 작아진 결과일 수도 있다.",
+        "같은 순이익이라도 적은 자기자본으로 벌면 이 개념은 높다. 다만 부채를 늘이거나 자사주 매입으로 장부자본을 줄여도 올라갈 수 있으므\n로 영업개선과 재무레버리지를 분리해야 한다.",
+        "장부자본을 높은 수익률로 굴리는 회사와 자본비용도 못 버는 회사는 같은 순자산을 가져도 가치가 다르다. 그래서 이 개념은 장부가의 크\n기보다 앞으로 낼 ROE와 자본비용을 함께 해석해야 한다."
+      ],
+      "evidence": "EQV-10 · EQV-10:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 장부자본을 높은 수익률로 굴리는 회사와 자본비용도 못 버는 회사는 같은 순자산을 가져도 가치가 다르다. 그래"
+        },
+        {
+          "labelled": false,
+          "text": "서 이 개념은 장부가의 크기보다 앞으로 낼 ROE와 자본비용을 함께 해석해야 한다. 용어: PBR."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: PBR은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 장부자본을 높은 수익률로 굴리는 회사와 자본비용도 못 버는 회사는 같은 순자산을 가져도 가치가 다르다. 그래서 PBR은"
+        },
+        {
+          "labelled": false,
+          "text": "장부가의 크기보다 앞으로 낼 ROE와 자본비용을 함께 해석해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: PBR: PBR=Price/BPS, 보조관계 PBR 약 PER×ROE"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): P×Q 매출 추정: 매출이 10% 늘었다는 결과보다 가격을 올렸는지, 더 많이 팔았는지가 중요하다. 수량이 줄어도 가격 인상으"
+        },
+        {
+          "labelled": false,
+          "text": "로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 명시기간 DCF: 내년의 현금과 3년 뒤 현금은 같은 금액이어도 오늘 가치가 다르다. 각 연도의 매출·마진·재투자를 따로 예측"
+        },
+        {
+          "labelled": false,
+          "text": "하고 해당 기간만큼 할인해야 현금 시점이 정확히 반영된다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): PER: 이 개념 20배는 현재 이익 1원에 시장이 20원을 지불한다는 뜻이다. 높은 배수는 성장과 안정성 기대를 반영할 수 있지"
+        },
+        {
+          "labelled": false,
+          "text": "만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): ROE: 같은 순이익이라도 적은 자기자본으로 벌면 이 개념은 높다. 다만 부채를 늘이거나 자사주 매입으로 장부자본을 줄여"
+        },
+        {
+          "labelled": false,
+          "text": "도 올라갈 수 있으므로 영업개선과 재무레버리지를 분리해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): PBR: 장부자본을 높은 수익률로 굴리는 회사와 자본비용도 못 버는 회사는 같은 순자산을 가져도 가치가 다르다. 그래서 이"
+        },
+        {
+          "labelled": false,
+          "text": "개념은 장부가의 크기보다 앞으로 낼 ROE와 자본비용을 함께 해석해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-10 · EQV-10:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q03",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: PBR\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다.",
+        "그래서 순이익과 함께 증자·자사주·주식보상의 분모 효과를 봐야 한다.",
+        "장부자본 한 단위에 붙는 시장가치 배수는 앞으로 낼 주주수익성과 자본비용의 차이가 클수록 높아지는 경향이 있다.",
+        "수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다.",
+        "다만 부채를 늘이거나 자사주 매입으로 장부자본을 줄여도 올라갈 수 있으므로 영업개선과 재무레버리지를 분리해야 한다."
+      ],
+      "evidence": "EQV-10 · EQV-10:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 장부자본 한 단위에 붙는 시장가치 배수는 앞으로 낼 주주수익성과 자본비용의 차이가 클수록 높아지는 경향이"
+        },
+        {
+          "labelled": false,
+          "text": "있다. 용어: PBR."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: PBR은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 장부자본을 높은 수익률로 굴리는 회사와 자본비용도 못 버는 회사는 같은 순자산을 가져도 가치가 다르다. 그래서 PBR은"
+        },
+        {
+          "labelled": false,
+          "text": "장부가의 크기보다 앞으로 낼 ROE와 자본비용을 함께 해석해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: PBR: PBR=Price/BPS, 보조관계 PBR 약 PER×ROE"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): PER: 높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 기본 EPS: 그래서 순이익과 함께 증자·자사주·주식보상의 분모 효과를 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): PBR: 장부자본 한 단위에 붙는 시장가치 배수는 앞으로 낼 주주수익성과 자본비용의 차이가 클수록 높아지는 경향이 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): P×Q 매출 추정: 수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): ROE: 다만 부채를 늘이거나 자사주 매입으로 장부자본을 줄여도 올라갈 수 있으므로 영업개선과 재무레버리지를 분리해야"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-10 · EQV-10:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q04",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: EV와 EV/EBITDA\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다.",
+        "이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
+        "이 개념은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다.",
+        "영업자산에 대한 투자자 전체의 가치를 이자·세금·감가상각 전 영업성과와 비교하는 배수다.",
+        "이 개념은 사용권을 얻기 위해 부담한 리스부채를 차입과 유사한 청구권으로 보고 순부채에 포함한 값이다."
+      ],
+      "evidence": "EQV-11 · EQV-11:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 영업자산에 대한 투자자 전체의 가치를 이자·세금·감가상각 전 영업성과와 비교하는 배수다. 용어: EV와"
+        },
+        {
+          "labelled": false,
+          "text": "EV/EBITDA."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는 배수다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 시가총액만 비교하면 부채가 많은 회사를 싸게 볼 수 있다. EV는 주주와 채권자 몫을 함께 보고, EBITDA는 자본구조 전 성"
+        },
+        {
+          "labelled": false,
+          "text": "과를 쓰므로 두 기준을 맞춰 비교한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EV와 EV/EBITDA: EV=MarketCap+Debt+Preferred+Minority-Cash; EV/EBITDA=EV/EBITDA"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 기본 EPS: 이 개념은 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): WACC: 이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): PER: 이 개념은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): EV와 EV/EBITDA: 영업자산에 대한 투자자 전체의 가치를 이자·세금·감가상각 전 영업성과와 비교하는 배수다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 리스 조정 순부채: 이 개념은 사용권을 얻기 위해 부담한 리스부채를 차입과 유사한 청구권으로 보고 순부채에 포함한 값이"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-11 · EQV-11:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q05",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: EV와 EV/EBITDA\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "부채는 이자 세금절감이라는 이점이 있지만, 고정 상환의무 때문에 남은 이익을 받는 주주의 변동성은 커진다. 그래서 이 개념이 늘면 주식\n베타와 자기자본비용도 함께 높아진다.",
+        "집값이 10억 원이어도 담보대출 6억 원이 있으면 집주인 몫은 4억 원이다. 기업도 영업가치에서 순부채와 우선주·비지배지분을 빼고 비영\n업자산을 더해야 보통주 가치가 된다.",
+        "기업을 1,000에 산다는 표현이 영업가치인지 주주에게 지급할 금액인지 먼저 구분해야 한다. 인수자가 떠안는 순부채까지 포함하면 실제\n거래부담은 주식매매대금보다 클 수 있다.",
+        "시가총액만 비교하면 부채가 많은 회사를 싸게 볼 수 있다. 주주와 채권자 몫을 함께 보는 가치와 자본구조 전 영업성과처럼 청구권 기준이\n맞는 두 값을 비교해야 한다.",
+        "이자비용을 뺀 순이익은 부채를 얼마나 썼는지에 따라 달라진다. 사업 자체의 수익성을 보려면 이자 전 영업이익에서 영업 관련 세금만 반\n영해 투자자 전체의 성과로 맞춘다."
+      ],
+      "evidence": "EQV-11 · EQV-11:intuition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 시가총액만 비교하면 부채가 많은 회사를 싸게 볼 수 있다. 주주와 채권자 몫을 함께 보는 가치와 자본구조 전"
+        },
+        {
+          "labelled": false,
+          "text": "영업성과처럼 청구권 기준이 맞는 두 값을 비교해야 한다. 용어: EV와 EV/EBITDA."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는 배수다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 시가총액만 비교하면 부채가 많은 회사를 싸게 볼 수 있다. EV는 주주와 채권자 몫을 함께 보고, EBITDA는 자본구조 전 성"
+        },
+        {
+          "labelled": false,
+          "text": "과를 쓰므로 두 기준을 맞춰 비교한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EV와 EV/EBITDA: EV=MarketCap+Debt+Preferred+Minority-Cash; EV/EBITDA=EV/EBITDA"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 레버리지·자본구조: 부채는 이자 세금절감이라는 이점이 있지만, 고정 상환의무 때문에 남은 이익을 받는 주주의 변동성은"
+        },
+        {
+          "labelled": false,
+          "text": "커진다. 그래서 이 개념이 늘면 주식 베타와 자기자본비용도 함께 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 기업가치(EV)·지분가치·주당가치 연결: 집값이 10억 원이어도 담보대출 6억 원이 있으면 집주인 몫은 4억 원이다. 기업도 영"
+        },
+        {
+          "labelled": false,
+          "text": "업가치에서 순부채와 우선주·비지배지분을 빼고 비영업자산을 더해야 보통주 가치가 된다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): EV-Equity bridge: 기업을 1,000에 산다는 표현이 영업가치인지 주주에게 지급할 금액인지 먼저 구분해야 한다. 인수자가 떠"
+        },
+        {
+          "labelled": false,
+          "text": "안는 순부채까지 포함하면 실제 거래부담은 주식매매대금보다 클 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): EV와 EV/EBITDA: 시가총액만 비교하면 부채가 많은 회사를 싸게 볼 수 있다. 주주와 채권자 몫을 함께 보는 가치와 자본구"
+        },
+        {
+          "labelled": false,
+          "text": "조 전 영업성과처럼 청구권 기준이 맞는 두 값을 비교해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 현금세율·NOPAT: 이자비용을 뺀 순이익은 부채를 얼마나 썼는지에 따라 달라진다. 사업 자체의 수익성을 보려면 이자 전 영"
+        },
+        {
+          "labelled": false,
+          "text": "업이익에서 영업 관련 세금만 반영해 투자자 전체의 성과로 맞춘다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-11 · EQV-11:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q06",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: EV와 EV/EBITDA\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "영업이익이 커질수록 세후 영업성과는 커지고, 영업 관련 세율이 높을수록 그 성과는 작아진다.",
+        "주주와 채권자의 합산 가치는 자본구조 전 영업성과와 비교해야 청구권 기준이 맞는다.",
+        "영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다.",
+        "인수자가 떠안는 순부채까지 포함하면 실제 거래부담은 주식매매대금보다 클 수 있다.",
+        "그러나 성장, 마진, 회계정책, 경기시점이 다르면 같은 배수를 기계적으로 적용할 수 없다."
+      ],
+      "evidence": "EQV-11 · EQV-11:verbal_relation:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 주주와 채권자의 합산 가치는 자본구조 전 영업성과와 비교해야 청구권 기준이 맞는다. 용어: EV와 EV/EBITDA."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는 배수다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 시가총액만 비교하면 부채가 많은 회사를 싸게 볼 수 있다. EV는 주주와 채권자 몫을 함께 보고, EBITDA는 자본구조 전 성"
+        },
+        {
+          "labelled": false,
+          "text": "과를 쓰므로 두 기준을 맞춰 비교한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EV와 EV/EBITDA: EV=MarketCap+Debt+Preferred+Minority-Cash; EV/EBITDA=EV/EBITDA"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 현금세율·NOPAT: 영업이익이 커질수록 세후 영업성과는 커지고, 영업 관련 세율이 높을수록 그 성과는 작아진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): EV와 EV/EBITDA: 주주와 채권자의 합산 가치는 자본구조 전 영업성과와 비교해야 청구권 기준이 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 민감도: 영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): EV-Equity bridge: 인수자가 떠안는 순부채까지 포함하면 실제 거래부담은 주식매매대금보다 클 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Peer multiple: 그러나 성장, 마진, 회계정책, 경기시점이 다르면 같은 배수를 기계적으로 적용할 수 없다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-11 · EQV-11:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q07",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: FCFF\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다.",
+        "마진 분석은 매출에서 원가와 판관비가 차지하는 비중을 연결해 이 개념의 변화를 설명한다.",
+        "새로 지출한 장기자산 투자액에서 기존 자산의 당기 가치소모액을 뺀 자산기반의 순증가분이다.",
+        "이 개념은 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다.",
+        "옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다."
+      ],
+      "evidence": "EQV-12 · EQV-12:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다."
+        },
+        {
+          "labelled": false,
+          "text": "용어: FCFF."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: FCFF는 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 회계이익이 커도 설비와 운전자본에 계속 돈을 넣어야 하면 투자자에게 돌아갈 현금은 적다. FCFF는 사업이 번 돈과 다시"
+        },
+        {
+          "labelled": false,
+          "text": "묶어 둔 돈을 구분해 영업자산의 현금창출력을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: FCFF: FCFF=EBIT(1-t)+D&A-Capex-ΔNWC = NOPAT+D&A-Capex-ΔNWC"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 현금세율·NOPAT: 이 개념은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 마진과 영업이익: 마진 분석은 매출에서 원가와 판관비가 차지하는 비중을 연결해 이 개념의 변화를 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 설비투자·감가상각: 새로 지출한 장기자산 투자액에서 기존 자산의 당기 가치소모액을 뺀 자산기반의 순증가분이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): FCFF: 이 개념은 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Call·Put Payoff: 옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지"
+        },
+        {
+          "labelled": false,
+          "text": "않는다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-12 · EQV-12:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q08",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: FCFF\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "어떤 모형이든 현금 또는 이익의 귀속주체와 할인율을 맞춰야 한다. 은행처럼 부채가 영업재료인 회사는 전체 자본 기준 현금보다 주주 현\n금이나 초과이익 기준이 더 자연스럽다.",
+        "DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가\n정 변화가 큰 가치 차이를 만든다.",
+        "이자 지급 전 현금은 채권자와 주주가 함께 나눌 몫이고, 이자와 순차입까지 반영한 현금은 주주 몫이다. 귀속주체에 따라 적용할 할인율도\n달라진다.",
+        "회계이익이 커도 설비와 운전자본에 계속 돈을 넣어야 하면 투자자에게 돌아갈 현금은 적다. 이 개념은 사업이 번 돈과 다시 묶어 둔 돈을\n구분해 영업자산의 현금창출력을 보여 준다.",
+        "순이익이 흑자여도 고객에게 돈을 못 받거나 설비를 크게 사면 현금은 줄 수 있다. 본업, 장기자산 투자, 차입·증자·배당에서 생긴 현금 움직\n임을 구분해 봐야 한다."
+      ],
+      "evidence": "EQV-12 · EQV-12:intuition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 회계이익이 커도 설비와 운전자본에 계속 돈을 넣어야 하면 투자자에게 돌아갈 현금은 적다. 이 개념은 사업이"
+        },
+        {
+          "labelled": false,
+          "text": "번 돈과 다시 묶어 둔 돈을 구분해 영업자산의 현금창출력을 보여 준다. 용어: FCFF."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: FCFF는 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 회계이익이 커도 설비와 운전자본에 계속 돈을 넣어야 하면 투자자에게 돌아갈 현금은 적다. FCFF는 사업이 번 돈과 다시"
+        },
+        {
+          "labelled": false,
+          "text": "묶어 둔 돈을 구분해 영업자산의 현금창출력을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: FCFF: FCFF=EBIT(1-t)+D&A-Capex-ΔNWC = NOPAT+D&A-Capex-ΔNWC"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): FCFF·FCFE·잔여이익: 어떤 모형이든 현금 또는 이익의 귀속주체와 할인율을 맞춰야 한다. 은행처럼 부채가 영업재료인 회사"
+        },
+        {
+          "labelled": false,
+          "text": "는 전체 자본 기준 현금보다 주주 현금이나 초과이익 기준이 더 자연스럽다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 계속가치: DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에"
+        },
+        {
+          "labelled": false,
+          "text": "매우 민감하므로, 작은 가정 변화가 큰 가치 차이를 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): FCFF·FCFE: 이자 지급 전 현금은 채권자와 주주가 함께 나눌 몫이고, 이자와 순차입까지 반영한 현금은 주주 몫이다. 귀속주"
+        },
+        {
+          "labelled": false,
+          "text": "체에 따라 적용할 할인율도 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): FCFF: 회계이익이 커도 설비와 운전자본에 계속 돈을 넣어야 하면 투자자에게 돌아갈 현금은 적다. 이 개념은 사업이 번 돈"
+        },
+        {
+          "labelled": false,
+          "text": "과 다시 묶어 둔 돈을 구분해 영업자산의 현금창출력을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 현금흐름표(CFO·CFI·CFF): 순이익이 흑자여도 고객에게 돈을 못 받거나 설비를 크게 사면 현금은 줄 수 있다. 본업, 장기자산"
+        },
+        {
+          "labelled": false,
+          "text": "투자, 차입·증자·배당에서 생긴 현금 움직임을 구분해 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-12 · EQV-12:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q09",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: FCFF\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "영업이익이 커질수록 세후 영업성과는 커지고, 영업 관련 세율이 높을수록 그 성과는 작아진다.",
+        "세후 영업성과에서 설비와 운전자본에 다시 묶인 금액을 빼면 전체 자본 제공자에게 남는 현금이 된다.",
+        "장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가정 변화가 큰 가치 차이를 만든다.",
+        "전체 자본 제공자에게 남는 현금, 보통주주에게 남는 현금, 요구수익을 넘는 이익은 귀속주체에 맞는 할인율과 연결해야 한다.",
+        "누구에게 귀속되는 현금인지에 따라 할인율도 WACC와 자기자본비용으로 달라진다."
+      ],
+      "evidence": "EQV-12 · EQV-12:verbal_relation:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 세후 영업성과에서 설비와 운전자본에 다시 묶인 금액을 빼면 전체 자본 제공자에게 남는 현금이 된다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "FCFF."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: FCFF는 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 회계이익이 커도 설비와 운전자본에 계속 돈을 넣어야 하면 투자자에게 돌아갈 현금은 적다. FCFF는 사업이 번 돈과 다시"
+        },
+        {
+          "labelled": false,
+          "text": "묶어 둔 돈을 구분해 영업자산의 현금창출력을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: FCFF: FCFF=EBIT(1-t)+D&A-Capex-ΔNWC = NOPAT+D&A-Capex-ΔNWC"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 현금세율·NOPAT: 영업이익이 커질수록 세후 영업성과는 커지고, 영업 관련 세율이 높을수록 그 성과는 작아진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): FCFF: 세후 영업성과에서 설비와 운전자본에 다시 묶인 금액을 빼면 전체 자본 제공자에게 남는 현금이 된다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 계속가치: 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가정 변화가 큰 가치 차이를"
+        },
+        {
+          "labelled": false,
+          "text": "만든다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): FCFF·FCFE·잔여이익: 전체 자본 제공자에게 남는 현금, 보통주주에게 남는 현금, 요구수익을 넘는 이익은 귀속주체에 맞는 할"
+        },
+        {
+          "labelled": false,
+          "text": "인율과 연결해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): FCFF·FCFE: 누구에게 귀속되는 현금인지에 따라 할인율도 WACC와 자기자본비용으로 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-12 · EQV-12:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q10",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: WACC\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 NOPAT에서 투하자본에 대한 요구수익을 차감해 회계이익 중 자본비용을 넘은 경제적 이익을 측정한다.",
+        "영업과 재투자 뒤 기업의 모든 자본 제공자에게 남는 현금과 보통주주에게 남는 현금을 각각 측정하는 두 기준이다.",
+        "이 개념은 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다.",
+        "이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
+        "이 개념은 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다."
+      ],
+      "evidence": "EQV-13 · EQV-13:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다. 용어: WACC."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: WACC는 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 싼 부채를 더 쓰면 평균비용이 무조건 낮아지는 것은 아니다. 레버리지가 커질수록 주주와 채권자의 위험도 높아져 각 요구"
+        },
+        {
+          "labelled": false,
+          "text": "수익률이 변하므로 시장가치와 위험을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: WACC: wE×kE + wD×kD×(1-t); 문제에는 세후부채비용을 직접 줄 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): EVA·가치 스프레드: 이 개념은 NOPAT에서 투하자본에 대한 요구수익을 차감해 회계이익 중 자본비용을 넘은 경제적 이익"
+        },
+        {
+          "labelled": false,
+          "text": "을 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): FCFF·FCFE: 영업과 재투자 뒤 기업의 모든 자본 제공자에게 남는 현금과 보통주주에게 남는 현금을 각각 측정하는 두 기준"
+        },
+        {
+          "labelled": false,
+          "text": "이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 명시기간 DCF: 이 개념은 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): WACC: 이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 계속가치: 이 개념은 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-13 · EQV-13:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q11",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: WACC\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "내년의 현금과 3년 뒤 현금은 같은 금액이어도 오늘 가치가 다르다. 각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간만큼 할인해야\n현금 시점이 정확히 반영된다.",
+        "기업이 예측 5년 뒤 갑자기 사라지는 것은 아니므로 그 이후 가치도 넣어야 한다. 다만 먼 미래를 한 숫자로 압축하기 때문에 성장률이나\n출구배수를 조금만 바꿔도 전체 가치가 크게 흔들린다.",
+        "싼 부채를 더 쓰면 평균비용이 무조건 낮아지는 것은 아니다. 레버리지가 커질수록 주주와 채권자의 위험도 높아져 각 요구수익률이 변하\n므로 시장가치와 위험을 함께 봐야 한다.",
+        "이자 지급 전 현금은 채권자와 주주가 함께 나눌 몫이고, 이자와 순차입까지 반영한 현금은 주주 몫이다. 귀속주체에 따라 적용할 할인율도\n달라진다.",
+        "같은 순이익이라도 적은 자기자본으로 벌면 이 개념은 높다. 다만 부채를 늘이거나 자사주 매입으로 장부자본을 줄여도 올라갈 수 있으므\n로 영업개선과 재무레버리지를 분리해야 한다."
+      ],
+      "evidence": "EQV-13 · EQV-13:intuition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 싼 부채를 더 쓰면 평균비용이 무조건 낮아지는 것은 아니다. 레버리지가 커질수록 주주와 채권자의 위험도 높아"
+        },
+        {
+          "labelled": false,
+          "text": "져 각 요구수익률이 변하므로 시장가치와 위험을 함께 봐야 한다. 용어: WACC."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: WACC는 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 싼 부채를 더 쓰면 평균비용이 무조건 낮아지는 것은 아니다. 레버리지가 커질수록 주주와 채권자의 위험도 높아져 각 요구"
+        },
+        {
+          "labelled": false,
+          "text": "수익률이 변하므로 시장가치와 위험을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: WACC: wE×kE + wD×kD×(1-t); 문제에는 세후부채비용을 직접 줄 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 명시기간 DCF: 내년의 현금과 3년 뒤 현금은 같은 금액이어도 오늘 가치가 다르다. 각 연도의 매출·마진·재투자를 따로 예측"
+        },
+        {
+          "labelled": false,
+          "text": "하고 해당 기간만큼 할인해야 현금 시점이 정확히 반영된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 계속가치(Terminal Value): 기업이 예측 5년 뒤 갑자기 사라지는 것은 아니므로 그 이후 가치도 넣어야 한다. 다만 먼 미래를"
+        },
+        {
+          "labelled": false,
+          "text": "한 숫자로 압축하기 때문에 성장률이나 출구배수를 조금만 바꿔도 전체 가치가 크게 흔들린다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): WACC: 싼 부채를 더 쓰면 평균비용이 무조건 낮아지는 것은 아니다. 레버리지가 커질수록 주주와 채권자의 위험도 높아져"
+        },
+        {
+          "labelled": false,
+          "text": "각 요구수익률이 변하므로 시장가치와 위험을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): FCFF·FCFE: 이자 지급 전 현금은 채권자와 주주가 함께 나눌 몫이고, 이자와 순차입까지 반영한 현금은 주주 몫이다. 귀속주"
+        },
+        {
+          "labelled": false,
+          "text": "체에 따라 적용할 할인율도 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): ROE: 같은 순이익이라도 적은 자기자본으로 벌면 이 개념은 높다. 다만 부채를 늘이거나 자사주 매입으로 장부자본을 줄여"
+        },
+        {
+          "labelled": false,
+          "text": "도 올라갈 수 있으므로 영업개선과 재무레버리지를 분리해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-13 · EQV-13:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q12",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: WACC\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간만큼 할인해야 현금 시점이 정확히 반영된다.",
+        "투자의 내재 수익 경계가 요구수익률보다 높으면 가치가 남지만 현금흐름 방향이 여러 번 바뀌면 경계가 여럿 생길 수 있다.",
+        "영업이익이 커질수록 세후 영업성과는 커지고, 영업 관련 세율이 높을수록 그 성과는 작아진다.",
+        "레버리지가 커질수록 주주와 채권자의 위험도 높아져 각 요구수익률이 변하므로 시장가치와 위험을 함께 봐야 한다.",
+        "다만 먼 미래를 한 숫자로 압축하기 때문에 성장률이나 출구배수를 조금만 바꿔도 전체 가치가 크게 흔들린다."
+      ],
+      "evidence": "EQV-13 · EQV-13:verbal_relation:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 레버리지가 커질수록 주주와 채권자의 위험도 높아져 각 요구수익률이 변하므로 시장가치와 위험을 함께 봐야"
+        },
+        {
+          "labelled": false,
+          "text": "한다. 용어: WACC."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: WACC는 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 싼 부채를 더 쓰면 평균비용이 무조건 낮아지는 것은 아니다. 레버리지가 커질수록 주주와 채권자의 위험도 높아져 각 요구"
+        },
+        {
+          "labelled": false,
+          "text": "수익률이 변하므로 시장가치와 위험을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: WACC: wE×kE + wD×kD×(1-t); 문제에는 세후부채비용을 직접 줄 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 명시기간 DCF: 각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간만큼 할인해야 현금 시점이 정확히 반영된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): IRR: 투자의 내재 수익 경계가 요구수익률보다 높으면 가치가 남지만 현금흐름 방향이 여러 번 바뀌면 경계가 여럿 생길 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 현금세율·NOPAT: 영업이익이 커질수록 세후 영업성과는 커지고, 영업 관련 세율이 높을수록 그 성과는 작아진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): WACC: 레버리지가 커질수록 주주와 채권자의 위험도 높아져 각 요구수익률이 변하므로 시장가치와 위험을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 계속가치(Terminal Value): 다만 먼 미래를 한 숫자로 압축하기 때문에 성장률이나 출구배수를 조금만 바꿔도 전체 가치가"
+        },
+        {
+          "labelled": false,
+          "text": "크게 흔들린다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-13 · EQV-13:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q13",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 명시기간 DCF\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "단기 영업에 묶인 자산에서 단기 영업으로 조달한 부채를 뺀 차이로 일상 영업의 자금 소요를 보여 준다.",
+        "이 개념은 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다.",
+        "이 개념은 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다.",
+        "이 개념은 한 기간의 현금 증감을 영업, 투자, 재무 활동으로 나누어 이익이 실제 현금으로 이어진 경로를 보여 준다.",
+        "보통주주에게 귀속되는 이익을 해당 기간 실제로 유통된 보통주식수의 시간가중 평균으로 나눈 주당 성과다."
+      ],
+      "evidence": "EQV-14 · EQV-14:definition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다. 용어: 명시기간"
+        },
+        {
+          "labelled": false,
+          "text": "DCF."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 명시기간 DCF는 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 내년의 현금과 3년 뒤 현금은 같은 금액이어도 오늘 가치가 다르다. 각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간"
+        },
+        {
+          "labelled": false,
+          "text": "만큼 할인해야 현금 시점이 정확히 반영된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 명시기간 DCF: EVexplicit=Σ FCFF_t/(1+WACC)^t"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 운전자본과 순운전자본 증감: 단기 영업에 묶인 자산에서 단기 영업으로 조달한 부채를 뺀 차이로 일상 영업의 자금 소요를"
+        },
+        {
+          "labelled": false,
+          "text": "보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 명시기간 DCF: 이 개념은 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 계속가치: 이 개념은 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 현금흐름표(CFO·CFI·CFF): 이 개념은 한 기간의 현금 증감을 영업, 투자, 재무 활동으로 나누어 이익이 실제 현금으로 이어진"
+        },
+        {
+          "labelled": false,
+          "text": "경로를 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 기본주당이익(EPS)·가중평균주식수: 보통주주에게 귀속되는 이익을 해당 기간 실제로 유통된 보통주식수의 시간가중 평균으"
+        },
+        {
+          "labelled": false,
+          "text": "로 나눈 주당 성과다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-14 · EQV-14:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q14",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 명시기간 DCF\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "순이익이 흑자여도 고객에게 돈을 못 받거나 설비를 크게 사면 현금은 줄 수 있다. 본업, 장기자산 투자, 차입·증자·배당에서 생긴 현금 움직\n임을 구분해 봐야 한다.",
+        "기업이 예측 5년 뒤 갑자기 사라지는 것은 아니므로 그 이후 가치도 넣어야 한다. 다만 먼 미래를 한 숫자로 압축하기 때문에 성장률이나\n출구배수를 조금만 바꿔도 전체 가치가 크게 흔들린다.",
+        "목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한지를 사업자료와 비교하면 시\n장과 내 관점의 차이가 선명해진다.",
+        "내년의 현금과 3년 뒤 현금은 같은 금액이어도 오늘 가치가 다르다. 각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간만큼 할인해야\n현금 시점이 정확히 반영된다.",
+        "회계이익이 커도 설비와 운전자본에 계속 돈을 넣어야 하면 투자자에게 돌아갈 현금은 적다. 이 개념은 사업이 번 돈과 다시 묶어 둔 돈을\n구분해 영업자산의 현금창출력을 보여 준다."
+      ],
+      "evidence": "EQV-14 · EQV-14:intuition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 내년의 현금과 3년 뒤 현금은 같은 금액이어도 오늘 가치가 다르다. 각 연도의 매출·마진·재투자를 따로 예측하고"
+        },
+        {
+          "labelled": false,
+          "text": "해당 기간만큼 할인해야 현금 시점이 정확히 반영된다. 용어: 명시기간 DCF."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 명시기간 DCF는 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 내년의 현금과 3년 뒤 현금은 같은 금액이어도 오늘 가치가 다르다. 각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간"
+        },
+        {
+          "labelled": false,
+          "text": "만큼 할인해야 현금 시점이 정확히 반영된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 명시기간 DCF: EVexplicit=Σ FCFF_t/(1+WACC)^t"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 현금흐름표(CFO·CFI·CFF): 순이익이 흑자여도 고객에게 돈을 못 받거나 설비를 크게 사면 현금은 줄 수 있다. 본업, 장기자산"
+        },
+        {
+          "labelled": false,
+          "text": "투자, 차입·증자·배당에서 생긴 현금 움직임을 구분해 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 계속가치(Terminal Value): 기업이 예측 5년 뒤 갑자기 사라지는 것은 아니므로 그 이후 가치도 넣어야 한다. 다만 먼 미래를"
+        },
+        {
+          "labelled": false,
+          "text": "한 숫자로 압축하기 때문에 성장률이나 출구배수를 조금만 바꿔도 전체 가치가 크게 흔들린다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Reverse DCF: 목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한"
+        },
+        {
+          "labelled": false,
+          "text": "지를 사업자료와 비교하면 시장과 내 관점의 차이가 선명해진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 명시기간 DCF: 내년의 현금과 3년 뒤 현금은 같은 금액이어도 오늘 가치가 다르다. 각 연도의 매출·마진·재투자를 따로 예측"
+        },
+        {
+          "labelled": false,
+          "text": "하고 해당 기간만큼 할인해야 현금 시점이 정확히 반영된다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): FCFF: 회계이익이 커도 설비와 운전자본에 계속 돈을 넣어야 하면 투자자에게 돌아갈 현금은 적다. 이 개념은 사업이 번 돈"
+        },
+        {
+          "labelled": false,
+          "text": "과 다시 묶어 둔 돈을 구분해 영업자산의 현금창출력을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-14 · EQV-14:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q15",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 명시기간 DCF\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다.",
+        "본업, 장기자산 투자, 차입·증자·배당에서 생긴 현금 변화를 합치면 한 기간의 전체 현금 증감이 된다.",
+        "세후 영업성과에서 설비와 운전자본에 다시 묶인 금액을 빼면 전체 자본 제공자에게 남는 현금이 된다.",
+        "장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가정 변화가 큰 가치 차이를 만든다.",
+        "각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간만큼 할인해야 현금 시점이 정확히 반영된다."
+      ],
+      "evidence": "EQV-14 · EQV-14:verbal_relation:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간만큼 할인해야 현금 시점이 정확히 반영된다. 용어: 명시"
+        },
+        {
+          "labelled": false,
+          "text": "기간 DCF."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 명시기간 DCF는 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 내년의 현금과 3년 뒤 현금은 같은 금액이어도 오늘 가치가 다르다. 각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간"
+        },
+        {
+          "labelled": false,
+          "text": "만큼 할인해야 현금 시점이 정확히 반영된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 명시기간 DCF: EVexplicit=Σ FCFF_t/(1+WACC)^t"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Reverse DCF: 현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 현금흐름표(CFO·CFI·CFF): 본업, 장기자산 투자, 차입·증자·배당에서 생긴 현금 변화를 합치면 한 기간의 전체 현금 증감이 된"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): FCFF: 세후 영업성과에서 설비와 운전자본에 다시 묶인 금액을 빼면 전체 자본 제공자에게 남는 현금이 된다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 계속가치: 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가정 변화가 큰 가치 차이를"
+        },
+        {
+          "labelled": false,
+          "text": "만든다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 명시기간 DCF: 각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간만큼 할인해야 현금 시점이 정확히 반영된다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-14 · EQV-14:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q16",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 계속가치\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다.",
+        "이 개념은 NOPAT에서 투하자본에 대한 요구수익을 차감해 회계이익 중 자본비용을 넘은 경제적 이익을 측정한다.",
+        "이 개념은 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다.",
+        "이 개념은 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다.",
+        "이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다."
+      ],
+      "evidence": "EQV-15 · EQV-15:definition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다. 용어: 계"
+        },
+        {
+          "labelled": false,
+          "text": "속가치."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 계속가치는 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감"
+        },
+        {
+          "labelled": false,
+          "text": "하므로, 작은 가정 변화가 큰 가치 차이를 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 계속가치: TV=FCFF_(n+1)/(WACC-g)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 계속가치: 이 개념은 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): EVA·가치 스프레드: 이 개념은 NOPAT에서 투하자본에 대한 요구수익을 차감해 회계이익 중 자본비용을 넘은 경제적 이익"
+        },
+        {
+          "labelled": false,
+          "text": "을 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 명시기간 DCF: 이 개념은 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 시나리오 가중가치: 이 개념은 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): WACC: 이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-15 · EQV-15:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q17",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 계속가치\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "내년의 현금과 3년 뒤 현금은 같은 금액이어도 오늘 가치가 다르다. 각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간만큼 할인해야\n현금 시점이 정확히 반영된다.",
+        "DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가\n정 변화가 큰 가치 차이를 만든다.",
+        "회계이익이 커도 설비와 운전자본에 계속 돈을 넣어야 하면 투자자에게 돌아갈 현금은 적다. 이 개념은 사업이 번 돈과 다시 묶어 둔 돈을\n구분해 영업자산의 현금창출력을 보여 준다.",
+        "회사가 영원히 성장하려면 그 성장을 지탱할 재투자가 필요하다. 성장률만 높이고 재투자를 그대로 두면 공짜 성장을 가정한 셈이며, 이 개\n념이 과도하게 커진다.",
+        "싼 부채를 더 쓰면 평균비용이 무조건 낮아지는 것은 아니다. 레버리지가 커질수록 주주와 채권자의 위험도 높아져 각 요구수익률이 변하\n므로 시장가치와 위험을 함께 봐야 한다."
+      ],
+      "evidence": "EQV-15 · EQV-15:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에"
+        },
+        {
+          "labelled": false,
+          "text": "매우 민감하므로, 작은 가정 변화가 큰 가치 차이를 만든다. 용어: 계속가치."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 계속가치는 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감"
+        },
+        {
+          "labelled": false,
+          "text": "하므로, 작은 가정 변화가 큰 가치 차이를 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 계속가치: TV=FCFF_(n+1)/(WACC-g)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 명시기간 DCF: 내년의 현금과 3년 뒤 현금은 같은 금액이어도 오늘 가치가 다르다. 각 연도의 매출·마진·재투자를 따로 예측"
+        },
+        {
+          "labelled": false,
+          "text": "하고 해당 기간만큼 할인해야 현금 시점이 정확히 반영된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 계속가치: DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에"
+        },
+        {
+          "labelled": false,
+          "text": "매우 민감하므로, 작은 가정 변화가 큰 가치 차이를 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): FCFF: 회계이익이 커도 설비와 운전자본에 계속 돈을 넣어야 하면 투자자에게 돌아갈 현금은 적다. 이 개념은 사업이 번 돈"
+        },
+        {
+          "labelled": false,
+          "text": "과 다시 묶어 둔 돈을 구분해 영업자산의 현금창출력을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 계속가치·안정기 재투자: 회사가 영원히 성장하려면 그 성장을 지탱할 재투자가 필요하다. 성장률만 높이고 재투자를 그대로"
+        },
+        {
+          "labelled": false,
+          "text": "두면 공짜 성장을 가정한 셈이며, 이 개념이 과도하게 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): WACC: 싼 부채를 더 쓰면 평균비용이 무조건 낮아지는 것은 아니다. 레버리지가 커질수록 주주와 채권자의 위험도 높아져"
+        },
+        {
+          "labelled": false,
+          "text": "각 요구수익률이 변하므로 시장가치와 위험을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-15 · EQV-15:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q18",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 계속가치\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "레버리지가 커질수록 주주와 채권자의 위험도 높아져 각 요구수익률이 변하므로 시장가치와 위험을 함께 봐야 한다.",
+        "각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간만큼 할인해야 현금 시점이 정확히 반영된다.",
+        "장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가정 변화가 큰 가치 차이를 만든다.",
+        "세후 영업성과에서 설비와 운전자본에 다시 묶인 금액을 빼면 전체 자본 제공자에게 남는 현금이 된다.",
+        "장기 성장속도를 높게 잡을수록 이를 뒷받침하는 자본 투입도 늘어야 하며 그렇지 않으면 먼 미래 가치가 과대해진다."
+      ],
+      "evidence": "EQV-15 · EQV-15:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가정 변화가 큰 가치 차이"
+        },
+        {
+          "labelled": false,
+          "text": "를 만든다. 용어: 계속가치."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 계속가치는 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감"
+        },
+        {
+          "labelled": false,
+          "text": "하므로, 작은 가정 변화가 큰 가치 차이를 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 계속가치: TV=FCFF_(n+1)/(WACC-g)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): WACC: 레버리지가 커질수록 주주와 채권자의 위험도 높아져 각 요구수익률이 변하므로 시장가치와 위험을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 명시기간 DCF: 각 연도의 매출·마진·재투자를 따로 예측하고 해당 기간만큼 할인해야 현금 시점이 정확히 반영된다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 계속가치: 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가정 변화가 큰 가치 차이를"
+        },
+        {
+          "labelled": false,
+          "text": "만든다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): FCFF: 세후 영업성과에서 설비와 운전자본에 다시 묶인 금액을 빼면 전체 자본 제공자에게 남는 현금이 된다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 계속가치·안정기 재투자: 장기 성장속도를 높게 잡을수록 이를 뒷받침하는 자본 투입도 늘어야 하며 그렇지 않으면 먼 미래"
+        },
+        {
+          "labelled": false,
+          "text": "가치가 과대해진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-15 · EQV-15:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q19",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: Peer multiple\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다.",
+        "이 개념은 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다.",
+        "최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다.",
+        "이 개념 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한다.",
+        "이 개념 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다."
+      ],
+      "evidence": "EQV-16 · EQV-16:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다. 용어: Peer"
+        },
+        {
+          "labelled": false,
+          "text": "multiple."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Peer multiple 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 비슷한 기업들이 EBITDA 8배에 거래된다면 목표기업도 비슷한 출발점에서 볼 수 있다. 그러나 성장, 마진, 회계정책, 경기시"
+        },
+        {
+          "labelled": false,
+          "text": "점이 다르면 같은 배수를 기계적으로 적용할 수 없다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Peer multiple: ImpliedEV=PeerMedianMultiple×TargetMetric"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 민감도: 배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 경기민감·원자재 정상화: 이 개념은 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 최소분산 Hedge Ratio·선물계약수: 최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장"
+        },
+        {
+          "labelled": false,
+          "text": "작게 만드는 선물 비중이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 리서치 촉매·실적서프라이즈: 이 개념 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): Peer multiple: 이 개념 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-16 · EQV-16:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q20",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: Peer multiple\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "기업이 예측 5년 뒤 갑자기 사라지는 것은 아니므로 그 이후 가치도 넣어야 한다. 다만 먼 미래를 한 숫자로 압축하기 때문에 성장률이나\n출구배수를 조금만 바꿔도 전체 가치가 크게 흔들린다.",
+        "EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는지는 순부채와 주식수 브리\n지를 거쳐 확인해야 한다.",
+        "매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수\n를 써도 목표가 변화가 커진다.",
+        "이 개념 20배는 현재 이익 1원에 시장이 20원을 지불한다는 뜻이다. 높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으\n로 낮아져 분모가 작아진 결과일 수도 있다.",
+        "비슷한 기업들이 EBITDA 8배에 거래된다면 목표기업도 비슷한 출발점에서 볼 수 있다. 그러나 성장, 마진, 회계정책, 경기시점이 다르면 같\n은 배수를 기계적으로 적용할 수 없다."
+      ],
+      "evidence": "EQV-16 · EQV-16:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 비슷한 기업들이 EBITDA 8배에 거래된다면 목표기업도 비슷한 출발점에서 볼 수 있다. 그러나 성장, 마진, 회계"
+        },
+        {
+          "labelled": false,
+          "text": "정책, 경기시점이 다르면 같은 배수를 기계적으로 적용할 수 없다. 용어: Peer multiple."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Peer multiple 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 비슷한 기업들이 EBITDA 8배에 거래된다면 목표기업도 비슷한 출발점에서 볼 수 있다. 그러나 성장, 마진, 회계정책, 경기시"
+        },
+        {
+          "labelled": false,
+          "text": "점이 다르면 같은 배수를 기계적으로 적용할 수 없다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Peer multiple: ImpliedEV=PeerMedianMultiple×TargetMetric"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 계속가치(Terminal Value): 기업이 예측 5년 뒤 갑자기 사라지는 것은 아니므로 그 이후 가치도 넣어야 한다. 다만 먼 미래를"
+        },
+        {
+          "labelled": false,
+          "text": "한 숫자로 압축하기 때문에 성장률이나 출구배수를 조금만 바꿔도 전체 가치가 크게 흔들린다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 민감도: EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는지는"
+        },
+        {
+          "labelled": false,
+          "text": "순부채와 주식수 브리지를 거쳐 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 리서치 촉매·실적서프라이즈: 매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI"
+        },
+        {
+          "labelled": false,
+          "text": "변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): PER: 이 개념 20배는 현재 이익 1원에 시장이 20원을 지불한다는 뜻이다. 높은 배수는 성장과 안정성 기대를 반영할 수 있지"
+        },
+        {
+          "labelled": false,
+          "text": "만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): Peer multiple: 비슷한 기업들이 EBITDA 8배에 거래된다면 목표기업도 비슷한 출발점에서 볼 수 있다. 그러나 성장, 마진, 회"
+        },
+        {
+          "labelled": false,
+          "text": "계정책, 경기시점이 다르면 같은 배수를 기계적으로 적용할 수 없다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-16 · EQV-16:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q21",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: Peer multiple\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다.",
+        "높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다.",
+        "다만 먼 미래를 한 숫자로 압축하기 때문에 성장률이나 출구배수를 조금만 바꿔도 전체 가치가 크게 흔들린다.",
+        "그러나 성장, 마진, 회계정책, 경기시점이 다르면 같은 배수를 기계적으로 적용할 수 없다.",
+        "반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+      ],
+      "evidence": "EQV-16 · EQV-16:verbal_relation:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 그러나 성장, 마진, 회계정책, 경기시점이 다르면 같은 배수를 기계적으로 적용할 수 없다. 용어: Peer multiple."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Peer multiple 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 비슷한 기업들이 EBITDA 8배에 거래된다면 목표기업도 비슷한 출발점에서 볼 수 있다. 그러나 성장, 마진, 회계정책, 경기시"
+        },
+        {
+          "labelled": false,
+          "text": "점이 다르면 같은 배수를 기계적으로 적용할 수 없다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Peer multiple: ImpliedEV=PeerMedianMultiple×TargetMetric"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 민감도: 영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): PER: 높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 계속가치(Terminal Value): 다만 먼 미래를 한 숫자로 압축하기 때문에 성장률이나 출구배수를 조금만 바꿔도 전체 가치가"
+        },
+        {
+          "labelled": false,
+          "text": "크게 흔들린다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): Peer multiple: 그러나 성장, 마진, 회계정책, 경기시점이 다르면 같은 배수를 기계적으로 적용할 수 없다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 리서치 촉매·실적서프라이즈: 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-16 · EQV-16:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q22",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 목표주가·상승여력\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다.",
+        "이 개념 은 현재 주가가 분석가의 목표가까지 움직일 경우 얻을 수 있는 가격수익률이다.",
+        "이 개념은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다.",
+        "이 개념은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다.",
+        "이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다."
+      ],
+      "evidence": "EQV-17 · EQV-17:definition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념 은 현재 주가가 분석가의 목표가까지 움직일 경우 얻을 수 있는 가격수익률이다. 용어: 목표주가·상승여"
+        },
+        {
+          "labelled": false,
+          "text": "력."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 목표주가 상승여력은 현재 주가가 분석가의 목표가까지 움직일 경우 얻을 수 있는 가격수익률이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 목표가가 현재가보다 높다는 사실만으로 충분하지 않다. 상승여력이 위험과 시간, 배당, 목표가 도달 가능성을 보상할 만큼"
+        },
+        {
+          "labelled": false,
+          "text": "큰지 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 목표주가·상승여력: Upside=(Target/Current-1)×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 기본 EPS: 이 개념은 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 목표주가·상승여력: 이 개념 은 현재 주가가 분석가의 목표가까지 움직일 경우 얻을 수 있는 가격수익률이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 주식교환비율: 이 개념은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): PER: 이 개념은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 기대 TSR·촉매: 이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-17 · EQV-17:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q23",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 목표주가·상승여력\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "이 개념 20배는 현재 이익 1원에 시장이 20원을 지불한다는 뜻이다. 높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으\n로 낮아져 분모가 작아진 결과일 수도 있다.",
+        "기업 전체 이익이 늘어도 신주가 더 빠르게 늘면 기존 주주의 주당 몫은 줄 수 있다. 그래서 순이익과 함께 증자·자사주·주식보상의 분모 효\n과를 봐야 한다.",
+        "매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수\n를 써도 목표가 변화가 커진다.",
+        "좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결과가 어떤 지표에서 언제 확인될\n지를 촉매로 적어야 투자논리가 검증 가능해진다.",
+        "목표가가 현재가보다 높다는 사실만으로 충분하지 않다. 이 개념이 위험과 시간, 배당, 목표가 도달 가능성을 보상할 만큼 큰지 함께 봐야\n한다."
+      ],
+      "evidence": "EQV-17 · EQV-17:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 목표가가 현재가보다 높다는 사실만으로 충분하지 않다. 이 개념이 위험과 시간, 배당, 목표가 도달 가능성을 보"
+        },
+        {
+          "labelled": false,
+          "text": "상할 만큼 큰지 함께 봐야 한다. 용어: 목표주가·상승여력."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 목표주가 상승여력은 현재 주가가 분석가의 목표가까지 움직일 경우 얻을 수 있는 가격수익률이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 목표가가 현재가보다 높다는 사실만으로 충분하지 않다. 상승여력이 위험과 시간, 배당, 목표가 도달 가능성을 보상할 만큼"
+        },
+        {
+          "labelled": false,
+          "text": "큰지 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 목표주가·상승여력: Upside=(Target/Current-1)×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): PER: 이 개념 20배는 현재 이익 1원에 시장이 20원을 지불한다는 뜻이다. 높은 배수는 성장과 안정성 기대를 반영할 수 있지"
+        },
+        {
+          "labelled": false,
+          "text": "만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 기본 EPS: 기업 전체 이익이 늘어도 신주가 더 빠르게 늘면 기존 주주의 주당 몫은 줄 수 있다. 그래서 순이익과 함께 증자·"
+        },
+        {
+          "labelled": false,
+          "text": "자사주·주식보상의 분모 효과를 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 리서치 촉매·실적서프라이즈: 매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI"
+        },
+        {
+          "labelled": false,
+          "text": "변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 기대 TSR·촉매: 좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결"
+        },
+        {
+          "labelled": false,
+          "text": "과가 어떤 지표에서 언제 확인될지를 촉매로 적어야 투자논리가 검증 가능해진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 목표주가·상승여력: 목표가가 현재가보다 높다는 사실만으로 충분하지 않다. 이 개념이 위험과 시간, 배당, 목표가 도달 가능"
+        },
+        {
+          "labelled": false,
+          "text": "성을 보상할 만큼 큰지 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-17 · EQV-17:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q24",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 목표주가·상승여력\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "인수회사의 주가가 낮을수록 고정된 인수가치를 지급하기 위해 넘겨야 할 신주 수는 많아진다.",
+        "현재가격과 목표가격의 격차가 클수록 잠재 수익은 커지지만 위험과 도달기간도 함께 고려해야 한다.",
+        "절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요하다.",
+        "시장 기대를 바꿀 구체적 사건이 가까우며 결과가 예상보다 좋을수록 목표가격이 현실화될 가능성이 커진다.",
+        "반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+      ],
+      "evidence": "EQV-17 · EQV-17:verbal_relation:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 현재가격과 목표가격의 격차가 클수록 잠재 수익은 커지지만 위험과 도달기간도 함께 고려해야 한다. 용어: 목표"
+        },
+        {
+          "labelled": false,
+          "text": "주가·상승여력."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 목표주가 상승여력은 현재 주가가 분석가의 목표가까지 움직일 경우 얻을 수 있는 가격수익률이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 목표가가 현재가보다 높다는 사실만으로 충분하지 않다. 상승여력이 위험과 시간, 배당, 목표가 도달 가능성을 보상할 만큼"
+        },
+        {
+          "labelled": false,
+          "text": "큰지 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 목표주가·상승여력: Upside=(Target/Current-1)×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 주식교환비율: 인수회사의 주가가 낮을수록 고정된 인수가치를 지급하기 위해 넘겨야 할 신주 수는 많아진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 목표주가·상승여력: 현재가격과 목표가격의 격차가 클수록 잠재 수익은 커지지만 위험과 도달기간도 함께 고려해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 추정치 괴리·실적 서프라이즈: 절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요"
+        },
+        {
+          "labelled": false,
+          "text": "하다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 기대 TSR·촉매: 시장 기대를 바꿀 구체적 사건이 가까우며 결과가 예상보다 좋을수록 목표가격이 현실화될 가능성이 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 리서치 촉매·실적서프라이즈: 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-17 · EQV-17:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q25",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 민감도\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을 나눈다.",
+        "이 개념 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다.",
+        "배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다.",
+        "이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지 duration으로 근사한다.",
+        "이 개념 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한다."
+      ],
+      "evidence": "EQV-18 · EQV-18:definition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다. 용어: 민감도."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 배수 민감도는 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는지는 순부채"
+        },
+        {
+          "labelled": false,
+          "text": "와 주식수 브리지를 거쳐 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 민감도: ΔEV=EBITDA×ΔMultiple; ΔPrice=ΔEV/Shares"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): IPO primary/secondary: 이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는"
+        },
+        {
+          "labelled": false,
+          "text": "물량을 나눈다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Peer multiple: 이 개념 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 민감도: 배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 신용스프레드·가격민감도: 이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는"
+        },
+        {
+          "labelled": false,
+          "text": "지 duration으로 근사한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 리서치 촉매·실적서프라이즈: 이 개념 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-18 · EQV-18:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q26",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 민감도\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "낙관적인 미래 경로는 할인율만 낮추는 것이 아니라 수요, 가격, 마진, 재투자가 하나의 서사로 연결돼야 한다. 한 변수의 영향과 여러 변수\n가 함께 움직이는 세계를 구분해 본다.",
+        "부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현재가치와 이 개념을 맞추면 한쪽 가치\n변화가 다른 쪽 변화로 대체로 상쇄된다.",
+        "비슷한 기업들이 EBITDA 8배에 거래된다면 목표기업도 비슷한 출발점에서 볼 수 있다. 그러나 성장, 마진, 회계정책, 경기시점이 다르면 같\n은 배수를 기계적으로 적용할 수 없다.",
+        "DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가\n정 변화가 큰 가치 차이를 만든다.",
+        "EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는지는 순부채와 주식수 브리\n지를 거쳐 확인해야 한다."
+      ],
+      "evidence": "EQV-18 · EQV-18:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는"
+        },
+        {
+          "labelled": false,
+          "text": "지는 순부채와 주식수 브리지를 거쳐 확인해야 한다. 용어: 민감도."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 배수 민감도는 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는지는 순부채"
+        },
+        {
+          "labelled": false,
+          "text": "와 주식수 브리지를 거쳐 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 민감도: ΔEV=EBITDA×ΔMultiple; ΔPrice=ΔEV/Shares"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 시나리오·민감도: 낙관적인 미래 경로는 할인율만 낮추는 것이 아니라 수요, 가격, 마진, 재투자가 하나의 서사로 연결돼야"
+        },
+        {
+          "labelled": false,
+          "text": "한다. 한 변수의 영향과 여러 변수가 함께 움직이는 세계를 구분해 본다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Duration Immunization: 부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현"
+        },
+        {
+          "labelled": false,
+          "text": "재가치와 이 개념을 맞추면 한쪽 가치 변화가 다른 쪽 변화로 대체로 상쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Peer multiple: 비슷한 기업들이 EBITDA 8배에 거래된다면 목표기업도 비슷한 출발점에서 볼 수 있다. 그러나 성장, 마진, 회"
+        },
+        {
+          "labelled": false,
+          "text": "계정책, 경기시점이 다르면 같은 배수를 기계적으로 적용할 수 없다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 계속가치: DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에"
+        },
+        {
+          "labelled": false,
+          "text": "매우 민감하므로, 작은 가정 변화가 큰 가치 차이를 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 민감도: EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는지는"
+        },
+        {
+          "labelled": false,
+          "text": "순부채와 주식수 브리지를 거쳐 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-18 · EQV-18:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q27",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 민감도\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가정 변화가 큰 가치 차이를 만든다.",
+        "영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다.",
+        "반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다.",
+        "주주와 채권자의 합산 가치는 자본구조 전 영업성과와 비교해야 청구권 기준이 맞는다.",
+        "한 입력만 바꾸면 개별 영향이 드러나고, 여러 입력을 일관된 방향으로 함께 바꾸면 하나의 미래 경로가 된다."
+      ],
+      "evidence": "EQV-18 · EQV-18:verbal_relation:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다."
+        },
+        {
+          "labelled": false,
+          "text": "용어: 민감도."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 배수 민감도는 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는지는 순부채"
+        },
+        {
+          "labelled": false,
+          "text": "와 주식수 브리지를 거쳐 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 민감도: ΔEV=EBITDA×ΔMultiple; ΔPrice=ΔEV/Shares"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 계속가치: 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가정 변화가 큰 가치 차이를"
+        },
+        {
+          "labelled": false,
+          "text": "만든다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 민감도: 영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 리서치 촉매·실적서프라이즈: 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): EV와 EV/EBITDA: 주주와 채권자의 합산 가치는 자본구조 전 영업성과와 비교해야 청구권 기준이 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 시나리오·민감도: 한 입력만 바꾸면 개별 영향이 드러나고, 여러 입력을 일관된 방향으로 함께 바꾸면 하나의 미래 경로가 된"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-18 · EQV-18:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q28",
+      "difficulty": 1,
+      "kind": "신규 계산·응용",
+      "stem": "시가총액 4,800억원, 이자부부채 1,200억원, 우선주 200억원, 비지배지분 100억원, 현금 500억원인 회사의 EBITDA가 580\n억원이다. EV/EBITDA는 얼마인가?",
+      "choices": [
+        "8.3배",
+        "9.0배",
+        "10.0배",
+        "10.9배",
+        "11.2배"
+      ],
+      "evidence": "EQV-11",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "1) EV는 4,800억원+1,200억원+200억원+100억원-500억원=5,800억원이다. 2) EV/EBITDA는 5,800억원÷580억원=10.0배이다. 분자와"
+        },
+        {
+          "labelled": false,
+          "text": "분모의 억원 단위가 소거되며 소수 첫째 자리까지 정확하다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "EQV-11 EV와 EV/EBITDA: EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는"
+        },
+        {
+          "labelled": false,
+          "text": "배수다. 핵심 관계는 EV와 EV/EBITDA: EV=MarketCap+Debt+Preferred+Minority-Cash; EV/EBITDA=EV/EBITDA 적용 가정은 - 지표의"
+        },
+        {
+          "labelled": false,
+          "text": "분자·분모·기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-11"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q29",
+      "difficulty": 3,
+      "kind": "신규 계산·응용",
+      "stem": "1년 차 말 NOPAT 400억원, 감가상각비 60억원, 설비투자 100억원, 영업순운전자본 증가 30억원이 예상된다. 2년 차 FCFF\n는 336억원이고 이후 영구성장률은 2%, WACC는 8%이다. 1년 차 현금흐름과 1년 차 말 계속가치를 모두 반영한 현재 기업\n가치는 얼마인가?",
+      "choices": [
+        "5,185억원",
+        "5,330억원",
+        "5,491억원",
+        "5,600억원",
+        "5,930억원"
+      ],
+      "evidence": "EQV-12 · EQV-14 · EQV-15",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "1) 1년 차 FCFF는 400억원+60억원-100억원-30억원=330억원이다. 2) 1년 차 말 계속가치는 336억원÷(8%-2%)=5,600억원이다. 3) 현"
+        },
+        {
+          "labelled": false,
+          "text": "재가치는 (330억원+5,600억원)÷1.08=5,490.7407억원이다. 마지막 단계에서만 억원 단위로 반올림해 5,491억원으로 표시한다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "EQV-12 FCFF: FCFF는 세후 영업이익에서 사업 유지와 성장을 위한 순투자를 반영한 뒤 모든 자본제공자에게 남는 현금이다. 핵심 관"
+        },
+        {
+          "labelled": false,
+          "text": "계는 FCFF: FCFF=EBIT(1-t)+D&A-Capex-ΔNWC = NOPAT+D&A-Capex-ΔNWC 적용 가정은 - 지표의 분자·분모·기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": false,
+          "text": "EQV-14 명시기간 DCF: 명시기간 DCF는 구체적으로 예측한 연도별 FCFF를 각 발생시점에서 현재로 할인해 합산한 가치다. 핵심 관계"
+        },
+        {
+          "labelled": false,
+          "text": "는 명시기간 DCF: EVexplicit=Σ FCFF_t/(1+WACC)^t 적용 가정은 - 지표의 분자·분모·기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": false,
+          "text": "EQV-15 계속가치: 계속가치는 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다. 핵심 관계는"
+        },
+        {
+          "labelled": false,
+          "text": "계속가치: TV=FCFF_(n+1)/(WACC-g) 적용 가정은 - 지표의 분자·분모·기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-12 · EQV-14 · EQV-15"
+        }
+      ]
+    },
+    {
+      "id": "EQV-2-Q30",
+      "difficulty": 3,
+      "kind": "신규 계산·응용",
+      "stem": "비교기업의 EV/EBITDA가 5배, 7배, 8배, 10배, 15배이고 목표기업의 EBITDA는 800억원이다. 목표기업의 순부채는 1,200억\n원, 희석주식수는 1,000만 주, 현재 주가는 40,000원이며 다른 청구권은 없다. 중앙값 배수를 적용한 목표주가, 상승여력, 적\n용배수가 1.0배 낮아질 때의 주당가치 감소액을 순서대로 고르면?",
+      "choices": [
+        "52,000원, 30%, 8,000원",
+        "52,000원, 23.1%, 8,000원",
+        "64,000원, 60%, 8,000원",
+        "52,000원, 30%, 800원",
+        "44,000원, 10%, 8,000원"
+      ],
+      "evidence": "EQV-11 · EQV-16 · EQV-17 · EQV-18",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "1) 다섯 배수의 중앙값은 8배다. 2) 내재 EV는 800억원×8=6,400억원, 지분가치는 6,400억원-1,200억원=5,200억원이다. 3) 5,200억원"
+        },
+        {
+          "labelled": false,
+          "text": "÷1,000만 주=52,000원/주다. 4) 상승여력은 52,000원÷40,000원-1=30%다. 5) 배수 1.0배 변화는 EV 800억원 변화이며, 800억원÷1,000"
+        },
+        {
+          "labelled": false,
+          "text": "만 주=8,000원/주다. 반올림은 필요 없다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "EQV-11 EV와 EV/EBITDA: EV는 영업자산에 대한 투자자 전체의 가치이고 EV/EBITDA는 이를 이자·세금·감가상각 전 이익과 비교하는"
+        },
+        {
+          "labelled": false,
+          "text": "배수다. 핵심 관계는 EV와 EV/EBITDA: EV=MarketCap+Debt+Preferred+Minority-Cash; EV/EBITDA=EV/EBITDA 적용 가정은 - 지표의"
+        },
+        {
+          "labelled": false,
+          "text": "분자·분모·기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": false,
+          "text": "EQV-16 Peer multiple: Peer multiple 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다. 핵심"
+        },
+        {
+          "labelled": false,
+          "text": "관계는 Peer multiple: ImpliedEV=PeerMedianMultiple×TargetMetric 적용 가정은 - 지표의 분자·분모·기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": false,
+          "text": "EQV-17 목표주가·상승여력: 목표주가 상승여력은 현재 주가가 분석가의 목표가까지 움직일 경우 얻을 수 있는 가격수익률이다. 핵심"
+        },
+        {
+          "labelled": false,
+          "text": "관계는 목표주가·상승여력: Upside=(Target/Current-1)×100 적용 가정은 - 지표의 분자·분모·기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": false,
+          "text": "EQV-18 민감도: 배수 민감도는 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다. 핵심 관계는 민감도:"
+        },
+        {
+          "labelled": false,
+          "text": "ΔEV=EBITDA×ΔMultiple; ΔPrice=ΔEV/Shares 적용 가정은 - 지표의 분자·분모·기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-11 · EQV-16 · EQV-17 · EQV-18"
+        }
+      ]
+    }
+  ]
+}

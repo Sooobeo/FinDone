@@ -1,0 +1,3062 @@
+{
+  "schemaVersion": 1,
+  "sourceSha256": "edf526c295d299916bf873cb74900ff31765990280f362f42994c8ded873be52",
+  "id": "IBT-B",
+  "anchor": "unit-IBT-B",
+  "subjectId": "subject-07",
+  "subjectTitle": "07. IB·시장·대체투자 실무",
+  "title": "IBT-B · IPO·부동산·리서치 실무",
+  "subtitle": "정본 이론 + 검증·파생·계산 문항",
+  "meta": [
+    "핵심개념 정본 전체",
+    "문제 30",
+    "상세 해설 30"
+  ],
+  "sourceNote": "기존 FinDone 완성본 복원 · 원본 PDF 666–695쪽",
+  "theory": [
+    {
+      "kind": "section",
+      "text": "개념 압축"
+    },
+    {
+      "kind": "body",
+      "text": "작은 글자와 옅은 박스로 밀도 있게 정리했습니다."
+    },
+    {
+      "kind": "label",
+      "text": "범위"
+    },
+    {
+      "kind": "body",
+      "text": "FinDone 학습요소 IBT-10, IBT-11, IBT-12, IBT-13, IBT-14, IBT-15, IBT-16, IBT-17, IBT-18"
+    },
+    {
+      "kind": "label",
+      "text": "문항 구성"
+    },
+    {
+      "kind": "body",
+      "text": "검증 문항은행 27 · 신규 계산·응용 3 · 합계 30문항"
+    },
+    {
+      "kind": "label",
+      "text": "풀이 원칙"
+    },
+    {
+      "kind": "body",
+      "text": "정답만 제시하지 않고 핵심 조건, 계산 또는 판단 과정, 결과 해석, 대표 오답의 이유를 순서대로 설명합니다."
+    },
+    {
+      "kind": "section",
+      "text": "핵심 이론"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-10 · IPO 지분희석"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "IPO 지분희석은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은 100%에서 80%로 줄어든다. 이는 공모가"
+    },
+    {
+      "kind": "body",
+      "text": "가 낮아 생기는 가치희석과 구분해야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "IPO 지분희석: Dilution%=NewShares/PostMoneyShares×100"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• IPO 지분희석: Dilution%=NewShares/PostMoneyShares × 100"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• IPO 구조 설계 - 필요한 조달액과 기존주주 지분유지 목표 사이에서 신주 수를 정할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 주주 영향 분석 - 상장 후 기존·신규 주주의 경제적 소유비율을 계산할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "SEC Investor.gov - Investing in an IPO · finance_interview_app_final_spec.md:L1812 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세"
+    },
+    {
+      "kind": "body",
+      "text": "> IBT-10"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-11 · IPO 밸류에이션 배수"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "IPO 밸류에이션 배수는 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "공모 전 가치에 신주대금이 들어오면 상장 후 시가총액과 주식수가 달라진다. 공모가 배수는 pre-money와 post-money, 기본주식수와 희석주식수를"
+    },
+    {
+      "kind": "body",
+      "text": "섞지 않아야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "IPO 밸류에이션 배수: PostMoneyMarketCap=OfferPrice×PostShares; PER=MarketCap/NI"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• IPO 밸류에이션 배수: PostMoneyMarketCap=OfferPrice × PostShares"
+    },
+    {
+      "kind": "bullet",
+      "text": "• PER=MarketCap/NI"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 공모가 산정 - 비교기업 PER과 회사 예상 EPS로 적정 공모가 범위를 검토할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 상장 후 비교 - 신주와 구주를 포함한 정확한 시가총액 기준으로 동종기업 배수를 맞출 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran - From Private to Publicly Traded Firm · finance_interview_app_final_spec.md:L1813 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유"
+    },
+    {
+      "kind": "body",
+      "text": "형·난수 명세 > IBT-11"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-12 · 부동산 NOI"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "부동산 NOI는 잠재 임대수입에서 공실손실과 부동산 운영비를 뺀 자산 자체의 영업소득이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "NOI는 건물이 벌어들이는 성과를 보려는 값이라 어떤 대출로 샀는지와 무관한 이자비용을 빼지 않는다. 감가상각도 비현금 회계비용이므로 제외해"
+    },
+    {
+      "kind": "body",
+      "text": "자산 간 운영성과를 비교한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "부동산 NOI: NOI=GrossPotentialRent-VacancyLoss-OperatingExpenses"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 부동산 NOI:"
+    },
+    {
+      "kind": "body",
+      "text": "NOI=GrossPotentialRent-VacancyLoss-OperatingExpenses"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 부동산 가치평가 - 안정화 NOI에 cap rate을 적용할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 대출심사 - NOI가 원리금상환을 얼마나 커버하는지 DSCR 계산의 분자로 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 11.431 부동산금융 문제세트·케이스 · Problem Set 1 · finance_interview_app_final_spec.md:L1814 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문"
+    },
+    {
+      "kind": "body",
+      "text": "제 유형·난수 명세 > IBT-12"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-13 · Cap rate 가치"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "Cap rate 가치는 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "같은 NOI라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 수익률에도 사려 하므로 가치가 높다. Cap rate이 조금만 올라가도 분모가 커져 가치"
+    },
+    {
+      "kind": "body",
+      "text": "가 크게 내려간다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "Cap rate 가치: PropertyValue=NOI/CapRate"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• Cap rate 가치: PropertyValue=NOI/CapRate"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 부동산 매입검토 - 시장 cap rate과 안정화 NOI로 가격 적정성을 볼 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리 민감도 - 요구수익률 변화가 담보가치와 LTV에 미치는 영향을 분석할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 11.431 부동산금융 문제세트·케이스 · Problem Set 1 · finance_interview_app_final_spec.md:L1815 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문"
+    },
+    {
+      "kind": "body",
+      "text": "제 유형·난수 명세 > IBT-13"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-14 · LTV"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "LTV는 담보 부동산가치 중 대출이 차지하는 비율로, 가격하락을 흡수할 자기자본 완충을 보여 준다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "10억 원 건물에 7억 원을 빌리면 30%의 가치하락 뒤에는 대출원금 보호가 어려워진다. 감정가가 하락하면 대출액이 그대로여도 LTV가 올라가"
+    },
+    {
+      "kind": "body",
+      "text": "covenant 위험이 커질 수 있다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "LTV: LTV=Loan/PropertyValue×100"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• LTV: LTV=Loan/PropertyValue × 100"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 담보대출 심사 - 허용 LTV로 최대 대출액과 차주의 필요 자기자본을 정할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 스트레스 테스트 - cap rate 상승·NOI 하락이 담보여력과 리파이낸싱에 미치는 영향을 볼 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 11.431 부동산금융 문제세트·케이스 · Problem Set 1 · finance_interview_app_final_spec.md:L1816 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문"
+    },
+    {
+      "kind": "body",
+      "text": "제 유형·난수 명세 > IBT-14"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-15 · DSCR"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "DSCR은 부동산 NOI가 한 해의 원금과 이자 상환액을 몇 배 감당하는지 보여 주는 채무상환 지표다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "DSCR 1배는 운영소득을 전부 써야 간신히 빚을 갚는다는 뜻이다. 1배보다 높은 여유가 있어야 공실 증가나 비용상승이 생겨도 상환을 이어갈 수 있"
+    },
+    {
+      "kind": "body",
+      "text": "다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "DSCR: DSCR=NOI/AnnualDebtService"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• DSCR: DSCR=NOI/AnnualDebtService"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 부동산 금융 - 대출규모와 금리를 정하고 covenant 기준을 설정할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 리파이낸싱 분석 - NOI 하락 또는 금리상승 뒤에도 원리금을 감당하는지 점검할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 11.431 부동산금융 문제세트·케이스 · Problem Set 1 · finance_interview_app_final_spec.md:L1817 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문"
+    },
+    {
+      "kind": "body",
+      "text": "제 유형·난수 명세 > IBT-15"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-16 · 단순 보유기간 IRR"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "보유기간 IRR은 초기 자기자본 투자와 보유 중·매각 시 분배금을 하나의 연환산 수익률로 연결한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "같은 총이익이라도 더 빨리 회수한 투자가 높은 IRR을 낸다. 레버리지를 쓰면 자기자본 IRR이 커질 수 있지만 손실과 재융자 위험도 함께 커진다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "단순 보유기간 IRR: 1년이면 IRR=(Distribution/InitialEquity-1)×100"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 단순 보유기간 IRR: 1년이면 IRR=(Distribution/InitialEquity-1) × 100"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• PE·부동산 투자 - 매입, 운영분배, 매각대금을 합쳐 목표수익률과 비교할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• Exit 민감도 - 보유기간·매각배수·부채상환이 equity return에 미치는 영향을 볼 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 11.431 부동산금융 문제세트·케이스 · Problem Set 1 · finance_interview_app_final_spec.md:L1818 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문"
+    },
+    {
+      "kind": "body",
+      "text": "제 유형·난수 명세 > IBT-16"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-17 · 리서치 촉매·실적서프라이즈"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "리서치 촉매·실적서프라이즈 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목"
+    },
+    {
+      "kind": "body",
+      "text": "표가 변화가 커진다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "리서치 촉매·실적서프라이즈: RevisedEPS=ConsensusEPS×(1+Surprise%); ΔTarget=ΔEPS×TargetPER"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 리서치 촉매·실적서프라이즈: RevisedEPS=ConsensusEPS × (1+Surprise%)"
+    },
+    {
+      "kind": "bullet",
+      "text": "• Δ Target=Δ EPS × TargetPER"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 실적 업데이트 - 컨센서스 대비 차이를 EPS 추정과 목표가에 반영할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 촉매 정의 - 어떤 사건이 어떤 숫자를 통해 투자논리를 확인할지 사전에 적을 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "YIG Research 전체 · 공개 기업분석 리포트 예시 · 예시 PDF · finance_interview_app_final_spec.md:L1819 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·"
+    },
+    {
+      "kind": "body",
+      "text": "문제 유형·난수 명세 > IBT-17"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-18 · 리서치 위험·기대 하방"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "기대 하방은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부분 0원이고 드물게 50원을 잃는다. 평균값이 tail"
+    },
+    {
+      "kind": "body",
+      "text": "risk와 사건 간 동시발생을 숨길 수 있다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "리서치 위험·기대 하방: ExpectedDownside=Probability×LossIfEvent"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 리서치 위험·기대 하방: ExpectedDownside=Probability × LossIfEvent"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 리스크·리워드 비교 - 규제·임상·원가 사건의 확률가중 하방을 상승여력과 비교할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 포지션 관리 - thesis breaker와 최대손실 시나리오를 기대값과 별도로 한도에 반영할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran DCF 문제와 풀이 · Valuation 자료·PDF 허브 · finance_interview_app_final_spec.md:L1820 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문"
+    },
+    {
+      "kind": "body",
+      "text": "제 유형·난수 명세 > IBT-18"
+    }
+  ],
+  "questions": [
+    {
+      "id": "IBT-B-Q01",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: IPO 지분희석\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다.",
+        "이 개념은 인수대상 사업 전체 가치에서 부채·우선주·비지배지분을 빼고 현금을 더해 보통주 매매대금을 구하는 과정이다.",
+        "이 개념은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다.",
+        "이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다.",
+        "이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을 나눈다."
+      ],
+      "evidence": "IBT-10 · IBT-10:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다. 용어: IPO 지분희석."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: IPO 지분희석은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은 100%에서 80%"
+        },
+        {
+          "labelled": false,
+          "text": "로 줄어든다. 이는 공모가가 낮아 생기는 가치희석과 구분해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: IPO 지분희석: Dilution%=NewShares/PostMoneyShares×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): IPO 밸류에이션 배수: 이 개념은 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): EV-Equity bridge: 이 개념은 인수대상 사업 전체 가치에서 부채·우선주·비지배지분을 빼고 현금을 더해 보통주 매매대금을"
+        },
+        {
+          "labelled": false,
+          "text": "구하는 과정이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 주식교환비율: 이 개념은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): IPO 지분희석: 이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): IPO primary/secondary: 이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는"
+        },
+        {
+          "labelled": false,
+          "text": "물량을 나눈다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-10 · IBT-10:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q02",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: IPO 지분희석\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "공모규모가 1,000이어도 전부 회사로 들어오는 것은 아니다. 구주매출 대금은 기존주주에게 가므로 회사의 현금과 성장자금은 신주모집 금\n액에서 수수료를 뺀 만큼만 늘어난다.",
+        "기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은 100%에서 80%로 줄어든다. 이\n는 공모가가 낮아 생기는 가치희석과 구분해야 한다.",
+        "공모 전 가치에 신주대금이 들어오면 상장 후 시가총액과 주식수가 달라진다. 공모가 배수는 pre-money와 post-money, 기본주식수와 희\n석주식수를 섞지 않아야 한다.",
+        "기업을 1,000에 산다는 표현이 영업가치인지 주주에게 지급할 금액인지 먼저 구분해야 한다. 인수자가 떠안는 순부채까지 포함하면 실제\n거래부담은 주식매매대금보다 클 수 있다.",
+        "인수회사 주가가 내려가면 고정가치 거래에서는 더 많은 주식을 줘야 하고, 고정비율 거래에서는 목표주주가 받는 가치가 줄어든다. 구조\n에 따라 가격변동 위험을 누가 부담하는지가 달라진다."
+      ],
+      "evidence": "IBT-10 · IBT-10:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은"
+        },
+        {
+          "labelled": false,
+          "text": "100%에서 80%로 줄어든다. 이는 공모가가 낮아 생기는 가치희석과 구분해야 한다. 용어: IPO 지분희석."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: IPO 지분희석은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은 100%에서 80%"
+        },
+        {
+          "labelled": false,
+          "text": "로 줄어든다. 이는 공모가가 낮아 생기는 가치희석과 구분해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: IPO 지분희석: Dilution%=NewShares/PostMoneyShares×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): IPO primary/secondary: 공모규모가 1,000이어도 전부 회사로 들어오는 것은 아니다. 구주매출 대금은 기존주주에게 가므로"
+        },
+        {
+          "labelled": false,
+          "text": "회사의 현금과 성장자금은 신주모집 금액에서 수수료를 뺀 만큼만 늘어난다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): IPO 지분희석: 기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은"
+        },
+        {
+          "labelled": false,
+          "text": "100%에서 80%로 줄어든다. 이는 공모가가 낮아 생기는 가치희석과 구분해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): IPO 밸류에이션 배수: 공모 전 가치에 신주대금이 들어오면 상장 후 시가총액과 주식수가 달라진다. 공모가 배수는"
+        },
+        {
+          "labelled": false,
+          "text": "pre-money와 post-money, 기본주식수와 희석주식수를 섞지 않아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): EV-Equity bridge: 기업을 1,000에 산다는 표현이 영업가치인지 주주에게 지급할 금액인지 먼저 구분해야 한다. 인수자가 떠"
+        },
+        {
+          "labelled": false,
+          "text": "안는 순부채까지 포함하면 실제 거래부담은 주식매매대금보다 클 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 주식교환비율: 인수회사 주가가 내려가면 고정가치 거래에서는 더 많은 주식을 줘야 하고, 고정비율 거래에서는 목표주주가"
+        },
+        {
+          "labelled": false,
+          "text": "받는 가치가 줄어든다. 구조에 따라 가격변동 위험을 누가 부담하는지가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-10 · IBT-10:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q03",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: IPO 지분희석\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "인수회사의 주가가 낮을수록 고정된 인수가치를 지급하기 위해 넘겨야 할 신주 수는 많아진다.",
+        "공모가격이나 상장 후 주식수가 커질수록 상장 후 시가총액이 커지고, 이익이 같다면 이익 대비 배수도 높아진다.",
+        "새로 발행하는 주식이 상장 후 전체 주식에서 차지하는 비중이 클수록 기존주주의 소유비율 감소도 커진다.",
+        "인수자가 떠안는 순부채까지 포함하면 실제 거래부담은 주식매매대금보다 클 수 있다.",
+        "구주매출 대금은 기존주주에게 가므로 회사의 현금과 성장자금은 신주모집 금액에서 수수료를 뺀 만큼만 늘어난다."
+      ],
+      "evidence": "IBT-10 · IBT-10:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 새로 발행하는 주식이 상장 후 전체 주식에서 차지하는 비중이 클수록 기존주주의 소유비율 감소도 커진다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "IPO 지분희석."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: IPO 지분희석은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은 100%에서 80%"
+        },
+        {
+          "labelled": false,
+          "text": "로 줄어든다. 이는 공모가가 낮아 생기는 가치희석과 구분해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: IPO 지분희석: Dilution%=NewShares/PostMoneyShares×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 주식교환비율: 인수회사의 주가가 낮을수록 고정된 인수가치를 지급하기 위해 넘겨야 할 신주 수는 많아진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): IPO 밸류에이션 배수: 공모가격이나 상장 후 주식수가 커질수록 상장 후 시가총액이 커지고, 이익이 같다면 이익 대비 배수"
+        },
+        {
+          "labelled": false,
+          "text": "도 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): IPO 지분희석: 새로 발행하는 주식이 상장 후 전체 주식에서 차지하는 비중이 클수록 기존주주의 소유비율 감소도 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): EV-Equity bridge: 인수자가 떠안는 순부채까지 포함하면 실제 거래부담은 주식매매대금보다 클 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): IPO primary/secondary: 구주매출 대금은 기존주주에게 가므로 회사의 현금과 성장자금은 신주모집 금액에서 수수료를 뺀"
+        },
+        {
+          "labelled": false,
+          "text": "만큼만 늘어난다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-10 · IBT-10:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q04",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: IPO 밸류에이션 배수\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을 나눈다.",
+        "이 개념은 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다.",
+        "영업자산에 대한 투자자 전체의 가치를 이자·세금·감가상각 전 영업성과와 비교하는 배수다.",
+        "이 개념은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다.",
+        "이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+      ],
+      "evidence": "IBT-11 · IBT-11:definition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다. 용어: IPO 밸"
+        },
+        {
+          "labelled": false,
+          "text": "류에이션 배수."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: IPO 밸류에이션 배수는 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 공모 전 가치에 신주대금이 들어오면 상장 후 시가총액과 주식수가 달라진다. 공모가 배수는 pre-money와 post-money, 기"
+        },
+        {
+          "labelled": false,
+          "text": "본주식수와 희석주식수를 섞지 않아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: IPO 밸류에이션 배수: PostMoneyMarketCap=OfferPrice×PostShares; PER=MarketCap/NI"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): IPO primary/secondary: 이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는"
+        },
+        {
+          "labelled": false,
+          "text": "물량을 나눈다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): IPO 밸류에이션 배수: 이 개념은 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): EV와 EV/EBITDA: 영업자산에 대한 투자자 전체의 가치를 이자·세금·감가상각 전 영업성과와 비교하는 배수다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): PER: 이 개념은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): IPO 지분희석: 이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-11 · IBT-11:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q05",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: IPO 밸류에이션 배수\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "이 개념 20배는 현재 이익 1원에 시장이 20원을 지불한다는 뜻이다. 높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으\n로 낮아져 분모가 작아진 결과일 수도 있다.",
+        "공모 전 가치에 신주대금이 들어오면 상장 후 시가총액과 주식수가 달라진다. 공모가 배수는 pre-money와 post-money, 기본주식수와 희\n석주식수를 섞지 않아야 한다.",
+        "EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는지는 순부채와 주식수 브리\n지를 거쳐 확인해야 한다.",
+        "기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은 100%에서 80%로 줄어든다. 이\n는 공모가가 낮아 생기는 가치희석과 구분해야 한다.",
+        "공모규모가 1,000이어도 전부 회사로 들어오는 것은 아니다. 구주매출 대금은 기존주주에게 가므로 회사의 현금과 성장자금은 신주모집 금\n액에서 수수료를 뺀 만큼만 늘어난다."
+      ],
+      "evidence": "IBT-11 · IBT-11:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 공모 전 가치에 신주대금이 들어오면 상장 후 시가총액과 주식수가 달라진다. 공모가 배수는 pre-money와"
+        },
+        {
+          "labelled": false,
+          "text": "post-money, 기본주식수와 희석주식수를 섞지 않아야 한다. 용어: IPO 밸류에이션 배수."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: IPO 밸류에이션 배수는 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 공모 전 가치에 신주대금이 들어오면 상장 후 시가총액과 주식수가 달라진다. 공모가 배수는 pre-money와 post-money, 기"
+        },
+        {
+          "labelled": false,
+          "text": "본주식수와 희석주식수를 섞지 않아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: IPO 밸류에이션 배수: PostMoneyMarketCap=OfferPrice×PostShares; PER=MarketCap/NI"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): PER: 이 개념 20배는 현재 이익 1원에 시장이 20원을 지불한다는 뜻이다. 높은 배수는 성장과 안정성 기대를 반영할 수 있지"
+        },
+        {
+          "labelled": false,
+          "text": "만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): IPO 밸류에이션 배수: 공모 전 가치에 신주대금이 들어오면 상장 후 시가총액과 주식수가 달라진다. 공모가 배수는"
+        },
+        {
+          "labelled": false,
+          "text": "pre-money와 post-money, 기본주식수와 희석주식수를 섞지 않아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 민감도: EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는지는"
+        },
+        {
+          "labelled": false,
+          "text": "순부채와 주식수 브리지를 거쳐 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): IPO 지분희석: 기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은"
+        },
+        {
+          "labelled": false,
+          "text": "100%에서 80%로 줄어든다. 이는 공모가가 낮아 생기는 가치희석과 구분해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): IPO primary/secondary: 공모규모가 1,000이어도 전부 회사로 들어오는 것은 아니다. 구주매출 대금은 기존주주에게 가므로"
+        },
+        {
+          "labelled": false,
+          "text": "회사의 현금과 성장자금은 신주모집 금액에서 수수료를 뺀 만큼만 늘어난다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-11 · IBT-11:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q06",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: IPO 밸류에이션 배수\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "공모가격이나 상장 후 주식수가 커질수록 상장 후 시가총액이 커지고, 이익이 같다면 이익 대비 배수도 높아진다.",
+        "높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다.",
+        "구주매출 대금은 기존주주에게 가므로 회사의 현금과 성장자금은 신주모집 금액에서 수수료를 뺀 만큼만 늘어난다.",
+        "영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다.",
+        "새로 발행하는 주식이 상장 후 전체 주식에서 차지하는 비중이 클수록 기존주주의 소유비율 감소도 커진다."
+      ],
+      "evidence": "IBT-11 · IBT-11:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 공모가격이나 상장 후 주식수가 커질수록 상장 후 시가총액이 커지고, 이익이 같다면 이익 대비 배수도 높아진다."
+        },
+        {
+          "labelled": false,
+          "text": "용어: IPO 밸류에이션 배수."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: IPO 밸류에이션 배수는 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 공모 전 가치에 신주대금이 들어오면 상장 후 시가총액과 주식수가 달라진다. 공모가 배수는 pre-money와 post-money, 기"
+        },
+        {
+          "labelled": false,
+          "text": "본주식수와 희석주식수를 섞지 않아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: IPO 밸류에이션 배수: PostMoneyMarketCap=OfferPrice×PostShares; PER=MarketCap/NI"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): IPO 밸류에이션 배수: 공모가격이나 상장 후 주식수가 커질수록 상장 후 시가총액이 커지고, 이익이 같다면 이익 대비 배수"
+        },
+        {
+          "labelled": false,
+          "text": "도 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): PER: 높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): IPO primary/secondary: 구주매출 대금은 기존주주에게 가므로 회사의 현금과 성장자금은 신주모집 금액에서 수수료를 뺀"
+        },
+        {
+          "labelled": false,
+          "text": "만큼만 늘어난다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 민감도: 영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): IPO 지분희석: 새로 발행하는 주식이 상장 후 전체 주식에서 차지하는 비중이 클수록 기존주주의 소유비율 감소도 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-11 · IBT-11:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q07",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 부동산 NOI\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "마진 분석은 매출에서 원가와 판관비가 차지하는 비중을 연결해 이 개념의 변화를 설명한다.",
+        "최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다.",
+        "새로 지출한 장기자산 투자액에서 기존 자산의 당기 가치소모액을 뺀 자산기반의 순증가분이다.",
+        "이 개념은 잠재 임대수입에서 공실손실과 부동산 운영비를 뺀 자산 자체의 영업소득이다.",
+        "이 개념은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다."
+      ],
+      "evidence": "IBT-12 · IBT-12:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 잠재 임대수입에서 공실손실과 부동산 운영비를 뺀 자산 자체의 영업소득이다. 용어: 부동산 NOI."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 부동산 NOI는 잠재 임대수입에서 공실손실과 부동산 운영비를 뺀 자산 자체의 영업소득이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: NOI는 건물이 벌어들이는 성과를 보려는 값이라 어떤 대출로 샀는지와 무관한 이자비용을 빼지 않는다. 감가상각도 비현금"
+        },
+        {
+          "labelled": false,
+          "text": "회계비용이므로 제외해 자산 간 운영성과를 비교한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 부동산 NOI: NOI=GrossPotentialRent-VacancyLoss-OperatingExpenses"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 마진과 영업이익: 마진 분석은 매출에서 원가와 판관비가 차지하는 비중을 연결해 이 개념의 변화를 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 최소분산 Hedge Ratio·선물계약수: 최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장"
+        },
+        {
+          "labelled": false,
+          "text": "작게 만드는 선물 비중이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 설비투자·감가상각: 새로 지출한 장기자산 투자액에서 기존 자산의 당기 가치소모액을 뺀 자산기반의 순증가분이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 부동산 NOI: 이 개념은 잠재 임대수입에서 공실손실과 부동산 운영비를 뺀 자산 자체의 영업소득이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 현금세율·NOPAT: 이 개념은 자금조달 방식과 무관하게 영업이익에 현금세금 효과를 반영한 세후 영업성과다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-12 · IBT-12:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q08",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 부동산 NOI\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "이자비용을 뺀 순이익은 부채를 얼마나 썼는지에 따라 달라진다. 사업 자체의 수익성을 보려면 이자 전 영업이익에서 영업 관련 세금만 반\n영해 투자자 전체의 성과로 맞춘다.",
+        "같은 영업소득이라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 요구수익률에도 사려 하므로 가치가 높다. 요구수익률이 조금만 올\n라가도 가치가 크게 내려간다.",
+        "이 개념 1배는 운영소득을 전부 써야 간신히 빚을 갚는다는 뜻이다. 1배보다 높은 여유가 있어야 공실 증가나 비용상승이 생겨도 상환을\n이어갈 수 있다.",
+        "이 개념은 건물이 벌어들이는 성과를 보려는 값이라 어떤 대출로 샀는지와 무관한 이자비용을 빼지 않는다. 감가상각도 비현금 회계비용이\n므로 제외해 자산 간 운영성과를 비교한다.",
+        "10억 원 건물에 7억 원을 빌리면 30%의 가치하락 뒤에는 대출원금 보호가 어려워진다. 감정가가 하락하면 대출액이 그대로여도 이 개념이\n올라가 covenant 위험이 커질 수 있다."
+      ],
+      "evidence": "IBT-12 · IBT-12:intuition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 건물이 벌어들이는 성과를 보려는 값이라 어떤 대출로 샀는지와 무관한 이자비용을 빼지 않는다. 감가"
+        },
+        {
+          "labelled": false,
+          "text": "상각도 비현금 회계비용이므로 제외해 자산 간 운영성과를 비교한다. 용어: 부동산 NOI."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 부동산 NOI는 잠재 임대수입에서 공실손실과 부동산 운영비를 뺀 자산 자체의 영업소득이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: NOI는 건물이 벌어들이는 성과를 보려는 값이라 어떤 대출로 샀는지와 무관한 이자비용을 빼지 않는다. 감가상각도 비현금"
+        },
+        {
+          "labelled": false,
+          "text": "회계비용이므로 제외해 자산 간 운영성과를 비교한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 부동산 NOI: NOI=GrossPotentialRent-VacancyLoss-OperatingExpenses"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 현금세율·NOPAT: 이자비용을 뺀 순이익은 부채를 얼마나 썼는지에 따라 달라진다. 사업 자체의 수익성을 보려면 이자 전 영"
+        },
+        {
+          "labelled": false,
+          "text": "업이익에서 영업 관련 세금만 반영해 투자자 전체의 성과로 맞춘다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Cap rate 가치: 같은 영업소득이라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 요구수익률에도 사려 하므로 가치가"
+        },
+        {
+          "labelled": false,
+          "text": "높다. 요구수익률이 조금만 올라가도 가치가 크게 내려간다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): DSCR: 이 개념 1배는 운영소득을 전부 써야 간신히 빚을 갚는다는 뜻이다. 1배보다 높은 여유가 있어야 공실 증가나 비용상"
+        },
+        {
+          "labelled": false,
+          "text": "승이 생겨도 상환을 이어갈 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 부동산 NOI: 이 개념은 건물이 벌어들이는 성과를 보려는 값이라 어떤 대출로 샀는지와 무관한 이자비용을 빼지 않는다. 감"
+        },
+        {
+          "labelled": false,
+          "text": "가상각도 비현금 회계비용이므로 제외해 자산 간 운영성과를 비교한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): LTV: 10억 원 건물에 7억 원을 빌리면 30%의 가치하락 뒤에는 대출원금 보호가 어려워진다. 감정가가 하락하면 대출액이"
+        },
+        {
+          "labelled": false,
+          "text": "그대로여도 이 개념이 올라가 covenant 위험이 커질 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-12 · IBT-12:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q09",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 부동산 NOI\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "투자자가 요구하는 부동산 수익률이 높아질수록 같은 영업소득이 만드는 자산가치는 낮아진다.",
+        "영업이익이 커질수록 세후 영업성과는 커지고, 영업 관련 세율이 높을수록 그 성과는 작아진다.",
+        "잠재 임대수입에서 공실과 운영비 부담이 커질수록 부동산이 창출하는 영업소득은 작아진다.",
+        "운영소득이 원리금 상환액보다 더 클수록 채무를 감당할 수 있는 여유가 커진다.",
+        "대출액이 같아도 담보가치가 하락하면 담보 대비 대출 비중과 채권자 위험은 커진다."
+      ],
+      "evidence": "IBT-12 · IBT-12:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 잠재 임대수입에서 공실과 운영비 부담이 커질수록 부동산이 창출하는 영업소득은 작아진다. 용어: 부동산 NOI."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 부동산 NOI는 잠재 임대수입에서 공실손실과 부동산 운영비를 뺀 자산 자체의 영업소득이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: NOI는 건물이 벌어들이는 성과를 보려는 값이라 어떤 대출로 샀는지와 무관한 이자비용을 빼지 않는다. 감가상각도 비현금"
+        },
+        {
+          "labelled": false,
+          "text": "회계비용이므로 제외해 자산 간 운영성과를 비교한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 부동산 NOI: NOI=GrossPotentialRent-VacancyLoss-OperatingExpenses"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Cap rate 가치: 투자자가 요구하는 부동산 수익률이 높아질수록 같은 영업소득이 만드는 자산가치는 낮아진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 현금세율·NOPAT: 영업이익이 커질수록 세후 영업성과는 커지고, 영업 관련 세율이 높을수록 그 성과는 작아진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 부동산 NOI: 잠재 임대수입에서 공실과 운영비 부담이 커질수록 부동산이 창출하는 영업소득은 작아진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): DSCR: 운영소득이 원리금 상환액보다 더 클수록 채무를 감당할 수 있는 여유가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): LTV: 대출액이 같아도 담보가치가 하락하면 담보 대비 대출 비중과 채권자 위험은 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-12 · IBT-12:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q10",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: Cap rate 가치\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다.",
+        "플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비를 차감한 뒤 남는 이익을 연결하는 분석이다.",
+        "이 개념은 시장 전체와 함께 움직이는 위험인 베타에 시장위험 보상을 붙여 자기자본 요구수익률을 추정하는 모형이다.",
+        "이 개념은 주주가 받을 미래 배당의 현재가치로 주식가치를 설명하는 모형이다.",
+        "이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지 duration으로 근사한다."
+      ],
+      "evidence": "IBT-13 · IBT-13:definition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다. 용어: Cap rate 가"
+        },
+        {
+          "labelled": false,
+          "text": "치."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Cap rate 가치는 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 같은 NOI라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 수익률에도 사려 하므로 가치가 높다. Cap rate이 조금만"
+        },
+        {
+          "labelled": false,
+          "text": "올라가도 분모가 커져 가치가 크게 내려간다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Cap rate 가치: PropertyValue=NOI/CapRate"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): Cap rate 가치: 이 개념은 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): GMV·Take Rate·공헌이익: 플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비를 차감한 뒤 남는 이익을 연결하는 분석"
+        },
+        {
+          "labelled": false,
+          "text": "이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): CAPM·베타: 이 개념은 시장 전체와 함께 움직이는 위험인 베타에 시장위험 보상을 붙여 자기자본 요구수익률을 추정하는"
+        },
+        {
+          "labelled": false,
+          "text": "모형이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 배당할인모형(DDM): 이 개념은 주주가 받을 미래 배당의 현재가치로 주식가치를 설명하는 모형이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 신용스프레드·가격민감도: 이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는"
+        },
+        {
+          "labelled": false,
+          "text": "지 duration으로 근사한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-13 · IBT-13:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q11",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: Cap rate 가치\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "10억 원 건물에 7억 원을 빌리면 30%의 가치하락 뒤에는 대출원금 보호가 어려워진다. 감정가가 하락하면 대출액이 그대로여도 이 개념이\n올라가 covenant 위험이 커질 수 있다.",
+        "원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정\n해져 어느 한쪽도 초기 가치가 없게 만든다.",
+        "같은 영업소득이라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 요구수익률에도 사려 하므로 가치가 높다. 요구수익률이 조금만 올\n라가도 가치가 크게 내려간다.",
+        "이 개념은 건물이 벌어들이는 성과를 보려는 값이라 어떤 대출로 샀는지와 무관한 이자비용을 빼지 않는다. 감가상각도 비현금 회계비용이\n므로 제외해 자산 간 운영성과를 비교한다.",
+        "연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회\n성 비용을 빼야 주주에게 남는 가치가 보인다."
+      ],
+      "evidence": "IBT-13 · IBT-13:intuition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 같은 영업소득이라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 요구수익률에도 사려 하므로 가치가 높"
+        },
+        {
+          "labelled": false,
+          "text": "다. 요구수익률이 조금만 올라가도 가치가 크게 내려간다. 용어: Cap rate 가치."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Cap rate 가치는 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 같은 NOI라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 수익률에도 사려 하므로 가치가 높다. Cap rate이 조금만"
+        },
+        {
+          "labelled": false,
+          "text": "올라가도 분모가 커져 가치가 크게 내려간다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Cap rate 가치: PropertyValue=NOI/CapRate"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): LTV: 10억 원 건물에 7억 원을 빌리면 30%의 가치하락 뒤에는 대출원금 보호가 어려워진다. 감정가가 하락하면 대출액이"
+        },
+        {
+          "labelled": false,
+          "text": "그대로여도 이 개념이 올라가 covenant 위험이 커질 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 금리스왑 고정금리·현금흐름: 원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다"
+        },
+        {
+          "labelled": false,
+          "text": "리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): Cap rate 가치: 같은 영업소득이라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 요구수익률에도 사려 하므로 가치가"
+        },
+        {
+          "labelled": false,
+          "text": "높다. 요구수익률이 조금만 올라가도 가치가 크게 내려간다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 부동산 NOI: 이 개념은 건물이 벌어들이는 성과를 보려는 값이라 어떤 대출로 샀는지와 무관한 이자비용을 빼지 않는다. 감"
+        },
+        {
+          "labelled": false,
+          "text": "가상각도 비현금 회계비용이므로 제외해 자산 간 운영성과를 비교한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): M&A 시너지: 연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고,"
+        },
+        {
+          "labelled": false,
+          "text": "시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치가 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-13 · IBT-13:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q12",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: Cap rate 가치\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "잠재 임대수입에서 공실과 운영비 부담이 커질수록 부동산이 창출하는 영업소득은 작아진다.",
+        "투자자가 요구하는 부동산 수익률이 높아질수록 같은 영업소득이 만드는 자산가치는 낮아진다.",
+        "계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다.",
+        "대출액이 같아도 담보가치가 하락하면 담보 대비 대출 비중과 채권자 위험은 커진다.",
+        "지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치가 보인다."
+      ],
+      "evidence": "IBT-13 · IBT-13:verbal_relation:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 투자자가 요구하는 부동산 수익률이 높아질수록 같은 영업소득이 만드는 자산가치는 낮아진다. 용어: Cap rate"
+        },
+        {
+          "labelled": false,
+          "text": "가치."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Cap rate 가치는 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 같은 NOI라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 수익률에도 사려 하므로 가치가 높다. Cap rate이 조금만"
+        },
+        {
+          "labelled": false,
+          "text": "올라가도 분모가 커져 가치가 크게 내려간다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Cap rate 가치: PropertyValue=NOI/CapRate"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 부동산 NOI: 잠재 임대수입에서 공실과 운영비 부담이 커질수록 부동산이 창출하는 영업소득은 작아진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): Cap rate 가치: 투자자가 요구하는 부동산 수익률이 높아질수록 같은 영업소득이 만드는 자산가치는 낮아진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 금리스왑 고정금리·현금흐름: 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽"
+        },
+        {
+          "labelled": false,
+          "text": "도 초기 가치가 없게 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): LTV: 대출액이 같아도 담보가치가 하락하면 담보 대비 대출 비중과 채권자 위험은 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): M&A 시너지: 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는"
+        },
+        {
+          "labelled": false,
+          "text": "가치가 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-13 · IBT-13:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q13",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: LTV\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다.",
+        "금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한다.",
+        "이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
+        "이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다.",
+        "이 개념은 담보 부동산가치 중 대출이 차지하는 비율로, 가격하락을 흡수할 자기자본 완충을 보여 준다."
+      ],
+      "evidence": "IBT-14 · IBT-14:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 담보 부동산가치 중 대출이 차지하는 비율로, 가격하락을 흡수할 자기자본 완충을 보여 준다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "LTV."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: LTV는 담보 부동산가치 중 대출이 차지하는 비율로, 가격하락을 흡수할 자기자본 완충을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 10억 원 건물에 7억 원을 빌리면 30%의 가치하락 뒤에는 대출원금 보호가 어려워진다. 감정가가 하락하면 대출액이 그대로"
+        },
+        {
+          "labelled": false,
+          "text": "여도 LTV가 올라가 covenant 위험이 커질 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: LTV: LTV=Loan/PropertyValue×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): CAC·LTV·회수기간: 이 개념은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지"
+        },
+        {
+          "labelled": false,
+          "text": "표다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 통화정책·이자수익 전이: 금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되"
+        },
+        {
+          "labelled": false,
+          "text": "는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): WACC: 이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): IPO 지분희석: 이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): LTV: 이 개념은 담보 부동산가치 중 대출이 차지하는 비율로, 가격하락을 흡수할 자기자본 완충을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-14 · IBT-14:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q14",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: LTV\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "10억 원 건물에 7억 원을 빌리면 30%의 가치하락 뒤에는 대출원금 보호가 어려워진다. 감정가가 하락하면 대출액이 그대로여도 이 개념이\n올라가 covenant 위험이 커질 수 있다.",
+        "고객 한 명의 장기 공헌액이 유치비보다 커도 이 개념이 지나치게 길면 빠른 성장 중 현금이 고갈될 수 있다. 가입시기별 유지율과 마진을\n함께 봐야 한다.",
+        "같은 영업소득이라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 요구수익률에도 사려 하므로 가치가 높다. 요구수익률이 조금만 올\n라가도 가치가 크게 내려간다.",
+        "이익 10억 원만 보면 회사 규모를 알 수 없다. 매출 100억 원에서 번 10억 원인지, 자산 1,000억 원을 써서 번 10억 원인지에 따라 해석이\n완전히 달라진다.",
+        "같은 총이익이라도 현금을 더 빨리 회수한 투자의 연환산 수익은 높다. 레버리지를 쓰면 자기자본 수익이 커질 수 있지만 손실과 재융자 위\n험도 함께 커진다."
+      ],
+      "evidence": "IBT-14 · IBT-14:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 10억 원 건물에 7억 원을 빌리면 30%의 가치하락 뒤에는 대출원금 보호가 어려워진다. 감정가가 하락하면 대출"
+        },
+        {
+          "labelled": false,
+          "text": "액이 그대로여도 이 개념이 올라가 covenant 위험이 커질 수 있다. 용어: LTV."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: LTV는 담보 부동산가치 중 대출이 차지하는 비율로, 가격하락을 흡수할 자기자본 완충을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 10억 원 건물에 7억 원을 빌리면 30%의 가치하락 뒤에는 대출원금 보호가 어려워진다. 감정가가 하락하면 대출액이 그대로"
+        },
+        {
+          "labelled": false,
+          "text": "여도 LTV가 올라가 covenant 위험이 커질 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: LTV: LTV=Loan/PropertyValue×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): LTV: 10억 원 건물에 7억 원을 빌리면 30%의 가치하락 뒤에는 대출원금 보호가 어려워진다. 감정가가 하락하면 대출액이"
+        },
+        {
+          "labelled": false,
+          "text": "그대로여도 이 개념이 올라가 covenant 위험이 커질 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): CAC·LTV·회수기간: 고객 한 명의 장기 공헌액이 유치비보다 커도 이 개념이 지나치게 길면 빠른 성장 중 현금이 고갈될 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다. 가입시기별 유지율과 마진을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Cap rate 가치: 같은 영업소득이라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 요구수익률에도 사려 하므로 가치가"
+        },
+        {
+          "labelled": false,
+          "text": "높다. 요구수익률이 조금만 올라가도 가치가 크게 내려간다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 수익성·효율성·레버리지 비율: 이익 10억 원만 보면 회사 규모를 알 수 없다. 매출 100억 원에서 번 10억 원인지, 자산 1,000"
+        },
+        {
+          "labelled": false,
+          "text": "억 원을 써서 번 10억 원인지에 따라 해석이 완전히 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 단순 보유기간 IRR: 같은 총이익이라도 현금을 더 빨리 회수한 투자의 연환산 수익은 높다. 레버리지를 쓰면 자기자본 수익"
+        },
+        {
+          "labelled": false,
+          "text": "이 커질 수 있지만 손실과 재융자 위험도 함께 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-14 · IBT-14:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q15",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: LTV\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다.",
+        "새로 발행하는 주식이 상장 후 전체 주식에서 차지하는 비중이 클수록 기존주주의 소유비율 감소도 커진다.",
+        "같은 총분배금이라도 현금을 더 빨리 회수할수록 연환산 투자수익은 높아진다.",
+        "같은 이익이라도 매출이나 사용 자산이 더 크면 표준화한 성과비율은 낮아질 수 있다.",
+        "대출액이 같아도 담보가치가 하락하면 담보 대비 대출 비중과 채권자 위험은 커진다."
+      ],
+      "evidence": "IBT-14 · IBT-14:verbal_relation:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 대출액이 같아도 담보가치가 하락하면 담보 대비 대출 비중과 채권자 위험은 커진다. 용어: LTV."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: LTV는 담보 부동산가치 중 대출이 차지하는 비율로, 가격하락을 흡수할 자기자본 완충을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 10억 원 건물에 7억 원을 빌리면 30%의 가치하락 뒤에는 대출원금 보호가 어려워진다. 감정가가 하락하면 대출액이 그대로"
+        },
+        {
+          "labelled": false,
+          "text": "여도 LTV가 올라가 covenant 위험이 커질 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: LTV: LTV=Loan/PropertyValue×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): CAC·LTV·회수기간: 평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): IPO 지분희석: 새로 발행하는 주식이 상장 후 전체 주식에서 차지하는 비중이 클수록 기존주주의 소유비율 감소도 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 단순 보유기간 IRR: 같은 총분배금이라도 현금을 더 빨리 회수할수록 연환산 투자수익은 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 수익성·효율성·레버리지 비율: 같은 이익이라도 매출이나 사용 자산이 더 크면 표준화한 성과비율은 낮아질 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): LTV: 대출액이 같아도 담보가치가 하락하면 담보 대비 대출 비중과 채권자 위험은 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-14 · IBT-14:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q16",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: DSCR\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다.",
+        "이 개념은 결합으로 새로 생기는 세후 현금효과의 현재가치에서 통합비용을 차감한 순가치다.",
+        "이 개념은 부동산 NOI가 한 해의 원금과 이자 상환액을 몇 배 감당하는지 보여 주는 채무상환 지표다.",
+        "이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을 나눈다.",
+        "이 개념은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다."
+      ],
+      "evidence": "IBT-15 · IBT-15:definition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 부동산 NOI가 한 해의 원금과 이자 상환액을 몇 배 감당하는지 보여 주는 채무상환 지표다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "DSCR."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: DSCR은 부동산 NOI가 한 해의 원금과 이자 상환액을 몇 배 감당하는지 보여 주는 채무상환 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: DSCR 1배는 운영소득을 전부 써야 간신히 빚을 갚는다는 뜻이다. 1배보다 높은 여유가 있어야 공실 증가나 비용상승이 생"
+        },
+        {
+          "labelled": false,
+          "text": "겨도 상환을 이어갈 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: DSCR: DSCR=NOI/AnnualDebtService"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): PBR: 이 개념은 주가를 주당 장부자본과 비교해 시장이 순자산 1원에 얼마를 지불하는지 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): M&A 시너지: 이 개념은 결합으로 새로 생기는 세후 현금효과의 현재가치에서 통합비용을 차감한 순가치다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): DSCR: 이 개념은 부동산 NOI가 한 해의 원금과 이자 상환액을 몇 배 감당하는지 보여 주는 채무상환 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): IPO primary/secondary: 이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는"
+        },
+        {
+          "labelled": false,
+          "text": "물량을 나눈다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): PER: 이 개념은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-15 · IBT-15:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q17",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: DSCR\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "이 개념 1배는 운영소득을 전부 써야 간신히 빚을 갚는다는 뜻이다. 1배보다 높은 여유가 있어야 공실 증가나 비용상승이 생겨도 상환을\n이어갈 수 있다.",
+        "이 개념은 건물이 벌어들이는 성과를 보려는 값이라 어떤 대출로 샀는지와 무관한 이자비용을 빼지 않는다. 감가상각도 비현금 회계비용이\n므로 제외해 자산 간 운영성과를 비교한다.",
+        "같은 영업소득이라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 요구수익률에도 사려 하므로 가치가 높다. 요구수익률이 조금만 올\n라가도 가치가 크게 내려간다.",
+        "연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회\n성 비용을 빼야 주주에게 남는 가치가 보인다.",
+        "이 개념 20배는 현재 이익 1원에 시장이 20원을 지불한다는 뜻이다. 높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으\n로 낮아져 분모가 작아진 결과일 수도 있다."
+      ],
+      "evidence": "IBT-15 · IBT-15:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념 1배는 운영소득을 전부 써야 간신히 빚을 갚는다는 뜻이다. 1배보다 높은 여유가 있어야 공실 증가나 비"
+        },
+        {
+          "labelled": false,
+          "text": "용상승이 생겨도 상환을 이어갈 수 있다. 용어: DSCR."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: DSCR은 부동산 NOI가 한 해의 원금과 이자 상환액을 몇 배 감당하는지 보여 주는 채무상환 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: DSCR 1배는 운영소득을 전부 써야 간신히 빚을 갚는다는 뜻이다. 1배보다 높은 여유가 있어야 공실 증가나 비용상승이 생"
+        },
+        {
+          "labelled": false,
+          "text": "겨도 상환을 이어갈 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: DSCR: DSCR=NOI/AnnualDebtService"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): DSCR: 이 개념 1배는 운영소득을 전부 써야 간신히 빚을 갚는다는 뜻이다. 1배보다 높은 여유가 있어야 공실 증가나 비용상"
+        },
+        {
+          "labelled": false,
+          "text": "승이 생겨도 상환을 이어갈 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 부동산 NOI: 이 개념은 건물이 벌어들이는 성과를 보려는 값이라 어떤 대출로 샀는지와 무관한 이자비용을 빼지 않는다. 감"
+        },
+        {
+          "labelled": false,
+          "text": "가상각도 비현금 회계비용이므로 제외해 자산 간 운영성과를 비교한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Cap rate 가치: 같은 영업소득이라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 요구수익률에도 사려 하므로 가치가"
+        },
+        {
+          "labelled": false,
+          "text": "높다. 요구수익률이 조금만 올라가도 가치가 크게 내려간다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): M&A 시너지: 연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고,"
+        },
+        {
+          "labelled": false,
+          "text": "시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치가 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): PER: 이 개념 20배는 현재 이익 1원에 시장이 20원을 지불한다는 뜻이다. 높은 배수는 성장과 안정성 기대를 반영할 수 있지"
+        },
+        {
+          "labelled": false,
+          "text": "만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-15 · IBT-15:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q18",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: DSCR\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "잠재 임대수입에서 공실과 운영비 부담이 커질수록 부동산이 창출하는 영업소득은 작아진다.",
+        "지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치가 보인다.",
+        "운영소득이 원리금 상환액보다 더 클수록 채무를 감당할 수 있는 여유가 커진다.",
+        "높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다.",
+        "투자자가 요구하는 부동산 수익률이 높아질수록 같은 영업소득이 만드는 자산가치는 낮아진다."
+      ],
+      "evidence": "IBT-15 · IBT-15:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 운영소득이 원리금 상환액보다 더 클수록 채무를 감당할 수 있는 여유가 커진다. 용어: DSCR."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: DSCR은 부동산 NOI가 한 해의 원금과 이자 상환액을 몇 배 감당하는지 보여 주는 채무상환 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: DSCR 1배는 운영소득을 전부 써야 간신히 빚을 갚는다는 뜻이다. 1배보다 높은 여유가 있어야 공실 증가나 비용상승이 생"
+        },
+        {
+          "labelled": false,
+          "text": "겨도 상환을 이어갈 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: DSCR: DSCR=NOI/AnnualDebtService"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 부동산 NOI: 잠재 임대수입에서 공실과 운영비 부담이 커질수록 부동산이 창출하는 영업소득은 작아진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): M&A 시너지: 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는"
+        },
+        {
+          "labelled": false,
+          "text": "가치가 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): DSCR: 운영소득이 원리금 상환액보다 더 클수록 채무를 감당할 수 있는 여유가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): PER: 높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Cap rate 가치: 투자자가 요구하는 부동산 수익률이 높아질수록 같은 영업소득이 만드는 자산가치는 낮아진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-15 · IBT-15:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q19",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 단순 보유기간 IRR\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "보유기간 이 개념은 초기 자기자본 투자와 보유 중·매각 시 분배금을 하나의 연환산 수익률로 연결한다.",
+        "이 개념은 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다.",
+        "이 개념 분석은 부채 사용이 세금효과, 주주위험, 자본비용과 기업가치에 미치는 영향을 연결한다.",
+        "수익률 측정은 가격변화와 현금분배를 한 기간의 성과로 바꾸고, 여러 기간의 성과를 목적에 맞는 평균으로 요약하는 작업이다.",
+        "이 개념은 각 자산의 비중뿐 아니라 두 자산의 동행 정도까지 반영해 전체 기대수익과 위험을 계산한다."
+      ],
+      "evidence": "IBT-16 · IBT-16:definition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 보유기간 이 개념은 초기 자기자본 투자와 보유 중·매각 시 분배금을 하나의 연환산 수익률로 연결한다. 용어: 단"
+        },
+        {
+          "labelled": false,
+          "text": "순 보유기간 IRR."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 보유기간 IRR은 초기 자기자본 투자와 보유 중·매각 시 분배금을 하나의 연환산 수익률로 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 같은 총이익이라도 더 빨리 회수한 투자가 높은 IRR을 낸다. 레버리지를 쓰면 자기자본 IRR이 커질 수 있지만 손실과 재융"
+        },
+        {
+          "labelled": false,
+          "text": "자 위험도 함께 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 단순 보유기간 IRR: 1년이면 IRR=(Distribution/InitialEquity-1)×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 단순 보유기간 IRR: 보유기간 이 개념은 초기 자기자본 투자와 보유 중·매각 시 분배금을 하나의 연환산 수익률로 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Cap rate 가치: 이 개념은 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 레버리지·자본구조: 이 개념 분석은 부채 사용이 세금효과, 주주위험, 자본비용과 기업가치에 미치는 영향을 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 보유기간수익률·로그수익률·산술평균·기하평균: 수익률 측정은 가격변화와 현금분배를 한 기간의 성과로 바꾸고, 여러 기간"
+        },
+        {
+          "labelled": false,
+          "text": "의 성과를 목적에 맞는 평균으로 요약하는 작업이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 2자산 포트폴리오: 이 개념은 각 자산의 비중뿐 아니라 두 자산의 동행 정도까지 반영해 전체 기대수익과 위험을 계산한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-16 · IBT-16:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q20",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 단순 보유기간 IRR\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "한 기간의 성과는 시작한 돈에 비해 얼마를 벌었는지 보면 된다. 여러 기간을 단순 평균하면 다음 한 기간의 기대치를, 복리로 누적하면 실\n제 장기 성장속도를 더 잘 보여 준다.",
+        "투자가 견딜 수 있는 할인율의 경계로 볼 수 있다. 그 경계가 요구수익률보다 높으면 가치가 남지만 현금흐름 방향이 여러 번 바뀌면 경계\n가 여럿 생길 수 있다.",
+        "10억 원 건물에 7억 원을 빌리면 30%의 가치하락 뒤에는 대출원금 보호가 어려워진다. 감정가가 하락하면 대출액이 그대로여도 이 개념이\n올라가 covenant 위험이 커질 수 있다.",
+        "같은 총이익이라도 현금을 더 빨리 회수한 투자의 연환산 수익은 높다. 레버리지를 쓰면 자기자본 수익이 커질 수 있지만 손실과 재융자 위\n험도 함께 커진다.",
+        "부채는 이자 세금절감이라는 이점이 있지만, 고정 상환의무 때문에 남은 이익을 받는 주주의 변동성은 커진다. 그래서 이 개념이 늘면 주식\n베타와 자기자본비용도 함께 높아진다."
+      ],
+      "evidence": "IBT-16 · IBT-16:intuition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 같은 총이익이라도 현금을 더 빨리 회수한 투자의 연환산 수익은 높다. 레버리지를 쓰면 자기자본 수익이 커질"
+        },
+        {
+          "labelled": false,
+          "text": "수 있지만 손실과 재융자 위험도 함께 커진다. 용어: 단순 보유기간 IRR."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 보유기간 IRR은 초기 자기자본 투자와 보유 중·매각 시 분배금을 하나의 연환산 수익률로 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 같은 총이익이라도 더 빨리 회수한 투자가 높은 IRR을 낸다. 레버리지를 쓰면 자기자본 IRR이 커질 수 있지만 손실과 재융"
+        },
+        {
+          "labelled": false,
+          "text": "자 위험도 함께 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 단순 보유기간 IRR: 1년이면 IRR=(Distribution/InitialEquity-1)×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 보유기간수익률·로그수익률·산술평균·기하평균: 한 기간의 성과는 시작한 돈에 비해 얼마를 벌었는지 보면 된다. 여러 기간"
+        },
+        {
+          "labelled": false,
+          "text": "을 단순 평균하면 다음 한 기간의 기대치를, 복리로 누적하면 실제 장기 성장속도를 더 잘 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): IRR: 투자가 견딜 수 있는 할인율의 경계로 볼 수 있다. 그 경계가 요구수익률보다 높으면 가치가 남지만 현금흐름 방향이 여"
+        },
+        {
+          "labelled": false,
+          "text": "러 번 바뀌면 경계가 여럿 생길 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): LTV: 10억 원 건물에 7억 원을 빌리면 30%의 가치하락 뒤에는 대출원금 보호가 어려워진다. 감정가가 하락하면 대출액이"
+        },
+        {
+          "labelled": false,
+          "text": "그대로여도 이 개념이 올라가 covenant 위험이 커질 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 단순 보유기간 IRR: 같은 총이익이라도 현금을 더 빨리 회수한 투자의 연환산 수익은 높다. 레버리지를 쓰면 자기자본 수익"
+        },
+        {
+          "labelled": false,
+          "text": "이 커질 수 있지만 손실과 재융자 위험도 함께 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 레버리지·자본구조: 부채는 이자 세금절감이라는 이점이 있지만, 고정 상환의무 때문에 남은 이익을 받는 주주의 변동성은"
+        },
+        {
+          "labelled": false,
+          "text": "커진다. 그래서 이 개념이 늘면 주식 베타와 자기자본비용도 함께 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-16 · IBT-16:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q21",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 단순 보유기간 IRR\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "여러 기간 성과를 단순 합산해 평균하면 다음 한 기간의 기대치를, 복리로 누적하면 실제 장기 성장속도를 더 잘 보여 준다.",
+        "대출액이 같아도 담보가치가 하락하면 담보 대비 대출 비중과 채권자 위험은 커진다.",
+        "투자의 내재 수익 경계가 요구수익률보다 높으면 가치가 남지만 현금흐름 방향이 여러 번 바뀌면 경계가 여럿 생길 수 있다.",
+        "부채 비중이 커질수록 남은 이익을 받는 주주의 위험과 요구수익률이 함께 높아진다.",
+        "같은 총분배금이라도 현금을 더 빨리 회수할수록 연환산 투자수익은 높아진다."
+      ],
+      "evidence": "IBT-16 · IBT-16:verbal_relation:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 같은 총분배금이라도 현금을 더 빨리 회수할수록 연환산 투자수익은 높아진다. 용어: 단순 보유기간 IRR."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 보유기간 IRR은 초기 자기자본 투자와 보유 중·매각 시 분배금을 하나의 연환산 수익률로 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 같은 총이익이라도 더 빨리 회수한 투자가 높은 IRR을 낸다. 레버리지를 쓰면 자기자본 IRR이 커질 수 있지만 손실과 재융"
+        },
+        {
+          "labelled": false,
+          "text": "자 위험도 함께 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 단순 보유기간 IRR: 1년이면 IRR=(Distribution/InitialEquity-1)×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 보유기간수익률·로그수익률·산술평균·기하평균: 여러 기간 성과를 단순 합산해 평균하면 다음 한 기간의 기대치를, 복리로"
+        },
+        {
+          "labelled": false,
+          "text": "누적하면 실제 장기 성장속도를 더 잘 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): LTV: 대출액이 같아도 담보가치가 하락하면 담보 대비 대출 비중과 채권자 위험은 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): IRR: 투자의 내재 수익 경계가 요구수익률보다 높으면 가치가 남지만 현금흐름 방향이 여러 번 바뀌면 경계가 여럿 생길 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 레버리지·자본구조: 부채 비중이 커질수록 남은 이익을 받는 주주의 위험과 요구수익률이 함께 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 단순 보유기간 IRR: 같은 총분배금이라도 현금을 더 빨리 회수할수록 연환산 투자수익은 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-16 · IBT-16:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q22",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 리서치 촉매·실적서프라이즈\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다.",
+        "배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다.",
+        "이 개념은 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결한다.",
+        "이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다.",
+        "이 개념 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한다."
+      ],
+      "evidence": "IBT-17 · IBT-17:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한다. 용어: 리서치"
+        },
+        {
+          "labelled": false,
+          "text": "촉매·실적서프라이즈."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 리서치 촉매·실적서프라이즈 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI 변화가 여러 해 이익전망을 바"
+        },
+        {
+          "labelled": false,
+          "text": "꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 리서치 촉매·실적서프라이즈: RevisedEPS=ConsensusEPS×(1+Surprise%); ΔTarget=ΔEPS×TargetPER"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Peer multiple: 이 개념 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 민감도: 배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 추정치 괴리·실적 서프라이즈: 이 개념은 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 기대 TSR·촉매: 이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 리서치 촉매·실적서프라이즈: 이 개념 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-17 · IBT-17:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q23",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 리서치 촉매·실적서프라이즈\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수\n익 변화가 달라진다.",
+        "좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결과가 어떤 지표에서 언제 확인될\n지를 촉매로 적어야 투자논리가 검증 가능해진다.",
+        "10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부분 0원이고 드물게 50원을 잃는다. 평\n균값이 tail risk와 사건 간 동시발생을 숨길 수 있다.",
+        "비슷한 기업들이 EBITDA 8배에 거래된다면 목표기업도 비슷한 출발점에서 볼 수 있다. 그러나 성장, 마진, 회계정책, 경기시점이 다르면 같\n은 배수를 기계적으로 적용할 수 없다.",
+        "매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수\n를 써도 목표가 변화가 커진다."
+      ],
+      "evidence": "IBT-17 · IBT-17:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI 변화가 여러 해 이"
+        },
+        {
+          "labelled": false,
+          "text": "익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다. 용어: 리서치 촉매·실적서프라이즈."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 리서치 촉매·실적서프라이즈 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI 변화가 여러 해 이익전망을 바"
+        },
+        {
+          "labelled": false,
+          "text": "꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 리서치 촉매·실적서프라이즈: RevisedEPS=ConsensusEPS×(1+Surprise%); ΔTarget=ΔEPS×TargetPER"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 통화정책·이자수익 전이: 기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리"
+        },
+        {
+          "labelled": false,
+          "text": "floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 기대 TSR·촉매: 좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결"
+        },
+        {
+          "labelled": false,
+          "text": "과가 어떤 지표에서 언제 확인될지를 촉매로 적어야 투자논리가 검증 가능해진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 리서치 위험·기대 하방: 10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부"
+        },
+        {
+          "labelled": false,
+          "text": "분 0원이고 드물게 50원을 잃는다. 평균값이 tail risk와 사건 간 동시발생을 숨길 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Peer multiple: 비슷한 기업들이 EBITDA 8배에 거래된다면 목표기업도 비슷한 출발점에서 볼 수 있다. 그러나 성장, 마진, 회"
+        },
+        {
+          "labelled": false,
+          "text": "계정책, 경기시점이 다르면 같은 배수를 기계적으로 적용할 수 없다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 리서치 촉매·실적서프라이즈: 매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI"
+        },
+        {
+          "labelled": false,
+          "text": "변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-17 · IBT-17:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q24",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 리서치 촉매·실적서프라이즈\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "시장 기대를 바꿀 구체적 사건이 가까우며 결과가 예상보다 좋을수록 목표가격이 현실화될 가능성이 커진다.",
+        "위험사건의 발생 가능성이나 발생 시 손실이 커질수록 평균 손실 추정치도 커진다.",
+        "재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다.",
+        "절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요하다.",
+        "반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+      ],
+      "evidence": "IBT-17 · IBT-17:verbal_relation:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다. 용어: 리서치 촉매·"
+        },
+        {
+          "labelled": false,
+          "text": "실적서프라이즈."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 리서치 촉매·실적서프라이즈 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향을 주는지 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI 변화가 여러 해 이익전망을 바"
+        },
+        {
+          "labelled": false,
+          "text": "꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 리서치 촉매·실적서프라이즈: RevisedEPS=ConsensusEPS×(1+Surprise%); ΔTarget=ΔEPS×TargetPER"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 기대 TSR·촉매: 시장 기대를 바꿀 구체적 사건이 가까우며 결과가 예상보다 좋을수록 목표가격이 현실화될 가능성이 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 리서치 위험·기대 하방: 위험사건의 발생 가능성이나 발생 시 손실이 커질수록 평균 손실 추정치도 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 통화정책·이자수익 전이: 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 추정치 괴리·실적 서프라이즈: 절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요"
+        },
+        {
+          "labelled": false,
+          "text": "하다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 리서치 촉매·실적서프라이즈: 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-17 · IBT-17:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q25",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 리서치 위험·기대 하방\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다.",
+        "기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험 등을 가격에 반영한 추가\n수익률이다.",
+        "이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다.",
+        "이 개념은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다.",
+        "이 개념은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표다."
+      ],
+      "evidence": "IBT-18 · IBT-18:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표다. 용어: 리서"
+        },
+        {
+          "labelled": false,
+          "text": "치 위험·기대 하방."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 기대 하방은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부분 0원이고 드물게 50"
+        },
+        {
+          "labelled": false,
+          "text": "원을 잃는다. 평균값이 tail risk와 사건 간 동시발생을 숨길 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 리서치 위험·기대 하방: ExpectedDownside=Probability×LossIfEvent"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 시나리오 가중가치: 이 개념은 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 신용위험·Credit Spread·Expected Loss: 기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실"
+        },
+        {
+          "labelled": false,
+          "text": "이고 신용스프레드는 그 위험 등을 가격에 반영한 추가 수익률이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 기대 TSR·촉매: 이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 영업권: 이 개념은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 리서치 위험·기대 하방: 이 개념은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-18 · IBT-18:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q26",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 리서치 위험·기대 하방\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수\n를 써도 목표가 변화가 커진다.",
+        "좋은 경우 150원, 나쁜 경우 50원이라는 범위만으로는 중앙 판단이 없다. 각 시나리오가 얼마나 가능하다고 보는지 명시하면 불확실성을\n하나의 기대값으로 요약할 수 있다.",
+        "10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부분 0원이고 드물게 50원을 잃는다. 평\n균값이 tail risk와 사건 간 동시발생을 숨길 수 있다.",
+        "포트폴리오 위험은 개별 위험의 단순 평균이 아니다. 두 자산이 매번 동시에 오르내리지 않으면 한쪽의 움직임이 다른 쪽을 상쇄해, 같은\n기대수익에서도 전체 변동성이 낮아질 수 있다.",
+        "100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다. 실제 스프레드에는 이 평균손실뿐 아니라 예상 밖 손\n실, 유동성, 위험회피 보상도 들어간다."
+      ],
+      "evidence": "IBT-18 · IBT-18:intuition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부분 0원이고"
+        },
+        {
+          "labelled": false,
+          "text": "드물게 50원을 잃는다. 평균값이 tail risk와 사건 간 동시발생을 숨길 수 있다. 용어: 리서치 위험·기대 하방."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 기대 하방은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부분 0원이고 드물게 50"
+        },
+        {
+          "labelled": false,
+          "text": "원을 잃는다. 평균값이 tail risk와 사건 간 동시발생을 숨길 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 리서치 위험·기대 하방: ExpectedDownside=Probability×LossIfEvent"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 리서치 촉매·실적서프라이즈: 매출이 예상보다 높아도 일회성이라면 장기 목표가는 거의 안 바뀔 수 있다. 반대로 작은 KPI"
+        },
+        {
+          "labelled": false,
+          "text": "변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 시나리오 가중가치: 좋은 경우 150원, 나쁜 경우 50원이라는 범위만으로는 중앙 판단이 없다. 각 시나리오가 얼마나 가능하"
+        },
+        {
+          "labelled": false,
+          "text": "다고 보는지 명시하면 불확실성을 하나의 기대값으로 요약할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 리서치 위험·기대 하방: 10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부"
+        },
+        {
+          "labelled": false,
+          "text": "분 0원이고 드물게 50원을 잃는다. 평균값이 tail risk와 사건 간 동시발생을 숨길 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 2자산 포트폴리오: 포트폴리오 위험은 개별 위험의 단순 평균이 아니다. 두 자산이 매번 동시에 오르내리지 않으면 한쪽의"
+        },
+        {
+          "labelled": false,
+          "text": "움직임이 다른 쪽을 상쇄해, 같은 기대수익에서도 전체 변동성이 낮아질 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 신용위험·Credit Spread·Expected Loss: 100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다."
+        },
+        {
+          "labelled": false,
+          "text": "실제 스프레드에는 이 평균손실뿐 아니라 예상 밖 손실, 유동성, 위험회피 보상도 들어간다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-18 · IBT-18:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q27",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 리서치 위험·기대 하방\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "두 자산이 매번 동시에 오르내리지 않으면 한쪽의 움직임이 다른 쪽을 상쇄해, 같은 기대수익에서도 전체 변동성이 낮아질 수 있다.",
+        "위험사건의 발생 가능성이나 발생 시 손실이 커질수록 평균 손실 추정치도 커진다.",
+        "각 시나리오가 얼마나 가능하다고 보는지 명시하면 불확실성을 하나의 기대값으로 요약할 수 있다.",
+        "부도 가능성이나 손실률이 커질수록 평균 신용손실과 투자자가 요구하는 보상은 커진다.",
+        "반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+      ],
+      "evidence": "IBT-18 · IBT-18:verbal_relation:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 위험사건의 발생 가능성이나 발생 시 손실이 커질수록 평균 손실 추정치도 커진다. 용어: 리서치 위험·기대 하방."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 기대 하방은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 10% 확률로 50원이 하락하는 위험의 기대하방은 5원이지만, 실제로는 5원씩 잃는 것이 아니라 대부분 0원이고 드물게 50"
+        },
+        {
+          "labelled": false,
+          "text": "원을 잃는다. 평균값이 tail risk와 사건 간 동시발생을 숨길 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 리서치 위험·기대 하방: ExpectedDownside=Probability×LossIfEvent"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 2자산 포트폴리오: 두 자산이 매번 동시에 오르내리지 않으면 한쪽의 움직임이 다른 쪽을 상쇄해, 같은 기대수익에서도 전체"
+        },
+        {
+          "labelled": false,
+          "text": "변동성이 낮아질 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 리서치 위험·기대 하방: 위험사건의 발생 가능성이나 발생 시 손실이 커질수록 평균 손실 추정치도 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 시나리오 가중가치: 각 시나리오가 얼마나 가능하다고 보는지 명시하면 불확실성을 하나의 기대값으로 요약할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 신용위험·Credit Spread·Expected Loss: 부도 가능성이나 손실률이 커질수록 평균 신용손실과 투자자가 요구하는 보상은 커"
+        },
+        {
+          "labelled": false,
+          "text": "진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 리서치 촉매·실적서프라이즈: 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-18 · IBT-18:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q28",
+      "difficulty": 2,
+      "kind": "신규 계산·응용",
+      "stem": "연간 총잠재임대수익이 100억원인 부동산의 공실 및 미수손실률은 10%, 연간 운영비는 30억원이다. 적용 cap rate가 6%일\n때 NOI와 자산가치의 올바른 조합은?",
+      "choices": [
+        "60억원과 600억원",
+        "70억원과 1,000억원",
+        "60억원과 1,000억원",
+        "90억원과 1,500억원",
+        "100억원과 1,667억원"
+      ],
+      "evidence": "IBT-12 · IBT-13",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "1) 공실 및 미수손실은 100억원×10%=10억원이다. 2) 유효총수익은 100억원-10억원=90억원이다. 3) NOI는 유효총수익 90억원-운영"
+        },
+        {
+          "labelled": false,
+          "text": "비 30억원=60억원이다. 4) 자산가치는 NOI÷cap rate=60억원÷0.06=1,000억원이다. 억원 단위 정수로 계산되어 반올림은 없다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "IBT-12 부동산 NOI: 부동산 NOI는 잠재 임대수입에서 공실손실과 부동산 운영비를 뺀 자산 자체의 영업소득이다. 핵심 관계는 부동산"
+        },
+        {
+          "labelled": false,
+          "text": "NOI: NOI=GrossPotentialRent-VacancyLoss-OperatingExpenses 적용 가정은 - 기업가치와 지분가치 브리지를 명시한다."
+        },
+        {
+          "labelled": false,
+          "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+        },
+        {
+          "labelled": false,
+          "text": "IBT-13 Cap rate 가치: Cap rate 가치는 안정화된 연간 NOI를 시장이 요구하는 부동산 수익률로 나눠 자산가치를 추정한다. 핵심 관계"
+        },
+        {
+          "labelled": false,
+          "text": "는 Cap rate 가치: PropertyValue=NOI/CapRate 적용 가정은 - 기업가치와 지분가치 브리지를 명시한다."
+        },
+        {
+          "labelled": false,
+          "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-12 · IBT-13"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q29",
+      "difficulty": 2,
+      "kind": "신규 계산·응용",
+      "stem": "부동산 가치가 1,000억원이고 담보대출 잔액은 650억원이다. 연간 NOI가 90억원, 연간 원리금상환액이 60억원일 때 LTV와\nDSCR의 올바른 조합은?",
+      "choices": [
+        "65%와 1.50배",
+        "65%와 0.67배",
+        "60%와 1.50배",
+        "90%와 1.08배",
+        "150%와 0.65배"
+      ],
+      "evidence": "IBT-14 · IBT-15",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "1) LTV는 담보대출 650억원÷부동산 가치 1,000억원=65%이다. 2) DSCR은 NOI 90억원÷연간 원리금상환액 60억원=1.50배이다. 두 비"
+        },
+        {
+          "labelled": false,
+          "text": "율의 억원 단위는 각각 소거되며 표시 자릿수에서 정확하므로 반올림하지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "IBT-14 LTV: LTV는 담보 부동산가치 중 대출이 차지하는 비율로, 가격하락을 흡수할 자기자본 완충을 보여 준다. 핵심 관계는 LTV:"
+        },
+        {
+          "labelled": false,
+          "text": "LTV=Loan/PropertyValue×100 적용 가정은 - 기업가치와 지분가치 브리지를 명시한다."
+        },
+        {
+          "labelled": false,
+          "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+        },
+        {
+          "labelled": false,
+          "text": "IBT-15 DSCR: DSCR은 부동산 NOI가 한 해의 원금과 이자 상환액을 몇 배 감당하는지 보여 주는 채무상환 지표다. 핵심 관계는 DSCR:"
+        },
+        {
+          "labelled": false,
+          "text": "DSCR=NOI/AnnualDebtService 적용 가정은 - 기업가치와 지분가치 브리지를 명시한다."
+        },
+        {
+          "labelled": false,
+          "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-14 · IBT-15"
+        }
+      ]
+    },
+    {
+      "id": "IBT-B-Q30",
+      "difficulty": 3,
+      "kind": "신규 계산·응용",
+      "stem": "기존 컨센서스 EPS가 2,000원인 기업이 15%의 이익 서프라이즈를 기록했다. 목표 PER 10배를 유지하되, 별도로 25% 확률\n로 주당 8,000원의 규제 손실이 발생할 수 있다고 평가한다. 단순 기대값 방식으로 서프라이즈 효과와 규제 위험을 함께 반\n영한 목표주가 순조정액은?",
+      "choices": [
+        "-5,000원",
+        "-2,000원",
+        "+1,000원",
+        "+3,000원",
+        "+5,000원"
+      ],
+      "evidence": "IBT-17 · IBT-18",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "1) 수정 EPS는 2,000원×(1+15%)=2,300원이다. 2) EPS 증가는 2,300원-2,000원=300원/주이다. 3) 목표 PER 10배를 적용한 서프라이즈"
+        },
+        {
+          "labelled": false,
+          "text": "의 목표주가 상승효과는 300원×10배=3,000원/주이다. 4) 규제 위험의 기대 하락효과는 25%×8,000원=2,000원/주이다. 5) 순조정액은"
+        },
+        {
+          "labelled": false,
+          "text": "+3,000원-2,000원=+1,000원/주이다. 모든 계산이 원/주 단위에서 정확해 반올림은 없다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "IBT-17 리서치 촉매·실적서프라이즈: 리서치 촉매·실적서프라이즈 분석은 예상보다 달라진 핵심 실적이 EPS와 목표주가에 얼마나 영향"
+        },
+        {
+          "labelled": false,
+          "text": "을 주는지 연결한다. 핵심 관계는 리서치 촉매·실적서프라이즈: RevisedEPS=ConsensusEPS×(1+Surprise%);"
+        },
+        {
+          "labelled": false,
+          "text": "ΔTarget=ΔEPS×TargetPER 적용 가정은 - 기업가치와 지분가치 브리지를 명시한다."
+        },
+        {
+          "labelled": false,
+          "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+        },
+        {
+          "labelled": false,
+          "text": "IBT-18 리서치 위험·기대 하방: 기대 하방은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표다."
+        },
+        {
+          "labelled": false,
+          "text": "핵심 관계는 리서치 위험·기대 하방: ExpectedDownside=Probability×LossIfEvent 적용 가정은 - 기업가치와 지분가치 브리지를 명시"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": false,
+          "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-17 · IBT-18"
+        }
+      ]
+    }
+  ]
+}

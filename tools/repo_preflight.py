@@ -41,6 +41,7 @@ ADMIN_PATTERNS = (
     "tools/validate_supabase_sql.py",
     "tools/requirements-source-worker.txt",
     "scripts/refresh_admin_content.ps1",
+    "output/html/findone_theory_workbook_ross_integrated_30q.html",
     ".github/workflows/admin-*.yml",
     "app/src/main/assets/content.sqlite3",
     "app/src/main/assets/content-manifest.json",

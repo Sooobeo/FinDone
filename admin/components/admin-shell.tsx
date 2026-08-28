@@ -1,10 +1,11 @@
 "use client";
 
 import {
+  BookMarked,
+  BookOpenCheck,
   BookOpenText,
   Cpu,
   Database,
-  BookMarked,
   FileArchive,
   FileSearch,
   LayoutDashboard,
@@ -24,6 +25,7 @@ import type { AdminRole } from "@/lib/types";
 
 const navItems = [
   { href: "/dashboard", label: "대시보드", icon: LayoutDashboard },
+  { href: "/workbook", label: "이론 문제집", icon: BookOpenCheck },
   { href: "/concepts", label: "개념 DB", icon: Database },
   { href: "/glossary", label: "용어집", icon: BookMarked },
   { href: "/sources", label: "원본 자료", icon: FileSearch },

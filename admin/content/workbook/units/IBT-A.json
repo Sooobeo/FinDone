@@ -1,0 +1,3146 @@
+{
+  "schemaVersion": 1,
+  "sourceSha256": "edf526c295d299916bf873cb74900ff31765990280f362f42994c8ded873be52",
+  "id": "IBT-A",
+  "anchor": "unit-IBT-A",
+  "subjectId": "subject-07",
+  "subjectTitle": "07. IB·시장·대체투자 실무",
+  "title": "IBT-A · 시장 변수·M&A·IPO 구조",
+  "subtitle": "정본 이론 + 검증·파생·계산 문항",
+  "meta": [
+    "핵심개념 정본 전체",
+    "문제 30",
+    "상세 해설 30"
+  ],
+  "sourceNote": "기존 FinDone 완성본 복원 · 원본 PDF 633–665쪽",
+  "theory": [
+    {
+      "kind": "section",
+      "text": "개념 압축"
+    },
+    {
+      "kind": "body",
+      "text": "작은 글자와 옅은 박스로 밀도 있게 정리했습니다."
+    },
+    {
+      "kind": "label",
+      "text": "범위"
+    },
+    {
+      "kind": "body",
+      "text": "FinDone 학습요소 IBT-01, IBT-02, IBT-03, IBT-04, IBT-05, IBT-06, IBT-07, IBT-08, IBT-09"
+    },
+    {
+      "kind": "label",
+      "text": "문항 구성"
+    },
+    {
+      "kind": "body",
+      "text": "검증 문항은행 27 · 신규 계산·응용 3 · 합계 30문항"
+    },
+    {
+      "kind": "label",
+      "text": "풀이 원칙"
+    },
+    {
+      "kind": "body",
+      "text": "정답만 제시하지 않고 핵심 조건, 계산 또는 판단 과정, 결과 해석, 대표 오답의 이유를 순서대로 설명합니다."
+    },
+    {
+      "kind": "section",
+      "text": "핵심 이론"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-01 · 시장금리·실질금리"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "실질금리는 명목금리에서 물가상승 효과를 제거해 돈의 구매력이 실제로 얼마나 늘어나는지 보여 준다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "예금이 5% 늘어도 물가가 4% 오르면 살 수 있는 물건은 약 1%만 늘어난다. bp는 작은 금리 차이를 명확히 말하는 단위로, 100bp가 1%포인트다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "시장금리·실질금리: 근사 RealRate 약 NominalRate-Inflation; 100bp=1%p"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 시장금리·실질금리: 근사 RealRate 약 NominalRate-Inflation"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 100bp=1%p"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리전략 - 정책금리와 기대인플레이션을 비교해 실질 긴축·완화 정도를 볼 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 자산수익 비교 - 명목수익률이 구매력 기준으로 양수인지 판단할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Federal Reserve Policy Rate · Money, Interest Rates, and Monetary Policy · finance_interview_app_final_spec.md:L1803 · G. IB·시장·대체투자 실무"
+    },
+    {
+      "kind": "body",
+      "text": "(IBT) > G.1 개념·문제 유형·난수 명세 > IBT-01"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-02 · FX 환산손익"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "FX 환산손익은 외화로 받을 금액의 원화가치가 환율 변화 때문에 얼마나 달라졌는지 측정한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "달러 매출채권 금액이 그대로여도 원/달러 환율이 오르면 받을 원화는 늘어난다. 반대로 달러 지급의무가 있는 회사에는 같은 환율 상승이 손실이 된"
+    },
+    {
+      "kind": "body",
+      "text": "다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "FX 환산손익: 원화표시 수취액 USDNotional×KRW/USD; FX P&L=N×(S1-S0)"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• FX 환산손익: 원화표시 수취액 USDNotional × KRW/USD"
+    },
+    {
+      "kind": "bullet",
+      "text": "• FX P&L = N × (S1-S0)"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 수출입 손익 - 외화 매출채권·매입채무의 환율 노출을 계산할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 환헤지 규모 - 예정 외화 현금흐름 중 얼마를 선도환으로 고정할지 정할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 15.433 Investments 과제 · 퀴즈·시험·풀이 · finance_interview_app_final_spec.md:L1804 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난"
+    },
+    {
+      "kind": "body",
+      "text": "수 명세 > IBT-02"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-03 · 신용스프레드·가격민감도"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "신용스프레드 가격민감도는 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지 duration으로 근사한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "회사의 부도 우려가 커지면 투자자는 더 높은 수익률을 요구한다. 약정 현금흐름은 그대로이므로 그 높은 수익률에 맞추려면 채권가격이 내려가며"
+    },
+    {
+      "kind": "body",
+      "text": "duration이 길수록 하락폭이 커진다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "신용스프레드·가격민감도: ΔP/P 약 -ModifiedDuration×ΔSpread; bp 표현 시 priceChangeBp 약 -D×spreadChangeBp"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 신용스프레드·가격민감도: Δ P/P 약 -ModifiedDuration × Δ Spread"
+    },
+    {
+      "kind": "bullet",
+      "text": "• bp 표현 시 priceChangeBp 약 -D × spreadChangeBp"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 크레딧 트레이딩 - 스프레드 확대·축소 시 채권 가격손익을 빠르게 추정할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 리스크 한도 - 금리위험과 신용스프레드 위험을 별도 민감도로 관리할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 15.401 문제세트·해설 · 시험·해설 · finance_interview_app_final_spec.md:L1805 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세"
+    },
+    {
+      "kind": "body",
+      "text": "> IBT-03"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-04 · 통화정책·이자수익 전이"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가"
+    },
+    {
+      "kind": "body",
+      "text": "달라진다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "통화정책·이자수익 전이: ΔAnnualInterest=B×ΔrBp/10,000"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 통화정책·이자수익 전이: Δ AnnualInterest=B × Δ rBp/10(,)000"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 은행 NII 추정 - 변동금리 대출잔액과 금리변화로 이자수익 민감도를 계산할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• ALM - 자산과 부채의 재가격 속도 차이에서 생기는 금리갭을 관리할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Federal Reserve Policy Rate · Money, Interest Rates, and Monetary Policy · finance_interview_app_final_spec.md:L1806 · G. IB·시장·대체투자 실무"
+    },
+    {
+      "kind": "body",
+      "text": "(IBT) > G.1 개념·문제 유형·난수 명세 > IBT-04"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-05 · EV-Equity bridge"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "EV-Equity bridge는 인수대상 사업 전체 가치에서 부채·우선주·비지배지분을 빼고 현금을 더해 보통주 매매대금을 구하는 과정이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "기업을 1,000에 산다는 표현이 영업가치인지 주주에게 지급할 금액인지 먼저 구분해야 한다. 인수자가 떠안는 순부채까지 포함하면 실제 거래부담은"
+    },
+    {
+      "kind": "body",
+      "text": "주식매매대금보다 클 수 있다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "EV-Equity bridge: EquityValue=EV-Debt-Preferred-Minority+Cash"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• EV-Equity bridge:"
+    },
+    {
+      "kind": "body",
+      "text": "EquityValue=EV-Debt-Preferred-Minority+Cash"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• M&A 가격협상 - 제시된 EV를 주주에게 지급할 equity purchase price로 바꿀 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래비교 - 발표된 deal value가 순부채 포함인지 확인해 거래배수를 맞출 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran DCF 문제와 풀이 · Valuation 자료·PDF 허브 · finance_interview_app_final_spec.md:L1807 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문"
+    },
+    {
+      "kind": "body",
+      "text": "제 유형·난수 명세 > IBT-05"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-06 · M&A 시너지"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "M&A 시너지는 결합으로 새로 생기는 세후 현금효과의 현재가치에서 통합비용을 차감한 순가치다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회성 비용을"
+    },
+    {
+      "kind": "body",
+      "text": "빼야 주주에게 남는 가치가 보인다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "M&A 시너지: 무성장 영구 시너지 SynergyPV=AfterTaxAnnualSynergy/r; NetValueCreated=SynergyPV-IntegrationCost"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• M&A 시너지: 무성장 영구 시너지 SynergyPV=AfterTaxAnnualSynergy/r"
+    },
+    {
+      "kind": "body",
+      "text": "NetValueCreated=SynergyPV-IntegrationCost"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 인수가격 상한 - standalone 가치 외에 지불 가능한 시너지 프리미엄을 판단할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• PMI 계획 - 시너지 실현시점과 통합비용을 추적해 거래성과를 평가할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran Acquisition 문제와 풀이 · finance_interview_app_final_spec.md:L1808 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 >"
+    },
+    {
+      "kind": "body",
+      "text": "IBT-06"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-07 · EPS accretion/dilution"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "EPS accretion/dilution은 인수 후 합산이익과 새 주식수를 반영한 주당이익이 인수 전보다 늘거나 줄었는지 측정한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "회사를 인수해 순이익이 늘어도 그 대가로 더 많은 신주를 발행하면 주당이익은 줄 수 있다. 반대로 EPS가 늘어도 과도한 부채나 낮은 ROIC로 가치를"
+    },
+    {
+      "kind": "body",
+      "text": "파괴할 수 있어 거래가치 판단과 같지는 않다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "EPS accretion/dilution: ProFormaEPS=CombinedNI/ProFormaShares; A/D%=(ProFormaEPS/BuyerEPS-1)×100"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• EPS accretion/dilution: ProFormaEPS=CombinedNI/ProFormaShares"
+    },
+    {
+      "kind": "bullet",
+      "text": "• A/D%=(ProFormaEPS/BuyerEPS-1) × 100"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• M&A 모델 - 인수금융·신주·시너지 반영 후 pro forma EPS 변화를 계산할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 이사회 보고 - 거래가 단기 주당이익에 미치는 영향을 설명하되 가치창출과 구분할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran Acquisition 문제와 풀이 · finance_interview_app_final_spec.md:L1809 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 >"
+    },
+    {
+      "kind": "body",
+      "text": "IBT-07"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-08 · 주식교환비율"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "주식교환비율은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "인수회사 주가가 내려가면 고정가치 거래에서는 더 많은 주식을 줘야 하고, 고정비율 거래에서는 목표주주가 받는 가치가 줄어든다. 구조에 따라 가격"
+    },
+    {
+      "kind": "body",
+      "text": "변동 위험을 누가 부담하는지가 달라진다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "주식교환비율: ExchangeRatio=OfferPriceTarget/BuyerSharePrice; NewShares=TargetShares×ExchangeRatio"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 주식교환비율:"
+    },
+    {
+      "kind": "body",
+      "text": "ExchangeRatio=OfferPriceTarget/BuyerSharePrice"
+    },
+    {
+      "kind": "bullet",
+      "text": "• NewShares=TargetShares × ExchangeRatio"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 주식대가 M&A - 제안가격에서 교환비율과 발행 신주 수를 계산할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 희석 분석 - 거래 후 기존·신규 주주의 소유비율과 EPS 영향을 추정할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran Acquisition 문제와 풀이 · finance_interview_app_final_spec.md:L1810 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세 >"
+    },
+    {
+      "kind": "body",
+      "text": "IBT-08"
+    },
+    {
+      "kind": "element",
+      "text": "IBT-09 · IPO primary/secondary"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "IPO primary/secondary 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을 나눈다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "공모규모가 1,000이어도 전부 회사로 들어오는 것은 아니다. 구주매출 대금은 기존주주에게 가므로 회사의 현금과 성장자금은 신주모집 금액에서 수"
+    },
+    {
+      "kind": "body",
+      "text": "수료를 뺀 만큼만 늘어난다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "IPO primary/secondary: PrimaryProceeds=OfferPrice×NewShares; DealSize=Price×(New+Secondary)"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• IPO primary/secondary: PrimaryProceeds=OfferPrice × NewShares"
+    },
+    {
+      "kind": "bullet",
+      "text": "• DealSize=Price × (New+Secondary)"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 기업가치와 지분가치 브리지를 명시한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• IPO 자금용도 - 회사 유입 gross·net proceeds와 부채상환·투자 여력을 계산할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 오버행 분석 - 기존주주의 매각비중과 상장 후 잔여지분을 볼 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "SEC Investor.gov - Investing in an IPO · finance_interview_app_final_spec.md:L1811 · G. IB·시장·대체투자 실무 (IBT) > G.1 개념·문제 유형·난수 명세"
+    },
+    {
+      "kind": "body",
+      "text": "> IBT-09"
+    }
+  ],
+  "questions": [
+    {
+      "id": "IBT-A-Q01",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 시장금리·실질금리\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한다.",
+        "금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함께 측정한다.",
+        "채권 현금흐름을 회수하는 가중평균 시점과 이를 수익률 변화에 대한 가격 민감도로 바꾼 값을 구분한다.",
+        "이 개념은 외화로 받을 금액의 원화가치가 환율 변화 때문에 얼마나 달라졌는지 측정한다.",
+        "이 개념은 명목금리에서 물가상승 효과를 제거해 돈의 구매력이 실제로 얼마나 늘어나는지 보여 준다."
+      ],
+      "evidence": "IBT-01 · IBT-01:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 명목금리에서 물가상승 효과를 제거해 돈의 구매력이 실제로 얼마나 늘어나는지 보여 준다. 용어: 시"
+        },
+        {
+          "labelled": false,
+          "text": "장금리·실질금리."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 실질금리는 명목금리에서 물가상승 효과를 제거해 돈의 구매력이 실제로 얼마나 늘어나는지 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 예금이 5% 늘어도 물가가 4% 오르면 살 수 있는 물건은 약 1%만 늘어난다. bp는 작은 금리 차이를 명확히 말하는 단위로,"
+        },
+        {
+          "labelled": false,
+          "text": "100bp가 1%포인트다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 시장금리·실질금리: 근사 RealRate 약 NominalRate-Inflation; 100bp=1%p"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 통화정책·이자수익 전이: 금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되"
+        },
+        {
+          "labelled": false,
+          "text": "는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): DV01·Convexity 가격변화: 금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함"
+        },
+        {
+          "labelled": false,
+          "text": "께 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Macaulay Duration·Modified Duration: 채권 현금흐름을 회수하는 가중평균 시점과 이를 수익률 변화에 대한 가격 민감도로"
+        },
+        {
+          "labelled": false,
+          "text": "바꾼 값을 구분한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): FX 환산손익: 이 개념은 외화로 받을 금액의 원화가치가 환율 변화 때문에 얼마나 달라졌는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 시장금리·실질금리: 이 개념은 명목금리에서 물가상승 효과를 제거해 돈의 구매력이 실제로 얼마나 늘어나는지 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-01 · IBT-01:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q02",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 시장금리·실질금리\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이면 실제 가격곡선이 휘어 있으므로 이 개념\n을 더해야 상승과 하락의 비대칭을 더 정확히 잡는다.",
+        "기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수\n익 변화가 달라진다.",
+        "같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격\n이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다.",
+        "예금이 5% 늘어도 물가가 4% 오르면 살 수 있는 물건은 약 1%만 늘어난다. bp는 작은 금리 차이를 명확히 말하는 단위로, 100bp가 1%포\n인트다.",
+        "부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현재가치와 이 개념을 맞추면 한쪽 가치\n변화가 다른 쪽 변화로 대체로 상쇄된다."
+      ],
+      "evidence": "IBT-01 · IBT-01:intuition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 예금이 5% 늘어도 물가가 4% 오르면 살 수 있는 물건은 약 1%만 늘어난다. bp는 작은 금리 차이를 명확히 말하"
+        },
+        {
+          "labelled": false,
+          "text": "는 단위로, 100bp가 1%포인트다. 용어: 시장금리·실질금리."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 실질금리는 명목금리에서 물가상승 효과를 제거해 돈의 구매력이 실제로 얼마나 늘어나는지 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 예금이 5% 늘어도 물가가 4% 오르면 살 수 있는 물건은 약 1%만 늘어난다. bp는 작은 금리 차이를 명확히 말하는 단위로,"
+        },
+        {
+          "labelled": false,
+          "text": "100bp가 1%포인트다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 시장금리·실질금리: 근사 RealRate 약 NominalRate-Inflation; 100bp=1%p"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): DV01·Convexity 가격변화: Duration은 채권 가격 곡선에 접선을 그어 작은 움직임을 빠르게 추정한다. 금리가 크게 움직이"
+        },
+        {
+          "labelled": false,
+          "text": "면 실제 가격곡선이 휘어 있으므로 이 개념을 더해야 상승과 하락의 비대칭을 더 정확히 잡는다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 통화정책·이자수익 전이: 기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리"
+        },
+        {
+          "labelled": false,
+          "text": "floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Macaulay Duration·Modified Duration: 같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에"
+        },
+        {
+          "labelled": false,
+          "text": "덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 시장금리·실질금리: 예금이 5% 늘어도 물가가 4% 오르면 살 수 있는 물건은 약 1%만 늘어난다. bp는 작은 금리 차이를 명"
+        },
+        {
+          "labelled": false,
+          "text": "확히 말하는 단위로, 100bp가 1%포인트다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Duration Immunization: 부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현"
+        },
+        {
+          "labelled": false,
+          "text": "재가치와 이 개념을 맞추면 한쪽 가치 변화가 다른 쪽 변화로 대체로 상쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-01 · IBT-01:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q03",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 시장금리·실질금리\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으로 더 크게 움직인다.",
+        "재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다.",
+        "명목금리 상승분보다 물가상승분이 크면 구매력 기준 수익은 낮아지고, 그 반대면 높아진다.",
+        "금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을 잘 설명한다.",
+        "자산과 부채의 현재가치 및 금리 민감도를 맞추면 작은 금리 변화에서 양쪽 가치 변동이 대체로 상쇄된다."
+      ],
+      "evidence": "IBT-01 · IBT-01:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 명목금리 상승분보다 물가상승분이 크면 구매력 기준 수익은 낮아지고, 그 반대면 높아진다. 용어: 시장금리·실질"
+        },
+        {
+          "labelled": false,
+          "text": "금리."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 실질금리는 명목금리에서 물가상승 효과를 제거해 돈의 구매력이 실제로 얼마나 늘어나는지 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 예금이 5% 늘어도 물가가 4% 오르면 살 수 있는 물건은 약 1%만 늘어난다. bp는 작은 금리 차이를 명확히 말하는 단위로,"
+        },
+        {
+          "labelled": false,
+          "text": "100bp가 1%포인트다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 시장금리·실질금리: 근사 RealRate 약 NominalRate-Inflation; 100bp=1%p"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Macaulay Duration·Modified Duration: 금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으"
+        },
+        {
+          "labelled": false,
+          "text": "로 더 크게 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 통화정책·이자수익 전이: 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 시장금리·실질금리: 명목금리 상승분보다 물가상승분이 크면 구매력 기준 수익은 낮아지고, 그 반대면 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): DV01·Convexity 가격변화: 금리 변화폭이 커질수록 일차 민감도만으로는 부족하며 가격곡선의 휘어짐을 더해야 비대칭을"
+        },
+        {
+          "labelled": false,
+          "text": "잘 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Duration Immunization: 자산과 부채의 현재가치 및 금리 민감도를 맞추면 작은 금리 변화에서 양쪽 가치 변동이 대체로 상"
+        },
+        {
+          "labelled": false,
+          "text": "쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-01 · IBT-01:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q04",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: FX 환산손익\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한다.",
+        "이 개념은 명목금리에서 물가상승 효과를 제거해 돈의 구매력이 실제로 얼마나 늘어나는지 보여 준다.",
+        "이 개념은 담보 부동산가치 중 대출이 차지하는 비율로, 가격하락을 흡수할 자기자본 완충을 보여 준다.",
+        "이 개념은 외화로 받을 금액의 원화가치가 환율 변화 때문에 얼마나 달라졌는지 측정한다.",
+        "이 개념은 옵션가치가 주가, 변동성, 시간, 금리에 얼마나 민감한지 요인별로 나눈 측정치다."
+      ],
+      "evidence": "IBT-02 · IBT-02:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 외화로 받을 금액의 원화가치가 환율 변화 때문에 얼마나 달라졌는지 측정한다. 용어: FX 환산손익."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: FX 환산손익은 외화로 받을 금액의 원화가치가 환율 변화 때문에 얼마나 달라졌는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 달러 매출채권 금액이 그대로여도 원/달러 환율이 오르면 받을 원화는 늘어난다. 반대로 달러 지급의무가 있는 회사에는 같"
+        },
+        {
+          "labelled": false,
+          "text": "은 환율 상승이 손실이 된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: FX 환산손익: 원화표시 수취액 USDNotional×KRW/USD; FX P&L=N×(S1-S0)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 통화정책·이자수익 전이: 금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되"
+        },
+        {
+          "labelled": false,
+          "text": "는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 시장금리·실질금리: 이 개념은 명목금리에서 물가상승 효과를 제거해 돈의 구매력이 실제로 얼마나 늘어나는지 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): LTV: 이 개념은 담보 부동산가치 중 대출이 차지하는 비율로, 가격하락을 흡수할 자기자본 완충을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): FX 환산손익: 이 개념은 외화로 받을 금액의 원화가치가 환율 변화 때문에 얼마나 달라졌는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Greeks·Delta Hedge·근사 P&L: 이 개념은 옵션가치가 주가, 변동성, 시간, 금리에 얼마나 민감한지 요인별로 나눈 측정치다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-02 · IBT-02:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q05",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: FX 환산손익\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성\n장의 질과 지속성을 판단할 수 있다.",
+        "기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수\n익 변화가 달라진다.",
+        "외상매출 100원이 있어도 전부 받을 수 있다고 보장할 수는 없다. 3원을 못 받을 것으로 예상하면 장부에는 받을 돈 100원과 예상 손실 3\n원을 따로 보여 주고, 경제적으로 회수할 금액은 97원으로 읽는다.",
+        "달러 매출채권 금액이 그대로여도 원/달러 환율이 오르면 받을 원화는 늘어난다. 반대로 달러 지급의무가 있는 회사에는 같은 환율 상승이\n손실이 된다.",
+        "예금이 5% 늘어도 물가가 4% 오르면 살 수 있는 물건은 약 1%만 늘어난다. bp는 작은 금리 차이를 명확히 말하는 단위로, 100bp가 1%포\n인트다."
+      ],
+      "evidence": "IBT-02 · IBT-02:intuition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 달러 매출채권 금액이 그대로여도 원/달러 환율이 오르면 받을 원화는 늘어난다. 반대로 달러 지급의무가 있는"
+        },
+        {
+          "labelled": false,
+          "text": "회사에는 같은 환율 상승이 손실이 된다. 용어: FX 환산손익."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: FX 환산손익은 외화로 받을 금액의 원화가치가 환율 변화 때문에 얼마나 달라졌는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 달러 매출채권 금액이 그대로여도 원/달러 환율이 오르면 받을 원화는 늘어난다. 반대로 달러 지급의무가 있는 회사에는 같"
+        },
+        {
+          "labelled": false,
+          "text": "은 환율 상승이 손실이 된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: FX 환산손익: 원화표시 수취액 USDNotional×KRW/USD; FX P&L=N×(S1-S0)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 매출 브리지: 원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마"
+        },
+        {
+          "labelled": false,
+          "text": "나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 통화정책·이자수익 전이: 기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리"
+        },
+        {
+          "labelled": false,
+          "text": "floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 매출채권·대손충당금: 외상매출 100원이 있어도 전부 받을 수 있다고 보장할 수는 없다. 3원을 못 받을 것으로 예상하면 장"
+        },
+        {
+          "labelled": false,
+          "text": "부에는 받을 돈 100원과 예상 손실 3원을 따로 보여 주고, 경제적으로 회수할 금액은 97원으로 읽는다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): FX 환산손익: 달러 매출채권 금액이 그대로여도 원/달러 환율이 오르면 받을 원화는 늘어난다. 반대로 달러 지급의무가 있는"
+        },
+        {
+          "labelled": false,
+          "text": "회사에는 같은 환율 상승이 손실이 된다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 시장금리·실질금리: 예금이 5% 늘어도 물가가 4% 오르면 살 수 있는 물건은 약 1%만 늘어난다. bp는 작은 금리 차이를 명"
+        },
+        {
+          "labelled": false,
+          "text": "확히 말하는 단위로, 100bp가 1%포인트다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-02 · IBT-02:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q06",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: FX 환산손익\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다.",
+        "반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다.",
+        "명목금리 상승분보다 물가상승분이 크면 구매력 기준 수익은 낮아지고, 그 반대면 높아진다.",
+        "반대로 달러 지급의무가 있는 회사에는 같은 환율 상승이 손실이 된다.",
+        "재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+      ],
+      "evidence": "IBT-02 · IBT-02:verbal_relation:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 반대로 달러 지급의무가 있는 회사에는 같은 환율 상승이 손실이 된다. 용어: FX 환산손익."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: FX 환산손익은 외화로 받을 금액의 원화가치가 환율 변화 때문에 얼마나 달라졌는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 달러 매출채권 금액이 그대로여도 원/달러 환율이 오르면 받을 원화는 늘어난다. 반대로 달러 지급의무가 있는 회사에는 같"
+        },
+        {
+          "labelled": false,
+          "text": "은 환율 상승이 손실이 된다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: FX 환산손익: 원화표시 수취액 USDNotional×KRW/USD; FX P&L=N×(S1-S0)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 매출 브리지: 기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 리서치 촉매·실적서프라이즈: 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 시장금리·실질금리: 명목금리 상승분보다 물가상승분이 크면 구매력 기준 수익은 낮아지고, 그 반대면 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): FX 환산손익: 반대로 달러 지급의무가 있는 회사에는 같은 환율 상승이 손실이 된다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 통화정책·이자수익 전이: 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-02 · IBT-02:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q07",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 신용스프레드·가격민감도\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "약정된 쿠폰과 원금을 시장 요구수익률로 할인한 현재가치와, 그 현재가치를 설명하는 만기수익률을 연결한다.",
+        "배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다.",
+        "이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지 duration으로 근사한다.",
+        "채권 현금흐름을 회수하는 가중평균 시점과 이를 수익률 변화에 대한 가격 민감도로 바꾼 값을 구분한다.",
+        "금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를 줄이는 작업이다."
+      ],
+      "evidence": "IBT-03 · IBT-03:definition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지 duration으로"
+        },
+        {
+          "labelled": false,
+          "text": "근사한다. 용어: 신용스프레드·가격민감도."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 신용스프레드 가격민감도는 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지"
+        },
+        {
+          "labelled": false,
+          "text": "duration으로 근사한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 회사의 부도 우려가 커지면 투자자는 더 높은 수익률을 요구한다. 약정 현금흐름은 그대로이므로 그 높은 수익률에 맞추려"
+        },
+        {
+          "labelled": false,
+          "text": "면 채권가격이 내려가며 duration이 길수록 하락폭이 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 신용스프레드·가격민감도: ΔP/P 약 -ModifiedDuration×ΔSpread; bp 표현 시 priceChangeBp 약 -D×spreadChangeBp"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 채권가격·YTM: 약정된 쿠폰과 원금을 시장 요구수익률로 할인한 현재가치와, 그 현재가치를 설명하는 만기수익률을 연결한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 민감도: 배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 신용스프레드·가격민감도: 이 개념 은 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는"
+        },
+        {
+          "labelled": false,
+          "text": "지 duration으로 근사한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Macaulay Duration·Modified Duration: 채권 현금흐름을 회수하는 가중평균 시점과 이를 수익률 변화에 대한 가격 민감도로"
+        },
+        {
+          "labelled": false,
+          "text": "바꾼 값을 구분한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 금리위험 헤징·계약수: 금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를"
+        },
+        {
+          "labelled": false,
+          "text": "줄이는 작업이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-03 · IBT-03:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q08",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 신용스프레드·가격민감도\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에 덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격\n이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다.",
+        "채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한 계약수만큼 더하면 두 손익이 상쇄되\n며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다.",
+        "EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는지는 순부채와 주식수 브리\n지를 거쳐 확인해야 한다.",
+        "100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다. 실제 스프레드에는 이 평균손실뿐 아니라 예상 밖 손\n실, 유동성, 위험회피 보상도 들어간다.",
+        "회사의 부도 우려가 커지면 투자자는 더 높은 수익률을 요구한다. 약정 현금흐름은 그대로이므로 그 높은 수익률에 맞추려면 채권가격이\n내려가며 duration이 길수록 하락폭이 커진다."
+      ],
+      "evidence": "IBT-03 · IBT-03:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 회사의 부도 우려가 커지면 투자자는 더 높은 수익률을 요구한다. 약정 현금흐름은 그대로이므로 그 높은 수익률"
+        },
+        {
+          "labelled": false,
+          "text": "에 맞추려면 채권가격이 내려가며 duration이 길수록 하락폭이 커진다. 용어: 신용스프레드·가격민감도."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 신용스프레드 가격민감도는 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지"
+        },
+        {
+          "labelled": false,
+          "text": "duration으로 근사한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 회사의 부도 우려가 커지면 투자자는 더 높은 수익률을 요구한다. 약정 현금흐름은 그대로이므로 그 높은 수익률에 맞추려"
+        },
+        {
+          "labelled": false,
+          "text": "면 채권가격이 내려가며 duration이 길수록 하락폭이 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 신용스프레드·가격민감도: ΔP/P 약 -ModifiedDuration×ΔSpread; bp 표현 시 priceChangeBp 약 -D×spreadChangeBp"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Macaulay Duration·Modified Duration: 같은 만기라도 쿠폰을 일찍 많이 받는 채권은 돈을 더 빨리 회수하므로 금리 변화에"
+        },
+        {
+          "labelled": false,
+          "text": "덜 노출된다. 이 개념이 5라면 작은 금리 상승에 가격이 대략 그 반대 방향으로 더 크게 움직인다고 읽는다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 금리위험 헤징·계약수: 채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한"
+        },
+        {
+          "labelled": false,
+          "text": "계약수만큼 더하면 두 손익이 상쇄되며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 민감도: EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는지는"
+        },
+        {
+          "labelled": false,
+          "text": "순부채와 주식수 브리지를 거쳐 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 신용위험·Credit Spread·Expected Loss: 100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다."
+        },
+        {
+          "labelled": false,
+          "text": "실제 스프레드에는 이 평균손실뿐 아니라 예상 밖 손실, 유동성, 위험회피 보상도 들어간다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 신용스프레드·가격민감도: 회사의 부도 우려가 커지면 투자자는 더 높은 수익률을 요구한다. 약정 현금흐름은 그대로이므로"
+        },
+        {
+          "labelled": false,
+          "text": "그 높은 수익률에 맞추려면 채권가격이 내려가며 duration이 길수록 하락폭이 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-03 · IBT-03:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q09",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 신용스프레드·가격민감도\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으로 더 크게 움직인다.",
+        "부도 가능성이나 손실률이 커질수록 평균 신용손실과 투자자가 요구하는 보상은 커진다.",
+        "약정 현금흐름은 그대로이므로 그 높은 수익률에 맞추려면 채권가격이 내려가며 duration이 길수록 하락폭이 커진다.",
+        "시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간다.",
+        "영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다."
+      ],
+      "evidence": "IBT-03 · IBT-03:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 약정 현금흐름은 그대로이므로 그 높은 수익률에 맞추려면 채권가격이 내려가며 duration이 길수록 하락폭이 커"
+        },
+        {
+          "labelled": false,
+          "text": "진다. 용어: 신용스프레드·가격민감도."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 신용스프레드 가격민감도는 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마나 움직이는지"
+        },
+        {
+          "labelled": false,
+          "text": "duration으로 근사한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 회사의 부도 우려가 커지면 투자자는 더 높은 수익률을 요구한다. 약정 현금흐름은 그대로이므로 그 높은 수익률에 맞추려"
+        },
+        {
+          "labelled": false,
+          "text": "면 채권가격이 내려가며 duration이 길수록 하락폭이 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 신용스프레드·가격민감도: ΔP/P 약 -ModifiedDuration×ΔSpread; bp 표현 시 priceChangeBp 약 -D×spreadChangeBp"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Macaulay Duration·Modified Duration: 금리에 대한 일차 민감도가 클수록 작은 수익률 변화에 채권의 가격이 반대 방향으"
+        },
+        {
+          "labelled": false,
+          "text": "로 더 크게 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 신용위험·Credit Spread·Expected Loss: 부도 가능성이나 손실률이 커질수록 평균 신용손실과 투자자가 요구하는 보상은 커"
+        },
+        {
+          "labelled": false,
+          "text": "진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 신용스프레드·가격민감도: 약정 현금흐름은 그대로이므로 그 높은 수익률에 맞추려면 채권가격이 내려가며 duration이 길수"
+        },
+        {
+          "labelled": false,
+          "text": "록 하락폭이 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 채권가격·YTM: 시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 민감도: 영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-03 · IBT-03:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q10",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 통화정책·이자수익 전이\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "영업과 재투자 뒤 기업의 모든 자본 제공자에게 남는 현금과 보통주주에게 남는 현금을 각각 측정하는 두 기준이다.",
+        "금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함께 측정한다.",
+        "대출·증권의 이자수익, 예금·차입의 이자비용, 평균이자수익자산과 예금금리 전가속도를 연결해 은행의 핵심 영업수익성을 본다.",
+        "금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한다.",
+        "이 개념은 결합으로 새로 생기는 세후 현금효과의 현재가치에서 통합비용을 차감한 순가치다."
+      ],
+      "evidence": "IBT-04 · IBT-04:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한"
+        },
+        {
+          "labelled": false,
+          "text": "다. 용어: 통화정책·이자수익 전이."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리 floor, 예금 beta에 따라"
+        },
+        {
+          "labelled": false,
+          "text": "실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 통화정책·이자수익 전이: ΔAnnualInterest=B×ΔrBp/10,000"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): FCFF·FCFE: 영업과 재투자 뒤 기업의 모든 자본 제공자에게 남는 현금과 보통주주에게 남는 현금을 각각 측정하는 두 기준"
+        },
+        {
+          "labelled": false,
+          "text": "이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): DV01·Convexity 가격변화: 금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함"
+        },
+        {
+          "labelled": false,
+          "text": "께 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 은행 수익성·NIM: 대출·증권의 이자수익, 예금·차입의 이자비용, 평균이자수익자산과 예금금리 전가속도를 연결해 은행의 핵"
+        },
+        {
+          "labelled": false,
+          "text": "심 영업수익성을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 통화정책·이자수익 전이: 금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되"
+        },
+        {
+          "labelled": false,
+          "text": "는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): M&A 시너지: 이 개념은 결합으로 새로 생기는 세후 현금효과의 현재가치에서 통합비용을 차감한 순가치다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-04 · IBT-04:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q11",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 통화정책·이자수익 전이\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "이자비용을 뺀 순이익은 부채를 얼마나 썼는지에 따라 달라진다. 사업 자체의 수익성을 보려면 이자 전 영업이익에서 영업 관련 세금만 반\n영해 투자자 전체의 성과로 맞춘다.",
+        "연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회\n성 비용을 빼야 주주에게 남는 가치가 보인다.",
+        "이자 지급 전 현금은 채권자와 주주가 함께 나눌 몫이고, 이자와 순차입까지 반영한 현금은 주주 몫이다. 귀속주체에 따라 적용할 할인율도\n달라진다.",
+        "기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수\n익 변화가 달라진다.",
+        "명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금\n리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다."
+      ],
+      "evidence": "IBT-04 · IBT-04:intuition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리 floor, 예금"
+        },
+        {
+          "labelled": false,
+          "text": "beta에 따라 실제 연간 이자수익 변화가 달라진다. 용어: 통화정책·이자수익 전이."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리 floor, 예금 beta에 따라"
+        },
+        {
+          "labelled": false,
+          "text": "실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 통화정책·이자수익 전이: ΔAnnualInterest=B×ΔrBp/10,000"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 현금세율·NOPAT: 이자비용을 뺀 순이익은 부채를 얼마나 썼는지에 따라 달라진다. 사업 자체의 수익성을 보려면 이자 전 영"
+        },
+        {
+          "labelled": false,
+          "text": "업이익에서 영업 관련 세금만 반영해 투자자 전체의 성과로 맞춘다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): M&A 시너지: 연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고,"
+        },
+        {
+          "labelled": false,
+          "text": "시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치가 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): FCFF·FCFE: 이자 지급 전 현금은 채권자와 주주가 함께 나눌 몫이고, 이자와 순차입까지 반영한 현금은 주주 몫이다. 귀속주"
+        },
+        {
+          "labelled": false,
+          "text": "체에 따라 적용할 할인율도 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 통화정책·이자수익 전이: 기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리"
+        },
+        {
+          "labelled": false,
+          "text": "floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Swap Cash Flows·Netting: 명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되"
+        },
+        {
+          "labelled": false,
+          "text": "어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-04 · IBT-04:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q12",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 통화정책·이자수익 전이\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다.",
+        "지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치가 보인다.",
+        "반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다.",
+        "재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다.",
+        "누구에게 귀속되는 현금인지에 따라 할인율도 WACC와 자기자본비용으로 달라진다."
+      ],
+      "evidence": "IBT-04 · IBT-04:verbal_relation:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다. 용어: 통화정책·이자수익 전이."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리 floor, 예금 beta에 따라"
+        },
+        {
+          "labelled": false,
+          "text": "실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 통화정책·이자수익 전이: ΔAnnualInterest=B×ΔrBp/10,000"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Swap Cash Flows·Netting: 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지"
+        },
+        {
+          "labelled": false,
+          "text": "급·수취 방향을 먼저 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): M&A 시너지: 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는"
+        },
+        {
+          "labelled": false,
+          "text": "가치가 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 리서치 촉매·실적서프라이즈: 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 통화정책·이자수익 전이: 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): FCFF·FCFE: 누구에게 귀속되는 현금인지에 따라 할인율도 WACC와 자기자본비용으로 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-04 · IBT-04:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q13",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: EV-Equity bridge\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "영업자산 전체 가치에서 채권자 등 다른 청구권을 조정해 보통주주 몫과 주당가치를 구하는 연결 과정이다.",
+        "이 개념은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다.",
+        "보유기간 이 개념은 초기 자기자본 투자와 보유 중·매각 시 분배금을 하나의 연환산 수익률로 연결한다.",
+        "이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다.",
+        "이 개념은 인수대상 사업 전체 가치에서 부채·우선주·비지배지분을 빼고 현금을 더해 보통주 매매대금을 구하는 과정이다."
+      ],
+      "evidence": "IBT-05 · IBT-05:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 인수대상 사업 전체 가치에서 부채·우선주·비지배지분을 빼고 현금을 더해 보통주 매매대금을 구하는"
+        },
+        {
+          "labelled": false,
+          "text": "과정이다. 용어: EV-Equity bridge."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: EV-Equity bridge는 인수대상 사업 전체 가치에서 부채·우선주·비지배지분을 빼고 현금을 더해 보통주 매매대금을 구하는"
+        },
+        {
+          "labelled": false,
+          "text": "과정이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 기업을 1,000에 산다는 표현이 영업가치인지 주주에게 지급할 금액인지 먼저 구분해야 한다. 인수자가 떠안는 순부채까지"
+        },
+        {
+          "labelled": false,
+          "text": "포함하면 실제 거래부담은 주식매매대금보다 클 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EV-Equity bridge: EquityValue=EV-Debt-Preferred-Minority+Cash"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 기업가치(EV)·지분가치·주당가치 연결: 영업자산 전체 가치에서 채권자 등 다른 청구권을 조정해 보통주주 몫과 주당가치를"
+        },
+        {
+          "labelled": false,
+          "text": "구하는 연결 과정이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): P×Q 매출 추정: 이 개념은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 단순 보유기간 IRR: 보유기간 이 개념은 초기 자기자본 투자와 보유 중·매각 시 분배금을 하나의 연환산 수익률로 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): IPO 지분희석: 이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): EV-Equity bridge: 이 개념은 인수대상 사업 전체 가치에서 부채·우선주·비지배지분을 빼고 현금을 더해 보통주 매매대금을"
+        },
+        {
+          "labelled": false,
+          "text": "구하는 과정이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-05 · IBT-05:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q14",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: EV-Equity bridge\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "집값이 10억 원이어도 담보대출 6억 원이 있으면 집주인 몫은 4억 원이다. 기업도 영업가치에서 순부채와 우선주·비지배지분을 빼고 비영\n업자산을 더해야 보통주 가치가 된다.",
+        "같은 순이익이라도 적은 자기자본으로 벌면 이 개념은 높다. 다만 부채를 늘이거나 자사주 매입으로 장부자본을 줄여도 올라갈 수 있으므\n로 영업개선과 재무레버리지를 분리해야 한다.",
+        "기업을 1,000에 산다는 표현이 영업가치인지 주주에게 지급할 금액인지 먼저 구분해야 한다. 인수자가 떠안는 순부채까지 포함하면 실제\n거래부담은 주식매매대금보다 클 수 있다.",
+        "같은 총이익이라도 현금을 더 빨리 회수한 투자의 연환산 수익은 높다. 레버리지를 쓰면 자기자본 수익이 커질 수 있지만 손실과 재융자 위\n험도 함께 커진다.",
+        "시가총액만 비교하면 부채가 많은 회사를 싸게 볼 수 있다. 주주와 채권자 몫을 함께 보는 가치와 자본구조 전 영업성과처럼 청구권 기준이\n맞는 두 값을 비교해야 한다."
+      ],
+      "evidence": "IBT-05 · IBT-05:intuition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 기업을 1,000에 산다는 표현이 영업가치인지 주주에게 지급할 금액인지 먼저 구분해야 한다. 인수자가 떠안는"
+        },
+        {
+          "labelled": false,
+          "text": "순부채까지 포함하면 실제 거래부담은 주식매매대금보다 클 수 있다. 용어: EV-Equity bridge."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: EV-Equity bridge는 인수대상 사업 전체 가치에서 부채·우선주·비지배지분을 빼고 현금을 더해 보통주 매매대금을 구하는"
+        },
+        {
+          "labelled": false,
+          "text": "과정이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 기업을 1,000에 산다는 표현이 영업가치인지 주주에게 지급할 금액인지 먼저 구분해야 한다. 인수자가 떠안는 순부채까지"
+        },
+        {
+          "labelled": false,
+          "text": "포함하면 실제 거래부담은 주식매매대금보다 클 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EV-Equity bridge: EquityValue=EV-Debt-Preferred-Minority+Cash"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 기업가치(EV)·지분가치·주당가치 연결: 집값이 10억 원이어도 담보대출 6억 원이 있으면 집주인 몫은 4억 원이다. 기업도 영"
+        },
+        {
+          "labelled": false,
+          "text": "업가치에서 순부채와 우선주·비지배지분을 빼고 비영업자산을 더해야 보통주 가치가 된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): ROE: 같은 순이익이라도 적은 자기자본으로 벌면 이 개념은 높다. 다만 부채를 늘이거나 자사주 매입으로 장부자본을 줄여"
+        },
+        {
+          "labelled": false,
+          "text": "도 올라갈 수 있으므로 영업개선과 재무레버리지를 분리해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): EV-Equity bridge: 기업을 1,000에 산다는 표현이 영업가치인지 주주에게 지급할 금액인지 먼저 구분해야 한다. 인수자가 떠"
+        },
+        {
+          "labelled": false,
+          "text": "안는 순부채까지 포함하면 실제 거래부담은 주식매매대금보다 클 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 단순 보유기간 IRR: 같은 총이익이라도 현금을 더 빨리 회수한 투자의 연환산 수익은 높다. 레버리지를 쓰면 자기자본 수익"
+        },
+        {
+          "labelled": false,
+          "text": "이 커질 수 있지만 손실과 재융자 위험도 함께 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): EV와 EV/EBITDA: 시가총액만 비교하면 부채가 많은 회사를 싸게 볼 수 있다. 주주와 채권자 몫을 함께 보는 가치와 자본구"
+        },
+        {
+          "labelled": false,
+          "text": "조 전 영업성과처럼 청구권 기준이 맞는 두 값을 비교해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-05 · IBT-05:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q15",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: EV-Equity bridge\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "기업도 영업가치에서 순부채와 우선주·비지배지분을 빼고 비영업자산을 더해야 보통주 가치가 된다.",
+        "영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다.",
+        "같은 총분배금이라도 현금을 더 빨리 회수할수록 연환산 투자수익은 높아진다.",
+        "주주와 채권자의 합산 가치는 자본구조 전 영업성과와 비교해야 청구권 기준이 맞는다.",
+        "인수자가 떠안는 순부채까지 포함하면 실제 거래부담은 주식매매대금보다 클 수 있다."
+      ],
+      "evidence": "IBT-05 · IBT-05:verbal_relation:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 인수자가 떠안는 순부채까지 포함하면 실제 거래부담은 주식매매대금보다 클 수 있다. 용어: EV-Equity bridge."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: EV-Equity bridge는 인수대상 사업 전체 가치에서 부채·우선주·비지배지분을 빼고 현금을 더해 보통주 매매대금을 구하는"
+        },
+        {
+          "labelled": false,
+          "text": "과정이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 기업을 1,000에 산다는 표현이 영업가치인지 주주에게 지급할 금액인지 먼저 구분해야 한다. 인수자가 떠안는 순부채까지"
+        },
+        {
+          "labelled": false,
+          "text": "포함하면 실제 거래부담은 주식매매대금보다 클 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EV-Equity bridge: EquityValue=EV-Debt-Preferred-Minority+Cash"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 기업가치(EV)·지분가치·주당가치 연결: 기업도 영업가치에서 순부채와 우선주·비지배지분을 빼고 비영업자산을 더해야 보통"
+        },
+        {
+          "labelled": false,
+          "text": "주 가치가 된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 민감도: 영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 단순 보유기간 IRR: 같은 총분배금이라도 현금을 더 빨리 회수할수록 연환산 투자수익은 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): EV와 EV/EBITDA: 주주와 채권자의 합산 가치는 자본구조 전 영업성과와 비교해야 청구권 기준이 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): EV-Equity bridge: 인수자가 떠안는 순부채까지 포함하면 실제 거래부담은 주식매매대금보다 클 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-05 · IBT-05:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q16",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: M&A 시너지\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 투자로 들어오고 나가는 모든 현금흐름을 현재가치로 바꾼 뒤 초기투자와 비교한 순가치다.",
+        "옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다.",
+        "금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되는지 측정한다.",
+        "이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다.",
+        "이 개념은 결합으로 새로 생기는 세후 현금효과의 현재가치에서 통합비용을 차감한 순가치다."
+      ],
+      "evidence": "IBT-06 · IBT-06:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 결합으로 새로 생기는 세후 현금효과의 현재가치에서 통합비용을 차감한 순가치다. 용어: M&A 시너"
+        },
+        {
+          "labelled": false,
+          "text": "지."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: M&A 시너지는 결합으로 새로 생기는 세후 현금효과의 현재가치에서 통합비용을 차감한 순가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·"
+        },
+        {
+          "labelled": false,
+          "text": "퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치가 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: M&A 시너지: 무성장 영구 시너지 SynergyPV=AfterTaxAnnualSynergy/r; NetValueCreated=SynergyPV-IntegrationCost"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): NPV와 투자안 채택: 이 개념은 투자로 들어오고 나가는 모든 현금흐름을 현재가치로 바꾼 뒤 초기투자와 비교한 순가치다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Call·Put Payoff: 옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지"
+        },
+        {
+          "labelled": false,
+          "text": "않는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 통화정책·이자수익 전이: 금리 전이는 기준금리 변화가 변동금리 자산·부채의 이자수익과 비용에 얼마나 빠르고 크게 반영되"
+        },
+        {
+          "labelled": false,
+          "text": "는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): WACC: 이 개념은 기업의 시장가치 기준 부채·자기자본 조달비용을 세후 기준으로 합친 할인율이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): M&A 시너지: 이 개념은 결합으로 새로 생기는 세후 현금효과의 현재가치에서 통합비용을 차감한 순가치다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-06 · IBT-06:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q17",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: M&A 시너지\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회\n성 비용을 빼야 주주에게 남는 가치가 보인다.",
+        "같은 영업소득이라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 요구수익률에도 사려 하므로 가치가 높다. 요구수익률이 조금만 올\n라가도 가치가 크게 내려간다.",
+        "미래에 110원을 받는 투자라도 오늘 100원을 넣고 위험에 맞는 요구수익률이 15%라면 매력적이지 않다. 이 개념은 금액의 크기뿐 아니라\n시점과 위험을 함께 반영해 지금 부를 얼마나 늘리는지 보여 준다.",
+        "싼 부채를 더 쓰면 평균비용이 무조건 낮아지는 것은 아니다. 레버리지가 커질수록 주주와 채권자의 위험도 높아져 각 요구수익률이 변하\n므로 시장가치와 위험을 함께 봐야 한다.",
+        "기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수\n익 변화가 달라진다."
+      ],
+      "evidence": "IBT-06 · IBT-06:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고, 시"
+        },
+        {
+          "labelled": false,
+          "text": "스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치가 보인다. 용어: M&A 시너지."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: M&A 시너지는 결합으로 새로 생기는 세후 현금효과의 현재가치에서 통합비용을 차감한 순가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·"
+        },
+        {
+          "labelled": false,
+          "text": "퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치가 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: M&A 시너지: 무성장 영구 시너지 SynergyPV=AfterTaxAnnualSynergy/r; NetValueCreated=SynergyPV-IntegrationCost"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): M&A 시너지: 연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고,"
+        },
+        {
+          "labelled": false,
+          "text": "시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치가 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Cap rate 가치: 같은 영업소득이라도 더 안전하고 성장성이 높은 건물은 투자자가 낮은 요구수익률에도 사려 하므로 가치가"
+        },
+        {
+          "labelled": false,
+          "text": "높다. 요구수익률이 조금만 올라가도 가치가 크게 내려간다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): NPV와 투자안 채택: 미래에 110원을 받는 투자라도 오늘 100원을 넣고 위험에 맞는 요구수익률이 15%라면 매력적이지 않"
+        },
+        {
+          "labelled": false,
+          "text": "다. 이 개념은 금액의 크기뿐 아니라 시점과 위험을 함께 반영해 지금 부를 얼마나 늘리는지 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): WACC: 싼 부채를 더 쓰면 평균비용이 무조건 낮아지는 것은 아니다. 레버리지가 커질수록 주주와 채권자의 위험도 높아져"
+        },
+        {
+          "labelled": false,
+          "text": "각 요구수익률이 변하므로 시장가치와 위험을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 통화정책·이자수익 전이: 기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리"
+        },
+        {
+          "labelled": false,
+          "text": "floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-06 · IBT-06:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q18",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: M&A 시너지\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다.",
+        "레버리지가 커질수록 주주와 채권자의 위험도 높아져 각 요구수익률이 변하므로 시장가치와 위험을 함께 봐야 한다.",
+        "지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치가 보인다.",
+        "투자자가 요구하는 부동산 수익률이 높아질수록 같은 영업소득이 만드는 자산가치는 낮아진다.",
+        "미래 유입액의 현재가치가 초기 투자액보다 크면 현재의 부를 늘리고, 작으면 부를 줄인다."
+      ],
+      "evidence": "IBT-06 · IBT-06:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치"
+        },
+        {
+          "labelled": false,
+          "text": "가 보인다. 용어: M&A 시너지."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: M&A 시너지는 결합으로 새로 생기는 세후 현금효과의 현재가치에서 통합비용을 차감한 순가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·"
+        },
+        {
+          "labelled": false,
+          "text": "퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치가 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: M&A 시너지: 무성장 영구 시너지 SynergyPV=AfterTaxAnnualSynergy/r; NetValueCreated=SynergyPV-IntegrationCost"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 통화정책·이자수익 전이: 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): WACC: 레버리지가 커질수록 주주와 채권자의 위험도 높아져 각 요구수익률이 변하므로 시장가치와 위험을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): M&A 시너지: 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는"
+        },
+        {
+          "labelled": false,
+          "text": "가치가 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Cap rate 가치: 투자자가 요구하는 부동산 수익률이 높아질수록 같은 영업소득이 만드는 자산가치는 낮아진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): NPV와 투자안 채택: 미래 유입액의 현재가치가 초기 투자액보다 크면 현재의 부를 늘리고, 작으면 부를 줄인다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-06 · IBT-06:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q19",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: EPS accretion/dilution\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다.",
+        "이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다.",
+        "이 개념은 인수 후 합산이익과 새 주식수를 반영한 주당이익이 인수 전보다 늘거나 줄었는지 측정한다.",
+        "보통주주에게 귀속되는 이익을 해당 기간 실제로 유통된 보통주식수의 시간가중 평균으로 나눈 주당 성과다.",
+        "이 개념은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다."
+      ],
+      "evidence": "IBT-07 · IBT-07:definition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 인수 후 합산이익과 새 주식수를 반영한 주당이익이 인수 전보다 늘거나 줄었는지 측정한다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "EPS accretion/dilution."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: EPS accretion/dilution은 인수 후 합산이익과 새 주식수를 반영한 주당이익이 인수 전보다 늘거나 줄었는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 회사를 인수해 순이익이 늘어도 그 대가로 더 많은 신주를 발행하면 주당이익은 줄 수 있다. 반대로 EPS가 늘어도 과도한"
+        },
+        {
+          "labelled": false,
+          "text": "부채나 낮은 ROIC로 가치를 파괴할 수 있어 거래가치 판단과 같지는 않다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EPS accretion/dilution: ProFormaEPS=CombinedNI/ProFormaShares; A/D%=(ProFormaEPS/BuyerEPS-1)×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 기본 EPS: 이 개념은 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): IPO 지분희석: 이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): EPS accretion/dilution: 이 개념은 인수 후 합산이익과 새 주식수를 반영한 주당이익이 인수 전보다 늘거나 줄었는지 측정한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 기본주당이익(EPS)·가중평균주식수: 보통주주에게 귀속되는 이익을 해당 기간 실제로 유통된 보통주식수의 시간가중 평균으"
+        },
+        {
+          "labelled": false,
+          "text": "로 나눈 주당 성과다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 주식교환비율: 이 개념은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-07 · IBT-07:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q20",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: EPS accretion/dilution\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "인수회사 주가가 내려가면 고정가치 거래에서는 더 많은 주식을 줘야 하고, 고정비율 거래에서는 목표주주가 받는 가치가 줄어든다. 구조\n에 따라 가격변동 위험을 누가 부담하는지가 달라진다.",
+        "회사를 인수해 순이익이 늘어도 그 대가로 더 많은 신주를 발행하면 주당이익은 줄 수 있다. 반대로 이 개념이 늘어도 과도한 부채나 낮은\nROIC로 가치를 파괴할 수 있어 거래가치 판단과 같지는 않다.",
+        "연말에 신주를 발행했다면 그 주식이 1년 내내 이익을 만든 것처럼 분모에 전부 넣으면 안 된다. 이익은 우선주 몫을 먼저 빼고, 주식수는\n유통된 기간만큼 가중해 주당 성과를 맞춘다.",
+        "기업 전체 이익이 늘어도 신주가 더 빠르게 늘면 기존 주주의 주당 몫은 줄 수 있다. 그래서 순이익과 함께 증자·자사주·주식보상의 분모 효\n과를 봐야 한다.",
+        "기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은 100%에서 80%로 줄어든다. 이\n는 공모가가 낮아 생기는 가치희석과 구분해야 한다."
+      ],
+      "evidence": "IBT-07 · IBT-07:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 회사를 인수해 순이익이 늘어도 그 대가로 더 많은 신주를 발행하면 주당이익은 줄 수 있다. 반대로 이 개념이"
+        },
+        {
+          "labelled": false,
+          "text": "늘어도 과도한 부채나 낮은 ROIC로 가치를 파괴할 수 있어 거래가치 판단과 같지는 않다. 용어: EPS accretion/dilution."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: EPS accretion/dilution은 인수 후 합산이익과 새 주식수를 반영한 주당이익이 인수 전보다 늘거나 줄었는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 회사를 인수해 순이익이 늘어도 그 대가로 더 많은 신주를 발행하면 주당이익은 줄 수 있다. 반대로 EPS가 늘어도 과도한"
+        },
+        {
+          "labelled": false,
+          "text": "부채나 낮은 ROIC로 가치를 파괴할 수 있어 거래가치 판단과 같지는 않다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EPS accretion/dilution: ProFormaEPS=CombinedNI/ProFormaShares; A/D%=(ProFormaEPS/BuyerEPS-1)×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 주식교환비율: 인수회사 주가가 내려가면 고정가치 거래에서는 더 많은 주식을 줘야 하고, 고정비율 거래에서는 목표주주가"
+        },
+        {
+          "labelled": false,
+          "text": "받는 가치가 줄어든다. 구조에 따라 가격변동 위험을 누가 부담하는지가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): EPS accretion/dilution: 회사를 인수해 순이익이 늘어도 그 대가로 더 많은 신주를 발행하면 주당이익은 줄 수 있다. 반대로"
+        },
+        {
+          "labelled": false,
+          "text": "이 개념이 늘어도 과도한 부채나 낮은 ROIC로 가치를 파괴할 수 있어 거래가치 판단과 같지는 않다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 기본주당이익(EPS)·가중평균주식수: 연말에 신주를 발행했다면 그 주식이 1년 내내 이익을 만든 것처럼 분모에 전부 넣으면"
+        },
+        {
+          "labelled": false,
+          "text": "안 된다. 이익은 우선주 몫을 먼저 빼고, 주식수는 유통된 기간만큼 가중해 주당 성과를 맞춘다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 기본 EPS: 기업 전체 이익이 늘어도 신주가 더 빠르게 늘면 기존 주주의 주당 몫은 줄 수 있다. 그래서 순이익과 함께 증자·"
+        },
+        {
+          "labelled": false,
+          "text": "자사주·주식보상의 분모 효과를 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): IPO 지분희석: 기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은"
+        },
+        {
+          "labelled": false,
+          "text": "100%에서 80%로 줄어든다. 이는 공모가가 낮아 생기는 가치희석과 구분해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-07 · IBT-07:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q21",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: EPS accretion/dilution\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "인수회사의 주가가 낮을수록 고정된 인수가치를 지급하기 위해 넘겨야 할 신주 수는 많아진다.",
+        "반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다.",
+        "새로 발행하는 주식이 상장 후 전체 주식에서 차지하는 비중이 클수록 기존주주의 소유비율 감소도 커진다.",
+        "인수 후 합산 이익이 늘어도 대가로 발행한 주식수가 더 빠르게 늘면 기존 주주의 주당이익은 줄 수 있다.",
+        "그래서 순이익과 함께 증자·자사주·주식보상의 분모 효과를 봐야 한다."
+      ],
+      "evidence": "IBT-07 · IBT-07:verbal_relation:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 인수 후 합산 이익이 늘어도 대가로 발행한 주식수가 더 빠르게 늘면 기존 주주의 주당이익은 줄 수 있다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "EPS accretion/dilution."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: EPS accretion/dilution은 인수 후 합산이익과 새 주식수를 반영한 주당이익이 인수 전보다 늘거나 줄었는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 회사를 인수해 순이익이 늘어도 그 대가로 더 많은 신주를 발행하면 주당이익은 줄 수 있다. 반대로 EPS가 늘어도 과도한"
+        },
+        {
+          "labelled": false,
+          "text": "부채나 낮은 ROIC로 가치를 파괴할 수 있어 거래가치 판단과 같지는 않다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EPS accretion/dilution: ProFormaEPS=CombinedNI/ProFormaShares; A/D%=(ProFormaEPS/BuyerEPS-1)×100"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 주식교환비율: 인수회사의 주가가 낮을수록 고정된 인수가치를 지급하기 위해 넘겨야 할 신주 수는 많아진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 리서치 촉매·실적서프라이즈: 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): IPO 지분희석: 새로 발행하는 주식이 상장 후 전체 주식에서 차지하는 비중이 클수록 기존주주의 소유비율 감소도 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): EPS accretion/dilution: 인수 후 합산 이익이 늘어도 대가로 발행한 주식수가 더 빠르게 늘면 기존 주주의 주당이익은 줄 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 기본 EPS: 그래서 순이익과 함께 증자·자사주·주식보상의 분모 효과를 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-07 · IBT-07:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q22",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 주식교환비율\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을 나눈다.",
+        "이 개념은 인수 후 합산이익과 새 주식수를 반영한 주당이익이 인수 전보다 늘거나 줄었는지 측정한다.",
+        "이 개념은 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다.",
+        "이 개념은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다.",
+        "이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+      ],
+      "evidence": "IBT-08 · IBT-08:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다. 용어: 주식교환비율."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 주식교환비율은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 인수회사 주가가 내려가면 고정가치 거래에서는 더 많은 주식을 줘야 하고, 고정비율 거래에서는 목표주주가 받는 가치가"
+        },
+        {
+          "labelled": false,
+          "text": "줄어든다. 구조에 따라 가격변동 위험을 누가 부담하는지가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 주식교환비율: ExchangeRatio=OfferPriceTarget/BuyerSharePrice; NewShares=TargetShares×ExchangeRatio"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): IPO primary/secondary: 이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는"
+        },
+        {
+          "labelled": false,
+          "text": "물량을 나눈다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): EPS accretion/dilution: 이 개념은 인수 후 합산이익과 새 주식수를 반영한 주당이익이 인수 전보다 늘거나 줄었는지 측정한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): IPO 밸류에이션 배수: 이 개념은 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 주식교환비율: 이 개념은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): IPO 지분희석: 이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-08 · IBT-08:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q23",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 주식교환비율\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을 보존한다. 이 결과는 주식과 풋을 가진 조\n합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
+        "회사를 인수해 순이익이 늘어도 그 대가로 더 많은 신주를 발행하면 주당이익은 줄 수 있다. 반대로 이 개념이 늘어도 과도한 부채나 낮은\nROIC로 가치를 파괴할 수 있어 거래가치 판단과 같지는 않다.",
+        "기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은 100%에서 80%로 줄어든다. 이\n는 공모가가 낮아 생기는 가치희석과 구분해야 한다.",
+        "인수회사 주가가 내려가면 고정가치 거래에서는 더 많은 주식을 줘야 하고, 고정비율 거래에서는 목표주주가 받는 가치가 줄어든다. 구조\n에 따라 가격변동 위험을 누가 부담하는지가 달라진다.",
+        "공모 전 가치에 신주대금이 들어오면 상장 후 시가총액과 주식수가 달라진다. 공모가 배수는 pre-money와 post-money, 기본주식수와 희\n석주식수를 섞지 않아야 한다."
+      ],
+      "evidence": "IBT-08 · IBT-08:intuition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 인수회사 주가가 내려가면 고정가치 거래에서는 더 많은 주식을 줘야 하고, 고정비율 거래에서는 목표주주가 받"
+        },
+        {
+          "labelled": false,
+          "text": "는 가치가 줄어든다. 구조에 따라 가격변동 위험을 누가 부담하는지가 달라진다. 용어: 주식교환비율."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 주식교환비율은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 인수회사 주가가 내려가면 고정가치 거래에서는 더 많은 주식을 줘야 하고, 고정비율 거래에서는 목표주주가 받는 가치가"
+        },
+        {
+          "labelled": false,
+          "text": "줄어든다. 구조에 따라 가격변동 위험을 누가 부담하는지가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 주식교환비율: ExchangeRatio=OfferPriceTarget/BuyerSharePrice; NewShares=TargetShares×ExchangeRatio"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Put-Call Parity·차익거래: 콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을"
+        },
+        {
+          "labelled": false,
+          "text": "보존한다. 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): EPS accretion/dilution: 회사를 인수해 순이익이 늘어도 그 대가로 더 많은 신주를 발행하면 주당이익은 줄 수 있다. 반대로"
+        },
+        {
+          "labelled": false,
+          "text": "이 개념이 늘어도 과도한 부채나 낮은 ROIC로 가치를 파괴할 수 있어 거래가치 판단과 같지는 않다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): IPO 지분희석: 기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은"
+        },
+        {
+          "labelled": false,
+          "text": "100%에서 80%로 줄어든다. 이는 공모가가 낮아 생기는 가치희석과 구분해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 주식교환비율: 인수회사 주가가 내려가면 고정가치 거래에서는 더 많은 주식을 줘야 하고, 고정비율 거래에서는 목표주주가"
+        },
+        {
+          "labelled": false,
+          "text": "받는 가치가 줄어든다. 구조에 따라 가격변동 위험을 누가 부담하는지가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): IPO 밸류에이션 배수: 공모 전 가치에 신주대금이 들어오면 상장 후 시가총액과 주식수가 달라진다. 공모가 배수는"
+        },
+        {
+          "labelled": false,
+          "text": "pre-money와 post-money, 기본주식수와 희석주식수를 섞지 않아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-08 · IBT-08:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q24",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 주식교환비율\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "인수 후 합산 이익이 늘어도 대가로 발행한 주식수가 더 빠르게 늘면 기존 주주의 주당이익은 줄 수 있다.",
+        "인수회사의 주가가 낮을수록 고정된 인수가치를 지급하기 위해 넘겨야 할 신주 수는 많아진다.",
+        "공모가격이나 상장 후 주식수가 커질수록 상장 후 시가총액이 커지고, 이익이 같다면 이익 대비 배수도 높아진다.",
+        "이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
+        "새로 발행하는 주식이 상장 후 전체 주식에서 차지하는 비중이 클수록 기존주주의 소유비율 감소도 커진다."
+      ],
+      "evidence": "IBT-08 · IBT-08:verbal_relation:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 인수회사의 주가가 낮을수록 고정된 인수가치를 지급하기 위해 넘겨야 할 신주 수는 많아진다. 용어: 주식교환비"
+        },
+        {
+          "labelled": false,
+          "text": "율."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 주식교환비율은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 인수회사 주가가 내려가면 고정가치 거래에서는 더 많은 주식을 줘야 하고, 고정비율 거래에서는 목표주주가 받는 가치가"
+        },
+        {
+          "labelled": false,
+          "text": "줄어든다. 구조에 따라 가격변동 위험을 누가 부담하는지가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 주식교환비율: ExchangeRatio=OfferPriceTarget/BuyerSharePrice; NewShares=TargetShares×ExchangeRatio"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): EPS accretion/dilution: 인수 후 합산 이익이 늘어도 대가로 발행한 주식수가 더 빠르게 늘면 기존 주주의 주당이익은 줄 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 주식교환비율: 인수회사의 주가가 낮을수록 고정된 인수가치를 지급하기 위해 넘겨야 할 신주 수는 많아진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): IPO 밸류에이션 배수: 공모가격이나 상장 후 주식수가 커질수록 상장 후 시가총액이 커지고, 이익이 같다면 이익 대비 배수"
+        },
+        {
+          "labelled": false,
+          "text": "도 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Put-Call Parity·차익거래: 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): IPO 지분희석: 새로 발행하는 주식이 상장 후 전체 주식에서 차지하는 비중이 클수록 기존주주의 소유비율 감소도 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-08 · IBT-08:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q25",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: IPO primary/secondary\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다.",
+        "배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다.",
+        "이 개념은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다.",
+        "이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을 나눈다.",
+        "이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+      ],
+      "evidence": "IBT-09 · IBT-09:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을 나눈"
+        },
+        {
+          "labelled": false,
+          "text": "다. 용어: IPO primary/secondary."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: IPO primary/secondary 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을"
+        },
+        {
+          "labelled": false,
+          "text": "나눈다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 공모규모가 1,000이어도 전부 회사로 들어오는 것은 아니다. 구주매출 대금은 기존주주에게 가므로 회사의 현금과 성장자"
+        },
+        {
+          "labelled": false,
+          "text": "금은 신주모집 금액에서 수수료를 뺀 만큼만 늘어난다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: IPO primary/secondary: PrimaryProceeds=OfferPrice×NewShares; DealSize=Price×(New+Secondary)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): IPO 밸류에이션 배수: 이 개념은 공모가와 상장 후 주식수로 post-money 시가총액을 만들고 예상이익과 비교한 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 민감도: 배수 이 개념은 적용배수 변화가 EV와 주당가치에 미치는 영향을 빠르게 근사하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 주식교환비율: 이 개념은 목표회사 한 주를 넘기는 대가로 인수회사 주식을 몇 주 받는지 정하는 비율이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): IPO primary/secondary: 이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는"
+        },
+        {
+          "labelled": false,
+          "text": "물량을 나눈다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): IPO 지분희석: 이 개념은 신주 발행 뒤 전체 주식수가 늘어 기존주주의 소유비율이 감소하는 정도다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-09 · IBT-09:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q26",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: IPO primary/secondary\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "인수회사 주가가 내려가면 고정가치 거래에서는 더 많은 주식을 줘야 하고, 고정비율 거래에서는 목표주주가 받는 가치가 줄어든다. 구조\n에 따라 가격변동 위험을 누가 부담하는지가 달라진다.",
+        "공모 전 가치에 신주대금이 들어오면 상장 후 시가총액과 주식수가 달라진다. 공모가 배수는 pre-money와 post-money, 기본주식수와 희\n석주식수를 섞지 않아야 한다.",
+        "EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는지는 순부채와 주식수 브리\n지를 거쳐 확인해야 한다.",
+        "기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은 100%에서 80%로 줄어든다. 이\n는 공모가가 낮아 생기는 가치희석과 구분해야 한다.",
+        "공모규모가 1,000이어도 전부 회사로 들어오는 것은 아니다. 구주매출 대금은 기존주주에게 가므로 회사의 현금과 성장자금은 신주모집 금\n액에서 수수료를 뺀 만큼만 늘어난다."
+      ],
+      "evidence": "IBT-09 · IBT-09:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 공모규모가 1,000이어도 전부 회사로 들어오는 것은 아니다. 구주매출 대금은 기존주주에게 가므로 회사의 현금"
+        },
+        {
+          "labelled": false,
+          "text": "과 성장자금은 신주모집 금액에서 수수료를 뺀 만큼만 늘어난다. 용어: IPO primary/secondary."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: IPO primary/secondary 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을"
+        },
+        {
+          "labelled": false,
+          "text": "나눈다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 공모규모가 1,000이어도 전부 회사로 들어오는 것은 아니다. 구주매출 대금은 기존주주에게 가므로 회사의 현금과 성장자"
+        },
+        {
+          "labelled": false,
+          "text": "금은 신주모집 금액에서 수수료를 뺀 만큼만 늘어난다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: IPO primary/secondary: PrimaryProceeds=OfferPrice×NewShares; DealSize=Price×(New+Secondary)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 주식교환비율: 인수회사 주가가 내려가면 고정가치 거래에서는 더 많은 주식을 줘야 하고, 고정비율 거래에서는 목표주주가"
+        },
+        {
+          "labelled": false,
+          "text": "받는 가치가 줄어든다. 구조에 따라 가격변동 위험을 누가 부담하는지가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): IPO 밸류에이션 배수: 공모 전 가치에 신주대금이 들어오면 상장 후 시가총액과 주식수가 달라진다. 공모가 배수는"
+        },
+        {
+          "labelled": false,
+          "text": "pre-money와 post-money, 기본주식수와 희석주식수를 섞지 않아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 민감도: EBITDA가 같아도 시장이 8배 대신 9배를 주면 EV는 EBITDA 한 배만큼 늘어난다. 이 변화가 모두 주주에게 가는지는"
+        },
+        {
+          "labelled": false,
+          "text": "순부채와 주식수 브리지를 거쳐 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): IPO 지분희석: 기존주식 80주에 신주 20주를 발행하면 기존주주는 여전히 80주를 갖지만 회사 전체에서 차지하는 비율은"
+        },
+        {
+          "labelled": false,
+          "text": "100%에서 80%로 줄어든다. 이는 공모가가 낮아 생기는 가치희석과 구분해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): IPO primary/secondary: 공모규모가 1,000이어도 전부 회사로 들어오는 것은 아니다. 구주매출 대금은 기존주주에게 가므로"
+        },
+        {
+          "labelled": false,
+          "text": "회사의 현금과 성장자금은 신주모집 금액에서 수수료를 뺀 만큼만 늘어난다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-09 · IBT-09:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q27",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: IPO primary/secondary\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다.",
+        "새로 발행하는 주식이 상장 후 전체 주식에서 차지하는 비중이 클수록 기존주주의 소유비율 감소도 커진다.",
+        "인수회사의 주가가 낮을수록 고정된 인수가치를 지급하기 위해 넘겨야 할 신주 수는 많아진다.",
+        "공모가격이나 상장 후 주식수가 커질수록 상장 후 시가총액이 커지고, 이익이 같다면 이익 대비 배수도 높아진다.",
+        "구주매출 대금은 기존주주에게 가므로 회사의 현금과 성장자금은 신주모집 금액에서 수수료를 뺀 만큼만 늘어난다."
+      ],
+      "evidence": "IBT-09 · IBT-09:verbal_relation:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 구주매출 대금은 기존주주에게 가므로 회사의 현금과 성장자금은 신주모집 금액에서 수수료를 뺀 만큼만 늘어"
+        },
+        {
+          "labelled": false,
+          "text": "난다. 용어: IPO primary/secondary."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: IPO primary/secondary 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을"
+        },
+        {
+          "labelled": false,
+          "text": "나눈다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 공모규모가 1,000이어도 전부 회사로 들어오는 것은 아니다. 구주매출 대금은 기존주주에게 가므로 회사의 현금과 성장자"
+        },
+        {
+          "labelled": false,
+          "text": "금은 신주모집 금액에서 수수료를 뺀 만큼만 늘어난다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: IPO primary/secondary: PrimaryProceeds=OfferPrice×NewShares; DealSize=Price×(New+Secondary)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 민감도: 영업가치 변화가 커질수록 다른 조건이 같을 때 주당가치 변화도 커지며, 주식수가 많으면 주당 영향은 작아진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): IPO 지분희석: 새로 발행하는 주식이 상장 후 전체 주식에서 차지하는 비중이 클수록 기존주주의 소유비율 감소도 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 주식교환비율: 인수회사의 주가가 낮을수록 고정된 인수가치를 지급하기 위해 넘겨야 할 신주 수는 많아진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): IPO 밸류에이션 배수: 공모가격이나 상장 후 주식수가 커질수록 상장 후 시가총액이 커지고, 이익이 같다면 이익 대비 배수"
+        },
+        {
+          "labelled": false,
+          "text": "도 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): IPO primary/secondary: 구주매출 대금은 기존주주에게 가므로 회사의 현금과 성장자금은 신주모집 금액에서 수수료를 뺀"
+        },
+        {
+          "labelled": false,
+          "text": "만큼만 늘어난다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-09 · IBT-09:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q28",
+      "difficulty": 3,
+      "kind": "신규 계산·응용",
+      "stem": "수정듀레이션이 5인 채권에서 무위험금리가 25bp 하락하고 신용스프레드가 60bp 상승했다. 다른 조건이 같을 때 1차 근사\n가격변동률은?",
+      "choices": [
+        "-3.00%",
+        "-1.75%",
+        "-0.35%",
+        "+0.35%",
+        "+1.75%"
+      ],
+      "evidence": "IBT-01 · IBT-03",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "1) 총수익률 변화는 무위험금리 변화 -25bp와 스프레드 변화 +60bp의 합인 +35bp이다. 2) +35bp는 +0.35%p, 소수로 0.0035이다. 3)"
+        },
+        {
+          "labelled": false,
+          "text": "가격변동률 1차 근사는 -수정듀레이션×수익률 변화=-5×0.0035=-0.0175=-1.75%이다. 최종값을 소수 둘째 자리까지 표시했으며 반올"
+        },
+        {
+          "labelled": false,
+          "text": "림은 없다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "IBT-01 시장금리·실질금리: 실질금리는 명목금리에서 물가상승 효과를 제거해 돈의 구매력이 실제로 얼마나 늘어나는지 보여 준다. 핵"
+        },
+        {
+          "labelled": false,
+          "text": "심 관계는 시장금리·실질금리: 근사 RealRate 약 NominalRate-Inflation; 100bp=1%p 적용 가정은 - 기업가치와 지분가치 브리지를 명"
+        },
+        {
+          "labelled": false,
+          "text": "시한다."
+        },
+        {
+          "labelled": false,
+          "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+        },
+        {
+          "labelled": false,
+          "text": "IBT-03 신용스프레드·가격민감도: 신용스프레드 가격민감도는 국채금리가 같아도 차주의 신용위험 보상이 변할 때 회사채 가격이 얼마"
+        },
+        {
+          "labelled": false,
+          "text": "나 움직이는지 duration으로 근사한다. 핵심 관계는 신용스프레드·가격민감도: ΔP/P 약 -ModifiedDuration×ΔSpread; bp 표현 시"
+        },
+        {
+          "labelled": false,
+          "text": "priceChangeBp 약 -D×spreadChangeBp 적용 가정은 - 기업가치와 지분가치 브리지를 명시한다."
+        },
+        {
+          "labelled": false,
+          "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-01 · IBT-03"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q29",
+      "difficulty": 2,
+      "kind": "신규 계산·응용",
+      "stem": "미국 달러화 매출채권 USD 2,000,000을 보유한 기업에서 원/달러 환율이 1,320원에서 1,270원으로 하락했다. 다른 조건이\n같다면 원화 환산손익은 얼마인가?",
+      "choices": [
+        "-10억원",
+        "-1억원",
+        "-0.1억원",
+        "+1억원",
+        "+10억원"
+      ],
+      "evidence": "IBT-02",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "1) 환율 변화는 1,270원/USD-1,320원/USD=-50원/USD이다. 2) 달러 매출채권의 원화 환산손익은 USD 2,000,000×(-50원"
+        },
+        {
+          "labelled": false,
+          "text": "/USD)=-100,000,000원이다. 3) 100,000,000원=1억원이므로 환산손실은 -1억원이다. 원/USD와 USD가 소거되며 반올림하지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "IBT-02 FX 환산손익: FX 환산손익은 외화로 받을 금액의 원화가치가 환율 변화 때문에 얼마나 달라졌는지 측정한다. 핵심 관계는 FX 환"
+        },
+        {
+          "labelled": false,
+          "text": "산손익: 원화표시 수취액 USDNotional×KRW/USD; FX P&L=N×(S1-S0) 적용 가정은 - 기업가치와 지분가치 브리지를 명시한다."
+        },
+        {
+          "labelled": false,
+          "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-02"
+        }
+      ]
+    },
+    {
+      "id": "IBT-A-Q30",
+      "difficulty": 2,
+      "kind": "신규 계산·응용",
+      "stem": "공모가격이 주당 40,000원이고 신주 300만 주와 구주 200만 주를 함께 매출하는 거래가 있다. 수수료와 비용을 무시할 때\n회사 유입금액과 총 공모규모의 올바른 조합은?",
+      "choices": [
+        "1,200억원과 2,000억원",
+        "800억원과 2,000억원",
+        "2,000억원과 1,200억원",
+        "1,200억원과 800억원",
+        "2,000억원과 2,000억원"
+      ],
+      "evidence": "IBT-09",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "1) 회사 유입금액은 신주 대금만 포함하므로 40,000원/주×3,000,000주=120,000,000,000원=1,200억원이다. 2) 총 공모주식수는 300만"
+        },
+        {
+          "labelled": false,
+          "text": "주+200만 주=500만 주이다. 3) 총 공모규모는 40,000원/주×5,000,000주=200,000,000,000원=2,000억원이다. 원/주와 주가 소거되고"
+        },
+        {
+          "labelled": false,
+          "text": "억원 단위로 정확히 변환되어 반올림은 없다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "IBT-09 IPO primary/secondary: IPO primary/secondary 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해"
+        },
+        {
+          "labelled": false,
+          "text": "대금을 받는 물량을 나눈다. 핵심 관계는 IPO primary/secondary: PrimaryProceeds=OfferPrice×NewShares;"
+        },
+        {
+          "labelled": false,
+          "text": "DealSize=Price×(New+Secondary) 적용 가정은 - 기업가치와 지분가치 브리지를 명시한다."
+        },
+        {
+          "labelled": false,
+          "text": "• 거래 전후 주식수·순부채·조달조건을 확인한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: IBT-09"
+        }
+      ]
+    }
+  ]
+}

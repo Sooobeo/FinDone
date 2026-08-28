@@ -1,0 +1,3550 @@
+{
+  "schemaVersion": 1,
+  "sourceSha256": "edf526c295d299916bf873cb74900ff31765990280f362f42994c8ded873be52",
+  "id": "DER",
+  "anchor": "unit-DER",
+  "subjectId": "subject-05",
+  "subjectTitle": "05. 파생상품",
+  "title": "DER · 파생상품 전 범위",
+  "subtitle": "정본 이론 + 검증·파생·계산 문항",
+  "meta": [
+    "핵심개념 정본 전체",
+    "문제 30",
+    "상세 해설 30"
+  ],
+  "sourceNote": "기존 FinDone 완성본 복원 · 원본 PDF 560–597쪽",
+  "theory": [
+    {
+      "kind": "section",
+      "text": "개념 압축"
+    },
+    {
+      "kind": "body",
+      "text": "작은 글자와 옅은 박스로 밀도 있게 정리했습니다."
+    },
+    {
+      "kind": "label",
+      "text": "범위"
+    },
+    {
+      "kind": "body",
+      "text": "FinDone 학습요소 DER-01, DER-02, DER-03, DER-04, DER-05, DER-06, DER-07, DER-08, DER-09, DER-10"
+    },
+    {
+      "kind": "label",
+      "text": "문항 구성"
+    },
+    {
+      "kind": "body",
+      "text": "검증 문항은행 30 · 합계 30문항"
+    },
+    {
+      "kind": "label",
+      "text": "풀이 원칙"
+    },
+    {
+      "kind": "body",
+      "text": "정답만 제시하지 않고 핵심 조건, 계산 또는 판단 과정, 결과 해석, 대표 오답의 이유를 순서대로 설명합니다."
+    },
+    {
+      "kind": "section",
+      "text": "핵심 이론"
+    },
+    {
+      "kind": "element",
+      "text": "DER-01 · Forward·Futures 이론가격"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가격을 정한 값이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경로의 비용이 같아야 차익거래가 없다. 배당이나 해외금"
+    },
+    {
+      "kind": "body",
+      "text": "리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "단순금리·알려진 현금수익에서 F_0=(S_0-I)(1+rT); 무수익 자산의 연복리 1년형 F_0=S_0(1+r). 통화선도 1년형 F_0=S_0(1+r_d)/(1+r_f). 동일 만기·무중"
+    },
+    {
+      "kind": "body",
+      "text": "간 현금흐름이라는 가정에서 선도와 선물가격을 같게 취급한다."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 단순금리·알려진 현금수익에서 F_0=(S_0-I)(1+r × T)"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 무수익 자산의 연복리 1년형 F_0=S_0(1+r)."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 통화선도 1년형 F_0=S_0(1+r_d)/(1+r_f)."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 동일 만기·무중간 현금흐름이라는 가정에서 선도와 선물가격을 같게 취급한다."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 롱/숏과 권리/의무를 먼저 구분한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 만기 손익과 현재가치를 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 선도 호가 검증 - 시장 선도가격이 현물·금리·배당으로 설명되는 무차익 범위에 있는지 볼 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 환헤지 - 국내외 금리차가 통화선도환율에 어떻게 반영되는지 계산할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 15.401 Forward and Futures 강의·PDF · finance_interview_app_final_spec.md:L1563 · E. 파생상품 계산 문제 (DER) > DER-01. Forward·Futures 이"
+    },
+    {
+      "kind": "body",
+      "text": "론가격"
+    },
+    {
+      "kind": "element",
+      "text": "DER-02 · Forward·Futures 무차익거래"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정이익을 만드는 전략이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다. 반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선"
+    },
+    {
+      "kind": "body",
+      "text": "도를 매수하는 반대 경로를 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "시장선도가격 K_mkt가 이론가격 F*보다 높으면 현물 매수·선도 매도(cash-and-carry), 낮으면 가능한 경우 현물 공매도·선도 매수(reverse"
+    },
+    {
+      "kind": "body",
+      "text": "cash-and-carry). 만기 단위당 확정이익은 단순 조건에서 |K_mkt-F*|다."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 시장선도가격 K_(mkt)가 이론가격 F*보다 높으면 현물 매수·선도 매도(cash-and-carry), 낮으면 가능한 경우 현물 공매도·선도 매수(reverse"
+    },
+    {
+      "kind": "body",
+      "text": "cash-and-carry). 만기 단위당 확정이익은 단순 조건에서 |K_mkt-F*|다."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 롱/숏과 권리/의무를 먼저 구분한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 만기 손익과 현재가치를 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 가격 이상 탐지 - 거래비용과 공매도 제약을 반영한 뒤 현물·선물 간 차익기회를 찾을 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 가격수렴 이해 - 차익거래가 왜 시장 선도가격을 이론가격 근처로 되돌리는지 설명할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "중앙대 파생상품 공식 강의 · finance_interview_app_final_spec.md:L1574 · E. 파생상품 계산 문제 (DER) > DER-02. Forward·Futures 무차익거래"
+    },
+    {
+      "kind": "element",
+      "text": "DER-03 · 최소분산 Hedge Ratio·선물계약수"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "현물과 선물이 완전히 같이 움직이지 않으면 명목금액을 1대1로 맞춰도 위험이 남는다. 상관이 낮거나 선물 변동성이 크면 필요한 계약수가 달라지며,"
+    },
+    {
+      "kind": "body",
+      "text": "주식 포트폴리오는 시장 베타까지 반영한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "최소분산 헤지비율 h*=ρσ_S/σ_F; 계약수 N*=h*Q_A/Q_F. 주가지수선물 베타헤지는 N*=βV_P/(F_0×multiplier)."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 최소분산 헤지비율 h*=ρ σ _S/σ _F"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 계약수 N*=h*Q_A/Q_F."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 주가지수선물 베타헤지는 N*=β V_P/(F_0 × multiplier)."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 롱/숏과 권리/의무를 먼저 구분한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 만기 손익과 현재가치를 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 원자재 헤지 - 실제 노출과 선물가격의 움직임 차이를 반영해 계약수를 정할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 주식 베타 헤지 - 지수선물로 포트폴리오의 시장 노출을 목표 수준까지 낮출 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "중앙대 파생상품 공식 강의 · finance_interview_app_final_spec.md:L1585 · E. 파생상품 계산 문제 (DER) > DER-03. 최소분산 Hedge Ratio·선물계약수"
+    },
+    {
+      "kind": "element",
+      "text": "DER-04 · Call·Put Payoff"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "옵션 payoff는 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "콜은 정해진 가격에 살 권리라 시장가격이 행사가보다 높을 때만 행사할 가치가 있다. 풋은 정해진 가격에 팔 권리라 시장가격이 행사가보다 낮을 때"
+    },
+    {
+      "kind": "body",
+      "text": "가치가 생기며, 매도자의 payoff는 정확히 반대다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "만기 콜 payoff max(S_T-K,0), 풋 payoff max(K-S_T,0); 매도 포지션 payoff는 부호가 반대다. Payoff에는 최초 프리미엄을 넣지 않는다."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 만기 콜 payoff max(S_T-K,0), 풋 payoff max(K-S_T,0)"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 매도 포지션 payoff는 부호가 반대다. Payoff에는 최초 프리미엄을 넣지 않는다."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 롱/숏과 권리/의무를 먼저 구분한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 만기 손익과 현재가치를 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 만기 손익 구조 파악 - 옵션의 권리와 의무, 최대손실 방향을 먼저 확인할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 전략 조합 - 여러 콜·풋 leg의 만기 payoff를 가격 구간별로 합칠 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 15.401 Options 강의·PDF · finance_interview_app_final_spec.md:L1596 · E. 파생상품 계산 문제 (DER) > DER-04. Call·Put Payoff"
+    },
+    {
+      "kind": "element",
+      "text": "DER-05 · 옵션 Profit·손익분기점·전략손익"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "옵션 profit은 만기 payoff에서 처음 지급하거나 받은 프리미엄까지 반영한 최종 손익이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "콜이 만기에 행사될 만큼 올라도 처음 낸 프리미엄을 회수하지 못하면 전체 거래는 손실일 수 있다. 그래서 손익분기점은 행사가가 아니라 프리미엄"
+    },
+    {
+      "kind": "body",
+      "text": "만큼 이동하고, 복합전략은 각 leg의 프리미엄까지 모두 합쳐야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "롱 콜 profit max(S_T-K,0)-c; 롱 풋 max(K-S_T,0)-p; 콜 손익분기점 K+c, 풋 손익분기점 K-p. 복합전략은 각 leg의 profit을 합한다."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 롱 콜 profit max(S_T-K,0)-c"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 롱 풋 max(K-S_T,0)-p"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 콜 손익분기점 K+c, 풋 손익분기점 K-p. 복합전략은 각 leg의 profit을 합한다."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 롱/숏과 권리/의무를 먼저 구분한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 만기 손익과 현재가치를 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 옵션 전략 설계 - 목표 가격구간에서 최대이익·최대손실·손익분기점을 비교할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 거래 사후분석 - 기초자산 방향은 맞았는데도 손실이 난 이유를 프리미엄과 함께 설명할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 15.401 Options 강의·PDF · finance_interview_app_final_spec.md:L1607 · E. 파생상품 계산 문제 (DER) > DER-05. 옵션 Profit·손익분기점·전략손익"
+    },
+    {
+      "kind": "element",
+      "text": "DER-06 · Put-Call Parity·차익거래"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "Put-Call parity는 같은 만기·행사가의 유럽형 콜과 풋을 주식·무위험채권 조합과 연결하는 무차익 관계다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을 보존한다. 이 결과는 주식과 풋을 가진 조합과 같으"
+    },
+    {
+      "kind": "body",
+      "text": "므로 두 조합의 오늘 가격도 같아야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "무배당 유럽형 옵션에서 C+PV(K)=P+S_0, 즉 C-P=S_0-PV(K). 만기와 행사가가 같은 콜·풋이어야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 무배당 유럽형 옵션에서 C+PV(K)=P+S_0"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 즉 C-P=S_0-PV(K)."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 만기와 행사가가 같은 콜·풋이어야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 롱/숏과 권리/의무를 먼저 구분한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 만기 손익과 현재가치를 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 옵션 상대가치 - 콜·풋 중 하나가 다른 자산 대비 비싸거나 싼지 점검할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 합성 포지션 - 주식이나 선도 노출을 옵션과 채권으로 복제할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 15.401 Options 강의·PDF · finance_interview_app_final_spec.md:L1618 · E. 파생상품 계산 문제 (DER) > DER-06. Put-Call Parity·차익거래"
+    },
+    {
+      "kind": "element",
+      "text": "DER-07 · Binomial Option Pricing"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오의 비용으로 현재가를 구한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두 상품의 오늘 가격은 같아야 한다. 위험중립확률은 실"
+    },
+    {
+      "kind": "body",
+      "text": "제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "1기간 주식가 S_u=uS_0, S_d=dS_0; 무차익 조건 d<R<u; 위험중립확률 q=(R-d)/(u-d)=(RS_0-S_d)/(S_u-S_d); 옵션가 V_0=[qV_u+(1-q)V_d]/R; 복제 델"
+    },
+    {
+      "kind": "body",
+      "text": "타 Δ=(V_u-V_d)/(S_u-S_d)."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 상승 상태 주가: S_u=u × S_0"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 하락 상태 주가: S_d=d × S_0"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 무차익 조건: d<R<u"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 위험중립확률: q=(R-d)/(u-d)=(R × S_0-S_d)/(S_u-S_d)"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 옵션 현재가: V_0=[q × V_u+(1-q) × V_d]/R"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 복제 델타: Δ =(V_u-V_d)/(S_u-S_d)"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 롱/숏과 권리/의무를 먼저 구분한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 만기 손익과 현재가치를 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 옵션 가격 교육·검증 - 복제와 무차익이 옵션가격을 만드는 원리를 단계별로 확인할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 격자모형 확장 - 조기행사나 여러 시점 의사결정이 있는 옵션을 노드별로 평가할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "중앙대 파생상품 공식 강의 · finance_interview_app_final_spec.md:L1629 · E. 파생상품 계산 문제 (DER) > DER-07. Binomial Option Pricing"
+    },
+    {
+      "kind": "element",
+      "text": "DER-08 · Black-Scholes-Merton"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "Black-Scholes-Merton 모형은 무배당 유럽형 옵션을 주가, 행사가, 시간, 금리, 변동성으로 연결해 이론가를 계산한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "콜 가치는 단순히 현재 주가에서 행사가를 뺀 값이 아니다. 만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출에서 행사가의 현재가치를"
+    },
+    {
+      "kind": "body",
+      "text": "차감한 구조로 이해하면 각 입력의 방향이 보인다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "무배당 유럽형 콜 C=S_0N(d_1)-Ke^(-rT)N(d_2); 풋 P=Ke^(-rT)N(-d_2)-S_0N(-d_1); d_1=[ln(S_0/K)+(r+σ²/2)T]/(σ√T), d_2=d_1-σ√T."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 무배당 유럽형 콜: C=S_0 × N(d_1)-K × e^((-r × T)) × N(d_2)"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 무배당 유럽형 풋: P=K × e^((-r × T)) × N(-d_2)-S_0 × N(-d_1)"
+    },
+    {
+      "kind": "bullet",
+      "text": "• d1: d_1=[ln(S_0/K)+(r+σ ^(2)/2) × T]/(σ × sqrt(T))"
+    },
+    {
+      "kind": "bullet",
+      "text": "• d2: d_2=d_1-σ × sqrt(T)"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 롱/숏과 권리/의무를 먼저 구분한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 만기 손익과 현재가치를 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 옵션 호가 기준 - 시장가격과 모형가격, 내재변동성을 비교할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 위험관리 - 가격을 입력요인별 민감도인 Greeks로 분해하는 기준 모형으로 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Hull, *Options, Futures, and Other Derivatives*, 11e · finance_interview_app_final_spec.md:L1640 · E. 파생상품 계산 문제 (DER) > DER-08."
+    },
+    {
+      "kind": "body",
+      "text": "Black-Scholes-Merton"
+    },
+    {
+      "kind": "element",
+      "text": "DER-09 · Greeks·Delta Hedge·근사 P&L"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "Greeks는 옵션가치가 주가, 변동성, 시간, 금리에 얼마나 민감한지 요인별로 나눈 측정치다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "Delta만 맞추면 아주 작은 주가변화에는 중립이지만, 주가가 움직일수록 delta 자체가 gamma 때문에 바뀐다. 실제 손익은 주가뿐 아니라 변동성 변화"
+    },
+    {
+      "kind": "body",
+      "text": "와 시간경과도 함께 만들기 때문에 여러 Greek을 같이 봐야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "Delta=∂V/∂S, Gamma=∂²V/∂S², Vega=∂V/∂σ, Theta=∂V/∂t, Rho=∂V/∂r; 2차 근사 ΔV 약 DeltaΔS+0.5Gamma(ΔS)²+VegaΔσ+ThetaΔt+RhoΔr."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• Delta=∂ V/∂ S"
+    },
+    {
+      "kind": "bullet",
+      "text": "• Gamma=∂ ^(2)V/∂ S^(2)"
+    },
+    {
+      "kind": "bullet",
+      "text": "• Vega=∂ V/∂ σ"
+    },
+    {
+      "kind": "bullet",
+      "text": "• Theta=∂ V/∂ t"
+    },
+    {
+      "kind": "bullet",
+      "text": "• Rho=∂ V/∂ r"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 2차 근사"
+    },
+    {
+      "kind": "body",
+      "text": "Δ V 약 DeltaΔ S+0.5Gamma(Δ S)^(2)+VegaΔ σ +ThetaΔ t+RhoΔ r"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 롱/숏과 권리/의무를 먼저 구분한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 만기 손익과 현재가치를 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 옵션북 헤지 - delta를 중립화하고 gamma·vega·theta 잔여위험을 한도 안에서 관리할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 손익 설명 - 하루 옵션 손익을 주가, 곡률, 변동성, 시간, 금리 요인으로 근사 분해할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "중앙대 파생상품 공식 강의 · finance_interview_app_final_spec.md:L1652 · E. 파생상품 계산 문제 (DER) > DER-09. Greeks·Delta Hedge·근사 P&L"
+    },
+    {
+      "kind": "element",
+      "text": "DER-10 · Swap Cash Flows·Netting"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "스왑 현금흐름 netting은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방식이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지"
+    },
+    {
+      "kind": "body",
+      "text": "와 고정 지급·수취 방향을 먼저 확인해야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "이자율스왑에서 기간 초 확정된 변동금리 L_(t-1)를 기간 말에 지급한다. 고정금리 지급·변동금리 수취자의 순현금흐름은 CF_t=N(L_(t-1)-K)α_t,"
+    },
+    {
+      "kind": "body",
+      "text": "α_t=days/B. 동일 통화 plain-vanilla swap은 원금을 교환하지 않는다."
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 이자율스왑에서 기간 초 확정된 변동금리 L_(t-1)를 기간 말에 지급한다. 고정금리 지급·변동금리 수취자의 순현금흐름은 CF_t=N(L_(t-1)-K)α _t"
+    },
+    {
+      "kind": "bullet",
+      "text": "• α _t=days/B."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 동일 통화 plain-vanilla swap 은 원금을 교환하지 않는다."
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 롱/숏과 권리/의무를 먼저 구분한다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 만기 손익과 현재가치를 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 스왑 결제 - 직전 리셋금리, 고정금리, 일수계산으로 다음 순지급액을 계산할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리노출 전환 - 고정과 변동 현금흐름을 상계해 차입·자산의 금리구조를 바꿀 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "MIT 15.433 Investments 강의노트 · finance_interview_app_final_spec.md:L1663 · E. 파생상품 계산 문제 (DER) > DER-10. Swap Cash Flows·Netting"
+    }
+  ],
+  "questions": [
+    {
+      "id": "DER-Q01",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: Forward·Futures 이론가격\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가격을 정한 값이다.",
+        "이 개념은 투자로 들어오고 나가는 모든 현금흐름을 현재가치로 바꾼 뒤 초기투자와 비교한 순가치다.",
+        "최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다.",
+        "채권 현금흐름을 회수하는 가중평균 시점과 이를 수익률 변화에 대한 가격 민감도로 바꾼 값을 구분한다.",
+        "오늘부터 특정 만기까지 적용되는 금리와 서로 다른 만기의 금리가 암시하는 미래 구간 금리를 연결한다."
+      ],
+      "evidence": "DER-01 · DER-01:definition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가격을 정한 값이"
+        },
+        {
+          "labelled": false,
+          "text": "다. 용어: Forward·Futures 이론가격."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가격을 정한 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경로의 비용이 같아야 차익거"
+        },
+        {
+          "labelled": false,
+          "text": "래가 없다. 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 단순금리·알려진 현금수익에서 F_0=(S_0-I)(1+rT); 무수익 자산의 연복리 1년형 F_0=S_0(1+r). 통화선도 1년형"
+        },
+        {
+          "labelled": false,
+          "text": "F_0=S_0(1+r_d)/(1+r_f). 동일 만기·무중간 현금흐름이라는 가정에서 선도와 선물가격을 같게 취급한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): Forward·Futures 이론가격: 선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가"
+        },
+        {
+          "labelled": false,
+          "text": "격을 정한 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): NPV와 투자안 채택: 이 개념은 투자로 들어오고 나가는 모든 현금흐름을 현재가치로 바꾼 뒤 초기투자와 비교한 순가치다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 최소분산 Hedge Ratio·선물계약수: 최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장"
+        },
+        {
+          "labelled": false,
+          "text": "작게 만드는 선물 비중이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Macaulay Duration·Modified Duration: 채권 현금흐름을 회수하는 가중평균 시점과 이를 수익률 변화에 대한 가격 민감도로"
+        },
+        {
+          "labelled": false,
+          "text": "바꾼 값을 구분한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 현물이자율·선도금리: 오늘부터 특정 만기까지 적용되는 금리와 서로 다른 만기의 금리가 암시하는 미래 구간 금리를 연결"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-01 · DER-01:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q02",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: Forward·Futures 이론가격\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두 상품의 오늘 가격은 같아야 한다. 위험중\n립확률은 실제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다.",
+        "콜 가치는 단순히 현재 주가에서 행사가를 뺀 값이 아니다. 만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출에서 행사가의\n현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인다.",
+        "선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다. 반대로 선도가 싸면 공매도가 가능할 때 현물\n을 팔고 선도를 매수하는 반대 경로를 쓴다.",
+        "콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을 보존한다. 이 결과는 주식과 풋을 가진 조\n합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
+        "오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경로의 비용이 같아야 차익거래가 없다. 배당\n이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+      ],
+      "evidence": "DER-01 · DER-01:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경로의 비용이 같아"
+        },
+        {
+          "labelled": false,
+          "text": "야 차익거래가 없다. 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다. 용어: Forward·Futures 이"
+        },
+        {
+          "labelled": false,
+          "text": "론가격."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가격을 정한 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경로의 비용이 같아야 차익거"
+        },
+        {
+          "labelled": false,
+          "text": "래가 없다. 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 단순금리·알려진 현금수익에서 F_0=(S_0-I)(1+rT); 무수익 자산의 연복리 1년형 F_0=S_0(1+r). 통화선도 1년형"
+        },
+        {
+          "labelled": false,
+          "text": "F_0=S_0(1+r_d)/(1+r_f). 동일 만기·무중간 현금흐름이라는 가정에서 선도와 선물가격을 같게 취급한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Binomial Option Pricing: 주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두"
+        },
+        {
+          "labelled": false,
+          "text": "상품의 오늘 가격은 같아야 한다. 위험중립확률은 실제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Black-Scholes-Merton: 콜 가치는 단순히 현재 주가에서 행사가를 뺀 값이 아니다. 만기까지 오를 가능성과 남은 시간, 변동"
+        },
+        {
+          "labelled": false,
+          "text": "성을 반영한 주식 노출에서 행사가의 현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Forward·Futures 무차익거래: 선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다."
+        },
+        {
+          "labelled": false,
+          "text": "반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Put-Call Parity·차익거래: 콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을"
+        },
+        {
+          "labelled": false,
+          "text": "보존한다. 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): Forward·Futures 이론가격: 오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경"
+        },
+        {
+          "labelled": false,
+          "text": "로의 비용이 같아야 차익거래가 없다. 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-01 · DER-01:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q03",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: Forward·Futures 이론가격\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다.",
+        "만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출에서 행사가의 현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인\n다.",
+        "이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
+        "전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
+      ],
+      "evidence": "DER-01 · DER-01:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다. 용어: Forward·Futures 이"
+        },
+        {
+          "labelled": false,
+          "text": "론가격."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가격을 정한 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경로의 비용이 같아야 차익거"
+        },
+        {
+          "labelled": false,
+          "text": "래가 없다. 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 단순금리·알려진 현금수익에서 F_0=(S_0-I)(1+rT); 무수익 자산의 연복리 1년형 F_0=S_0(1+r). 통화선도 1년형"
+        },
+        {
+          "labelled": false,
+          "text": "F_0=S_0(1+r_d)/(1+r_f). 동일 만기·무중간 현금흐름이라는 가정에서 선도와 선물가격을 같게 취급한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): Forward·Futures 이론가격: 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Black-Scholes-Merton: 만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출에서 행사가의 현재가치를 차감한 구"
+        },
+        {
+          "labelled": false,
+          "text": "조로 이해하면 각 입력의 방향이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Put-Call Parity·차익거래: 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 채권선물 Basis·CTD: 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Forward·Futures 무차익거래: 반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-01 · DER-01:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q04",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: Forward·Futures 무차익거래\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오의 비용으로 현재가를 구한다.",
+        "이 개념은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다.",
+        "금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를 줄이는 작업이다.",
+        "옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다.",
+        "선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정이익을 만드는 전략이다."
+      ],
+      "evidence": "DER-02 · DER-02:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정이익을 만드는 전"
+        },
+        {
+          "labelled": false,
+          "text": "략이다. 용어: Forward·Futures 무차익거래."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정이익을 만드는 전략이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다. 반대로 선도가 싸면 공매도가"
+        },
+        {
+          "labelled": false,
+          "text": "가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 시장선도가격 K_mkt가 이론가격 F*보다 높으면 현물 매수·선도 매도(cash-and-carry), 낮으면 가능한 경우 현물 공매도·선도"
+        },
+        {
+          "labelled": false,
+          "text": "매수(reverse cash-and-carry). 만기 단위당 확정이익은 단순 조건에서 |K_mkt-F*|다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Binomial Option Pricing: 이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오"
+        },
+        {
+          "labelled": false,
+          "text": "의 비용으로 현재가를 구한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): P×Q 매출 추정: 이 개념은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 금리위험 헤징·계약수: 금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를"
+        },
+        {
+          "labelled": false,
+          "text": "줄이는 작업이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Call·Put Payoff: 옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지"
+        },
+        {
+          "labelled": false,
+          "text": "않는다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): Forward·Futures 무차익거래: 선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정"
+        },
+        {
+          "labelled": false,
+          "text": "이익을 만드는 전략이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-02 · DER-02:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q05",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: Forward·Futures 무차익거래\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다. 반대로 선도가 싸면 공매도가 가능할 때 현물\n을 팔고 선도를 매수하는 반대 경로를 쓴다.",
+        "선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장\n싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한 계약수만큼 더하면 두 손익이 상쇄되\n며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다.",
+        "콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을 보존한다. 이 결과는 주식과 풋을 가진 조\n합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
+        "오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경로의 비용이 같아야 차익거래가 없다. 배당\n이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+      ],
+      "evidence": "DER-02 · DER-02:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다. 반대로 선도가 싸"
+        },
+        {
+          "labelled": false,
+          "text": "면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다. 용어: Forward·Futures 무차익거래."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정이익을 만드는 전략이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다. 반대로 선도가 싸면 공매도가"
+        },
+        {
+          "labelled": false,
+          "text": "가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 시장선도가격 K_mkt가 이론가격 F*보다 높으면 현물 매수·선도 매도(cash-and-carry), 낮으면 가능한 경우 현물 공매도·선도"
+        },
+        {
+          "labelled": false,
+          "text": "매수(reverse cash-and-carry). 만기 단위당 확정이익은 단순 조건에서 |K_mkt-F*|다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): Forward·Futures 무차익거래: 선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다."
+        },
+        {
+          "labelled": false,
+          "text": "반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 채권선물 Basis·CTD: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품"
+        },
+        {
+          "labelled": false,
+          "text": "질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 금리위험 헤징·계약수: 채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한"
+        },
+        {
+          "labelled": false,
+          "text": "계약수만큼 더하면 두 손익이 상쇄되며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Put-Call Parity·차익거래: 콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을"
+        },
+        {
+          "labelled": false,
+          "text": "보존한다. 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Forward·Futures 이론가격: 오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경"
+        },
+        {
+          "labelled": false,
+          "text": "로의 비용이 같아야 차익거래가 없다. 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-02 · DER-02:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q06",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: Forward·Futures 무차익거래\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
+        "반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다.",
+        "현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄된다.",
+        "배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다.",
+        "전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+      ],
+      "evidence": "DER-02 · DER-02:verbal_relation:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다. 용어: Forward·Futures"
+        },
+        {
+          "labelled": false,
+          "text": "무차익거래."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정이익을 만드는 전략이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다. 반대로 선도가 싸면 공매도가"
+        },
+        {
+          "labelled": false,
+          "text": "가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 시장선도가격 K_mkt가 이론가격 F*보다 높으면 현물 매수·선도 매도(cash-and-carry), 낮으면 가능한 경우 현물 공매도·선도"
+        },
+        {
+          "labelled": false,
+          "text": "매수(reverse cash-and-carry). 만기 단위당 확정이익은 단순 조건에서 |K_mkt-F*|다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Put-Call Parity·차익거래: 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): Forward·Futures 무차익거래: 반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 금리위험 헤징·계약수: 현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄"
+        },
+        {
+          "labelled": false,
+          "text": "된다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Forward·Futures 이론가격: 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 채권선물 Basis·CTD: 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-02 · DER-02:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q07",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 최소분산 Hedge Ratio·선물계약수\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가격을 정한 값이다.",
+        "현물채권 가격과 전환계수로 조정한 선물가격의 차이를 비교해 인도자에게 가장 유리한 후보 채권을 찾는다.",
+        "최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다.",
+        "금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를 줄이는 작업이다.",
+        "이 개념은 옵션가치가 주가, 변동성, 시간, 금리에 얼마나 민감한지 요인별로 나눈 측정치다."
+      ],
+      "evidence": "DER-03 · DER-03:definition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중"
+        },
+        {
+          "labelled": false,
+          "text": "이다. 용어: 최소분산 Hedge Ratio·선물계약수."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 현물과 선물이 완전히 같이 움직이지 않으면 명목금액을 1대1로 맞춰도 위험이 남는다. 상관이 낮거나 선물 변동성이 크면"
+        },
+        {
+          "labelled": false,
+          "text": "필요한 계약수가 달라지며, 주식 포트폴리오는 시장 베타까지 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 최소분산 헤지비율 h*=ρσ_S/σ_F; 계약수 N*=h*Q_A/Q_F. 주가지수선물 베타헤지는 N*=βV_P/(F_0×multiplier)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Forward·Futures 이론가격: 선도·선물의 이론가격은 현물을 지금 사고 만기까지 보유하는 비용과 수익을 반영해 미래 인도가"
+        },
+        {
+          "labelled": false,
+          "text": "격을 정한 값이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 채권선물 Basis·CTD: 현물채권 가격과 전환계수로 조정한 선물가격의 차이를 비교해 인도자에게 가장 유리한 후보 채권을"
+        },
+        {
+          "labelled": false,
+          "text": "찾는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 최소분산 Hedge Ratio·선물계약수: 최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장"
+        },
+        {
+          "labelled": false,
+          "text": "작게 만드는 선물 비중이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 금리위험 헤징·계약수: 금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를"
+        },
+        {
+          "labelled": false,
+          "text": "줄이는 작업이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Greeks·Delta Hedge·근사 P&L: 이 개념은 옵션가치가 주가, 변동성, 시간, 금리에 얼마나 민감한지 요인별로 나눈 측정치다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-03 · DER-03:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q08",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 최소분산 Hedge Ratio·선물계약수\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "기초자산에 대한 일차 민감도만 맞추면 아주 작은 가격변화에는 중립이지만, 가격이 움직이면 그 민감도 자체도 달라진다. 변동성 변화와\n시간경과의 영향도 함께 봐야 한다.",
+        "현물과 선물이 완전히 같이 움직이지 않으면 명목금액을 1대1로 맞춰도 위험이 남는다. 상관이 낮거나 선물 변동성이 크면 필요한 계약수\n가 달라지며, 주식 포트폴리오는 시장 베타까지 반영한다.",
+        "오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경로의 비용이 같아야 차익거래가 없다. 배당\n이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다.",
+        "채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한 계약수만큼 더하면 두 손익이 상쇄되\n며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다.",
+        "선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장\n싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+      ],
+      "evidence": "DER-03 · DER-03:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 현물과 선물이 완전히 같이 움직이지 않으면 명목금액을 1대1로 맞춰도 위험이 남는다. 상관이 낮거나 선물 변"
+        },
+        {
+          "labelled": false,
+          "text": "동성이 크면 필요한 계약수가 달라지며, 주식 포트폴리오는 시장 베타까지 반영한다. 용어: 최소분산 Hedge Ratio·선물계약수."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 현물과 선물이 완전히 같이 움직이지 않으면 명목금액을 1대1로 맞춰도 위험이 남는다. 상관이 낮거나 선물 변동성이 크면"
+        },
+        {
+          "labelled": false,
+          "text": "필요한 계약수가 달라지며, 주식 포트폴리오는 시장 베타까지 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 최소분산 헤지비율 h*=ρσ_S/σ_F; 계약수 N*=h*Q_A/Q_F. 주가지수선물 베타헤지는 N*=βV_P/(F_0×multiplier)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Greeks·Delta Hedge·근사 P&L: 기초자산에 대한 일차 민감도만 맞추면 아주 작은 가격변화에는 중립이지만, 가격이 움직이"
+        },
+        {
+          "labelled": false,
+          "text": "면 그 민감도 자체도 달라진다. 변동성 변화와 시간경과의 영향도 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 최소분산 Hedge Ratio·선물계약수: 현물과 선물이 완전히 같이 움직이지 않으면 명목금액을 1대1로 맞춰도 위험이 남는다."
+        },
+        {
+          "labelled": false,
+          "text": "상관이 낮거나 선물 변동성이 크면 필요한 계약수가 달라지며, 주식 포트폴리오는 시장 베타까지 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Forward·Futures 이론가격: 오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경"
+        },
+        {
+          "labelled": false,
+          "text": "로의 비용이 같아야 차익거래가 없다. 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 금리위험 헤징·계약수: 채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한"
+        },
+        {
+          "labelled": false,
+          "text": "계약수만큼 더하면 두 손익이 상쇄되며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 채권선물 Basis·CTD: 선물 한 계약으로 서로 다른 채권을 인도할 수 있으므로 액면가격만 비교하면 안 된다. 전환계수로 품"
+        },
+        {
+          "labelled": false,
+          "text": "질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-03 · DER-03:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q09",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 최소분산 Hedge Ratio·선물계약수\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄된다.",
+        "상관이 낮거나 선물 변동성이 크면 필요한 계약수가 달라지며, 주식 포트폴리오는 시장 베타까지 반영한다.",
+        "기초자산, 변동성, 시간, 금리가 변하면 각각에 대한 민감도만큼 옵션가치가 함께 움직인다.",
+        "전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우한다.",
+        "배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+      ],
+      "evidence": "DER-03 · DER-03:verbal_relation:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 상관이 낮거나 선물 변동성이 크면 필요한 계약수가 달라지며, 주식 포트폴리오는 시장 베타까지 반영한다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "최소분산 Hedge Ratio·선물계약수."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 현물과 선물이 완전히 같이 움직이지 않으면 명목금액을 1대1로 맞춰도 위험이 남는다. 상관이 낮거나 선물 변동성이 크면"
+        },
+        {
+          "labelled": false,
+          "text": "필요한 계약수가 달라지며, 주식 포트폴리오는 시장 베타까지 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 최소분산 헤지비율 h*=ρσ_S/σ_F; 계약수 N*=h*Q_A/Q_F. 주가지수선물 베타헤지는 N*=βV_P/(F_0×multiplier)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 금리위험 헤징·계약수: 현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄"
+        },
+        {
+          "labelled": false,
+          "text": "된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 최소분산 Hedge Ratio·선물계약수: 상관이 낮거나 선물 변동성이 크면 필요한 계약수가 달라지며, 주식 포트폴리오는 시장"
+        },
+        {
+          "labelled": false,
+          "text": "베타까지 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Greeks·Delta Hedge·근사 P&L: 기초자산, 변동성, 시간, 금리가 변하면 각각에 대한 민감도만큼 옵션가치가 함께 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 채권선물 Basis·CTD: 전환계수로 품질 차이를 조정한 뒤 상대적으로 가장 싸게 인도할 수 있는 채권이 선물가격을 주로 좌우"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Forward·Futures 이론가격: 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-03 · DER-03:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q10",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: Call·Put Payoff\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "스왑 현금흐름 이 개념은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방식이다.",
+        "이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오의 비용으로 현재가를 구한다.",
+        "선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정이익을 만드는 전략이다.",
+        "옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다.",
+        "같은 만기와 행사가를 가진 유럽형 콜·풋의 가치를 주식과 무위험채권 조합에 연결하는 무차익 관계다."
+      ],
+      "evidence": "DER-04 · DER-04:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않"
+        },
+        {
+          "labelled": false,
+          "text": "는다. 용어: Call·Put Payoff."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 옵션 payoff는 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 콜은 정해진 가격에 살 권리라 시장가격이 행사가보다 높을 때만 행사할 가치가 있다. 풋은 정해진 가격에 팔 권리라 시장"
+        },
+        {
+          "labelled": false,
+          "text": "가격이 행사가보다 낮을 때 가치가 생기며, 매도자의 payoff는 정확히 반대다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 만기 콜 payoff max(S_T-K,0), 풋 payoff max(K-S_T,0); 매도 포지션 payoff는 부호가 반대다. Payoff에는 최초 프리미엄을 넣"
+        },
+        {
+          "labelled": false,
+          "text": "지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Swap Cash Flows·Netting: 스왑 현금흐름 이 개념은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방"
+        },
+        {
+          "labelled": false,
+          "text": "식이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Binomial Option Pricing: 이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오"
+        },
+        {
+          "labelled": false,
+          "text": "의 비용으로 현재가를 구한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Forward·Futures 무차익거래: 선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정"
+        },
+        {
+          "labelled": false,
+          "text": "이익을 만드는 전략이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): Call·Put Payoff: 옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지"
+        },
+        {
+          "labelled": false,
+          "text": "않는다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Put-Call Parity·차익거래: 같은 만기와 행사가를 가진 유럽형 콜·풋의 가치를 주식과 무위험채권 조합에 연결하는 무차익 관"
+        },
+        {
+          "labelled": false,
+          "text": "계다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-04 · DER-04:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q11",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: Call·Put Payoff\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금\n리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다.",
+        "선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다. 반대로 선도가 싸면 공매도가 가능할 때 현물\n을 팔고 선도를 매수하는 반대 경로를 쓴다.",
+        "콜은 정해진 가격에 살 권리라 시장가격이 행사가보다 높을 때만 행사할 가치가 있다. 풋은 정해진 가격에 팔 권리라 시장가격이 행사가보\n다 낮을 때 가치가 생기며, 매도자의 이 개념은 정확히 반대다.",
+        "콜이 만기에 행사될 만큼 올라도 처음 낸 프리미엄을 회수하지 못하면 전체 거래는 손실일 수 있다. 그래서 이 개념은 행사가가 아니라 프\n리미엄만큼 이동하고, 복합전략은 각 leg의 프리미엄까지 모두 합쳐야 한다.",
+        "콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을 보존한다. 이 결과는 주식과 풋을 가진 조\n합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+      ],
+      "evidence": "DER-04 · DER-04:intuition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 콜은 정해진 가격에 살 권리라 시장가격이 행사가보다 높을 때만 행사할 가치가 있다. 풋은 정해진 가격에 팔 권"
+        },
+        {
+          "labelled": false,
+          "text": "리라 시장가격이 행사가보다 낮을 때 가치가 생기며, 매도자의 이 개념은 정확히 반대다. 용어: Call·Put Payoff."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 옵션 payoff는 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 콜은 정해진 가격에 살 권리라 시장가격이 행사가보다 높을 때만 행사할 가치가 있다. 풋은 정해진 가격에 팔 권리라 시장"
+        },
+        {
+          "labelled": false,
+          "text": "가격이 행사가보다 낮을 때 가치가 생기며, 매도자의 payoff는 정확히 반대다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 만기 콜 payoff max(S_T-K,0), 풋 payoff max(K-S_T,0); 매도 포지션 payoff는 부호가 반대다. Payoff에는 최초 프리미엄을 넣"
+        },
+        {
+          "labelled": false,
+          "text": "지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Swap Cash Flows·Netting: 명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되"
+        },
+        {
+          "labelled": false,
+          "text": "어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Forward·Futures 무차익거래: 선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다."
+        },
+        {
+          "labelled": false,
+          "text": "반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): Call·Put Payoff: 콜은 정해진 가격에 살 권리라 시장가격이 행사가보다 높을 때만 행사할 가치가 있다. 풋은 정해진 가격에"
+        },
+        {
+          "labelled": false,
+          "text": "팔 권리라 시장가격이 행사가보다 낮을 때 가치가 생기며, 매도자의 이 개념은 정확히 반대다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 옵션 Profit·손익분기점·전략손익: 콜이 만기에 행사될 만큼 올라도 처음 낸 프리미엄을 회수하지 못하면 전체 거래는 손실일"
+        },
+        {
+          "labelled": false,
+          "text": "수 있다. 그래서 이 개념은 행사가가 아니라 프리미엄만큼 이동하고, 복합전략은 각 leg의 프리미엄까지 모두 합쳐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Put-Call Parity·차익거래: 콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을"
+        },
+        {
+          "labelled": false,
+          "text": "보존한다. 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-04 · DER-04:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q12",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: Call·Put Payoff\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다.",
+        "이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
+        "매수할 때 지급한 프리미엄이 커질수록 이익으로 전환되는 기초자산 가격의 경계는 더 멀어진다.",
+        "살 권리는 시장가격이 약정가격보다 높을 때, 팔 권리는 시장가격이 약정가격보다 낮을 때 만기 가치가 생긴다.",
+        "시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간다."
+      ],
+      "evidence": "DER-04 · DER-04:verbal_relation:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 살 권리는 시장가격이 약정가격보다 높을 때, 팔 권리는 시장가격이 약정가격보다 낮을 때 만기 가치가 생긴다."
+        },
+        {
+          "labelled": false,
+          "text": "용어: Call·Put Payoff."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 옵션 payoff는 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 콜은 정해진 가격에 살 권리라 시장가격이 행사가보다 높을 때만 행사할 가치가 있다. 풋은 정해진 가격에 팔 권리라 시장"
+        },
+        {
+          "labelled": false,
+          "text": "가격이 행사가보다 낮을 때 가치가 생기며, 매도자의 payoff는 정확히 반대다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 만기 콜 payoff max(S_T-K,0), 풋 payoff max(K-S_T,0); 매도 포지션 payoff는 부호가 반대다. Payoff에는 최초 프리미엄을 넣"
+        },
+        {
+          "labelled": false,
+          "text": "지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Forward·Futures 무차익거래: 반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Put-Call Parity·차익거래: 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 옵션 Profit·손익분기점·전략손익: 매수할 때 지급한 프리미엄이 커질수록 이익으로 전환되는 기초자산 가격의 경계는 더 멀"
+        },
+        {
+          "labelled": false,
+          "text": "어진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): Call·Put Payoff: 살 권리는 시장가격이 약정가격보다 높을 때, 팔 권리는 시장가격이 약정가격보다 낮을 때 만기 가치가 생긴"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 채권가격·YTM: 시장 요구수익률이 오르면 약정 현금흐름의 현재가치는 내려가고, 요구수익률이 내리면 현재가치는 올라간"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-04 · DER-04:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q13",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 옵션 Profit·손익분기점·전략손익\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다.",
+        "이 개념은 만기 payoff에서 처음 지급하거나 받은 프리미엄까지 반영한 최종 손익이다.",
+        "옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다.",
+        "이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는 물량을 나눈다.",
+        "이 개념은 여러 공통 위험요인에 대한 민감도와 각 요인의 위험보상을 합해 자산의 기대수익률을 설명한다."
+      ],
+      "evidence": "DER-05 · DER-05:definition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 만기 payoff에서 처음 지급하거나 받은 프리미엄까지 반영한 최종 손익이다. 용어: 옵션 Profit·손익분"
+        },
+        {
+          "labelled": false,
+          "text": "기점·전략손익."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 옵션 profit은 만기 payoff에서 처음 지급하거나 받은 프리미엄까지 반영한 최종 손익이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 콜이 만기에 행사될 만큼 올라도 처음 낸 프리미엄을 회수하지 못하면 전체 거래는 손실일 수 있다. 그래서 손익분기점은"
+        },
+        {
+          "labelled": false,
+          "text": "행사가가 아니라 프리미엄만큼 이동하고, 복합전략은 각 leg의 프리미엄까지 모두 합쳐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 롱 콜 profit max(S_T-K,0)-c; 롱 풋 max(K-S_T,0)-p; 콜 손익분기점 K+c, 풋 손익분기점 K-p. 복합전략은 각 leg의 profit을 합"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 최소분산 Hedge Ratio·선물계약수: 최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장"
+        },
+        {
+          "labelled": false,
+          "text": "작게 만드는 선물 비중이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 옵션 Profit·손익분기점·전략손익: 이 개념은 만기 payoff에서 처음 지급하거나 받은 프리미엄까지 반영한 최종 손익이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Call·Put Payoff: 옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지"
+        },
+        {
+          "labelled": false,
+          "text": "않는다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): IPO primary/secondary: 이 개념 구분은 공모주 중 회사가 새로 발행해 자금을 받는 물량과 기존주주가 매각해 대금을 받는"
+        },
+        {
+          "labelled": false,
+          "text": "물량을 나눈다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): APT 다요인 기대수익률: 이 개념은 여러 공통 위험요인에 대한 민감도와 각 요인의 위험보상을 합해 자산의 기대수익률을"
+        },
+        {
+          "labelled": false,
+          "text": "설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-05 · DER-05:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q14",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 옵션 Profit·손익분기점·전략손익\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "콜이 만기에 행사될 만큼 올라도 처음 낸 프리미엄을 회수하지 못하면 전체 거래는 손실일 수 있다. 그래서 이 개념은 행사가가 아니라 프\n리미엄만큼 이동하고, 복합전략은 각 leg의 프리미엄까지 모두 합쳐야 한다.",
+        "콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을 보존한다. 이 결과는 주식과 풋을 가진 조\n합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
+        "주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두 상품의 오늘 가격은 같아야 한다. 위험중\n립확률은 실제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다.",
+        "공장과 호텔은 비어 있어도 상당한 고정비가 든다. 이 개념을 넘기 전에는 추가 판매가 손실을 줄이고, 넘은 뒤에는 단위 공헌이익이 이익\n으로 빠르게 쌓여 영업레버리지가 커진다.",
+        "콜은 정해진 가격에 살 권리라 시장가격이 행사가보다 높을 때만 행사할 가치가 있다. 풋은 정해진 가격에 팔 권리라 시장가격이 행사가보\n다 낮을 때 가치가 생기며, 매도자의 이 개념은 정확히 반대다."
+      ],
+      "evidence": "DER-05 · DER-05:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 콜이 만기에 행사될 만큼 올라도 처음 낸 프리미엄을 회수하지 못하면 전체 거래는 손실일 수 있다. 그래서 이"
+        },
+        {
+          "labelled": false,
+          "text": "개념은 행사가가 아니라 프리미엄만큼 이동하고, 복합전략은 각 leg의 프리미엄까지 모두 합쳐야 한다. 용어: 옵션 Profit·손익분기점·전"
+        },
+        {
+          "labelled": false,
+          "text": "략손익."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 옵션 profit은 만기 payoff에서 처음 지급하거나 받은 프리미엄까지 반영한 최종 손익이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 콜이 만기에 행사될 만큼 올라도 처음 낸 프리미엄을 회수하지 못하면 전체 거래는 손실일 수 있다. 그래서 손익분기점은"
+        },
+        {
+          "labelled": false,
+          "text": "행사가가 아니라 프리미엄만큼 이동하고, 복합전략은 각 leg의 프리미엄까지 모두 합쳐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 롱 콜 profit max(S_T-K,0)-c; 롱 풋 max(K-S_T,0)-p; 콜 손익분기점 K+c, 풋 손익분기점 K-p. 복합전략은 각 leg의 profit을 합"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 옵션 Profit·손익분기점·전략손익: 콜이 만기에 행사될 만큼 올라도 처음 낸 프리미엄을 회수하지 못하면 전체 거래는 손실일"
+        },
+        {
+          "labelled": false,
+          "text": "수 있다. 그래서 이 개념은 행사가가 아니라 프리미엄만큼 이동하고, 복합전략은 각 leg의 프리미엄까지 모두 합쳐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Put-Call Parity·차익거래: 콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을"
+        },
+        {
+          "labelled": false,
+          "text": "보존한다. 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Binomial Option Pricing: 주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두"
+        },
+        {
+          "labelled": false,
+          "text": "상품의 오늘 가격은 같아야 한다. 위험중립확률은 실제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 가동률·손익분기점: 공장과 호텔은 비어 있어도 상당한 고정비가 든다. 이 개념을 넘기 전에는 추가 판매가 손실을 줄이고,"
+        },
+        {
+          "labelled": false,
+          "text": "넘은 뒤에는 단위 공헌이익이 이익으로 빠르게 쌓여 영업레버리지가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Call·Put Payoff: 콜은 정해진 가격에 살 권리라 시장가격이 행사가보다 높을 때만 행사할 가치가 있다. 풋은 정해진 가격에"
+        },
+        {
+          "labelled": false,
+          "text": "팔 권리라 시장가격이 행사가보다 낮을 때 가치가 생기며, 매도자의 이 개념은 정확히 반대다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-05 · DER-05:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q15",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 옵션 Profit·손익분기점·전략손익\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "판매량이 고정비를 회수하는 경계를 넘은 뒤에는 추가 단위의 공헌액이 이익으로 더 빠르게 쌓인다.",
+        "이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
+        "살 권리는 시장가격이 약정가격보다 높을 때, 팔 권리는 시장가격이 약정가격보다 낮을 때 만기 가치가 생긴다.",
+        "매수할 때 지급한 프리미엄이 커질수록 이익으로 전환되는 기초자산 가격의 경계는 더 멀어진다.",
+        "상승·하락 상태의 가중값은 실제 예측확률이 아니라 복제 포트폴리오와 같은 현재가격을 만들도록 정해진다."
+      ],
+      "evidence": "DER-05 · DER-05:verbal_relation:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 매수할 때 지급한 프리미엄이 커질수록 이익으로 전환되는 기초자산 가격의 경계는 더 멀어진다. 용어: 옵션"
+        },
+        {
+          "labelled": false,
+          "text": "Profit·손익분기점·전략손익."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 옵션 profit은 만기 payoff에서 처음 지급하거나 받은 프리미엄까지 반영한 최종 손익이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 콜이 만기에 행사될 만큼 올라도 처음 낸 프리미엄을 회수하지 못하면 전체 거래는 손실일 수 있다. 그래서 손익분기점은"
+        },
+        {
+          "labelled": false,
+          "text": "행사가가 아니라 프리미엄만큼 이동하고, 복합전략은 각 leg의 프리미엄까지 모두 합쳐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 롱 콜 profit max(S_T-K,0)-c; 롱 풋 max(K-S_T,0)-p; 콜 손익분기점 K+c, 풋 손익분기점 K-p. 복합전략은 각 leg의 profit을 합"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 가동률·손익분기점: 판매량이 고정비를 회수하는 경계를 넘은 뒤에는 추가 단위의 공헌액이 이익으로 더 빠르게 쌓인다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Put-Call Parity·차익거래: 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Call·Put Payoff: 살 권리는 시장가격이 약정가격보다 높을 때, 팔 권리는 시장가격이 약정가격보다 낮을 때 만기 가치가 생긴"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 옵션 Profit·손익분기점·전략손익: 매수할 때 지급한 프리미엄이 커질수록 이익으로 전환되는 기초자산 가격의 경계는 더 멀"
+        },
+        {
+          "labelled": false,
+          "text": "어진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Binomial Option Pricing: 상승·하락 상태의 가중값은 실제 예측확률이 아니라 복제 포트폴리오와 같은 현재가격을 만들도록"
+        },
+        {
+          "labelled": false,
+          "text": "정해진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-05 · DER-05:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q16",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: Put-Call Parity·차익거래\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 회사가 가진 자산의 재원이 채권자 몫인 부채와 주주 몫인 자본으로 나뉜다는 기본 구조다.",
+        "옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지 않는다.",
+        "금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함께 측정한다.",
+        "같은 만기와 행사가를 가진 유럽형 콜·풋의 가치를 주식과 무위험채권 조합에 연결하는 무차익 관계다.",
+        "이 개념은 서로 다른 시점의 돈을 하나의 기준시점으로 옮겨 비교하는 원리다."
+      ],
+      "evidence": "DER-06 · DER-06:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 같은 만기와 행사가를 가진 유럽형 콜·풋의 가치를 주식과 무위험채권 조합에 연결하는 무차익 관계다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "Put-Call Parity·차익거래."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Put-Call parity는 같은 만기·행사가의 유럽형 콜과 풋을 주식·무위험채권 조합과 연결하는 무차익 관계다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을 보존한다. 이 결과는 주식"
+        },
+        {
+          "labelled": false,
+          "text": "과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 무배당 유럽형 옵션에서 C+PV(K)=P+S_0, 즉 C-P=S_0-PV(K). 만기와 행사가가 같은 콜·풋이어야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 회계등식과 차변·대변: 이 개념은 회사가 가진 자산의 재원이 채권자 몫인 부채와 주주 몫인 자본으로 나뉜다는 기본 구조다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Call·Put Payoff: 옵션 이 개념은 만기 기초자산가격과 행사가격만으로 결정되는 권리의 가치이며 최초 프리미엄은 포함하지"
+        },
+        {
+          "labelled": false,
+          "text": "않는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): DV01·Convexity 가격변화: 금리가 1bp 움직일 때의 금액 변화와 큰 금리 변화에서 직선 근사의 오차를 보정하는 곡률을 함"
+        },
+        {
+          "labelled": false,
+          "text": "께 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): Put-Call Parity·차익거래: 같은 만기와 행사가를 가진 유럽형 콜·풋의 가치를 주식과 무위험채권 조합에 연결하는 무차익 관"
+        },
+        {
+          "labelled": false,
+          "text": "계다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 화폐의 시간가치 - 일시금 PV·FV: 이 개념은 서로 다른 시점의 돈을 하나의 기준시점으로 옮겨 비교하는 원리다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-06 · DER-06:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q17",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: Put-Call Parity·차익거래\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두 상품의 오늘 가격은 같아야 한다. 위험중\n립확률은 실제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다.",
+        "콜이 만기에 행사될 만큼 올라도 처음 낸 프리미엄을 회수하지 못하면 전체 거래는 손실일 수 있다. 그래서 이 개념은 행사가가 아니라 프\n리미엄만큼 이동하고, 복합전략은 각 leg의 프리미엄까지 모두 합쳐야 한다.",
+        "선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다. 반대로 선도가 싸면 공매도가 가능할 때 현물\n을 팔고 선도를 매수하는 반대 경로를 쓴다.",
+        "콜은 정해진 가격에 살 권리라 시장가격이 행사가보다 높을 때만 행사할 가치가 있다. 풋은 정해진 가격에 팔 권리라 시장가격이 행사가보\n다 낮을 때 가치가 생기며, 매도자의 이 개념은 정확히 반대다.",
+        "콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을 보존한다. 이 결과는 주식과 풋을 가진 조\n합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+      ],
+      "evidence": "DER-06 · DER-06:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을 보존한다. 이 결"
+        },
+        {
+          "labelled": false,
+          "text": "과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다. 용어: Put-Call Parity·차익거래."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Put-Call parity는 같은 만기·행사가의 유럽형 콜과 풋을 주식·무위험채권 조합과 연결하는 무차익 관계다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을 보존한다. 이 결과는 주식"
+        },
+        {
+          "labelled": false,
+          "text": "과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 무배당 유럽형 옵션에서 C+PV(K)=P+S_0, 즉 C-P=S_0-PV(K). 만기와 행사가가 같은 콜·풋이어야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Binomial Option Pricing: 주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두"
+        },
+        {
+          "labelled": false,
+          "text": "상품의 오늘 가격은 같아야 한다. 위험중립확률은 실제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 옵션 Profit·손익분기점·전략손익: 콜이 만기에 행사될 만큼 올라도 처음 낸 프리미엄을 회수하지 못하면 전체 거래는 손실일"
+        },
+        {
+          "labelled": false,
+          "text": "수 있다. 그래서 이 개념은 행사가가 아니라 프리미엄만큼 이동하고, 복합전략은 각 leg의 프리미엄까지 모두 합쳐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Forward·Futures 무차익거래: 선도가 지나치게 비싸면 현물을 빌린 돈으로 사고 비싼 선도를 매도해 만기 가격을 고정한다."
+        },
+        {
+          "labelled": false,
+          "text": "반대로 선도가 싸면 공매도가 가능할 때 현물을 팔고 선도를 매수하는 반대 경로를 쓴다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Call·Put Payoff: 콜은 정해진 가격에 살 권리라 시장가격이 행사가보다 높을 때만 행사할 가치가 있다. 풋은 정해진 가격에"
+        },
+        {
+          "labelled": false,
+          "text": "팔 권리라 시장가격이 행사가보다 낮을 때 가치가 생기며, 매도자의 이 개념은 정확히 반대다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): Put-Call Parity·차익거래: 콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을"
+        },
+        {
+          "labelled": false,
+          "text": "보존한다. 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-06 · DER-06:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q18",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: Put-Call Parity·차익거래\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다.",
+        "살 권리는 시장가격이 약정가격보다 높을 때, 팔 권리는 시장가격이 약정가격보다 낮을 때 만기 가치가 생긴다.",
+        "매수할 때 지급한 프리미엄이 커질수록 이익으로 전환되는 기초자산 가격의 경계는 더 멀어진다.",
+        "상승·하락 상태의 가중값은 실제 예측확률이 아니라 복제 포트폴리오와 같은 현재가격을 만들도록 정해진다.",
+        "이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+      ],
+      "evidence": "DER-06 · DER-06:verbal_relation:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다. 용어: Put-Call Parity·차익거래."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Put-Call parity는 같은 만기·행사가의 유럽형 콜과 풋을 주식·무위험채권 조합과 연결하는 무차익 관계다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을 보존한다. 이 결과는 주식"
+        },
+        {
+          "labelled": false,
+          "text": "과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 무배당 유럽형 옵션에서 C+PV(K)=P+S_0, 즉 C-P=S_0-PV(K). 만기와 행사가가 같은 콜·풋이어야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Forward·Futures 이론가격: 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Call·Put Payoff: 살 권리는 시장가격이 약정가격보다 높을 때, 팔 권리는 시장가격이 약정가격보다 낮을 때 만기 가치가 생긴"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 옵션 Profit·손익분기점·전략손익: 매수할 때 지급한 프리미엄이 커질수록 이익으로 전환되는 기초자산 가격의 경계는 더 멀"
+        },
+        {
+          "labelled": false,
+          "text": "어진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Binomial Option Pricing: 상승·하락 상태의 가중값은 실제 예측확률이 아니라 복제 포트폴리오와 같은 현재가격을 만들도록"
+        },
+        {
+          "labelled": false,
+          "text": "정해진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): Put-Call Parity·차익거래: 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-06 · DER-06:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q19",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: Binomial Option Pricing\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를 줄이는 작업이다.",
+        "이 개념 모형은 무배당 유럽형 옵션을 주가, 행사가, 시간, 금리, 변동성으로 연결해 이론가를 계산한다.",
+        "이 개념은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다.",
+        "이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오의 비용으로 현재가를 구한다.",
+        "스왑 현금흐름 이 개념은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방식이다."
+      ],
+      "evidence": "DER-07 · DER-07:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오의 비용으로"
+        },
+        {
+          "labelled": false,
+          "text": "현재가를 구한다. 용어: Binomial Option Pricing."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오의 비용으로 현재가를 구"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두 상품의 오늘 가격은 같아"
+        },
+        {
+          "labelled": false,
+          "text": "야 한다. 위험중립확률은 실제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 1기간 주식가 S_u=uS_0, S_d=dS_0; 무차익 조건 d<R<u; 위험중립확률 q=(R-d)/(u-d)=(RS_0-S_d)/(S_u-S_d); 옵션가"
+        },
+        {
+          "labelled": false,
+          "text": "V_0=[qV_u+(1-q)V_d]/R; 복제 델타 Δ=(V_u-V_d)/(S_u-S_d)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 금리위험 헤징·계약수: 금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를"
+        },
+        {
+          "labelled": false,
+          "text": "줄이는 작업이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Black-Scholes-Merton: 이 개념 모형은 무배당 유럽형 옵션을 주가, 행사가, 시간, 금리, 변동성으로 연결해 이론가를 계산한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): P×Q 매출 추정: 이 개념은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): Binomial Option Pricing: 이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오"
+        },
+        {
+          "labelled": false,
+          "text": "의 비용으로 현재가를 구한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Swap Cash Flows·Netting: 스왑 현금흐름 이 개념은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방"
+        },
+        {
+          "labelled": false,
+          "text": "식이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-07 · DER-07:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q20",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: Binomial Option Pricing\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두 상품의 오늘 가격은 같아야 한다. 위험중\n립확률은 실제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다.",
+        "콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을 보존한다. 이 결과는 주식과 풋을 가진 조\n합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
+        "명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금\n리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다.",
+        "채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한 계약수만큼 더하면 두 손익이 상쇄되\n며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다.",
+        "콜 가치는 단순히 현재 주가에서 행사가를 뺀 값이 아니다. 만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출에서 행사가의\n현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인다."
+      ],
+      "evidence": "DER-07 · DER-07:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두 상품의 오늘 가"
+        },
+        {
+          "labelled": false,
+          "text": "격은 같아야 한다. 위험중립확률은 실제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다. 용어: Binomial Option Pricing."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오의 비용으로 현재가를 구"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두 상품의 오늘 가격은 같아"
+        },
+        {
+          "labelled": false,
+          "text": "야 한다. 위험중립확률은 실제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 1기간 주식가 S_u=uS_0, S_d=dS_0; 무차익 조건 d<R<u; 위험중립확률 q=(R-d)/(u-d)=(RS_0-S_d)/(S_u-S_d); 옵션가"
+        },
+        {
+          "labelled": false,
+          "text": "V_0=[qV_u+(1-q)V_d]/R; 복제 델타 Δ=(V_u-V_d)/(S_u-S_d)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): Binomial Option Pricing: 주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두"
+        },
+        {
+          "labelled": false,
+          "text": "상품의 오늘 가격은 같아야 한다. 위험중립확률은 실제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Put-Call Parity·차익거래: 콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을"
+        },
+        {
+          "labelled": false,
+          "text": "보존한다. 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Swap Cash Flows·Netting: 명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되"
+        },
+        {
+          "labelled": false,
+          "text": "어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 금리위험 헤징·계약수: 채권을 들고 있으면 금리 상승 때 가격이 하락한다. 금리 상승 때 이익이 나는 선물 포지션을 적절한"
+        },
+        {
+          "labelled": false,
+          "text": "계약수만큼 더하면 두 손익이 상쇄되며, 계약수는 명목금액이 아니라 민감도를 기준으로 잡아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Black-Scholes-Merton: 콜 가치는 단순히 현재 주가에서 행사가를 뺀 값이 아니다. 만기까지 오를 가능성과 남은 시간, 변동"
+        },
+        {
+          "labelled": false,
+          "text": "성을 반영한 주식 노출에서 행사가의 현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-07 · DER-07:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q21",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: Binomial Option Pricing\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄된다.",
+        "상승·하락 상태의 가중값은 실제 예측확률이 아니라 복제 포트폴리오와 같은 현재가격을 만들도록 정해진다.",
+        "변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다.",
+        "이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
+        "수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다."
+      ],
+      "evidence": "DER-07 · DER-07:verbal_relation:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 상승·하락 상태의 가중값은 실제 예측확률이 아니라 복제 포트폴리오와 같은 현재가격을 만들도록 정해진다. 용"
+        },
+        {
+          "labelled": false,
+          "text": "어: Binomial Option Pricing."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오의 비용으로 현재가를 구"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 주식과 현금을 적절히 섞어 상승·하락 어느 상태에서도 옵션과 같은 payoff를 만들 수 있다면, 두 상품의 오늘 가격은 같아"
+        },
+        {
+          "labelled": false,
+          "text": "야 한다. 위험중립확률은 실제 예측확률이 아니라 이 가격 일치를 계산하기 위한 가중치다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 1기간 주식가 S_u=uS_0, S_d=dS_0; 무차익 조건 d<R<u; 위험중립확률 q=(R-d)/(u-d)=(RS_0-S_d)/(S_u-S_d); 옵션가"
+        },
+        {
+          "labelled": false,
+          "text": "V_0=[qV_u+(1-q)V_d]/R; 복제 델타 Δ=(V_u-V_d)/(S_u-S_d)."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 금리위험 헤징·계약수: 현물 포지션과 반대 방향인 선물의 금리 민감도를 같은 크기로 맞추면 작은 금리 변화의 손익이 상쇄"
+        },
+        {
+          "labelled": false,
+          "text": "된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): Binomial Option Pricing: 상승·하락 상태의 가중값은 실제 예측확률이 아니라 복제 포트폴리오와 같은 현재가격을 만들도록"
+        },
+        {
+          "labelled": false,
+          "text": "정해진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Swap Cash Flows·Netting: 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지"
+        },
+        {
+          "labelled": false,
+          "text": "급·수취 방향을 먼저 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Put-Call Parity·차익거래: 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): P×Q 매출 추정: 수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-07 · DER-07:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q22",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: Black-Scholes-Merton\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는 영향을 줄이는 전략이다.",
+        "이 개념 모형은 무배당 유럽형 옵션을 주가, 행사가, 시간, 금리, 변동성으로 연결해 이론가를 계산한다.",
+        "이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오의 비용으로 현재가를 구한다.",
+        "금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를 줄이는 작업이다.",
+        "이 개념은 주주가 받을 미래 배당의 현재가치로 주식가치를 설명하는 모형이다."
+      ],
+      "evidence": "DER-08 · DER-08:definition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념 모형은 무배당 유럽형 옵션을 주가, 행사가, 시간, 금리, 변동성으로 연결해 이론가를 계산한다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "Black-Scholes-Merton."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Black-Scholes-Merton 모형은 무배당 유럽형 옵션을 주가, 행사가, 시간, 금리, 변동성으로 연결해 이론가를 계산한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 콜 가치는 단순히 현재 주가에서 행사가를 뺀 값이 아니다. 만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출"
+        },
+        {
+          "labelled": false,
+          "text": "에서 행사가의 현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 무배당 유럽형 콜 C=S_0N(d_1)-Ke^(-rT)N(d_2); 풋 P=Ke^(-rT)N(-d_2)-S_0N(-d_1); d_1=[ln(S_0/K)+(r+σ²/2)T]/(σ√T),"
+        },
+        {
+          "labelled": false,
+          "text": "d_2=d_1-σ√T."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Duration Immunization: 이 개념은 자산과 부채의 현재가치와 금리 민감도를 맞춰 작은 금리 변화가 순자산가치에 미치는"
+        },
+        {
+          "labelled": false,
+          "text": "영향을 줄이는 전략이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): Black-Scholes-Merton: 이 개념 모형은 무배당 유럽형 옵션을 주가, 행사가, 시간, 금리, 변동성으로 연결해 이론가를 계산한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Binomial Option Pricing: 이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오"
+        },
+        {
+          "labelled": false,
+          "text": "의 비용으로 현재가를 구한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 금리위험 헤징·계약수: 금리위험 헤지는 포트폴리오와 선물의 DV01 또는 duration 노출을 반대 방향으로 맞춰 순민감도를"
+        },
+        {
+          "labelled": false,
+          "text": "줄이는 작업이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 배당할인모형(DDM): 이 개념은 주주가 받을 미래 배당의 현재가치로 주식가치를 설명하는 모형이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-08 · DER-08:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q23",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: Black-Scholes-Merton\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "콜 가치는 단순히 현재 주가에서 행사가를 뺀 값이 아니다. 만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출에서 행사가의\n현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인다.",
+        "콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을 보존한다. 이 결과는 주식과 풋을 가진 조\n합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
+        "오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경로의 비용이 같아야 차익거래가 없다. 배당\n이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다.",
+        "연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회\n성 비용을 빼야 주주에게 남는 가치가 보인다.",
+        "부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현재가치와 이 개념을 맞추면 한쪽 가치\n변화가 다른 쪽 변화로 대체로 상쇄된다."
+      ],
+      "evidence": "DER-08 · DER-08:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 콜 가치는 단순히 현재 주가에서 행사가를 뺀 값이 아니다. 만기까지 오를 가능성과 남은 시간, 변동성을 반영한"
+        },
+        {
+          "labelled": false,
+          "text": "주식 노출에서 행사가의 현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인다. 용어: Black-Scholes-Merton."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Black-Scholes-Merton 모형은 무배당 유럽형 옵션을 주가, 행사가, 시간, 금리, 변동성으로 연결해 이론가를 계산한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 콜 가치는 단순히 현재 주가에서 행사가를 뺀 값이 아니다. 만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출"
+        },
+        {
+          "labelled": false,
+          "text": "에서 행사가의 현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 무배당 유럽형 콜 C=S_0N(d_1)-Ke^(-rT)N(d_2); 풋 P=Ke^(-rT)N(-d_2)-S_0N(-d_1); d_1=[ln(S_0/K)+(r+σ²/2)T]/(σ√T),"
+        },
+        {
+          "labelled": false,
+          "text": "d_2=d_1-σ√T."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): Black-Scholes-Merton: 콜 가치는 단순히 현재 주가에서 행사가를 뺀 값이 아니다. 만기까지 오를 가능성과 남은 시간, 변동"
+        },
+        {
+          "labelled": false,
+          "text": "성을 반영한 주식 노출에서 행사가의 현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Put-Call Parity·차익거래: 콜과 행사가의 현재가치를 함께 가지면 만기에 주가가 높을 때는 주식을 사고, 낮을 때는 현금을"
+        },
+        {
+          "labelled": false,
+          "text": "보존한다. 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Forward·Futures 이론가격: 오늘 자산을 사서 자금조달비용을 내고 보유하는 경로와, 돈을 굴리다가 만기에 선도로 사는 경"
+        },
+        {
+          "labelled": false,
+          "text": "로의 비용이 같아야 차익거래가 없다. 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): M&A 시너지: 연간 비용절감 10이 생겨도 첫날 가치가 단순히 10은 아니다. 지속기간과 위험을 반영해 현재가치로 바꾸고,"
+        },
+        {
+          "labelled": false,
+          "text": "시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치가 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Duration Immunization: 부채 가치만 금리에 민감하고 자산은 둔감하면 금리 변화 때 자금 부족이 생길 수 있다. 두 쪽의 현"
+        },
+        {
+          "labelled": false,
+          "text": "재가치와 이 개념을 맞추면 한쪽 가치 변화가 다른 쪽 변화로 대체로 상쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-08 · DER-08:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q24",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: Black-Scholes-Merton\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출에서 행사가의 현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인\n다.",
+        "자산과 부채의 현재가치 및 금리 민감도를 맞추면 작은 금리 변화에서 양쪽 가치 변동이 대체로 상쇄된다.",
+        "지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는 가치가 보인다.",
+        "이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다.",
+        "배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+      ],
+      "evidence": "DER-08 · DER-08:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출에서 행사가의 현재가치를 차감한 구조로 이해하"
+        },
+        {
+          "labelled": false,
+          "text": "면 각 입력의 방향이 보인다. 용어: Black-Scholes-Merton."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Black-Scholes-Merton 모형은 무배당 유럽형 옵션을 주가, 행사가, 시간, 금리, 변동성으로 연결해 이론가를 계산한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 콜 가치는 단순히 현재 주가에서 행사가를 뺀 값이 아니다. 만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출"
+        },
+        {
+          "labelled": false,
+          "text": "에서 행사가의 현재가치를 차감한 구조로 이해하면 각 입력의 방향이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 무배당 유럽형 콜 C=S_0N(d_1)-Ke^(-rT)N(d_2); 풋 P=Ke^(-rT)N(-d_2)-S_0N(-d_1); d_1=[ln(S_0/K)+(r+σ²/2)T]/(σ√T),"
+        },
+        {
+          "labelled": false,
+          "text": "d_2=d_1-σ√T."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): Black-Scholes-Merton: 만기까지 오를 가능성과 남은 시간, 변동성을 반영한 주식 노출에서 행사가의 현재가치를 차감한 구"
+        },
+        {
+          "labelled": false,
+          "text": "조로 이해하면 각 입력의 방향이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Duration Immunization: 자산과 부채의 현재가치 및 금리 민감도를 맞추면 작은 금리 변화에서 양쪽 가치 변동이 대체로 상"
+        },
+        {
+          "labelled": false,
+          "text": "쇄된다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): M&A 시너지: 지속기간과 위험을 반영해 현재가치로 바꾸고, 시스템 통합·퇴직금 같은 일회성 비용을 빼야 주주에게 남는"
+        },
+        {
+          "labelled": false,
+          "text": "가치가 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Put-Call Parity·차익거래: 이 결과는 주식과 풋을 가진 조합과 같으므로 두 조합의 오늘 가격도 같아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Forward·Futures 이론가격: 배당이나 해외금리는 보유 중 받는 수익이므로 선도가격을 낮추는 방향으로 작용한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-08 · DER-08:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q25",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: Greeks·Delta Hedge·근사 P&L\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 옵션가치가 주가, 변동성, 시간, 금리에 얼마나 민감한지 요인별로 나눈 측정치다.",
+        "기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실이고 신용스프레드는 그 위험 등을 가격에 반영한 추가\n수익률이다.",
+        "이 개념은 명목금리에서 물가상승 효과를 제거해 돈의 구매력이 실제로 얼마나 늘어나는지 보여 준다.",
+        "이 개념은 외화로 받을 금액의 원화가치가 환율 변화 때문에 얼마나 달라졌는지 측정한다.",
+        "최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장 작게 만드는 선물 비중이다."
+      ],
+      "evidence": "DER-09 · DER-09:definition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 옵션가치가 주가, 변동성, 시간, 금리에 얼마나 민감한지 요인별로 나눈 측정치다. 용어: Greeks·Delta"
+        },
+        {
+          "labelled": false,
+          "text": "Hedge·근사 P&L."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Greeks는 옵션가치가 주가, 변동성, 시간, 금리에 얼마나 민감한지 요인별로 나눈 측정치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: Delta만 맞추면 아주 작은 주가변화에는 중립이지만, 주가가 움직일수록 delta 자체가 gamma 때문에 바뀐다. 실제 손익은"
+        },
+        {
+          "labelled": false,
+          "text": "주가뿐 아니라 변동성 변화와 시간경과도 함께 만들기 때문에 여러 Greek을 같이 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Delta=∂V/∂S, Gamma=∂²V/∂S², Vega=∂V/∂σ, Theta=∂V/∂t, Rho=∂V/∂r; 2차 근사 ΔV 약"
+        },
+        {
+          "labelled": false,
+          "text": "DeltaΔS+0.5Gamma(ΔS)²+VegaΔσ+ThetaΔt+RhoΔr."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): Greeks·Delta Hedge·근사 P&L: 이 개념은 옵션가치가 주가, 변동성, 시간, 금리에 얼마나 민감한지 요인별로 나눈 측정치다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 신용위험·Credit Spread·Expected Loss: 기대손실은 부도 시점의 노출액, 부도확률, 부도 후 손실률을 결합한 평균 신용손실"
+        },
+        {
+          "labelled": false,
+          "text": "이고 신용스프레드는 그 위험 등을 가격에 반영한 추가 수익률이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 시장금리·실질금리: 이 개념은 명목금리에서 물가상승 효과를 제거해 돈의 구매력이 실제로 얼마나 늘어나는지 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): FX 환산손익: 이 개념은 외화로 받을 금액의 원화가치가 환율 변화 때문에 얼마나 달라졌는지 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 최소분산 Hedge Ratio·선물계약수: 최소분산 헤지비율은 현물과 선물의 변동성·상관관계를 이용해 헤지 후 손익분산을 가장"
+        },
+        {
+          "labelled": false,
+          "text": "작게 만드는 선물 비중이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-09 · DER-09:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q26",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: Greeks·Delta Hedge·근사 P&L\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "달러 매출채권 금액이 그대로여도 원/달러 환율이 오르면 받을 원화는 늘어난다. 반대로 달러 지급의무가 있는 회사에는 같은 환율 상승이\n손실이 된다.",
+        "예금이 5% 늘어도 물가가 4% 오르면 살 수 있는 물건은 약 1%만 늘어난다. bp는 작은 금리 차이를 명확히 말하는 단위로, 100bp가 1%포\n인트다.",
+        "기초자산에 대한 일차 민감도만 맞추면 아주 작은 가격변화에는 중립이지만, 가격이 움직이면 그 민감도 자체도 달라진다. 변동성 변화와\n시간경과의 영향도 함께 봐야 한다.",
+        "100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다. 실제 스프레드에는 이 평균손실뿐 아니라 예상 밖 손\n실, 유동성, 위험회피 보상도 들어간다.",
+        "현물과 선물이 완전히 같이 움직이지 않으면 명목금액을 1대1로 맞춰도 위험이 남는다. 상관이 낮거나 선물 변동성이 크면 필요한 계약수\n가 달라지며, 주식 포트폴리오는 시장 베타까지 반영한다."
+      ],
+      "evidence": "DER-09 · DER-09:intuition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 기초자산에 대한 일차 민감도만 맞추면 아주 작은 가격변화에는 중립이지만, 가격이 움직이면 그 민감도 자체도"
+        },
+        {
+          "labelled": false,
+          "text": "달라진다. 변동성 변화와 시간경과의 영향도 함께 봐야 한다. 용어: Greeks·Delta Hedge·근사 P&L."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Greeks는 옵션가치가 주가, 변동성, 시간, 금리에 얼마나 민감한지 요인별로 나눈 측정치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: Delta만 맞추면 아주 작은 주가변화에는 중립이지만, 주가가 움직일수록 delta 자체가 gamma 때문에 바뀐다. 실제 손익은"
+        },
+        {
+          "labelled": false,
+          "text": "주가뿐 아니라 변동성 변화와 시간경과도 함께 만들기 때문에 여러 Greek을 같이 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Delta=∂V/∂S, Gamma=∂²V/∂S², Vega=∂V/∂σ, Theta=∂V/∂t, Rho=∂V/∂r; 2차 근사 ΔV 약"
+        },
+        {
+          "labelled": false,
+          "text": "DeltaΔS+0.5Gamma(ΔS)²+VegaΔσ+ThetaΔt+RhoΔr."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): FX 환산손익: 달러 매출채권 금액이 그대로여도 원/달러 환율이 오르면 받을 원화는 늘어난다. 반대로 달러 지급의무가 있는"
+        },
+        {
+          "labelled": false,
+          "text": "회사에는 같은 환율 상승이 손실이 된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 시장금리·실질금리: 예금이 5% 늘어도 물가가 4% 오르면 살 수 있는 물건은 약 1%만 늘어난다. bp는 작은 금리 차이를 명"
+        },
+        {
+          "labelled": false,
+          "text": "확히 말하는 단위로, 100bp가 1%포인트다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): Greeks·Delta Hedge·근사 P&L: 기초자산에 대한 일차 민감도만 맞추면 아주 작은 가격변화에는 중립이지만, 가격이 움직이"
+        },
+        {
+          "labelled": false,
+          "text": "면 그 민감도 자체도 달라진다. 변동성 변화와 시간경과의 영향도 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 신용위험·Credit Spread·Expected Loss: 100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다."
+        },
+        {
+          "labelled": false,
+          "text": "실제 스프레드에는 이 평균손실뿐 아니라 예상 밖 손실, 유동성, 위험회피 보상도 들어간다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 최소분산 Hedge Ratio·선물계약수: 현물과 선물이 완전히 같이 움직이지 않으면 명목금액을 1대1로 맞춰도 위험이 남는다."
+        },
+        {
+          "labelled": false,
+          "text": "상관이 낮거나 선물 변동성이 크면 필요한 계약수가 달라지며, 주식 포트폴리오는 시장 베타까지 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-09 · DER-09:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q27",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: Greeks·Delta Hedge·근사 P&L\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "부도 가능성이나 손실률이 커질수록 평균 신용손실과 투자자가 요구하는 보상은 커진다.",
+        "상관이 낮거나 선물 변동성이 크면 필요한 계약수가 달라지며, 주식 포트폴리오는 시장 베타까지 반영한다.",
+        "기초자산, 변동성, 시간, 금리가 변하면 각각에 대한 민감도만큼 옵션가치가 함께 움직인다.",
+        "반대로 달러 지급의무가 있는 회사에는 같은 환율 상승이 손실이 된다.",
+        "명목금리 상승분보다 물가상승분이 크면 구매력 기준 수익은 낮아지고, 그 반대면 높아진다."
+      ],
+      "evidence": "DER-09 · DER-09:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 기초자산, 변동성, 시간, 금리가 변하면 각각에 대한 민감도만큼 옵션가치가 함께 움직인다. 용어: Greeks·Delta"
+        },
+        {
+          "labelled": false,
+          "text": "Hedge·근사 P&L."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: Greeks는 옵션가치가 주가, 변동성, 시간, 금리에 얼마나 민감한지 요인별로 나눈 측정치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: Delta만 맞추면 아주 작은 주가변화에는 중립이지만, 주가가 움직일수록 delta 자체가 gamma 때문에 바뀐다. 실제 손익은"
+        },
+        {
+          "labelled": false,
+          "text": "주가뿐 아니라 변동성 변화와 시간경과도 함께 만들기 때문에 여러 Greek을 같이 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Delta=∂V/∂S, Gamma=∂²V/∂S², Vega=∂V/∂σ, Theta=∂V/∂t, Rho=∂V/∂r; 2차 근사 ΔV 약"
+        },
+        {
+          "labelled": false,
+          "text": "DeltaΔS+0.5Gamma(ΔS)²+VegaΔσ+ThetaΔt+RhoΔr."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 신용위험·Credit Spread·Expected Loss: 부도 가능성이나 손실률이 커질수록 평균 신용손실과 투자자가 요구하는 보상은 커"
+        },
+        {
+          "labelled": false,
+          "text": "진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 최소분산 Hedge Ratio·선물계약수: 상관이 낮거나 선물 변동성이 크면 필요한 계약수가 달라지며, 주식 포트폴리오는 시장"
+        },
+        {
+          "labelled": false,
+          "text": "베타까지 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): Greeks·Delta Hedge·근사 P&L: 기초자산, 변동성, 시간, 금리가 변하면 각각에 대한 민감도만큼 옵션가치가 함께 움직인다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): FX 환산손익: 반대로 달러 지급의무가 있는 회사에는 같은 환율 상승이 손실이 된다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 시장금리·실질금리: 명목금리 상승분보다 물가상승분이 크면 구매력 기준 수익은 낮아지고, 그 반대면 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-09 · DER-09:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q28",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: Swap Cash Flows·Netting\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정이익을 만드는 전략이다.",
+        "스왑 현금흐름 이 개념은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방식이다.",
+        "이 개념은 순이익에서 비현금항목·운전자본·투자·조달을 거쳐 기말현금까지 일관되게 이어 붙이는 모델링 과정이다.",
+        "이 개념은 인수대상 사업 전체 가치에서 부채·우선주·비지배지분을 빼고 현금을 더해 보통주 매매대금을 구하는 과정이다.",
+        "이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오의 비용으로 현재가를 구한다."
+      ],
+      "evidence": "DER-10 · DER-10:definition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 스왑 현금흐름 이 개념은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방식이다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "Swap Cash Flows·Netting."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 스왑 현금흐름 netting은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방식이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로,"
+        },
+        {
+          "labelled": false,
+          "text": "어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 이자율스왑에서 기간 초 확정된 변동금리 L_(t-1)를 기간 말에 지급한다. 고정금리 지급·변동금리 수취자의 순현금흐름은"
+        },
+        {
+          "labelled": false,
+          "text": "CF_t=N(L_(t-1)-K)α_t, α_t=days/B. 동일 통화 plain-vanilla swap은 원금을 교환하지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Forward·Futures 무차익거래: 선도 무차익거래는 시장 선도가격과 현물 보유의 복제비용 차이를 반대 포지션으로 잠가 확정"
+        },
+        {
+          "labelled": false,
+          "text": "이익을 만드는 전략이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): Swap Cash Flows·Netting: 스왑 현금흐름 이 개념은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방"
+        },
+        {
+          "labelled": false,
+          "text": "식이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 3개 재무제표 연결: 이 개념은 순이익에서 비현금항목·운전자본·투자·조달을 거쳐 기말현금까지 일관되게 이어 붙이는 모델"
+        },
+        {
+          "labelled": false,
+          "text": "링 과정이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): EV-Equity bridge: 이 개념은 인수대상 사업 전체 가치에서 부채·우선주·비지배지분을 빼고 현금을 더해 보통주 매매대금을"
+        },
+        {
+          "labelled": false,
+          "text": "구하는 과정이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Binomial Option Pricing: 이항모형은 다음 기간의 기초자산가격을 상승·하락 두 상태로 나누고 옵션을 복제하는 포트폴리오"
+        },
+        {
+          "labelled": false,
+          "text": "의 비용으로 현재가를 구한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-10 · DER-10:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q29",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: Swap Cash Flows·Netting\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "담보가격이 떨어질 수 있어 전액을 빌려주지 않는다. 담보에서 떼어 두는 완충 비율이 커질수록 대출액은 줄고 보호는 커지며, 만기에는 원\n금과 약정 이자를 합쳐 되산다.",
+        "기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수\n익 변화가 달라진다.",
+        "명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금\n리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다.",
+        "기업을 1,000에 산다는 표현이 영업가치인지 주주에게 지급할 금액인지 먼저 구분해야 한다. 인수자가 떠안는 순부채까지 포함하면 실제\n거래부담은 주식매매대금보다 클 수 있다.",
+        "원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정\n해져 어느 한쪽도 초기 가치가 없게 만든다."
+      ],
+      "evidence": "DER-10 · DER-10:intuition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되어 기간 말에 지"
+        },
+        {
+          "labelled": false,
+          "text": "급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다. 용어: Swap Cash Flows·Netting."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 스왑 현금흐름 netting은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방식이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로,"
+        },
+        {
+          "labelled": false,
+          "text": "어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 이자율스왑에서 기간 초 확정된 변동금리 L_(t-1)를 기간 말에 지급한다. 고정금리 지급·변동금리 수취자의 순현금흐름은"
+        },
+        {
+          "labelled": false,
+          "text": "CF_t=N(L_(t-1)-K)α_t, α_t=days/B. 동일 통화 plain-vanilla swap은 원금을 교환하지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Repo·Haircut: 담보가격이 떨어질 수 있어 전액을 빌려주지 않는다. 담보에서 떼어 두는 완충 비율이 커질수록 대출액은 줄"
+        },
+        {
+          "labelled": false,
+          "text": "고 보호는 커지며, 만기에는 원금과 약정 이자를 합쳐 되산다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 통화정책·이자수익 전이: 기준금리가 25bp 올라도 모든 대출이 즉시 같은 폭으로 오르는 것은 아니다. 재가격 주기와 금리"
+        },
+        {
+          "labelled": false,
+          "text": "floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): Swap Cash Flows·Netting: 명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되"
+        },
+        {
+          "labelled": false,
+          "text": "어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): EV-Equity bridge: 기업을 1,000에 산다는 표현이 영업가치인지 주주에게 지급할 금액인지 먼저 구분해야 한다. 인수자가 떠"
+        },
+        {
+          "labelled": false,
+          "text": "안는 순부채까지 포함하면 실제 거래부담은 주식매매대금보다 클 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 금리스왑 고정금리·현금흐름: 원금 자체를 주고받기보다 각 기간의 이자 차액만 정산한다. 계약 시작 때 고정금리는 고정 다"
+        },
+        {
+          "labelled": false,
+          "text": "리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-10 · DER-10:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "DER-Q30",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: Swap Cash Flows·Netting\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다.",
+        "계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽도 초기 가치가 없게 만든다.",
+        "인수자가 떠안는 순부채까지 포함하면 실제 거래부담은 주식매매대금보다 클 수 있다.",
+        "담보가치에서 더 큰 완충 비율을 떼어 둘수록 빌려주는 현금은 줄고 가격변동 보호는 커진다.",
+        "재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+      ],
+      "evidence": "DER-10 · DER-10:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을"
+        },
+        {
+          "labelled": false,
+          "text": "먼저 확인해야 한다. 용어: Swap Cash Flows·Netting."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 스왑 현금흐름 netting은 같은 통화의 고정·변동 이자를 각각 교환하지 않고 차액만 결제하는 방식이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 명목원금은 이자를 계산하는 기준일 뿐 실제로 주고받지 않는다. 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로,"
+        },
+        {
+          "labelled": false,
+          "text": "어느 시점의 금리를 쓰는지와 고정 지급·수취 방향을 먼저 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 이자율스왑에서 기간 초 확정된 변동금리 L_(t-1)를 기간 말에 지급한다. 고정금리 지급·변동금리 수취자의 순현금흐름은"
+        },
+        {
+          "labelled": false,
+          "text": "CF_t=N(L_(t-1)-K)α_t, α_t=days/B. 동일 통화 plain-vanilla swap은 원금을 교환하지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): Swap Cash Flows·Netting: 변동금리는 기간 시작에 확정되어 기간 말에 지급되므로, 어느 시점의 금리를 쓰는지와 고정 지"
+        },
+        {
+          "labelled": false,
+          "text": "급·수취 방향을 먼저 확인해야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 금리스왑 고정금리·현금흐름: 계약 시작 때 고정금리는 고정 다리와 변동 다리의 현재가치가 같아지도록 정해져 어느 한쪽"
+        },
+        {
+          "labelled": false,
+          "text": "도 초기 가치가 없게 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): EV-Equity bridge: 인수자가 떠안는 순부채까지 포함하면 실제 거래부담은 주식매매대금보다 클 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Repo·Haircut: 담보가치에서 더 큰 완충 비율을 떼어 둘수록 빌려주는 현금은 줄고 가격변동 보호는 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 통화정책·이자수익 전이: 재가격 주기와 금리 floor, 예금 beta에 따라 실제 연간 이자수익 변화가 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: DER-10 · DER-10:verbal_relation:01"
+        }
+      ]
+    }
+  ]
+}

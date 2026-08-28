@@ -1,0 +1,3394 @@
+{
+  "schemaVersion": 1,
+  "sourceSha256": "edf526c295d299916bf873cb74900ff31765990280f362f42994c8ded873be52",
+  "id": "EQV-7",
+  "anchor": "unit-EQV-7",
+  "subjectId": "subject-03",
+  "subjectTitle": "03. 주식 리서치·기업가치평가",
+  "title": "EQV-7 · 금융·보험·경기민감 산업과 리서치 판단",
+  "subtitle": "정본 이론 + 검증·파생·계산 문항",
+  "meta": [
+    "핵심개념 정본 전체",
+    "문제 30",
+    "상세 해설 30"
+  ],
+  "sourceNote": "기존 FinDone 완성본 복원 · 원본 PDF 484–521쪽",
+  "theory": [
+    {
+      "kind": "section",
+      "text": "개념 압축"
+    },
+    {
+      "kind": "body",
+      "text": "작은 글자와 옅은 박스로 밀도 있게 정리했습니다."
+    },
+    {
+      "kind": "label",
+      "text": "범위"
+    },
+    {
+      "kind": "body",
+      "text": "FinDone 학습요소 EQV-55, EQV-56, EQV-57, EQV-58, EQV-59, EQV-60, EQV-61, EQV-62, EQV-63, EQV-64"
+    },
+    {
+      "kind": "label",
+      "text": "문항 구성"
+    },
+    {
+      "kind": "body",
+      "text": "검증 문항은행 30 · 합계 30문항"
+    },
+    {
+      "kind": "label",
+      "text": "풀이 원칙"
+    },
+    {
+      "kind": "body",
+      "text": "정답만 제시하지 않고 핵심 조건, 계산 또는 판단 과정, 결과 해석, 대표 오답의 이유를 순서대로 설명합니다."
+    },
+    {
+      "kind": "section",
+      "text": "핵심 이론"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-55 · 은행 수익성·NIM"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "은행 수익성 분석은 이자수익·이자비용·평균이자수익자산과 예금금리 전가속도를 연결해 NIM과 PPNR을 본다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "시장금리가 올라도 대출금리는 늦게 오르고 예금금리는 빠르게 오르면 NIM은 줄 수 있다. 자산과 부채의 재가격 시점, 예금구성, 고객 이탈 압력을 함"
+    },
+    {
+      "kind": "body",
+      "text": "께 봐야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "은행 NII=InterestIncome-InterestExpense; NIM=NII/AvgEarningAssets; DepositBeta=ΔDepositCost/ΔBenchmarkRate;"
+    },
+    {
+      "kind": "body",
+      "text": "PPNR=NII+NoninterestIncome-Opex"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 은행 NII=InterestIncome-InterestExpense"
+    },
+    {
+      "kind": "bullet",
+      "text": "• NIM=NII/AvgEarningAssets"
+    },
+    {
+      "kind": "bullet",
+      "text": "• DepositBeta=Δ DepositCost/Δ BenchmarkRate"
+    },
+    {
+      "kind": "bullet",
+      "text": "• PPNR=NII+NoninterestIncome-Opex"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 은행 실적 추정 - 금리곡선과 대출·예금 beta로 순이자이익을 예측할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 금리 민감도 - 금리 상승·하락이 조달비용과 자산수익률에 전달되는 속도를 비교할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Federal Reserve BHCPR User Guide PDF · finance_interview_app_final_spec.md:L1772 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치"
+    },
+    {
+      "kind": "body",
+      "text": "확장 요소 (EQV-20 약 64) > F.3.5 선택형 산업 모듈 > EQV-55"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-56 · 은행 충당금·CET1·ROTCE"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "은행 충당금·CET1·ROTCE 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "충당금 환입으로 이익이 늘어도 대출의 기초 건전성이 좋아진 것인지 확인해야 한다. 높은 ROTCE도 자본을 너무 적게 보유한 결과라면 CET1 제약과"
+    },
+    {
+      "kind": "body",
+      "text": "함께 봐야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "EndAllowance=BeginAllowance+Provision-ChargeOffs+Recoveries±Other; CET1Ratio=CET1/RWA; ROTCE=CommonNI/AvgTCE"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "body",
+      "text": "EndAllowance=BeginAllowance+Provision-ChargeOffs+Recoveries± Other"
+    },
+    {
+      "kind": "bullet",
+      "text": "• CET1Ratio=CET1/RWA"
+    },
+    {
+      "kind": "bullet",
+      "text": "• ROTCE=CommonNI/AvgTCE"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 은행 가치평가 - 지속가능한 ROTCE와 자본비용으로 P/TBV 또는 잔여이익을 해석할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 스트레스 분석 - 대손 증가가 충당금, 이익, CET1 비율에 이어지는 경로를 볼 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "IFRS 9 Financial Instruments · finance_interview_app_final_spec.md:L1773 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소"
+    },
+    {
+      "kind": "body",
+      "text": "(EQV-20 약 64) > F.3.5 선택형 산업 모듈 > EQV-56"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-57 · 손해보험 손해율·합산비율"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "손해보험 손해율·합산비율은 보험료 중 사고손해와 사업비가 차지하는 비중으로 보험영업의 수익성을 측정한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "합산비율이 100%보다 낮으면 투자수익을 빼고도 보험영업에서 이익을 냈다는 뜻이다. 다만 사고는 늦게 보고될 수 있어 과거 준비금 수정이 현재 손"
+    },
+    {
+      "kind": "body",
+      "text": "해율을 좋거나 나쁘게 만들 수 있다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "손해보험 LossRatio=IncurredLosses/EarnedPremium; CombinedRatio=LossRatio+ExpenseRatio(+DividendRatio)"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 손해보험 LossRatio=IncurredLosses/EarnedPremium"
+    },
+    {
+      "kind": "body",
+      "text": "CombinedRatio=LossRatio+ExpenseRatio(+DividendRatio)"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 보험 실적 추정 - 가격인상과 손해액·사업비의 시차를 반영해 underwriting 이익을 예측할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 준비금 품질 점검 - reserve development가 반복적으로 이익을 보탰는지 악화시켰는지 볼 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "NAIC Property & Casualty Industry Analysis PDF · finance_interview_app_final_spec.md:L1774 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업"
+    },
+    {
+      "kind": "body",
+      "text": "리서치 확장 요소 (EQV-20 약 64) > F.3.5 선택형 산업 모듈 > EQV-57"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-58 · 생명보험 CSM·지급여력"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "생명보험 CSM·지급여력 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "CSM이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해"
+    },
+    {
+      "kind": "body",
+      "text": "제 속도를 따로 봐야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "생명보험 개념 브리지 ClosingCSM=OpeningCSM+NewBusiness+Interest+FutureServiceChanges-CSMRelease±FX;"
+    },
+    {
+      "kind": "body",
+      "text": "SolvencyRatio=AvailableCapital/RequiredCapital"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 생명보험 개념 브리지"
+    },
+    {
+      "kind": "body",
+      "text": "ClosingCSM=OpeningCSM+NewBusiness+Interest+FutureServiceChanges-CSMRelease± FX"
+    },
+    {
+      "kind": "body",
+      "text": "SolvencyRatio=AvailableCapital/RequiredCapital"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• IFRS 17 실적 분석 - CSM 증가와 release가 미래 보험이익에 주는 신호를 볼 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 자본건전성 평가 - 지급여력비율로 배당·성장 여력과 스트레스 흡수능력을 판단할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "IFRS 17 Insurance Contracts · finance_interview_app_final_spec.md:L1775 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소"
+    },
+    {
+      "kind": "body",
+      "text": "(EQV-20 약 64) > F.3.5 선택형 산업 모듈 > EQV-58"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-59 · 경기민감·원자재 정상화"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "경기민감·원자재 정상화는 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "원자재 가격 정점에서는 이익이 커 PER이 매우 낮아 보이지만 그 이익이 반복되지 않을 수 있다. 과거 평균이익만 쓰기보다 현재 생산량과 정상 가격·"
+    },
+    {
+      "kind": "body",
+      "text": "원가를 결합해야 구조변화를 반영한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "경기민감 NormalizedEBIT=CurrentScaleRevenue×ThroughCycleMargin; 원자재 Revenue 약 Price×Volume; CashMargin=RealizedPrice-CashCost"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 경기민감"
+    },
+    {
+      "kind": "body",
+      "text": "NormalizedEBIT=CurrentScaleRevenue × ThroughCycleMargin"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 원자재 Revenue 약 Price × Volume"
+    },
+    {
+      "kind": "bullet",
+      "text": "• CashMargin=RealizedPrice-CashCost"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 사이클 기업 평가 - peak/trough 이익 대신 through-cycle EBIT·FCF를 만들 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 민감도 분석 - 가격, 물량, 현금원가, 헤지가 이익에 미치는 영향을 분해할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran - Cyclical and Commodity Companies PDF · finance_interview_app_final_spec.md:L1776 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무"
+    },
+    {
+      "kind": "body",
+      "text": "기업 리서치 확장 요소 (EQV-20 약 64) > F.3.5 선택형 산업 모듈 > EQV-59"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-60 · 자원기업 NAV·매장량수명"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "자원기업 NAV는 유한한 광산·유전별 세후 현금흐름 현재가치에서 순부채와 폐쇄의무를 조정한 자산가치다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "매장량은 영원히 성장하는 사업이 아니라 채굴할수록 줄어드는 자산이다. 확인된 매장량, 개발 CAPEX, 생산속도, 폐쇄비용과 자산별 위험을 반영해야"
+    },
+    {
+      "kind": "body",
+      "text": "단순 영구성장모형의 오류를 피할 수 있다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "NAV=ΣPV(AssetAfterTaxFCF)+OtherAssets-NetDebt-Closure/ARO; ReserveLife=RecoverableReserves/AnnualProduction"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "body",
+      "text": "NAV=Σ PV(AssetAfterTaxFCF)+OtherAssets-NetDebt-Closure/ARO"
+    },
+    {
+      "kind": "body",
+      "text": "ReserveLife=RecoverableReserves/AnnualProduction"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 광산·에너지 평가 - 자산별 생산계획과 가격·원가로 NAV를 합산할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지속기간 점검 - 매장량수명과 신규탐사 필요성을 통해 현재 생산의 지속가능성을 볼 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "SEC Oil and Gas Disclosure Rules · finance_interview_app_final_spec.md:L1777 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요"
+    },
+    {
+      "kind": "body",
+      "text": "소 (EQV-20 약 64) > F.3.5 선택형 산업 모듈 > EQV-60"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-61 · 추정치 괴리·실적 서프라이즈"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "추정치 괴리·실적 서프라이즈는 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "실적이 전년보다 좋아도 시장이 더 좋은 숫자를 기대했다면 주가는 떨어질 수 있다. 절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기"
+    },
+    {
+      "kind": "body",
+      "text": "추정치를 바꾸는지가 중요하다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "EstimateGap=OurEstimate/Consensus-1; Surprise=Actual/Consensus-1; 목표가 변화는 EPS·배수·순부채로 분해"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• EstimateGap=OurEstimate/Consensus-1"
+    },
+    {
+      "kind": "bullet",
+      "text": "• Surprise=Actual/Consensus-1"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 목표가 변화는 EPS·배수·순부채로 분해"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 실적 프리뷰 - 내 추정과 컨센서스의 차이가 어느 KPI에서 생기는지 밝힐 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 실적 리뷰 - 서프라이즈가 EPS·배수·순부채를 통해 목표가에 미치는 영향을 업데이트할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "SEC EDGAR API·XBRL Company Facts · finance_interview_app_final_spec.md:L1783 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장"
+    },
+    {
+      "kind": "body",
+      "text": "요소 (EQV-20 약 64) > F.3.6 투자논리·촉매·위험·자본배분 > EQV-61"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-62 · 기대 TSR·촉매"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "기대 TSR·촉매 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결과가 어떤 지표에서 언제 확인될지를 촉매"
+    },
+    {
+      "kind": "body",
+      "text": "로 적어야 투자논리가 검증 가능해진다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "ExpectedTSR=(TargetPrice-CurrentPrice+ExpectedDividends)/CurrentPrice"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "body",
+      "text": "ExpectedTSR=(TargetPrice-CurrentPrice+ExpectedDividends)/CurrentPrice"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 투자의견 제시 - 가격상승과 배당을 합친 기대수익을 보유기간과 함께 비교할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 촉매 캘린더 - 실적, 승인, 제품출시 등 논리를 확인하거나 깨뜨릴 사건을 관리할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "NYU Damodaran Valuation 자료 허브 · finance_interview_app_final_spec.md:L1784 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장"
+    },
+    {
+      "kind": "body",
+      "text": "요소 (EQV-20 약 64) > F.3.6 투자논리·촉매·위험·자본배분 > EQV-62"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-63 · 기대손실·유동성 런웨이"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "기대손실·유동성 런웨이는 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "낮은 확률의 큰 손실은 평균 기대손실만 보면 작아 보일 수 있지만 실제 발생 때 회사를 무너뜨릴 수 있다. 현금소진, 만기부채, covenant, 차환 가능성"
+    },
+    {
+      "kind": "body",
+      "text": "을 함께 봐야 생존여력이 보인다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "ExpectedLoss=Probability×Impact; LiquidityRunway=(Cash+UndrawnFacilities-NearTermObligations)/CashBurn"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• ExpectedLoss=Probability × Impact"
+    },
+    {
+      "kind": "body",
+      "text": "LiquidityRunway=(Cash+UndrawnFacilities-NearTermObligations)/CashBurn"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 고위험 투자 분석 - 임상·규제·원가 사건의 하방과 thesis breaker를 정량화할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 유동성 점검 - 현금과 한도로 단기 의무·burn을 얼마나 감당하는지 계산할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "SEC EDGAR API·XBRL Company Facts · finance_interview_app_final_spec.md:L1785 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장"
+    },
+    {
+      "kind": "body",
+      "text": "요소 (EQV-20 약 64) > F.3.6 투자논리·촉매·위험·자본배분 > EQV-63"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-64 · 주주환원수익률·자본배분"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "주주환원수익률은 배당, 순자사주매입, 순부채상환을 시가총액과 비교해 주주에게 돌아가는 자본의 규모를 본다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "자사주를 사도 내재가치보다 비싼 가격이면 남은 주주의 가치를 파괴할 수 있다. 배당·상환·M&A·재투자 중 어디에 돈을 쓰는지가 수익률 숫자만큼 중"
+    },
+    {
+      "kind": "body",
+      "text": "요하다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "ShareholderYield=(Dividends+NetBuybacks+NetDebtRepayment)/MarketCap"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "body",
+      "text": "ShareholderYield=(Dividends+NetBuybacks+NetDebtRepayment)/MarketCap"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 자본배분 평가 - 잉여현금이 재투자·M&A·부채상환·환원 중 어디로 가는지 비교할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 환원 지속성 - 일회성 차입으로 만든 배당이 아니라 반복 FCF로 감당 가능한지 볼 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran Valuation Tools · finance_interview_app_final_spec.md:L1786 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소"
+    },
+    {
+      "kind": "body",
+      "text": "(EQV-20 약 64) > F.3.6 투자논리·촉매·위험·자본배분 > EQV-64"
+    }
+  ],
+  "questions": [
+    {
+      "id": "EQV-7-Q01",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 은행 수익성·NIM\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "대출·증권의 이자수익, 예금·차입의 이자비용, 평균이자수익자산과 예금금리 전가속도를 연결해 은행의 핵심 영업수익성을 본다.",
+        "이 개념 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다.",
+        "회계이익 중 실제 영업현금으로 뒷받침되는 정도를 비현금 조정과 현금 유입의 관점에서 측정한다.",
+        "이 개념은 보험료 중 사고손해와 사업비가 차지하는 비중으로 보험영업의 수익성을 측정한다.",
+        "이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다."
+      ],
+      "evidence": "EQV-55 · EQV-55:definition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 대출·증권의 이자수익, 예금·차입의 이자비용, 평균이자수익자산과 예금금리 전가속도를 연결해 은행의 핵심 영"
+        },
+        {
+          "labelled": false,
+          "text": "업수익성을 본다. 용어: 은행 수익성·NIM."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 은행 수익성 분석은 이자수익·이자비용·평균이자수익자산과 예금금리 전가속도를 연결해 NIM과 PPNR을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 시장금리가 올라도 대출금리는 늦게 오르고 예금금리는 빠르게 오르면 NIM은 줄 수 있다. 자산과 부채의 재가격 시점, 예금"
+        },
+        {
+          "labelled": false,
+          "text": "구성, 고객 이탈 압력을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 은행 NII=InterestIncome-InterestExpense; NIM=NII/AvgEarningAssets; DepositBeta=ΔDepositCost/ΔBenchmarkRate;"
+        },
+        {
+          "labelled": false,
+          "text": "PPNR=NII+NoninterestIncome-Opex"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 은행 수익성·NIM: 대출·증권의 이자수익, 예금·차입의 이자비용, 평균이자수익자산과 예금금리 전가속도를 연결해 은행의 핵"
+        },
+        {
+          "labelled": false,
+          "text": "심 영업수익성을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 은행 충당금·CET1·ROTCE: 이 개념 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 발생액비율·현금전환: 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 비현금 조정과 현금 유입의 관점에서 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 손해보험 손해율·합산비율: 이 개념은 보험료 중 사고손해와 사업비가 차지하는 비중으로 보험영업의 수익성을 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 생명보험 CSM·지급여력: 이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께"
+        },
+        {
+          "labelled": false,
+          "text": "본다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-55 · EQV-55:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q02",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 은행 수익성·NIM\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정\n변경, 환율, 해제 속도를 따로 봐야 한다.",
+        "순이익은 늘지만 매출채권과 재고가 더 빠르게 늘면 현금은 따라오지 않을 수 있다. 한 분기의 운전자본 변동은 일시적일 수 있으므로 절대\n값보다 여러 기간의 지속성을 봐야 한다.",
+        "시장금리가 올라도 대출금리는 늦게 오르고 예금금리는 빠르게 오르면 이 개념은 줄 수 있다. 자산과 부채의 재가격 시점, 예금구성, 고객\n이탈 압력을 함께 봐야 한다.",
+        "충당금 환입으로 이익이 늘어도 대출의 기초 건전성이 좋아졌는지 확인해야 한다. 유형자본 수익성이 높아도 규제상 손실흡수 자본이 부족\n하면 지속 가능하지 않을 수 있다.",
+        "이 개념이 100%보다 낮으면 투자수익을 빼고도 보험영업에서 이익을 냈다는 뜻이다. 다만 사고는 늦게 보고될 수 있어 과거 준비금 수정\n이 현재 손해율을 좋거나 나쁘게 만들 수 있다."
+      ],
+      "evidence": "EQV-55 · EQV-55:intuition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 시장금리가 올라도 대출금리는 늦게 오르고 예금금리는 빠르게 오르면 이 개념은 줄 수 있다. 자산과 부채의 재"
+        },
+        {
+          "labelled": false,
+          "text": "가격 시점, 예금구성, 고객 이탈 압력을 함께 봐야 한다. 용어: 은행 수익성·NIM."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 은행 수익성 분석은 이자수익·이자비용·평균이자수익자산과 예금금리 전가속도를 연결해 NIM과 PPNR을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 시장금리가 올라도 대출금리는 늦게 오르고 예금금리는 빠르게 오르면 NIM은 줄 수 있다. 자산과 부채의 재가격 시점, 예금"
+        },
+        {
+          "labelled": false,
+          "text": "구성, 고객 이탈 압력을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 은행 NII=InterestIncome-InterestExpense; NIM=NII/AvgEarningAssets; DepositBeta=ΔDepositCost/ΔBenchmarkRate;"
+        },
+        {
+          "labelled": false,
+          "text": "PPNR=NII+NoninterestIncome-Opex"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 생명보험 CSM·지급여력: 이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며"
+        },
+        {
+          "labelled": false,
+          "text": "이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 발생액비율·현금전환: 순이익은 늘지만 매출채권과 재고가 더 빠르게 늘면 현금은 따라오지 않을 수 있다. 한 분기의 운전자"
+        },
+        {
+          "labelled": false,
+          "text": "본 변동은 일시적일 수 있으므로 절대값보다 여러 기간의 지속성을 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 은행 수익성·NIM: 시장금리가 올라도 대출금리는 늦게 오르고 예금금리는 빠르게 오르면 이 개념은 줄 수 있다. 자산과 부채"
+        },
+        {
+          "labelled": false,
+          "text": "의 재가격 시점, 예금구성, 고객 이탈 압력을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 은행 충당금·CET1·ROTCE: 충당금 환입으로 이익이 늘어도 대출의 기초 건전성이 좋아졌는지 확인해야 한다. 유형자본 수익"
+        },
+        {
+          "labelled": false,
+          "text": "성이 높아도 규제상 손실흡수 자본이 부족하면 지속 가능하지 않을 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 손해보험 손해율·합산비율: 이 개념이 100%보다 낮으면 투자수익을 빼고도 보험영업에서 이익을 냈다는 뜻이다. 다만 사고"
+        },
+        {
+          "labelled": false,
+          "text": "는 늦게 보고될 수 있어 과거 준비금 수정이 현재 손해율을 좋거나 나쁘게 만들 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-55 · EQV-55:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q03",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 은행 수익성·NIM\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "사업부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다.",
+        "유형 보통주자본 대비 이익이 높아도 규제상 손실흡수 자본이 부족하면 지속 가능한 수익성으로 보기 어렵다.",
+        "대출 등 자산금리가 예금 등 조달금리보다 더 빠르게 오르면 이자마진이 개선되고 반대면 축소된다.",
+        "다만 사고는 늦게 보고될 수 있어 과거 준비금 수정이 현재 손해율을 좋거나 나쁘게 만들 수 있다.",
+        "회계이익에 비해 영업현금이 약할수록 비현금 조정 비중은 커지고 이익이 현금으로 이어지는 정도는 나빠진다."
+      ],
+      "evidence": "EQV-55 · EQV-55:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 대출 등 자산금리가 예금 등 조달금리보다 더 빠르게 오르면 이자마진이 개선되고 반대면 축소된다. 용어: 은행"
+        },
+        {
+          "labelled": false,
+          "text": "수익성·NIM."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 은행 수익성 분석은 이자수익·이자비용·평균이자수익자산과 예금금리 전가속도를 연결해 NIM과 PPNR을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 시장금리가 올라도 대출금리는 늦게 오르고 예금금리는 빠르게 오르면 NIM은 줄 수 있다. 자산과 부채의 재가격 시점, 예금"
+        },
+        {
+          "labelled": false,
+          "text": "구성, 고객 이탈 압력을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 은행 NII=InterestIncome-InterestExpense; NIM=NII/AvgEarningAssets; DepositBeta=ΔDepositCost/ΔBenchmarkRate;"
+        },
+        {
+          "labelled": false,
+          "text": "PPNR=NII+NoninterestIncome-Opex"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 사업부 믹스·연결 EBIT: 사업부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 은행 충당금·CET1·ROTCE: 유형 보통주자본 대비 이익이 높아도 규제상 손실흡수 자본이 부족하면 지속 가능한 수익성으로"
+        },
+        {
+          "labelled": false,
+          "text": "보기 어렵다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 은행 수익성·NIM: 대출 등 자산금리가 예금 등 조달금리보다 더 빠르게 오르면 이자마진이 개선되고 반대면 축소된다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 손해보험 손해율·합산비율: 다만 사고는 늦게 보고될 수 있어 과거 준비금 수정이 현재 손해율을 좋거나 나쁘게 만들 수 있"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 발생액비율·현금전환: 회계이익에 비해 영업현금이 약할수록 비현금 조정 비중은 커지고 이익이 현금으로 이어지는 정도는"
+        },
+        {
+          "labelled": false,
+          "text": "나빠진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-55 · EQV-55:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q04",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 은행 충당금·CET1·ROTCE\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다.",
+        "플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비를 차감한 뒤 남는 이익을 연결하는 분석이다.",
+        "이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다.",
+        "이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다.",
+        "대출·증권의 이자수익, 예금·차입의 이자비용, 평균이자수익자산과 예금금리 전가속도를 연결해 은행의 핵심 영업수익성을 본다."
+      ],
+      "evidence": "EQV-56 · EQV-56:definition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다. 용어: 은행 충당금·CET1·ROTCE."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 은행 충당금·CET1·ROTCE 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 충당금 환입으로 이익이 늘어도 대출의 기초 건전성이 좋아진 것인지 확인해야 한다. 높은 ROTCE도 자본을 너무 적게 보유"
+        },
+        {
+          "labelled": false,
+          "text": "한 결과라면 CET1 제약과 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EndAllowance=BeginAllowance+Provision-ChargeOffs+Recoveries±Other; CET1Ratio=CET1/RWA;"
+        },
+        {
+          "labelled": false,
+          "text": "ROTCE=CommonNI/AvgTCE"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 은행 충당금·CET1·ROTCE: 이 개념 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): GMV·Take Rate·공헌이익: 플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비를 차감한 뒤 남는 이익을 연결하는 분석"
+        },
+        {
+          "labelled": false,
+          "text": "이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 기대 TSR·촉매: 이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 생명보험 CSM·지급여력: 이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께"
+        },
+        {
+          "labelled": false,
+          "text": "본다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 은행 수익성·NIM: 대출·증권의 이자수익, 예금·차입의 이자비용, 평균이자수익자산과 예금금리 전가속도를 연결해 은행의 핵"
+        },
+        {
+          "labelled": false,
+          "text": "심 영업수익성을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-56 · EQV-56:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q05",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 은행 충당금·CET1·ROTCE\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "재고나 매출채권이 매출보다 빨리 늘어도 출시 준비나 계절성 때문일 수 있다. 그러나 판매와 회수가 계속 느려지고 예상손실 대비 적립 비\n중까지 올라가면 수요약화·반품·회수위험의 신호일 가능성이 커진다.",
+        "충당금 환입으로 이익이 늘어도 대출의 기초 건전성이 좋아졌는지 확인해야 한다. 유형자본 수익성이 높아도 규제상 손실흡수 자본이 부족\n하면 지속 가능하지 않을 수 있다.",
+        "시장금리가 올라도 대출금리는 늦게 오르고 예금금리는 빠르게 오르면 이 개념은 줄 수 있다. 자산과 부채의 재가격 시점, 예금구성, 고객\n이탈 압력을 함께 봐야 한다.",
+        "순이익은 늘지만 매출채권과 재고가 더 빠르게 늘면 현금은 따라오지 않을 수 있다. 한 분기의 운전자본 변동은 일시적일 수 있으므로 절대\n값보다 여러 기간의 지속성을 봐야 한다.",
+        "이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정\n변경, 환율, 해제 속도를 따로 봐야 한다."
+      ],
+      "evidence": "EQV-56 · EQV-56:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 충당금 환입으로 이익이 늘어도 대출의 기초 건전성이 좋아졌는지 확인해야 한다. 유형자본 수익성이 높아도 규"
+        },
+        {
+          "labelled": false,
+          "text": "제상 손실흡수 자본이 부족하면 지속 가능하지 않을 수 있다. 용어: 은행 충당금·CET1·ROTCE."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 은행 충당금·CET1·ROTCE 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 충당금 환입으로 이익이 늘어도 대출의 기초 건전성이 좋아진 것인지 확인해야 한다. 높은 ROTCE도 자본을 너무 적게 보유"
+        },
+        {
+          "labelled": false,
+          "text": "한 결과라면 CET1 제약과 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EndAllowance=BeginAllowance+Provision-ChargeOffs+Recoveries±Other; CET1Ratio=CET1/RWA;"
+        },
+        {
+          "labelled": false,
+          "text": "ROTCE=CommonNI/AvgTCE"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 재고회전율·충당률: 재고나 매출채권이 매출보다 빨리 늘어도 출시 준비나 계절성 때문일 수 있다. 그러나 판매와 회수가 계"
+        },
+        {
+          "labelled": false,
+          "text": "속 느려지고 예상손실 대비 적립 비중까지 올라가면 수요약화·반품·회수위험의 신호일 가능성이 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 은행 충당금·CET1·ROTCE: 충당금 환입으로 이익이 늘어도 대출의 기초 건전성이 좋아졌는지 확인해야 한다. 유형자본 수익"
+        },
+        {
+          "labelled": false,
+          "text": "성이 높아도 규제상 손실흡수 자본이 부족하면 지속 가능하지 않을 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 은행 수익성·NIM: 시장금리가 올라도 대출금리는 늦게 오르고 예금금리는 빠르게 오르면 이 개념은 줄 수 있다. 자산과 부채"
+        },
+        {
+          "labelled": false,
+          "text": "의 재가격 시점, 예금구성, 고객 이탈 압력을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 발생액비율·현금전환: 순이익은 늘지만 매출채권과 재고가 더 빠르게 늘면 현금은 따라오지 않을 수 있다. 한 분기의 운전자"
+        },
+        {
+          "labelled": false,
+          "text": "본 변동은 일시적일 수 있으므로 절대값보다 여러 기간의 지속성을 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 생명보험 CSM·지급여력: 이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며"
+        },
+        {
+          "labelled": false,
+          "text": "이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-56 · EQV-56:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q06",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 은행 충당금·CET1·ROTCE\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다.",
+        "상품 판매 속도가 느려지고 예상 손실에 대비한 적립 비중까지 높아지면 수요와 회수 품질 악화 가능성이 커진다.",
+        "대출 등 자산금리가 예금 등 조달금리보다 더 빠르게 오르면 이자마진이 개선되고 반대면 축소된다.",
+        "유형 보통주자본 대비 이익이 높아도 규제상 손실흡수 자본이 부족하면 지속 가능한 수익성으로 보기 어렵다.",
+        "거래총액에 적용하는 수수료율이 높을수록 순매출은 늘지만 과도한 인상은 이용자 이탈로 거래총액을 줄일 수 있다."
+      ],
+      "evidence": "EQV-56 · EQV-56:verbal_relation:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 유형 보통주자본 대비 이익이 높아도 규제상 손실흡수 자본이 부족하면 지속 가능한 수익성으로 보기 어렵다. 용"
+        },
+        {
+          "labelled": false,
+          "text": "어: 은행 충당금·CET1·ROTCE."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 은행 충당금·CET1·ROTCE 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 충당금 환입으로 이익이 늘어도 대출의 기초 건전성이 좋아진 것인지 확인해야 한다. 높은 ROTCE도 자본을 너무 적게 보유"
+        },
+        {
+          "labelled": false,
+          "text": "한 결과라면 CET1 제약과 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EndAllowance=BeginAllowance+Provision-ChargeOffs+Recoveries±Other; CET1Ratio=CET1/RWA;"
+        },
+        {
+          "labelled": false,
+          "text": "ROTCE=CommonNI/AvgTCE"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 생명보험 CSM·지급여력: 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐"
+        },
+        {
+          "labelled": false,
+          "text": "야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 재고회전율·충당률: 상품 판매 속도가 느려지고 예상 손실에 대비한 적립 비중까지 높아지면 수요와 회수 품질 악화 가능성"
+        },
+        {
+          "labelled": false,
+          "text": "이 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 은행 수익성·NIM: 대출 등 자산금리가 예금 등 조달금리보다 더 빠르게 오르면 이자마진이 개선되고 반대면 축소된다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 은행 충당금·CET1·ROTCE: 유형 보통주자본 대비 이익이 높아도 규제상 손실흡수 자본이 부족하면 지속 가능한 수익성으로"
+        },
+        {
+          "labelled": false,
+          "text": "보기 어렵다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): GMV·Take Rate·공헌이익: 거래총액에 적용하는 수수료율이 높을수록 순매출은 늘지만 과도한 인상은 이용자 이탈로 거래총"
+        },
+        {
+          "labelled": false,
+          "text": "액을 줄일 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-56 · EQV-56:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q07",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 손해보험 손해율·합산비율\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 보험료 중 사고손해와 사업비가 차지하는 비중으로 보험영업의 수익성을 측정한다.",
+        "이 개념은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다.",
+        "이 개념은 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다.",
+        "회계이익 중 실제 영업현금으로 뒷받침되는 정도를 비현금 조정과 현금 유입의 관점에서 측정한다.",
+        "이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다."
+      ],
+      "evidence": "EQV-57 · EQV-57:definition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 보험료 중 사고손해와 사업비가 차지하는 비중으로 보험영업의 수익성을 측정한다. 용어: 손해보험 손"
+        },
+        {
+          "labelled": false,
+          "text": "해율·합산비율."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 손해보험 손해율·합산비율은 보험료 중 사고손해와 사업비가 차지하는 비중으로 보험영업의 수익성을 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 합산비율이 100%보다 낮으면 투자수익을 빼고도 보험영업에서 이익을 냈다는 뜻이다. 다만 사고는 늦게 보고될 수 있어 과"
+        },
+        {
+          "labelled": false,
+          "text": "거 준비금 수정이 현재 손해율을 좋거나 나쁘게 만들 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 손해보험 LossRatio=IncurredLosses/EarnedPremium; CombinedRatio=LossRatio+ExpenseRatio(+DividendRatio)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 손해보험 손해율·합산비율: 이 개념은 보험료 중 사고손해와 사업비가 차지하는 비중으로 보험영업의 수익성을 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 영업권: 이 개념은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 기대손실·유동성 런웨이: 이 개념은 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 발생액비율·현금전환: 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 비현금 조정과 현금 유입의 관점에서 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 생명보험 CSM·지급여력: 이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께"
+        },
+        {
+          "labelled": false,
+          "text": "본다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-57 · EQV-57:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q08",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 손해보험 손해율·합산비율\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정\n변경, 환율, 해제 속도를 따로 봐야 한다.",
+        "회사를 장부자산보다 비싸게 사면 그 차액이 자동으로 성공을 뜻하지 않는다. 인수 후 기대 현금흐름이 약해지면 이 개념 손상이 발생하며,\n이는 과거 인수가격이 과했을 가능성을 보여 준다.",
+        "이 개념이 100%보다 낮으면 투자수익을 빼고도 보험영업에서 이익을 냈다는 뜻이다. 다만 사고는 늦게 보고될 수 있어 과거 준비금 수정\n이 현재 손해율을 좋거나 나쁘게 만들 수 있다.",
+        "순이익은 늘지만 매출채권과 재고가 더 빠르게 늘면 현금은 따라오지 않을 수 있다. 한 분기의 운전자본 변동은 일시적일 수 있으므로 절대\n값보다 여러 기간의 지속성을 봐야 한다.",
+        "과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해 수치는 인수·환율·시차에\n흔들리므로 여러 해 누적으로 보는 편이 낫다."
+      ],
+      "evidence": "EQV-57 · EQV-57:intuition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념이 100%보다 낮으면 투자수익을 빼고도 보험영업에서 이익을 냈다는 뜻이다. 다만 사고는 늦게 보고될"
+        },
+        {
+          "labelled": false,
+          "text": "수 있어 과거 준비금 수정이 현재 손해율을 좋거나 나쁘게 만들 수 있다. 용어: 손해보험 손해율·합산비율."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 손해보험 손해율·합산비율은 보험료 중 사고손해와 사업비가 차지하는 비중으로 보험영업의 수익성을 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 합산비율이 100%보다 낮으면 투자수익을 빼고도 보험영업에서 이익을 냈다는 뜻이다. 다만 사고는 늦게 보고될 수 있어 과"
+        },
+        {
+          "labelled": false,
+          "text": "거 준비금 수정이 현재 손해율을 좋거나 나쁘게 만들 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 손해보험 LossRatio=IncurredLosses/EarnedPremium; CombinedRatio=LossRatio+ExpenseRatio(+DividendRatio)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 생명보험 CSM·지급여력: 이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며"
+        },
+        {
+          "labelled": false,
+          "text": "이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 영업권: 회사를 장부자산보다 비싸게 사면 그 차액이 자동으로 성공을 뜻하지 않는다. 인수 후 기대 현금흐름이 약해지면 이"
+        },
+        {
+          "labelled": false,
+          "text": "개념 손상이 발생하며, 이는 과거 인수가격이 과했을 가능성을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 손해보험 손해율·합산비율: 이 개념이 100%보다 낮으면 투자수익을 빼고도 보험영업에서 이익을 냈다는 뜻이다. 다만 사고"
+        },
+        {
+          "labelled": false,
+          "text": "는 늦게 보고될 수 있어 과거 준비금 수정이 현재 손해율을 좋거나 나쁘게 만들 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 발생액비율·현금전환: 순이익은 늘지만 매출채권과 재고가 더 빠르게 늘면 현금은 따라오지 않을 수 있다. 한 분기의 운전자"
+        },
+        {
+          "labelled": false,
+          "text": "본 변동은 일시적일 수 있으므로 절대값보다 여러 기간의 지속성을 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 증분 ROIC: 과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해"
+        },
+        {
+          "labelled": false,
+          "text": "수치는 인수·환율·시차에 흔들리므로 여러 해 누적으로 보는 편이 낫다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-57 · EQV-57:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q09",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 손해보험 손해율·합산비율\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "회계이익에 비해 영업현금이 약할수록 비현금 조정 비중은 커지고 이익이 현금으로 이어지는 정도는 나빠진다.",
+        "앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다.",
+        "다만 사고는 늦게 보고될 수 있어 과거 준비금 수정이 현재 손해율을 좋거나 나쁘게 만들 수 있다.",
+        "인수가격 중 식별 가능한 순자산을 넘는 부분은 인수 후 기대 현금흐름이 약해지면 손상될 수 있다.",
+        "같은 투하자본 수익성이라도 영업마진을 높이거나 자본을 더 빠르게 회전시키는 두 경로로 만들 수 있다."
+      ],
+      "evidence": "EQV-57 · EQV-57:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 다만 사고는 늦게 보고될 수 있어 과거 준비금 수정이 현재 손해율을 좋거나 나쁘게 만들 수 있다. 용어: 손해보"
+        },
+        {
+          "labelled": false,
+          "text": "험 손해율·합산비율."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 손해보험 손해율·합산비율은 보험료 중 사고손해와 사업비가 차지하는 비중으로 보험영업의 수익성을 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 합산비율이 100%보다 낮으면 투자수익을 빼고도 보험영업에서 이익을 냈다는 뜻이다. 다만 사고는 늦게 보고될 수 있어 과"
+        },
+        {
+          "labelled": false,
+          "text": "거 준비금 수정이 현재 손해율을 좋거나 나쁘게 만들 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 손해보험 LossRatio=IncurredLosses/EarnedPremium; CombinedRatio=LossRatio+ExpenseRatio(+DividendRatio)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 발생액비율·현금전환: 회계이익에 비해 영업현금이 약할수록 비현금 조정 비중은 커지고 이익이 현금으로 이어지는 정도는"
+        },
+        {
+          "labelled": false,
+          "text": "나빠진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 생명보험 CSM·지급여력: 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐"
+        },
+        {
+          "labelled": false,
+          "text": "야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 손해보험 손해율·합산비율: 다만 사고는 늦게 보고될 수 있어 과거 준비금 수정이 현재 손해율을 좋거나 나쁘게 만들 수 있"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 영업권: 인수가격 중 식별 가능한 순자산을 넘는 부분은 인수 후 기대 현금흐름이 약해지면 손상될 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): ROIC 마진·회전율 분해: 같은 투하자본 수익성이라도 영업마진을 높이거나 자본을 더 빠르게 회전시키는 두 경로로 만들 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-57 · EQV-57:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q10",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 생명보험 CSM·지급여력\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다.",
+        "이 개념은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다.",
+        "이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다.",
+        "이 개념 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다.",
+        "이 개념 분석은 생산능력 사용 정도와 단위당 공헌이익을 통해 고정비를 회수하는 물량을 계산한다."
+      ],
+      "evidence": "EQV-58 · EQV-58:definition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다. 용어: 생"
+        },
+        {
+          "labelled": false,
+          "text": "명보험 CSM·지급여력."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 생명보험 CSM·지급여력 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: CSM이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로"
+        },
+        {
+          "labelled": false,
+          "text": "신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 생명보험 개념 브리지 ClosingCSM=OpeningCSM+NewBusiness+Interest+FutureServiceChanges-CSMRelease±FX;"
+        },
+        {
+          "labelled": false,
+          "text": "SolvencyRatio=AvailableCapital/RequiredCapital"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 기대손실·유동성 런웨이: 이 개념은 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): CAC·LTV·회수기간: 이 개념은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지"
+        },
+        {
+          "labelled": false,
+          "text": "표다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 생명보험 CSM·지급여력: 이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께"
+        },
+        {
+          "labelled": false,
+          "text": "본다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 은행 충당금·CET1·ROTCE: 이 개념 분석은 신용손실 흡수, 규제자본 여력, 유형자본 수익성을 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 가동률·손익분기점: 이 개념 분석은 생산능력 사용 정도와 단위당 공헌이익을 통해 고정비를 회수하는 물량을 계산한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-58 · EQV-58:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q11",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 생명보험 CSM·지급여력\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해 수치는 인수·환율·시차에\n흔들리므로 여러 해 누적으로 보는 편이 낫다.",
+        "충당금 환입으로 이익이 늘어도 대출의 기초 건전성이 좋아졌는지 확인해야 한다. 유형자본 수익성이 높아도 규제상 손실흡수 자본이 부족\n하면 지속 가능하지 않을 수 있다.",
+        "낮은 확률의 큰 손실은 평균 이 개념만 보면 작아 보일 수 있지만 실제 발생 때 회사를 무너뜨릴 수 있다. 현금소진, 만기부채, covenant, 차\n환 가능성을 함께 봐야 생존여력이 보인다.",
+        "공장과 호텔은 비어 있어도 상당한 고정비가 든다. 이 개념을 넘기 전에는 추가 판매가 손실을 줄이고, 넘은 뒤에는 단위 공헌이익이 이익\n으로 빠르게 쌓여 영업레버리지가 커진다.",
+        "이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정\n변경, 환율, 해제 속도를 따로 봐야 한다."
+      ],
+      "evidence": "EQV-58 · EQV-58:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며 이익으로 풀릴"
+        },
+        {
+          "labelled": false,
+          "text": "금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다. 용어: 생명보험 CSM·지급여력."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 생명보험 CSM·지급여력 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: CSM이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로"
+        },
+        {
+          "labelled": false,
+          "text": "신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 생명보험 개념 브리지 ClosingCSM=OpeningCSM+NewBusiness+Interest+FutureServiceChanges-CSMRelease±FX;"
+        },
+        {
+          "labelled": false,
+          "text": "SolvencyRatio=AvailableCapital/RequiredCapital"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 증분 ROIC: 과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해"
+        },
+        {
+          "labelled": false,
+          "text": "수치는 인수·환율·시차에 흔들리므로 여러 해 누적으로 보는 편이 낫다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 은행 충당금·CET1·ROTCE: 충당금 환입으로 이익이 늘어도 대출의 기초 건전성이 좋아졌는지 확인해야 한다. 유형자본 수익"
+        },
+        {
+          "labelled": false,
+          "text": "성이 높아도 규제상 손실흡수 자본이 부족하면 지속 가능하지 않을 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 기대손실·유동성 런웨이: 낮은 확률의 큰 손실은 평균 이 개념만 보면 작아 보일 수 있지만 실제 발생 때 회사를 무너뜨릴 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다. 현금소진, 만기부채, covenant, 차환 가능성을 함께 봐야 생존여력이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 가동률·손익분기점: 공장과 호텔은 비어 있어도 상당한 고정비가 든다. 이 개념을 넘기 전에는 추가 판매가 손실을 줄이고,"
+        },
+        {
+          "labelled": false,
+          "text": "넘은 뒤에는 단위 공헌이익이 이익으로 빠르게 쌓여 영업레버리지가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 생명보험 CSM·지급여력: 이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며"
+        },
+        {
+          "labelled": false,
+          "text": "이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-58 · EQV-58:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q12",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 생명보험 CSM·지급여력\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "사용 가능한 현금과 미사용 한도가 많고 단기 의무나 현금소진이 작을수록 버틸 수 있는 기간이 길어진다.",
+        "판매량이 고정비를 회수하는 경계를 넘은 뒤에는 추가 단위의 공헌액이 이익으로 더 빠르게 쌓인다.",
+        "유형 보통주자본 대비 이익이 높아도 규제상 손실흡수 자본이 부족하면 지속 가능한 수익성으로 보기 어렵다.",
+        "평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다.",
+        "앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다."
+      ],
+      "evidence": "EQV-58 · EQV-58:verbal_relation:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "생명보험 CSM·지급여력."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 생명보험 CSM·지급여력 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: CSM이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로"
+        },
+        {
+          "labelled": false,
+          "text": "신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 생명보험 개념 브리지 ClosingCSM=OpeningCSM+NewBusiness+Interest+FutureServiceChanges-CSMRelease±FX;"
+        },
+        {
+          "labelled": false,
+          "text": "SolvencyRatio=AvailableCapital/RequiredCapital"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 기대손실·유동성 런웨이: 사용 가능한 현금과 미사용 한도가 많고 단기 의무나 현금소진이 작을수록 버틸 수 있는 기간이 길"
+        },
+        {
+          "labelled": false,
+          "text": "어진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 가동률·손익분기점: 판매량이 고정비를 회수하는 경계를 넘은 뒤에는 추가 단위의 공헌액이 이익으로 더 빠르게 쌓인다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 은행 충당금·CET1·ROTCE: 유형 보통주자본 대비 이익이 높아도 규제상 손실흡수 자본이 부족하면 지속 가능한 수익성으로"
+        },
+        {
+          "labelled": false,
+          "text": "보기 어렵다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): CAC·LTV·회수기간: 평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 생명보험 CSM·지급여력: 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐"
+        },
+        {
+          "labelled": false,
+          "text": "야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-58 · EQV-58:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q13",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 경기민감·원자재 정상화\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다.",
+        "이 개념은 현재 시장가치를 출발점으로 두고 그 가격을 정당화하는 성장·마진·ROIC 가정을 역산하는 분석이다.",
+        "이 개념은 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다.",
+        "이 개념 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다.",
+        "이 개념 조정은 당기 연구개발비를 장기투자로 보고 과거 투자분의 상각과 바꿔 영업이익과 투하자본을 함께 재작성하는 분석이다."
+      ],
+      "evidence": "EQV-59 · EQV-59:definition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다. 용어: 경기"
+        },
+        {
+          "labelled": false,
+          "text": "민감·원자재 정상화."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 경기민감·원자재 정상화는 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 원자재 가격 정점에서는 이익이 커 PER이 매우 낮아 보이지만 그 이익이 반복되지 않을 수 있다. 과거 평균이익만 쓰기보다"
+        },
+        {
+          "labelled": false,
+          "text": "현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 경기민감 NormalizedEBIT=CurrentScaleRevenue×ThroughCycleMargin; 원자재 Revenue 약 Price×Volume;"
+        },
+        {
+          "labelled": false,
+          "text": "CashMargin=RealizedPrice-CashCost"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): P×Q 매출 추정: 이 개념은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Reverse DCF: 이 개념은 현재 시장가치를 출발점으로 두고 그 가격을 정당화하는 성장·마진·ROIC 가정을 역산하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 경기민감·원자재 정상화: 이 개념은 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Peer multiple: 이 개념 평가는 비교기업의 시장 배수를 목표기업 지표에 적용해 시장기준의 내재가치를 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): R&D 자산화·순설비투자: 이 개념 조정은 당기 연구개발비를 장기투자로 보고 과거 투자분의 상각과 바꿔 영업이익과 투하"
+        },
+        {
+          "labelled": false,
+          "text": "자본을 함께 재작성하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-59 · EQV-59:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q14",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 경기민감·원자재 정상화\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "원자재 가격 정점에서는 이익이 커 PER이 매우 낮아 보이지만 그 이익이 반복되지 않을 수 있다. 과거 평균이익만 쓰기보다 현재 생산량과\n정상 가격·원가를 결합해야 구조변화를 반영한다.",
+        "이 개념이 100%보다 낮으면 투자수익을 빼고도 보험영업에서 이익을 냈다는 뜻이다. 다만 사고는 늦게 보고될 수 있어 과거 준비금 수정\n이 현재 손해율을 좋거나 나쁘게 만들 수 있다.",
+        "오늘의 R&D가 여러 해 매출을 만든다면 전액을 당기비용으로 처리한 이익은 성장투자를 많이 하는 회사를 불리하게 보일 수 있다. 비용만\n되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다.",
+        "매년 구조조정비를 일회성이라 빼는 회사라면 그 비용은 사실 반복적일 수 있다. 좋은 항목만 제외하지 말고 일회성 이익도 대칭적으로 빼\n야 정상화 수치가 낙관적으로 왜곡되지 않는다.",
+        "목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한지를 사업자료와 비교하면 시\n장과 내 관점의 차이가 선명해진다."
+      ],
+      "evidence": "EQV-59 · EQV-59:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 원자재 가격 정점에서는 이익이 커 PER이 매우 낮아 보이지만 그 이익이 반복되지 않을 수 있다. 과거 평균이익"
+        },
+        {
+          "labelled": false,
+          "text": "만 쓰기보다 현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다. 용어: 경기민감·원자재 정상화."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 경기민감·원자재 정상화는 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 원자재 가격 정점에서는 이익이 커 PER이 매우 낮아 보이지만 그 이익이 반복되지 않을 수 있다. 과거 평균이익만 쓰기보다"
+        },
+        {
+          "labelled": false,
+          "text": "현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 경기민감 NormalizedEBIT=CurrentScaleRevenue×ThroughCycleMargin; 원자재 Revenue 약 Price×Volume;"
+        },
+        {
+          "labelled": false,
+          "text": "CashMargin=RealizedPrice-CashCost"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 경기민감·원자재 정상화: 원자재 가격 정점에서는 이익이 커 PER이 매우 낮아 보이지만 그 이익이 반복되지 않을 수 있다."
+        },
+        {
+          "labelled": false,
+          "text": "과거 평균이익만 쓰기보다 현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 손해보험 손해율·합산비율: 이 개념이 100%보다 낮으면 투자수익을 빼고도 보험영업에서 이익을 냈다는 뜻이다. 다만 사고"
+        },
+        {
+          "labelled": false,
+          "text": "는 늦게 보고될 수 있어 과거 준비금 수정이 현재 손해율을 좋거나 나쁘게 만들 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): R&D 자산화·순설비투자: 오늘의 R&D가 여러 해 매출을 만든다면 전액을 당기비용으로 처리한 이익은 성장투자를 많이 하"
+        },
+        {
+          "labelled": false,
+          "text": "는 회사를 불리하게 보일 수 있다. 비용만 되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 정상화 영업이익·일회성 조정: 매년 구조조정비를 일회성이라 빼는 회사라면 그 비용은 사실 반복적일 수 있다. 좋은 항목만"
+        },
+        {
+          "labelled": false,
+          "text": "제외하지 말고 일회성 이익도 대칭적으로 빼야 정상화 수치가 낙관적으로 왜곡되지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): Reverse DCF: 목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한"
+        },
+        {
+          "labelled": false,
+          "text": "지를 사업자료와 비교하면 시장과 내 관점의 차이가 선명해진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-59 · EQV-59:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q15",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 경기민감·원자재 정상화\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "과거 평균이익만 쓰기보다 현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다.",
+        "현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다.",
+        "비용만 되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다.",
+        "다만 사고는 늦게 보고될 수 있어 과거 준비금 수정이 현재 손해율을 좋거나 나쁘게 만들 수 있다.",
+        "좋은 항목만 제외하지 말고 일회성 이익도 대칭적으로 빼야 정상화 수치가 낙관적으로 왜곡되지 않는다."
+      ],
+      "evidence": "EQV-59 · EQV-59:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 과거 평균이익만 쓰기보다 현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다. 용어: 경기민감·원자"
+        },
+        {
+          "labelled": false,
+          "text": "재 정상화."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 경기민감·원자재 정상화는 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 원자재 가격 정점에서는 이익이 커 PER이 매우 낮아 보이지만 그 이익이 반복되지 않을 수 있다. 과거 평균이익만 쓰기보다"
+        },
+        {
+          "labelled": false,
+          "text": "현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 경기민감 NormalizedEBIT=CurrentScaleRevenue×ThroughCycleMargin; 원자재 Revenue 약 Price×Volume;"
+        },
+        {
+          "labelled": false,
+          "text": "CashMargin=RealizedPrice-CashCost"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 경기민감·원자재 정상화: 과거 평균이익만 쓰기보다 현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Reverse DCF: 현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): R&D 자산화·순설비투자: 비용만 되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 손해보험 손해율·합산비율: 다만 사고는 늦게 보고될 수 있어 과거 준비금 수정이 현재 손해율을 좋거나 나쁘게 만들 수 있"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 정상화 영업이익·일회성 조정: 좋은 항목만 제외하지 말고 일회성 이익도 대칭적으로 빼야 정상화 수치가 낙관적으로 왜곡"
+        },
+        {
+          "labelled": false,
+          "text": "되지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-59 · EQV-59:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q16",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 자원기업 NAV·매장량수명\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 사용권을 얻기 위해 부담한 리스부채를 차입과 유사한 청구권으로 보고 순부채에 포함한 값이다.",
+        "이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다.",
+        "이 개념은 확정급여채무와 이를 충당할 사외적립자산의 차이로, 부족분은 기업의 장기 재무부담을 나타낸다.",
+        "이 개념 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한다.",
+        "이 개념은 유한한 광산·유전별 세후 현금흐름 현재가치에서 순부채와 폐쇄의무를 조정한 자산가치다."
+      ],
+      "evidence": "EQV-60 · EQV-60:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 유한한 광산·유전별 세후 현금흐름 현재가치에서 순부채와 폐쇄의무를 조정한 자산가치다. 용어: 자원"
+        },
+        {
+          "labelled": false,
+          "text": "기업 NAV·매장량수명."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 자원기업 NAV는 유한한 광산·유전별 세후 현금흐름 현재가치에서 순부채와 폐쇄의무를 조정한 자산가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 매장량은 영원히 성장하는 사업이 아니라 채굴할수록 줄어드는 자산이다. 확인된 매장량, 개발 CAPEX, 생산속도, 폐쇄비용"
+        },
+        {
+          "labelled": false,
+          "text": "과 자산별 위험을 반영해야 단순 영구성장모형의 오류를 피할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: NAV=ΣPV(AssetAfterTaxFCF)+OtherAssets-NetDebt-Closure/ARO; ReserveLife=RecoverableReserves/AnnualProduction"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 리스 조정 순부채: 이 개념은 사용권을 얻기 위해 부담한 리스부채를 차입과 유사한 청구권으로 보고 순부채에 포함한 값이"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): ROIC·투하자본: 이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 연금 적립상태: 이 개념은 확정급여채무와 이를 충당할 사외적립자산의 차이로, 부족분은 기업의 장기 재무부담을 나타낸다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 사업부 믹스·연결 EBIT: 이 개념 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 자원기업 NAV·매장량수명: 이 개념은 유한한 광산·유전별 세후 현금흐름 현재가치에서 순부채와 폐쇄의무를 조정한 자산가"
+        },
+        {
+          "labelled": false,
+          "text": "치다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-60 · EQV-60:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q17",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 자원기업 NAV·매장량수명\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을 자본비용과 비교하면 투입한 1\n원이 가치를 만들었는지 알 수 있다.",
+        "성장 SaaS와 성숙 제조업을 하나의 연결 EBITDA 배수로 평가하면 둘 중 하나가 왜곡된다. 사업부별 가치를 따로 구하되 본사비용과 현금\n을 중복 반영하지 않아야 한다.",
+        "오늘의 R&D가 여러 해 매출을 만든다면 전액을 당기비용으로 처리한 이익은 성장투자를 많이 하는 회사를 불리하게 보일 수 있다. 비용만\n되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다.",
+        "매장량은 영원히 성장하는 사업이 아니라 채굴할수록 줄어드는 자산이다. 확인된 매장량, 개발 CAPEX, 생산속도, 폐쇄비용과 자산별 위험\n을 반영해야 단순 영구성장모형의 오류를 피할 수 있다.",
+        "직원에게 약속한 퇴직급여가 100인데 별도 자산이 80이면 경제적으로 20의 부족분이 남는다. 할인율이 조금만 바뀌어도 먼 미래 채무 현\n재가치가 크게 움직일 수 있다."
+      ],
+      "evidence": "EQV-60 · EQV-60:intuition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 매장량은 영원히 성장하는 사업이 아니라 채굴할수록 줄어드는 자산이다. 확인된 매장량, 개발 CAPEX, 생산속도,"
+        },
+        {
+          "labelled": false,
+          "text": "폐쇄비용과 자산별 위험을 반영해야 단순 영구성장모형의 오류를 피할 수 있다. 용어: 자원기업 NAV·매장량수명."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 자원기업 NAV는 유한한 광산·유전별 세후 현금흐름 현재가치에서 순부채와 폐쇄의무를 조정한 자산가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 매장량은 영원히 성장하는 사업이 아니라 채굴할수록 줄어드는 자산이다. 확인된 매장량, 개발 CAPEX, 생산속도, 폐쇄비용"
+        },
+        {
+          "labelled": false,
+          "text": "과 자산별 위험을 반영해야 단순 영구성장모형의 오류를 피할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: NAV=ΣPV(AssetAfterTaxFCF)+OtherAssets-NetDebt-Closure/ARO; ReserveLife=RecoverableReserves/AnnualProduction"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): ROIC·투하자본: 매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을"
+        },
+        {
+          "labelled": false,
+          "text": "자본비용과 비교하면 투입한 1원이 가치를 만들었는지 알 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): SOTP: 성장 SaaS와 성숙 제조업을 하나의 연결 EBITDA 배수로 평가하면 둘 중 하나가 왜곡된다. 사업부별 가치를 따로 구하"
+        },
+        {
+          "labelled": false,
+          "text": "되 본사비용과 현금을 중복 반영하지 않아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): R&D 자산화·순설비투자: 오늘의 R&D가 여러 해 매출을 만든다면 전액을 당기비용으로 처리한 이익은 성장투자를 많이 하"
+        },
+        {
+          "labelled": false,
+          "text": "는 회사를 불리하게 보일 수 있다. 비용만 되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 자원기업 NAV·매장량수명: 매장량은 영원히 성장하는 사업이 아니라 채굴할수록 줄어드는 자산이다. 확인된 매장량, 개발"
+        },
+        {
+          "labelled": false,
+          "text": "CAPEX, 생산속도, 폐쇄비용과 자산별 위험을 반영해야 단순 영구성장모형의 오류를 피할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 연금 적립상태: 직원에게 약속한 퇴직급여가 100인데 별도 자산이 80이면 경제적으로 20의 부족분이 남는다. 할인율이 조금"
+        },
+        {
+          "labelled": false,
+          "text": "만 바뀌어도 먼 미래 채무 현재가치가 크게 움직일 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-60 · EQV-60:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q18",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 자원기업 NAV·매장량수명\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "할인율이 조금만 바뀌어도 먼 미래 채무 현재가치가 크게 움직일 수 있다.",
+        "세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다.",
+        "사업부별 가치를 따로 구하되 본사비용과 현금을 중복 반영하지 않아야 한다.",
+        "사업부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다.",
+        "확인된 매장량, 개발 CAPEX, 생산속도, 폐쇄비용과 자산별 위험을 반영해야 단순 영구성장모형의 오류를 피할 수 있다."
+      ],
+      "evidence": "EQV-60 · EQV-60:verbal_relation:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 확인된 매장량, 개발 CAPEX, 생산속도, 폐쇄비용과 자산별 위험을 반영해야 단순 영구성장모형의 오류를 피할"
+        },
+        {
+          "labelled": false,
+          "text": "수 있다. 용어: 자원기업 NAV·매장량수명."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 자원기업 NAV는 유한한 광산·유전별 세후 현금흐름 현재가치에서 순부채와 폐쇄의무를 조정한 자산가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 매장량은 영원히 성장하는 사업이 아니라 채굴할수록 줄어드는 자산이다. 확인된 매장량, 개발 CAPEX, 생산속도, 폐쇄비용"
+        },
+        {
+          "labelled": false,
+          "text": "과 자산별 위험을 반영해야 단순 영구성장모형의 오류를 피할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: NAV=ΣPV(AssetAfterTaxFCF)+OtherAssets-NetDebt-Closure/ARO; ReserveLife=RecoverableReserves/AnnualProduction"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 연금 적립상태: 할인율이 조금만 바뀌어도 먼 미래 채무 현재가치가 크게 움직일 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): ROIC·투하자본: 세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): SOTP: 사업부별 가치를 따로 구하되 본사비용과 현금을 중복 반영하지 않아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 사업부 믹스·연결 EBIT: 사업부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 자원기업 NAV·매장량수명: 확인된 매장량, 개발 CAPEX, 생산속도, 폐쇄비용과 자산별 위험을 반영해야 단순 영구성장모형"
+        },
+        {
+          "labelled": false,
+          "text": "의 오류를 피할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-60 · EQV-60:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q19",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 추정치 괴리·실적 서프라이즈\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구한다.",
+        "이 개념은 현재 시장가치를 출발점으로 두고 그 가격을 정당화하는 성장·마진·ROIC 가정을 역산하는 분석이다.",
+        "이 개념은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다.",
+        "이 개념은 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결한다.",
+        "이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다."
+      ],
+      "evidence": "EQV-61 · EQV-61:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결한다. 용어: 추정치"
+        },
+        {
+          "labelled": false,
+          "text": "괴리·실적 서프라이즈."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 추정치 괴리·실적 서프라이즈는 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 실적이 전년보다 좋아도 시장이 더 좋은 숫자를 기대했다면 주가는 떨어질 수 있다. 절대 실적보다 기대와의 차이, 그리고"
+        },
+        {
+          "labelled": false,
+          "text": "그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요하다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EstimateGap=OurEstimate/Consensus-1; Surprise=Actual/Consensus-1; 목표가 변화는 EPS·배수·순부채로 분해"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 보통주 지분가치 브리지: 이 개념은 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주"
+        },
+        {
+          "labelled": false,
+          "text": "몫을 구한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Reverse DCF: 이 개념은 현재 시장가치를 출발점으로 두고 그 가격을 정당화하는 성장·마진·ROIC 가정을 역산하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): P×Q 매출 추정: 이 개념은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 추정치 괴리·실적 서프라이즈: 이 개념은 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 기대 TSR·촉매: 이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-61 · EQV-61:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q20",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 추정치 괴리·실적 서프라이즈\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "실적이 전년보다 좋아도 시장이 더 좋은 숫자를 기대했다면 주가는 떨어질 수 있다. 절대 실적보다 기대와의 차이, 그리고 그 차이가 일회\n성인지 장기 추정치를 바꾸는지가 중요하다.",
+        "좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결과가 어떤 지표에서 언제 확인될\n지를 촉매로 적어야 투자논리가 검증 가능해진다.",
+        "목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한지를 사업자료와 비교하면 시\n장과 내 관점의 차이가 선명해진다.",
+        "연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현금을 EV 계산과 브리지 양쪽에서 더하면\n이중계상이므로 포함 기준을 한 번만 적용한다.",
+        "매출이 10% 늘었다는 결과보다 가격을 올렸는지, 더 많이 팔았는지가 중요하다. 수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우\n의 비용·지속가능성은 다르다."
+      ],
+      "evidence": "EQV-61 · EQV-61:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 실적이 전년보다 좋아도 시장이 더 좋은 숫자를 기대했다면 주가는 떨어질 수 있다. 절대 실적보다 기대와의 차"
+        },
+        {
+          "labelled": false,
+          "text": "이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요하다. 용어: 추정치 괴리·실적 서프라이즈."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 추정치 괴리·실적 서프라이즈는 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 실적이 전년보다 좋아도 시장이 더 좋은 숫자를 기대했다면 주가는 떨어질 수 있다. 절대 실적보다 기대와의 차이, 그리고"
+        },
+        {
+          "labelled": false,
+          "text": "그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요하다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EstimateGap=OurEstimate/Consensus-1; Surprise=Actual/Consensus-1; 목표가 변화는 EPS·배수·순부채로 분해"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 추정치 괴리·실적 서프라이즈: 실적이 전년보다 좋아도 시장이 더 좋은 숫자를 기대했다면 주가는 떨어질 수 있다. 절대 실적"
+        },
+        {
+          "labelled": false,
+          "text": "보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요하다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 기대 TSR·촉매: 좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결"
+        },
+        {
+          "labelled": false,
+          "text": "과가 어떤 지표에서 언제 확인될지를 촉매로 적어야 투자논리가 검증 가능해진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Reverse DCF: 목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한"
+        },
+        {
+          "labelled": false,
+          "text": "지를 사업자료와 비교하면 시장과 내 관점의 차이가 선명해진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 보통주 지분가치 브리지: 연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현"
+        },
+        {
+          "labelled": false,
+          "text": "금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): P×Q 매출 추정: 매출이 10% 늘었다는 결과보다 가격을 올렸는지, 더 많이 팔았는지가 중요하다. 수량이 줄어도 가격 인상으"
+        },
+        {
+          "labelled": false,
+          "text": "로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-61 · EQV-61:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q21",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 추정치 괴리·실적 서프라이즈\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다.",
+        "절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요하다.",
+        "시장 기대를 바꿀 구체적 사건이 가까우며 결과가 예상보다 좋을수록 목표가격이 현실화될 가능성이 커진다.",
+        "반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다.",
+        "현금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+      ],
+      "evidence": "EQV-61 · EQV-61:verbal_relation:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요하다. 용어: 추정치"
+        },
+        {
+          "labelled": false,
+          "text": "괴리·실적 서프라이즈."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 추정치 괴리·실적 서프라이즈는 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 실적이 전년보다 좋아도 시장이 더 좋은 숫자를 기대했다면 주가는 떨어질 수 있다. 절대 실적보다 기대와의 차이, 그리고"
+        },
+        {
+          "labelled": false,
+          "text": "그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요하다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: EstimateGap=OurEstimate/Consensus-1; Surprise=Actual/Consensus-1; 목표가 변화는 EPS·배수·순부채로 분해"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): P×Q 매출 추정: 수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 추정치 괴리·실적 서프라이즈: 절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요"
+        },
+        {
+          "labelled": false,
+          "text": "하다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 기대 TSR·촉매: 시장 기대를 바꿀 구체적 사건이 가까우며 결과가 예상보다 좋을수록 목표가격이 현실화될 가능성이 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 리서치 촉매·실적서프라이즈: 반대로 작은 KPI 변화가 여러 해 이익전망을 바꾸면 같은 배수를 써도 목표가 변화가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 보통주 지분가치 브리지: 현금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-61 · EQV-61:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q22",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 기대 TSR·촉매\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 현재 시장가치를 출발점으로 두고 그 가격을 정당화하는 성장·마진·ROIC 가정을 역산하는 분석이다.",
+        "이 개념은 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다.",
+        "이 개념은 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결한다.",
+        "이 개념은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다.",
+        "이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다."
+      ],
+      "evidence": "EQV-62 · EQV-62:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다."
+        },
+        {
+          "labelled": false,
+          "text": "용어: 기대 TSR·촉매."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 기대 TSR·촉매 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결과가 어떤 지표"
+        },
+        {
+          "labelled": false,
+          "text": "에서 언제 확인될지를 촉매로 적어야 투자논리가 검증 가능해진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ExpectedTSR=(TargetPrice-CurrentPrice+ExpectedDividends)/CurrentPrice"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): Reverse DCF: 이 개념은 현재 시장가치를 출발점으로 두고 그 가격을 정당화하는 성장·마진·ROIC 가정을 역산하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 시나리오 가중가치: 이 개념은 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 추정치 괴리·실적 서프라이즈: 이 개념은 내 예상과 시장 컨센서스, 실제 결과의 차이를 핵심 드라이버와 목표가 변화로 연결"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 영업권: 이 개념은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 기대 TSR·촉매: 이 개념 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시"
+        },
+        {
+          "labelled": false,
+          "text": "한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-62 · EQV-62:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q23",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 기대 TSR·촉매\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결과가 어떤 지표에서 언제 확인될\n지를 촉매로 적어야 투자논리가 검증 가능해진다.",
+        "실적이 전년보다 좋아도 시장이 더 좋은 숫자를 기대했다면 주가는 떨어질 수 있다. 절대 실적보다 기대와의 차이, 그리고 그 차이가 일회\n성인지 장기 추정치를 바꾸는지가 중요하다.",
+        "좋은 경우 150원, 나쁜 경우 50원이라는 범위만으로는 중앙 판단이 없다. 각 시나리오가 얼마나 가능하다고 보는지 명시하면 불확실성을\n하나의 기대값으로 요약할 수 있다.",
+        "목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한지를 사업자료와 비교하면 시\n장과 내 관점의 차이가 선명해진다.",
+        "회사를 장부자산보다 비싸게 사면 그 차액이 자동으로 성공을 뜻하지 않는다. 인수 후 기대 현금흐름이 약해지면 이 개념 손상이 발생하며,\n이는 과거 인수가격이 과했을 가능성을 보여 준다."
+      ],
+      "evidence": "EQV-62 · EQV-62:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결과가"
+        },
+        {
+          "labelled": false,
+          "text": "어떤 지표에서 언제 확인될지를 촉매로 적어야 투자논리가 검증 가능해진다. 용어: 기대 TSR·촉매."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 기대 TSR·촉매 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결과가 어떤 지표"
+        },
+        {
+          "labelled": false,
+          "text": "에서 언제 확인될지를 촉매로 적어야 투자논리가 검증 가능해진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ExpectedTSR=(TargetPrice-CurrentPrice+ExpectedDividends)/CurrentPrice"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 기대 TSR·촉매: 좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결"
+        },
+        {
+          "labelled": false,
+          "text": "과가 어떤 지표에서 언제 확인될지를 촉매로 적어야 투자논리가 검증 가능해진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 추정치 괴리·실적 서프라이즈: 실적이 전년보다 좋아도 시장이 더 좋은 숫자를 기대했다면 주가는 떨어질 수 있다. 절대 실적"
+        },
+        {
+          "labelled": false,
+          "text": "보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요하다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 시나리오 가중가치: 좋은 경우 150원, 나쁜 경우 50원이라는 범위만으로는 중앙 판단이 없다. 각 시나리오가 얼마나 가능하"
+        },
+        {
+          "labelled": false,
+          "text": "다고 보는지 명시하면 불확실성을 하나의 기대값으로 요약할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Reverse DCF: 목표가를 또 만드는 대신 시장가격이 이미 어떤 미래를 기대하는지 묻는다. 역산한 가정이 현실적으로 가능한"
+        },
+        {
+          "labelled": false,
+          "text": "지를 사업자료와 비교하면 시장과 내 관점의 차이가 선명해진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 영업권: 회사를 장부자산보다 비싸게 사면 그 차액이 자동으로 성공을 뜻하지 않는다. 인수 후 기대 현금흐름이 약해지면 이"
+        },
+        {
+          "labelled": false,
+          "text": "개념 손상이 발생하며, 이는 과거 인수가격이 과했을 가능성을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-62 · EQV-62:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q24",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 기대 TSR·촉매\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "시장 기대를 바꿀 구체적 사건이 가까우며 결과가 예상보다 좋을수록 목표가격이 현실화될 가능성이 커진다.",
+        "현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다.",
+        "인수가격 중 식별 가능한 순자산을 넘는 부분은 인수 후 기대 현금흐름이 약해지면 손상될 수 있다.",
+        "이익을 사업에 다시 투입하는 비중과 신규자본의 수익성이 높을수록 지속 가능한 확장 속도는 빨라진다.",
+        "절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요하다."
+      ],
+      "evidence": "EQV-62 · EQV-62:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 시장 기대를 바꿀 구체적 사건이 가까우며 결과가 예상보다 좋을수록 목표가격이 현실화될 가능성이 커진다. 용"
+        },
+        {
+          "labelled": false,
+          "text": "어: 기대 TSR·촉매."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 기대 TSR·촉매 분석은 목표가 변화와 예상 배당을 합쳐 주주 총수익을 보고, 그 가치가 드러날 사건과 시점을 명시한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 좋은 회사라는 사실만으로 주가가 언제 움직일지는 알 수 없다. 시장이 이미 기대하는 뉴스보다 더 좋은 결과가 어떤 지표"
+        },
+        {
+          "labelled": false,
+          "text": "에서 언제 확인될지를 촉매로 적어야 투자논리가 검증 가능해진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ExpectedTSR=(TargetPrice-CurrentPrice+ExpectedDividends)/CurrentPrice"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 기대 TSR·촉매: 시장 기대를 바꿀 구체적 사건이 가까우며 결과가 예상보다 좋을수록 목표가격이 현실화될 가능성이 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Reverse DCF: 현재 시장가치가 높을수록 이를 정당화하려면 다른 조건이 같을 때 더 높은 성장·마진·자본수익성이 필요하다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 영업권: 인수가격 중 식별 가능한 순자산을 넘는 부분은 인수 후 기대 현금흐름이 약해지면 손상될 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 성장·재투자: 이익을 사업에 다시 투입하는 비중과 신규자본의 수익성이 높을수록 지속 가능한 확장 속도는 빨라진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 추정치 괴리·실적 서프라이즈: 절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요"
+        },
+        {
+          "labelled": false,
+          "text": "하다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-62 · EQV-62:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q25",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 기대손실·유동성 런웨이\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "DSO·DIO·DPO와 이 개념은 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순기간을 일수로 보여 준다.",
+        "회계이익 중 실제 영업현금으로 뒷받침되는 정도를 비현금 조정과 현금 유입의 관점에서 측정한다.",
+        "이 개념은 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다.",
+        "이 개념은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다.",
+        "이 개념은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다."
+      ],
+      "evidence": "EQV-63 · EQV-63:definition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다. 용어: 기대"
+        },
+        {
+          "labelled": false,
+          "text": "손실·유동성 런웨이."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 기대손실·유동성 런웨이는 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 낮은 확률의 큰 손실은 평균 기대손실만 보면 작아 보일 수 있지만 실제 발생 때 회사를 무너뜨릴 수 있다. 현금소진, 만기"
+        },
+        {
+          "labelled": false,
+          "text": "부채, covenant, 차환 가능성을 함께 봐야 생존여력이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ExpectedLoss=Probability×Impact; LiquidityRunway=(Cash+UndrawnFacilities-NearTermObligations)/CashBurn"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 운전자본 일수·현금전환주기: DSO·DIO·DPO와 이 개념은 판매를 위해 현금을 투입한 뒤 고객에게 회수하기까지 걸리는 순"
+        },
+        {
+          "labelled": false,
+          "text": "기간을 일수로 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 발생액비율·현금전환: 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 비현금 조정과 현금 유입의 관점에서 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 기대손실·유동성 런웨이: 이 개념은 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 영업권: 이 개념은 인수가격 중 식별 가능한 순자산의 공정가치를 초과한 부분으로 기대 시너지와 미식별 가치 등을 담는다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): CAC·LTV·회수기간: 이 개념은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지"
+        },
+        {
+          "labelled": false,
+          "text": "표다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-63 · EQV-63:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q26",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 기대손실·유동성 런웨이\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다. 실제 스프레드에는 이 평균손실뿐 아니라 예상 밖 손\n실, 유동성, 위험회피 보상도 들어간다.",
+        "낮은 확률의 큰 손실은 평균 이 개념만 보면 작아 보일 수 있지만 실제 발생 때 회사를 무너뜨릴 수 있다. 현금소진, 만기부채, covenant, 차\n환 가능성을 함께 봐야 생존여력이 보인다.",
+        "회사를 장부자산보다 비싸게 사면 그 차액이 자동으로 성공을 뜻하지 않는다. 인수 후 기대 현금흐름이 약해지면 이 개념 손상이 발생하며,\n이는 과거 인수가격이 과했을 가능성을 보여 준다.",
+        "오늘의 R&D가 여러 해 매출을 만든다면 전액을 당기비용으로 처리한 이익은 성장투자를 많이 하는 회사를 불리하게 보일 수 있다. 비용만\n되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다.",
+        "재고를 오래 보유하고 고객대금을 늦게 받으면 현금이 오래 묶인다. 공급업체 결제를 늦추면 일부가 상쇄되지만, 지나친 DPO 증가는 협상\n력보다 유동성 압박의 신호일 수도 있다."
+      ],
+      "evidence": "EQV-63 · EQV-63:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 낮은 확률의 큰 손실은 평균 이 개념만 보면 작아 보일 수 있지만 실제 발생 때 회사를 무너뜨릴 수 있다. 현금소"
+        },
+        {
+          "labelled": false,
+          "text": "진, 만기부채, covenant, 차환 가능성을 함께 봐야 생존여력이 보인다. 용어: 기대손실·유동성 런웨이."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 기대손실·유동성 런웨이는 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 낮은 확률의 큰 손실은 평균 기대손실만 보면 작아 보일 수 있지만 실제 발생 때 회사를 무너뜨릴 수 있다. 현금소진, 만기"
+        },
+        {
+          "labelled": false,
+          "text": "부채, covenant, 차환 가능성을 함께 봐야 생존여력이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ExpectedLoss=Probability×Impact; LiquidityRunway=(Cash+UndrawnFacilities-NearTermObligations)/CashBurn"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 신용위험·Credit Spread·Expected Loss: 100원을 빌려주고 부도확률이 2%, 부도 때 절반만 회수한다면 평균 손실은 1원이다."
+        },
+        {
+          "labelled": false,
+          "text": "실제 스프레드에는 이 평균손실뿐 아니라 예상 밖 손실, 유동성, 위험회피 보상도 들어간다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 기대손실·유동성 런웨이: 낮은 확률의 큰 손실은 평균 이 개념만 보면 작아 보일 수 있지만 실제 발생 때 회사를 무너뜨릴 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다. 현금소진, 만기부채, covenant, 차환 가능성을 함께 봐야 생존여력이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 영업권: 회사를 장부자산보다 비싸게 사면 그 차액이 자동으로 성공을 뜻하지 않는다. 인수 후 기대 현금흐름이 약해지면 이"
+        },
+        {
+          "labelled": false,
+          "text": "개념 손상이 발생하며, 이는 과거 인수가격이 과했을 가능성을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): R&D 자산화·순설비투자: 오늘의 R&D가 여러 해 매출을 만든다면 전액을 당기비용으로 처리한 이익은 성장투자를 많이 하"
+        },
+        {
+          "labelled": false,
+          "text": "는 회사를 불리하게 보일 수 있다. 비용만 되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 운전자본 일수·현금전환주기: 재고를 오래 보유하고 고객대금을 늦게 받으면 현금이 오래 묶인다. 공급업체 결제를 늦추면"
+        },
+        {
+          "labelled": false,
+          "text": "일부가 상쇄되지만, 지나친 DPO 증가는 협상력보다 유동성 압박의 신호일 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-63 · EQV-63:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q27",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 기대손실·유동성 런웨이\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "사용 가능한 현금과 미사용 한도가 많고 단기 의무나 현금소진이 작을수록 버틸 수 있는 기간이 길어진다.",
+        "공급업체 결제를 늦추면 일부가 상쇄되지만, 지나친 DPO 증가는 협상력보다 유동성 압박의 신호일 수도 있다.",
+        "인수가격 중 식별 가능한 순자산을 넘는 부분은 인수 후 기대 현금흐름이 약해지면 손상될 수 있다.",
+        "평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다.",
+        "부도 가능성이나 손실률이 커질수록 평균 신용손실과 투자자가 요구하는 보상은 커진다."
+      ],
+      "evidence": "EQV-63 · EQV-63:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 사용 가능한 현금과 미사용 한도가 많고 단기 의무나 현금소진이 작을수록 버틸 수 있는 기간이 길어진다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "기대손실·유동성 런웨이."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 기대손실·유동성 런웨이는 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 낮은 확률의 큰 손실은 평균 기대손실만 보면 작아 보일 수 있지만 실제 발생 때 회사를 무너뜨릴 수 있다. 현금소진, 만기"
+        },
+        {
+          "labelled": false,
+          "text": "부채, covenant, 차환 가능성을 함께 봐야 생존여력이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ExpectedLoss=Probability×Impact; LiquidityRunway=(Cash+UndrawnFacilities-NearTermObligations)/CashBurn"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 기대손실·유동성 런웨이: 사용 가능한 현금과 미사용 한도가 많고 단기 의무나 현금소진이 작을수록 버틸 수 있는 기간이 길"
+        },
+        {
+          "labelled": false,
+          "text": "어진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 운전자본 일수·현금전환주기: 공급업체 결제를 늦추면 일부가 상쇄되지만, 지나친 DPO 증가는 협상력보다 유동성 압박의 신"
+        },
+        {
+          "labelled": false,
+          "text": "호일 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 영업권: 인수가격 중 식별 가능한 순자산을 넘는 부분은 인수 후 기대 현금흐름이 약해지면 손상될 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): CAC·LTV·회수기간: 평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 신용위험·Credit Spread·Expected Loss: 부도 가능성이나 손실률이 커질수록 평균 신용손실과 투자자가 요구하는 보상은 커"
+        },
+        {
+          "labelled": false,
+          "text": "진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-63 · EQV-63:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q28",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 주주환원수익률·자본배분\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다.",
+        "옵션·제한조건부주식·전환증권이 미래 보통주식수를 얼마나 늘려 기존 주주의 몫을 줄이는지 측정한다.",
+        "이 개념은 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다.",
+        "이 개념은 배당, 순자사주매입, 순부채상환을 시가총액과 비교해 주주에게 돌아가는 자본의 규모를 본다.",
+        "회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속 가능한 확장 속도를 결정한다는 원리다."
+      ],
+      "evidence": "EQV-64 · EQV-64:definition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 배당, 순자사주매입, 순부채상환을 시가총액과 비교해 주주에게 돌아가는 자본의 규모를 본다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "주주환원수익률·자본배분."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 주주환원수익률은 배당, 순자사주매입, 순부채상환을 시가총액과 비교해 주주에게 돌아가는 자본의 규모를 본다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 자사주를 사도 내재가치보다 비싼 가격이면 남은 주주의 가치를 파괴할 수 있다. 배당·상환·M&A·재투자 중 어디에 돈을 쓰"
+        },
+        {
+          "labelled": false,
+          "text": "는지가 수익률 숫자만큼 중요하다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ShareholderYield=(Dividends+NetBuybacks+NetDebtRepayment)/MarketCap"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 증분 ROIC: 이 개념은 일정 기간 추가로 투입한 자본이 추가 NOPAT을 얼마나 만들었는지 측정해 신규투자의 질을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 주식보상·희석주식수: 옵션·제한조건부주식·전환증권이 미래 보통주식수를 얼마나 늘려 기존 주주의 몫을 줄이는지 측정한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 기본 EPS: 이 개념은 보통주주 귀속이익을 기간가중 주식수로 나눠 한 주가 벌어들인 회계이익을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 주주환원수익률·자본배분: 이 개념은 배당, 순자사주매입, 순부채상환을 시가총액과 비교해 주주에게 돌아가는 자본의 규모"
+        },
+        {
+          "labelled": false,
+          "text": "를 본다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 성장·재투자: 회사가 이익 중 얼마를 다시 투자하고 그 신규자본에서 얼마를 버는지가 지속 가능한 확장 속도를 결정한다는"
+        },
+        {
+          "labelled": false,
+          "text": "원리다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-64 · EQV-64:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q29",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 주주환원수익률·자본배분\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해 수치는 인수·환율·시차에\n흔들리므로 여러 해 누적으로 보는 편이 낫다.",
+        "이 개념은 현금이 바로 나가지 않아도 직원에게 회사 지분 일부를 이전하는 경제적 비용이다. 현금흐름에서 가산하면서 주식수 희석까지\n무시하면 같은 항목을 두 번 좋게 보는 오류가 생긴다.",
+        "돈을 많이 다시 넣는다고 좋은 확장은 아니다. 신규투자 수익률이 자본비용보다 낮으면 규모와 이익은 커져도 가치가 파괴되며, 높은 수익\n률의 투자기회가 있을 때 재투입이 가치가 된다.",
+        "기업 전체 이익이 늘어도 신주가 더 빠르게 늘면 기존 주주의 주당 몫은 줄 수 있다. 그래서 순이익과 함께 증자·자사주·주식보상의 분모 효\n과를 봐야 한다.",
+        "자사주를 사도 내재가치보다 비싼 가격이면 남은 주주의 가치를 파괴할 수 있다. 배당·상환·M&A·재투자 중 어디에 돈을 쓰는지가 수익률\n숫자만큼 중요하다."
+      ],
+      "evidence": "EQV-64 · EQV-64:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 자사주를 사도 내재가치보다 비싼 가격이면 남은 주주의 가치를 파괴할 수 있다. 배당·상환·M&A·재투자 중 어디"
+        },
+        {
+          "labelled": false,
+          "text": "에 돈을 쓰는지가 수익률 숫자만큼 중요하다. 용어: 주주환원수익률·자본배분."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 주주환원수익률은 배당, 순자사주매입, 순부채상환을 시가총액과 비교해 주주에게 돌아가는 자본의 규모를 본다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 자사주를 사도 내재가치보다 비싼 가격이면 남은 주주의 가치를 파괴할 수 있다. 배당·상환·M&A·재투자 중 어디에 돈을 쓰"
+        },
+        {
+          "labelled": false,
+          "text": "는지가 수익률 숫자만큼 중요하다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ShareholderYield=(Dividends+NetBuybacks+NetDebtRepayment)/MarketCap"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 증분 ROIC: 과거 좋은 사업이 높은 이 개념을 유지해도 최근 투자에서 낮은 수익을 내면 미래 가치는 약해질 수 있다. 한 해"
+        },
+        {
+          "labelled": false,
+          "text": "수치는 인수·환율·시차에 흔들리므로 여러 해 누적으로 보는 편이 낫다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 주식보상·희석주식수: 이 개념은 현금이 바로 나가지 않아도 직원에게 회사 지분 일부를 이전하는 경제적 비용이다. 현금흐"
+        },
+        {
+          "labelled": false,
+          "text": "름에서 가산하면서 주식수 희석까지 무시하면 같은 항목을 두 번 좋게 보는 오류가 생긴다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 성장·재투자: 돈을 많이 다시 넣는다고 좋은 확장은 아니다. 신규투자 수익률이 자본비용보다 낮으면 규모와 이익은 커져도"
+        },
+        {
+          "labelled": false,
+          "text": "가치가 파괴되며, 높은 수익률의 투자기회가 있을 때 재투입이 가치가 된다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 기본 EPS: 기업 전체 이익이 늘어도 신주가 더 빠르게 늘면 기존 주주의 주당 몫은 줄 수 있다. 그래서 순이익과 함께 증자·"
+        },
+        {
+          "labelled": false,
+          "text": "자사주·주식보상의 분모 효과를 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 주주환원수익률·자본배분: 자사주를 사도 내재가치보다 비싼 가격이면 남은 주주의 가치를 파괴할 수 있다. 배당·상환·M&A·"
+        },
+        {
+          "labelled": false,
+          "text": "재투자 중 어디에 돈을 쓰는지가 수익률 숫자만큼 중요하다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-64 · EQV-64:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-7-Q30",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 주주환원수익률·자본배분\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "배당·상환·M&A·재투자 중 어디에 돈을 쓰는지가 수익률 숫자만큼 중요하다.",
+        "현금흐름에서 가산하면서 주식수 희석까지 무시하면 같은 항목을 두 번 좋게 보는 오류가 생긴다.",
+        "이익을 사업에 다시 투입하는 비중과 신규자본의 수익성이 높을수록 지속 가능한 확장 속도는 빨라진다.",
+        "절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요하다.",
+        "그래서 순이익과 함께 증자·자사주·주식보상의 분모 효과를 봐야 한다."
+      ],
+      "evidence": "EQV-64 · EQV-64:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 배당·상환·M&A·재투자 중 어디에 돈을 쓰는지가 수익률 숫자만큼 중요하다. 용어: 주주환원수익률·자본배분."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 주주환원수익률은 배당, 순자사주매입, 순부채상환을 시가총액과 비교해 주주에게 돌아가는 자본의 규모를 본다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 자사주를 사도 내재가치보다 비싼 가격이면 남은 주주의 가치를 파괴할 수 있다. 배당·상환·M&A·재투자 중 어디에 돈을 쓰"
+        },
+        {
+          "labelled": false,
+          "text": "는지가 수익률 숫자만큼 중요하다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ShareholderYield=(Dividends+NetBuybacks+NetDebtRepayment)/MarketCap"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 주주환원수익률·자본배분: 배당·상환·M&A·재투자 중 어디에 돈을 쓰는지가 수익률 숫자만큼 중요하다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 주식보상·희석주식수: 현금흐름에서 가산하면서 주식수 희석까지 무시하면 같은 항목을 두 번 좋게 보는 오류가 생긴다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 성장·재투자: 이익을 사업에 다시 투입하는 비중과 신규자본의 수익성이 높을수록 지속 가능한 확장 속도는 빨라진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 추정치 괴리·실적 서프라이즈: 절대 실적보다 기대와의 차이, 그리고 그 차이가 일회성인지 장기 추정치를 바꾸는지가 중요"
+        },
+        {
+          "labelled": false,
+          "text": "하다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 기본 EPS: 그래서 순이익과 함께 증자·자사주·주식보상의 분모 효과를 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-64 · EQV-64:verbal_relation:01"
+        }
+      ]
+    }
+  ]
+}

@@ -3,6 +3,10 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  outputFileTracingIncludes: {
+    "/workbook": ["./content/workbook/index.json"],
+    "/workbook/*": ["./content/workbook/**/*.json"],
+  },
   async headers() {
     return [
       {

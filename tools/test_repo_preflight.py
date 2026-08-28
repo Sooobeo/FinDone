@@ -35,6 +35,12 @@ class RepositoryPreflightTest(unittest.TestCase):
             {"admin", "android"},
             repo_preflight.scopes_for_path("tools/build_glossary_db.py"),
         )
+        self.assertEqual(
+            {"admin"},
+            repo_preflight.scopes_for_path(
+                "output/html/findone_theory_workbook_ross_integrated_30q.html"
+            ),
+        )
 
     def test_all_does_not_request_a_release_build(self) -> None:
         scopes, release_requested = repo_preflight.resolve_scopes(["all"], [])

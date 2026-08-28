@@ -1,0 +1,3202 @@
+{
+  "schemaVersion": 1,
+  "sourceSha256": "edf526c295d299916bf873cb74900ff31765990280f362f42994c8ded873be52",
+  "id": "EQV-3",
+  "anchor": "unit-EQV-3",
+  "subjectId": "subject-03",
+  "subjectTitle": "03. 주식 리서치·기업가치평가",
+  "title": "EQV-3 · 매출 동인·사업모델 단위경제성",
+  "subtitle": "정본 이론 + 검증·파생·계산 문항",
+  "meta": [
+    "핵심개념 정본 전체",
+    "문제 30",
+    "상세 해설 30"
+  ],
+  "sourceNote": "기존 FinDone 완성본 복원 · 원본 PDF 352–385쪽",
+  "theory": [
+    {
+      "kind": "section",
+      "text": "개념 압축"
+    },
+    {
+      "kind": "body",
+      "text": "작은 글자와 옅은 박스로 밀도 있게 정리했습니다."
+    },
+    {
+      "kind": "label",
+      "text": "범위"
+    },
+    {
+      "kind": "body",
+      "text": "FinDone 학습요소 EQV-19, EQV-20, EQV-21, EQV-22, EQV-23, EQV-24, EQV-25, EQV-26, EQV-27"
+    },
+    {
+      "kind": "label",
+      "text": "문항 구성"
+    },
+    {
+      "kind": "body",
+      "text": "검증 문항은행 27 · 신규 계산·응용 3 · 합계 30문항"
+    },
+    {
+      "kind": "label",
+      "text": "풀이 원칙"
+    },
+    {
+      "kind": "body",
+      "text": "정답만 제시하지 않고 핵심 조건, 계산 또는 판단 과정, 결과 해석, 대표 오답의 이유를 순서대로 설명합니다."
+    },
+    {
+      "kind": "section",
+      "text": "핵심 이론"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-19 · 시나리오 가중가치"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "시나리오 가중가치는 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "좋은 경우 150원, 나쁜 경우 50원이라는 범위만으로는 중앙 판단이 없다. 각 시나리오가 얼마나 가능하다고 보는지 명시하면 불확실성을 하나의 기대"
+    },
+    {
+      "kind": "body",
+      "text": "값으로 요약할 수 있다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "시나리오 가중가치: ExpectedPrice=Σp_s×Price_s"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 시나리오 가중가치: ExpectedPrice=Σ p_s × Price_s"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 목표주가 산정 - bull·base·bear의 독립 가정과 확률을 결합할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 위험 커뮤니케이션 - 단일 목표가 뒤에 숨은 상방·하방 분포를 투자위원회에 보여 줄 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran DCF 문제와 풀이 · Valuation 자료·PDF 허브 · finance_interview_app_final_spec.md:L1698 · F. 주식 리서치·기업가치평가 (EQV) > F.1 개념"
+    },
+    {
+      "kind": "body",
+      "text": "·문제 유형·난수 명세 > EQV-19"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-20 · 매출 브리지"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "매출 브리지는 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성장의 질과"
+    },
+    {
+      "kind": "body",
+      "text": "지속성을 판단할 수 있다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "매출 브리지: ΔRevenue = Organic + FX + M&A + Divestiture + ScopeChange"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 매출 브리지:"
+    },
+    {
+      "kind": "body",
+      "text": "Δ Revenue = Organic + FX + M&A + Divestiture + ScopeChange"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 실적 리뷰 - 보고 성장률과 organic·constant-currency 성장률의 차이를 설명할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 예측 기준 정리 - 인수·매각 효과를 별도로 두고 기존 사업 매출을 같은 범위로 비교할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "SEC EDGAR API·XBRL Company Facts · finance_interview_app_final_spec.md:L1715 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장"
+    },
+    {
+      "kind": "body",
+      "text": "요소 (EQV-20 약 64) > F.3.1 매출 드라이버와 단위경제성 > EQV-20"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-21 · 가격·물량 매출 브리지"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "가격·물량 브리지는 매출변화를 판매가격 변화와 판매수량 변화로 나누고 두 변화가 겹치는 효과의 귀속 기준을 정한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "가격과 수량이 동시에 바뀌면 두 효과를 단순히 더할 수 없다. 어느 값을 먼저 적용하느냐에 따라 교호효과가 가격 또는 물량에 들어가므로 일관된 순"
+    },
+    {
+      "kind": "body",
+      "text": "서를 써야 기간 비교가 가능하다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "제품별 R=ΣP_iQ_i; 순차 P/Q 브리지 ΔR=(P1-P0)Q0 + P1(Q1-Q0)"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 제품별 R=Σ P_iQ_i"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 순차 P/Q 브리지 Δ R=(P1-P0)Q0 + P1(Q1-Q0)"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 실적 차이 분석 - 매출 서프라이즈가 가격, 물량, 제품믹스 중 어디서 왔는지 분해할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 산업 KPI 모델 - 제품·객실·점포별 단가와 수량 드라이버로 매출을 예측할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "Damodaran Valuation Tools · finance_interview_app_final_spec.md:L1716 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장 요소"
+    },
+    {
+      "kind": "body",
+      "text": "(EQV-20 약 64) > F.3.1 매출 드라이버와 단위경제성 > EQV-21"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-22 · 사업부 믹스·연결 EBIT"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "사업부 믹스 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "모든 사업부 매출이 늘어도 저마진 사업의 비중이 더 빨리 커지면 연결마진은 하락할 수 있다. 사업부 이익 합계에서 본사비용과 내부거래 제거까지"
+    },
+    {
+      "kind": "body",
+      "text": "반영해야 연결 수치와 맞는다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "M=Σw_i m_i; 연결 EBIT=Σ SegmentEBIT-CorporateCost-Elimination"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• M=Σ w_i m_i"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 연결 EBIT=Σ SegmentEBIT-CorporateCost-Elimination"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 연결 실적 예측 - 사업부별 매출·마진과 본사비용을 합쳐 EBIT를 만들 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 믹스 효과 분석 - 가격이나 원가 변화 없이도 연결마진이 움직인 이유를 설명할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "SEC EDGAR API·XBRL Company Facts · finance_interview_app_final_spec.md:L1717 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장"
+    },
+    {
+      "kind": "body",
+      "text": "요소 (EQV-20 약 64) > F.3.1 매출 드라이버와 단위경제성 > EQV-22"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-23 · ARR·NRR·GRR"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "ARR·NRR·GRR은 구독사업의 반복매출 기반이 신규, 확장, 축소, 이탈로 어떻게 변하는지 측정하는 지표다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "고객 수가 줄어도 남은 고객의 사용량과 가격이 크게 늘면 NRR은 100%를 넘을 수 있다. GRR은 확장을 빼고 기존 매출을 얼마나 지켰는지 보므로 고"
+    },
+    {
+      "kind": "body",
+      "text": "객 유지력에 더 엄격하다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "ARR_end=ARR_begin+New+Expansion-Contraction-Churn; NRR=(Begin+Expansion-Contraction-Churn)/Begin;"
+    },
+    {
+      "kind": "body",
+      "text": "GRR=(Begin-Contraction-Churn)/Begin"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "body",
+      "text": "ARR_(end)=ARR_(begin)+New+Expansion-Contraction-Churn"
+    },
+    {
+      "kind": "body",
+      "text": "NRR=(Begin+Expansion-Contraction-Churn)/Begin"
+    },
+    {
+      "kind": "bullet",
+      "text": "• GRR=(Begin-Contraction-Churn)/Begin"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• SaaS 성장 분석 - 신규매출과 기존고객 확장·이탈을 분리해 반복성장을 예측할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 단위경제성 검토 - 높은 매출성장이 신규고객 의존인지 기존고객 유지력인지 판단할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "IFRS 15 Revenue from Contracts with Customers · finance_interview_app_final_spec.md:L1718 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업"
+    },
+    {
+      "kind": "body",
+      "text": "리서치 확장 요소 (EQV-20 약 64) > F.3.1 매출 드라이버와 단위경제성 > EQV-23"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-24 · CAC·LTV·회수기간"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "CAC·LTV·회수기간은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "LTV가 CAC보다 커도 돈을 회수하는 데 너무 오래 걸리면 빠른 성장 중 현금이 고갈될 수 있다. 평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가"
+    },
+    {
+      "kind": "body",
+      "text": "입시기별 유지율과 마진을 함께 봐야 한다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "CAC=AcquisitionS&M/NewCustomers; 단순 LTV 약 ARPU×GrossMargin/Churn; Payback=CAC/MonthlyCustomerGrossProfit"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• CAC=AcquisitionS&M/NewCustomers"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 단순 LTV 약 ARPU × GrossMargin/Churn"
+    },
+    {
+      "kind": "bullet",
+      "text": "• Payback=CAC/MonthlyCustomerGrossProfit"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 마케팅 예산 - 채널별 고객획득비와 회수기간을 비교해 지출 우선순위를 정할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 성장 지속성 - 신규고객 확대가 장기 가치와 단기 현금을 동시에 개선하는지 볼 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "SEC Non-GAAP Financial Measures C&DIs · finance_interview_app_final_spec.md:L1719 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치"
+    },
+    {
+      "kind": "body",
+      "text": "확장 요소 (EQV-20 약 64) > F.3.1 매출 드라이버와 단위경제성 > EQV-24"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-25 · 점포 매출·단위경제성"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "점포 단위경제성은 전체 매출을 점포 수와 점포당 매출로, 점포당 매출을 트래픽·전환율·객단가로 분해한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "전체 매출이 늘어도 새 점포 수만 늘고 기존점 매출이 약해졌다면 사업의 건강도는 다르다. 방문객, 구매전환, 객단가를 나누면 어떤 운영 레버가 실제"
+    },
+    {
+      "kind": "body",
+      "text": "성장을 만들었는지 보인다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "Sales=Stores×SalesPerStore; SalesPerStore=Traffic×Conversion×AverageTicket"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• Sales=Stores × SalesPerStore"
+    },
+    {
+      "kind": "body",
+      "text": "SalesPerStore=Traffic × Conversion × AverageTicket"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 리테일 예측 - 신규점 출점과 기존점 KPI를 분리해 매출을 추정할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 점포 성과관리 - 매출부진이 유입, 전환, 가격·상품믹스 중 어디서 생겼는지 찾을 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "SEC EDGAR API·XBRL Company Facts · finance_interview_app_final_spec.md:L1720 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장"
+    },
+    {
+      "kind": "body",
+      "text": "요소 (EQV-20 약 64) > F.3.1 매출 드라이버와 단위경제성 > EQV-25"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-26 · GMV·Take Rate·공헌이익"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "GMV·Take Rate 분석은 플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비 차감 후 공헌이익을 연결한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "플랫폼에서 1,000원이 거래돼도 회사 매출이 1,000원인 것은 아니다. 중개자라면 수수료만 매출이며, take rate을 무리하게 올리면 판매자와 이용자가"
+    },
+    {
+      "kind": "body",
+      "text": "떠나 GMV가 줄 수 있다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "NetRevenue=GMV×TakeRate; ContributionProfit=NetRevenue-VariableCosts"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• NetRevenue=GMV × TakeRate"
+    },
+    {
+      "kind": "body",
+      "text": "ContributionProfit=NetRevenue-VariableCosts"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 플랫폼 모델링 - 거래액, 수수료율, 결제·배송비로 순매출과 공헌이익을 예측할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계·사업 분석 - gross와 net 매출 표시 및 수수료 인상의 생태계 효과를 판단할 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "IFRS 15 Revenue from Contracts with Customers · finance_interview_app_final_spec.md:L1721 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업"
+    },
+    {
+      "kind": "body",
+      "text": "리서치 확장 요소 (EQV-20 약 64) > F.3.1 매출 드라이버와 단위경제성 > EQV-26"
+    },
+    {
+      "kind": "element",
+      "text": "EQV-27 · 가동률·손익분기점"
+    },
+    {
+      "kind": "label",
+      "text": "정의"
+    },
+    {
+      "kind": "concept",
+      "text": "가동률·손익분기점 분석은 생산능력 사용 정도와 단위당 공헌이익을 통해 고정비를 회수하는 물량을 계산한다."
+    },
+    {
+      "kind": "label",
+      "text": "직관"
+    },
+    {
+      "kind": "body",
+      "text": "공장과 호텔은 비어 있어도 상당한 고정비가 든다. 손익분기점을 넘기 전에는 추가 판매가 손실을 줄이고, 넘은 뒤에는 단위 공헌이익이 이익으로 빠"
+    },
+    {
+      "kind": "body",
+      "text": "르게 쌓여 영업레버리지가 커진다."
+    },
+    {
+      "kind": "label",
+      "text": "핵심 관계"
+    },
+    {
+      "kind": "body",
+      "text": "Revenue=Capacity×Utilization×Yield; UnitContribution=Price-VariableCost; BreakEvenUnits=FixedCost/UnitContribution"
+    },
+    {
+      "kind": "label",
+      "text": "공식"
+    },
+    {
+      "kind": "bullet",
+      "text": "• Revenue=Capacity × Utilization × Yield"
+    },
+    {
+      "kind": "bullet",
+      "text": "• UnitContribution=Price-VariableCost"
+    },
+    {
+      "kind": "body",
+      "text": "BreakEvenUnits=FixedCost/UnitContribution"
+    },
+    {
+      "kind": "label",
+      "text": "가정"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 지표의 분자·분모·기간을 일치시킨다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+    },
+    {
+      "kind": "label",
+      "text": "활용·주의"
+    },
+    {
+      "kind": "bullet",
+      "text": "• 산업 실적 추정 - 가동률·수율·객실단가 같은 물리 드라이버로 매출과 이익을 예측할 때 쓴다."
+    },
+    {
+      "kind": "bullet",
+      "text": "• 가격결정 - 가격 인하로 늘어날 물량이 공헌이익과 고정비 회수에 유리한지 볼 때 쓴다."
+    },
+    {
+      "kind": "label",
+      "text": "출처"
+    },
+    {
+      "kind": "body",
+      "text": "SEC EDGAR API·XBRL Company Facts · finance_interview_app_final_spec.md:L1722 · F. 주식 리서치·기업가치평가 (EQV) > F.3 실무 기업 리서치 확장"
+    },
+    {
+      "kind": "body",
+      "text": "요소 (EQV-20 약 64) > F.3.1 매출 드라이버와 단위경제성 > EQV-27"
+    }
+  ],
+  "questions": [
+    {
+      "id": "EQV-3-Q01",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 시나리오 가중가치\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념 분석은 여러 일관된 미래 경로의 가치와 개별 입력 변화에 대한 가치 반응을 구분해 불확실성을 보여 준다.",
+        "이 개념은 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다.",
+        "이 개념은 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다.",
+        "이 개념은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표다.",
+        "이 개념은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다."
+      ],
+      "evidence": "EQV-19 · EQV-19:definition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다. 용어: 시나리오 가중가치."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 시나리오 가중가치는 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 좋은 경우 150원, 나쁜 경우 50원이라는 범위만으로는 중앙 판단이 없다. 각 시나리오가 얼마나 가능하다고 보는지 명시하"
+        },
+        {
+          "labelled": false,
+          "text": "면 불확실성을 하나의 기대값으로 요약할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 시나리오 가중가치: ExpectedPrice=Σp_s×Price_s"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 시나리오·민감도: 이 개념 분석은 여러 일관된 미래 경로의 가치와 개별 입력 변화에 대한 가치 반응을 구분해 불확실성을"
+        },
+        {
+          "labelled": false,
+          "text": "보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 시나리오 가중가치: 이 개념은 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 계속가치: 이 개념은 명시기간 이후 안정적으로 성장할 모든 FCFF를 예측 말 시점의 한 금액으로 환산한 가치다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 리서치 위험·기대 하방: 이 개념은 위험사건의 발생확률과 발생 시 가치손실을 곱해 평균적인 가격영향을 요약한 보조지표"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): PER: 이 개념은 주가가 주당이익의 몇 배에 거래되는지 보여 주는 지분가치 배수다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-19 · EQV-19:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q02",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 시나리오 가중가치\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "낙관적인 미래 경로는 할인율만 낮추는 것이 아니라 수요, 가격, 마진, 재투자가 하나의 서사로 연결돼야 한다. 한 변수의 영향과 여러 변수\n가 함께 움직이는 세계를 구분해 본다.",
+        "좋은 경우 150원, 나쁜 경우 50원이라는 범위만으로는 중앙 판단이 없다. 각 시나리오가 얼마나 가능하다고 보는지 명시하면 불확실성을\n하나의 기대값으로 요약할 수 있다.",
+        "이 개념 20배는 현재 이익 1원에 시장이 20원을 지불한다는 뜻이다. 높은 배수는 성장과 안정성 기대를 반영할 수 있지만, 이익이 일시적으\n로 낮아져 분모가 작아진 결과일 수도 있다.",
+        "오늘의 100원은 바로 쓰거나 투자할 수 있지만 1년 뒤의 100원은 그렇지 못하다. 기다림, 물가상승, 받지 못할 위험을 보상하려면 미래에는\n더 큰 금액이 필요하고, 반대로 미래 돈을 오늘 가치로 볼 때는 할인한다.",
+        "DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가\n정 변화가 큰 가치 차이를 만든다."
+      ],
+      "evidence": "EQV-19 · EQV-19:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 좋은 경우 150원, 나쁜 경우 50원이라는 범위만으로는 중앙 판단이 없다. 각 시나리오가 얼마나 가능하다고 보는"
+        },
+        {
+          "labelled": false,
+          "text": "지 명시하면 불확실성을 하나의 기대값으로 요약할 수 있다. 용어: 시나리오 가중가치."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 시나리오 가중가치는 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 좋은 경우 150원, 나쁜 경우 50원이라는 범위만으로는 중앙 판단이 없다. 각 시나리오가 얼마나 가능하다고 보는지 명시하"
+        },
+        {
+          "labelled": false,
+          "text": "면 불확실성을 하나의 기대값으로 요약할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 시나리오 가중가치: ExpectedPrice=Σp_s×Price_s"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 시나리오·민감도: 낙관적인 미래 경로는 할인율만 낮추는 것이 아니라 수요, 가격, 마진, 재투자가 하나의 서사로 연결돼야"
+        },
+        {
+          "labelled": false,
+          "text": "한다. 한 변수의 영향과 여러 변수가 함께 움직이는 세계를 구분해 본다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 시나리오 가중가치: 좋은 경우 150원, 나쁜 경우 50원이라는 범위만으로는 중앙 판단이 없다. 각 시나리오가 얼마나 가능하"
+        },
+        {
+          "labelled": false,
+          "text": "다고 보는지 명시하면 불확실성을 하나의 기대값으로 요약할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): PER: 이 개념 20배는 현재 이익 1원에 시장이 20원을 지불한다는 뜻이다. 높은 배수는 성장과 안정성 기대를 반영할 수 있지"
+        },
+        {
+          "labelled": false,
+          "text": "만, 이익이 일시적으로 낮아져 분모가 작아진 결과일 수도 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 화폐의 시간가치 - 일시금 PV·FV: 오늘의 100원은 바로 쓰거나 투자할 수 있지만 1년 뒤의 100원은 그렇지 못하다. 기다림,"
+        },
+        {
+          "labelled": false,
+          "text": "물가상승, 받지 못할 위험을 보상하려면 미래에는 더 큰 금액이 필요하고, 반대로 미래 돈을 오늘 가치로 볼 때는 할인한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 계속가치: DCF의 5년 예측이 끝나도 회사는 계속 운영된다. 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에"
+        },
+        {
+          "labelled": false,
+          "text": "매우 민감하므로, 작은 가정 변화가 큰 가치 차이를 만든다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-19 · EQV-19:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q03",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 시나리오 가중가치\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "한 입력만 바꾸면 개별 영향이 드러나고, 여러 입력을 일관된 방향으로 함께 바꾸면 하나의 미래 경로가 된다.",
+        "장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가정 변화가 큰 가치 차이를 만든다.",
+        "각 시나리오가 얼마나 가능하다고 보는지 명시하면 불확실성을 하나의 기대값으로 요약할 수 있다.",
+        "가능한 결과가 평균에서 더 넓게 흩어질수록 측정되는 위험은 커진다.",
+        "기다림, 물가상승, 받지 못할 위험을 보상하려면 미래에는 더 큰 금액이 필요하고, 반대로 미래 돈을 오늘 가치로 볼 때는 할인한다."
+      ],
+      "evidence": "EQV-19 · EQV-19:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 각 시나리오가 얼마나 가능하다고 보는지 명시하면 불확실성을 하나의 기대값으로 요약할 수 있다. 용어: 시나리"
+        },
+        {
+          "labelled": false,
+          "text": "오 가중가치."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 시나리오 가중가치는 서로 다른 미래 상태의 가치에 각 발생확률을 곱해 평균한 기대가치다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 좋은 경우 150원, 나쁜 경우 50원이라는 범위만으로는 중앙 판단이 없다. 각 시나리오가 얼마나 가능하다고 보는지 명시하"
+        },
+        {
+          "labelled": false,
+          "text": "면 불확실성을 하나의 기대값으로 요약할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 시나리오 가중가치: ExpectedPrice=Σp_s×Price_s"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 시나리오·민감도: 한 입력만 바꾸면 개별 영향이 드러나고, 여러 입력을 일관된 방향으로 함께 바꾸면 하나의 미래 경로가 된"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 계속가치: 장기 현금을 한 값으로 압축하는 대신 WACC와 성장률 차이에 매우 민감하므로, 작은 가정 변화가 큰 가치 차이를"
+        },
+        {
+          "labelled": false,
+          "text": "만든다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 시나리오 가중가치: 각 시나리오가 얼마나 가능하다고 보는지 명시하면 불확실성을 하나의 기대값으로 요약할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 기대수익률·분산·표준편차: 가능한 결과가 평균에서 더 넓게 흩어질수록 측정되는 위험은 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 화폐의 시간가치 - 일시금 PV·FV: 기다림, 물가상승, 받지 못할 위험을 보상하려면 미래에는 더 큰 금액이 필요하고, 반대로"
+        },
+        {
+          "labelled": false,
+          "text": "미래 돈을 오늘 가치로 볼 때는 할인한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-19 · EQV-19:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q04",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 매출 브리지\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구한다.",
+        "점포 이 개념은 전체 매출을 점포 수와 점포당 매출로, 점포당 매출을 트래픽·전환율·객단가로 분해한다.",
+        "이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다.",
+        "매출변화를 판매단가 변화와 판매수량 변화로 나누고 두 변화가 겹치는 효과의 귀속 기준을 정하는 분석이다.",
+        "이 개념은 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다."
+      ],
+      "evidence": "EQV-20 · EQV-20:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석"
+        },
+        {
+          "labelled": false,
+          "text": "이다. 용어: 매출 브리지."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 매출 브리지는 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마나 성장했는"
+        },
+        {
+          "labelled": false,
+          "text": "지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 매출 브리지: ΔRevenue = Organic + FX + M&A + Divestiture + ScopeChange"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 보통주 지분가치 브리지: 이 개념은 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주"
+        },
+        {
+          "labelled": false,
+          "text": "몫을 구한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 점포 매출·단위경제성: 점포 이 개념은 전체 매출을 점포 수와 점포당 매출로, 점포당 매출을 트래픽·전환율·객단가로 분해한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 생명보험 CSM·지급여력: 이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께"
+        },
+        {
+          "labelled": false,
+          "text": "본다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 가격·물량 매출 브리지: 매출변화를 판매단가 변화와 판매수량 변화로 나누고 두 변화가 겹치는 효과의 귀속 기준을 정하는"
+        },
+        {
+          "labelled": false,
+          "text": "분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 매출 브리지: 이 개념은 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분"
+        },
+        {
+          "labelled": false,
+          "text": "석이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-20 · EQV-20:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q05",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 매출 브리지\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정\n변경, 환율, 해제 속도를 따로 봐야 한다.",
+        "연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현금을 EV 계산과 브리지 양쪽에서 더하면\n이중계상이므로 포함 기준을 한 번만 적용한다.",
+        "전체 매출이 늘어도 새 점포 수만 늘고 기존점 매출이 약해졌다면 사업의 건강도는 다르다. 방문객, 구매전환, 객단가를 나누면 어떤 운영\n레버가 실제 성장을 만들었는지 보인다.",
+        "원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성\n장의 질과 지속성을 판단할 수 있다.",
+        "가격과 수량이 동시에 바뀌면 두 효과를 단순히 더할 수 없다. 어느 값을 먼저 적용하느냐에 따라 교호효과가 가격 또는 물량에 들어가므로\n일관된 순서를 써야 기간 비교가 가능하다."
+      ],
+      "evidence": "EQV-20 · EQV-20:intuition:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마나"
+        },
+        {
+          "labelled": false,
+          "text": "성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다. 용어: 매출 브리지."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 매출 브리지는 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마나 성장했는"
+        },
+        {
+          "labelled": false,
+          "text": "지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 매출 브리지: ΔRevenue = Organic + FX + M&A + Divestiture + ScopeChange"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 생명보험 CSM·지급여력: 이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며"
+        },
+        {
+          "labelled": false,
+          "text": "이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 보통주 지분가치 브리지: 연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현"
+        },
+        {
+          "labelled": false,
+          "text": "금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 점포 매출·단위경제성: 전체 매출이 늘어도 새 점포 수만 늘고 기존점 매출이 약해졌다면 사업의 건강도는 다르다. 방문객,"
+        },
+        {
+          "labelled": false,
+          "text": "구매전환, 객단가를 나누면 어떤 운영 레버가 실제 성장을 만들었는지 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 매출 브리지: 원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마"
+        },
+        {
+          "labelled": false,
+          "text": "나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 가격·물량 매출 브리지: 가격과 수량이 동시에 바뀌면 두 효과를 단순히 더할 수 없다. 어느 값을 먼저 적용하느냐에 따라 교"
+        },
+        {
+          "labelled": false,
+          "text": "호효과가 가격 또는 물량에 들어가므로 일관된 순서를 써야 기간 비교가 가능하다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-20 · EQV-20:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q06",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 매출 브리지\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "현금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다.",
+        "판매단가와 판매수량이 모두 변하면 어느 요인을 먼저 적용하는지에 따라 둘의 교호효과가 귀속되는 곳이 달라진다.",
+        "앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다.",
+        "기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다.",
+        "방문객, 구매전환, 객단가를 나누면 어떤 운영 레버가 실제 성장을 만들었는지 보인다."
+      ],
+      "evidence": "EQV-20 · EQV-20:verbal_relation:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다. 용어: 매출 브"
+        },
+        {
+          "labelled": false,
+          "text": "리지."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 매출 브리지는 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마나 성장했는"
+        },
+        {
+          "labelled": false,
+          "text": "지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 매출 브리지: ΔRevenue = Organic + FX + M&A + Divestiture + ScopeChange"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 보통주 지분가치 브리지: 현금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 가격·물량 매출 브리지: 판매단가와 판매수량이 모두 변하면 어느 요인을 먼저 적용하는지에 따라 둘의 교호효과가 귀속되"
+        },
+        {
+          "labelled": false,
+          "text": "는 곳이 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 생명보험 CSM·지급여력: 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐"
+        },
+        {
+          "labelled": false,
+          "text": "야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): 매출 브리지: 기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 점포 매출·단위경제성: 방문객, 구매전환, 객단가를 나누면 어떤 운영 레버가 실제 성장을 만들었는지 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-20 · EQV-20:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q07",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 가격·물량 매출 브리지\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다.",
+        "매출변화를 판매단가 변화와 판매수량 변화로 나누고 두 변화가 겹치는 효과의 귀속 기준을 정하는 분석이다.",
+        "이 개념은 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다.",
+        "이 개념은 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주 몫을 구한다.",
+        "이 개념은 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다."
+      ],
+      "evidence": "EQV-21 · EQV-21:definition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 매출변화를 판매단가 변화와 판매수량 변화로 나누고 두 변화가 겹치는 효과의 귀속 기준을 정하는 분석이다. 용"
+        },
+        {
+          "labelled": false,
+          "text": "어: 가격·물량 매출 브리지."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 가격·물량 브리지는 매출변화를 판매가격 변화와 판매수량 변화로 나누고 두 변화가 겹치는 효과의 귀속 기준을 정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 가격과 수량이 동시에 바뀌면 두 효과를 단순히 더할 수 없다. 어느 값을 먼저 적용하느냐에 따라 교호효과가 가격 또는 물"
+        },
+        {
+          "labelled": false,
+          "text": "량에 들어가므로 일관된 순서를 써야 기간 비교가 가능하다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 제품별 R=ΣP_iQ_i; 순차 P/Q 브리지 ΔR=(P1-P0)Q0 + P1(Q1-Q0)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): P×Q 매출 추정: 이 개념은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 가격·물량 매출 브리지: 매출변화를 판매단가 변화와 판매수량 변화로 나누고 두 변화가 겹치는 효과의 귀속 기준을 정하는"
+        },
+        {
+          "labelled": false,
+          "text": "분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 경기민감·원자재 정상화: 이 개념은 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 보통주 지분가치 브리지: 이 개념은 영업 EV에 비영업자산을 더하고 부채·우선주·비지배지분 등 선순위 청구권을 빼 보통주"
+        },
+        {
+          "labelled": false,
+          "text": "몫을 구한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 매출 브리지: 이 개념은 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분"
+        },
+        {
+          "labelled": false,
+          "text": "석이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-21 · EQV-21:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q08",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 가격·물량 매출 브리지\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성\n장의 질과 지속성을 판단할 수 있다.",
+        "연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현금을 EV 계산과 브리지 양쪽에서 더하면\n이중계상이므로 포함 기준을 한 번만 적용한다.",
+        "매출이 10% 늘었다는 결과보다 가격을 올렸는지, 더 많이 팔았는지가 중요하다. 수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우\n의 비용·지속가능성은 다르다.",
+        "원자재 가격 정점에서는 이익이 커 PER이 매우 낮아 보이지만 그 이익이 반복되지 않을 수 있다. 과거 평균이익만 쓰기보다 현재 생산량과\n정상 가격·원가를 결합해야 구조변화를 반영한다.",
+        "가격과 수량이 동시에 바뀌면 두 효과를 단순히 더할 수 없다. 어느 값을 먼저 적용하느냐에 따라 교호효과가 가격 또는 물량에 들어가므로\n일관된 순서를 써야 기간 비교가 가능하다."
+      ],
+      "evidence": "EQV-21 · EQV-21:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 가격과 수량이 동시에 바뀌면 두 효과를 단순히 더할 수 없다. 어느 값을 먼저 적용하느냐에 따라 교호효과가 가"
+        },
+        {
+          "labelled": false,
+          "text": "격 또는 물량에 들어가므로 일관된 순서를 써야 기간 비교가 가능하다. 용어: 가격·물량 매출 브리지."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 가격·물량 브리지는 매출변화를 판매가격 변화와 판매수량 변화로 나누고 두 변화가 겹치는 효과의 귀속 기준을 정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 가격과 수량이 동시에 바뀌면 두 효과를 단순히 더할 수 없다. 어느 값을 먼저 적용하느냐에 따라 교호효과가 가격 또는 물"
+        },
+        {
+          "labelled": false,
+          "text": "량에 들어가므로 일관된 순서를 써야 기간 비교가 가능하다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 제품별 R=ΣP_iQ_i; 순차 P/Q 브리지 ΔR=(P1-P0)Q0 + P1(Q1-Q0)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 매출 브리지: 원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마"
+        },
+        {
+          "labelled": false,
+          "text": "나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 보통주 지분가치 브리지: 연결 EBITDA에 자회사 실적 100%가 들어갔다면 그 자회사 중 외부주주 몫인 NCI를 빼야 한다. 현"
+        },
+        {
+          "labelled": false,
+          "text": "금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): P×Q 매출 추정: 매출이 10% 늘었다는 결과보다 가격을 올렸는지, 더 많이 팔았는지가 중요하다. 수량이 줄어도 가격 인상으"
+        },
+        {
+          "labelled": false,
+          "text": "로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 경기민감·원자재 정상화: 원자재 가격 정점에서는 이익이 커 PER이 매우 낮아 보이지만 그 이익이 반복되지 않을 수 있다."
+        },
+        {
+          "labelled": false,
+          "text": "과거 평균이익만 쓰기보다 현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 가격·물량 매출 브리지: 가격과 수량이 동시에 바뀌면 두 효과를 단순히 더할 수 없다. 어느 값을 먼저 적용하느냐에 따라 교"
+        },
+        {
+          "labelled": false,
+          "text": "호효과가 가격 또는 물량에 들어가므로 일관된 순서를 써야 기간 비교가 가능하다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-21 · EQV-21:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q09",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 가격·물량 매출 브리지\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "판매단가와 판매수량이 모두 변하면 어느 요인을 먼저 적용하는지에 따라 둘의 교호효과가 귀속되는 곳이 달라진다.",
+        "과거 평균이익만 쓰기보다 현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다.",
+        "기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다.",
+        "현금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다.",
+        "수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다."
+      ],
+      "evidence": "EQV-21 · EQV-21:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 판매단가와 판매수량이 모두 변하면 어느 요인을 먼저 적용하는지에 따라 둘의 교호효과가 귀속되는 곳이 달라"
+        },
+        {
+          "labelled": false,
+          "text": "진다. 용어: 가격·물량 매출 브리지."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 가격·물량 브리지는 매출변화를 판매가격 변화와 판매수량 변화로 나누고 두 변화가 겹치는 효과의 귀속 기준을 정한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 가격과 수량이 동시에 바뀌면 두 효과를 단순히 더할 수 없다. 어느 값을 먼저 적용하느냐에 따라 교호효과가 가격 또는 물"
+        },
+        {
+          "labelled": false,
+          "text": "량에 들어가므로 일관된 순서를 써야 기간 비교가 가능하다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: 제품별 R=ΣP_iQ_i; 순차 P/Q 브리지 ΔR=(P1-P0)Q0 + P1(Q1-Q0)"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 가격·물량 매출 브리지: 판매단가와 판매수량이 모두 변하면 어느 요인을 먼저 적용하는지에 따라 둘의 교호효과가 귀속되"
+        },
+        {
+          "labelled": false,
+          "text": "는 곳이 달라진다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 경기민감·원자재 정상화: 과거 평균이익만 쓰기보다 현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 매출 브리지: 기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 보통주 지분가치 브리지: 현금을 EV 계산과 브리지 양쪽에서 더하면 이중계상이므로 포함 기준을 한 번만 적용한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): P×Q 매출 추정: 수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-21 · EQV-21:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q10",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 사업부 믹스·연결 EBIT\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "마진 분석은 매출에서 원가와 판관비가 차지하는 비중을 연결해 이 개념의 변화를 설명한다.",
+        "이 개념 조정은 당기 연구개발비를 장기투자로 보고 과거 투자분의 상각과 바꿔 영업이익과 투하자본을 함께 재작성하는 분석이다.",
+        "이 개념 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한다.",
+        "이 개념은 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다.",
+        "이 개념은 성격이 다른 사업부를 각자 맞는 비교기업·배수·DCF로 평가한 뒤 본사비용과 순부채 등을 조정해 합산하는 방법이다."
+      ],
+      "evidence": "EQV-22 · EQV-22:definition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한다. 용어: 사"
+        },
+        {
+          "labelled": false,
+          "text": "업부 믹스·연결 EBIT."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 사업부 믹스 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 모든 사업부 매출이 늘어도 저마진 사업의 비중이 더 빨리 커지면 연결마진은 하락할 수 있다. 사업부 이익 합계에서 본사"
+        },
+        {
+          "labelled": false,
+          "text": "비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: M=Σw_i m_i; 연결 EBIT=Σ SegmentEBIT-CorporateCost-Elimination"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 마진과 영업이익: 마진 분석은 매출에서 원가와 판관비가 차지하는 비중을 연결해 이 개념의 변화를 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): R&D 자산화·순설비투자: 이 개념 조정은 당기 연구개발비를 장기투자로 보고 과거 투자분의 상각과 바꿔 영업이익과 투하"
+        },
+        {
+          "labelled": false,
+          "text": "자본을 함께 재작성하는 분석이다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 사업부 믹스·연결 EBIT: 이 개념 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 매출 브리지: 이 개념은 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분"
+        },
+        {
+          "labelled": false,
+          "text": "석이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): SOTP: 이 개념은 성격이 다른 사업부를 각자 맞는 비교기업·배수·DCF로 평가한 뒤 본사비용과 순부채 등을 조정해 합산하는"
+        },
+        {
+          "labelled": false,
+          "text": "방법이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-22 · EQV-22:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q11",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 사업부 믹스·연결 EBIT\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성\n장의 질과 지속성을 판단할 수 있다.",
+        "모든 사업부 매출이 늘어도 저마진 사업의 비중이 더 빨리 커지면 연결마진은 하락할 수 있다. 사업부 이익 합계에서 본사비용과 내부거래\n제거까지 반영해야 연결 수치와 맞는다.",
+        "매출이 늘어도 할인판매로 매출총이익률이 떨어지거나 고정비가 크게 늘면 이 개념은 기대만큼 늘지 않는다. 매출 성장과 비용률을 따로\n잡아야 이익의 원인이 보인다.",
+        "오늘의 R&D가 여러 해 매출을 만든다면 전액을 당기비용으로 처리한 이익은 성장투자를 많이 하는 회사를 불리하게 보일 수 있다. 비용만\n되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다.",
+        "ROE 개선이 제품가격 때문인지, 이자비용 감소인지, 세율 하락인지, 더 많은 부채 사용인지 한 숫자만으로 알 수 없다. 다섯 단계로 나누면\n영업개선과 재무효과가 분리된다."
+      ],
+      "evidence": "EQV-22 · EQV-22:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 모든 사업부 매출이 늘어도 저마진 사업의 비중이 더 빨리 커지면 연결마진은 하락할 수 있다. 사업부 이익 합계"
+        },
+        {
+          "labelled": false,
+          "text": "에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다. 용어: 사업부 믹스·연결 EBIT."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 사업부 믹스 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 모든 사업부 매출이 늘어도 저마진 사업의 비중이 더 빨리 커지면 연결마진은 하락할 수 있다. 사업부 이익 합계에서 본사"
+        },
+        {
+          "labelled": false,
+          "text": "비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: M=Σw_i m_i; 연결 EBIT=Σ SegmentEBIT-CorporateCost-Elimination"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 매출 브리지: 원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마"
+        },
+        {
+          "labelled": false,
+          "text": "나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 사업부 믹스·연결 EBIT: 모든 사업부 매출이 늘어도 저마진 사업의 비중이 더 빨리 커지면 연결마진은 하락할 수 있다. 사업"
+        },
+        {
+          "labelled": false,
+          "text": "부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 마진과 영업이익: 매출이 늘어도 할인판매로 매출총이익률이 떨어지거나 고정비가 크게 늘면 이 개념은 기대만큼 늘지 않는"
+        },
+        {
+          "labelled": false,
+          "text": "다. 매출 성장과 비용률을 따로 잡아야 이익의 원인이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): R&D 자산화·순설비투자: 오늘의 R&D가 여러 해 매출을 만든다면 전액을 당기비용으로 처리한 이익은 성장투자를 많이 하"
+        },
+        {
+          "labelled": false,
+          "text": "는 회사를 불리하게 보일 수 있다. 비용만 되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 5단계 DuPont: ROE 개선이 제품가격 때문인지, 이자비용 감소인지, 세율 하락인지, 더 많은 부채 사용인지 한 숫자만으로"
+        },
+        {
+          "labelled": false,
+          "text": "알 수 없다. 다섯 단계로 나누면 영업개선과 재무효과가 분리된다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-22 · EQV-22:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q12",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 사업부 믹스·연결 EBIT\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "매출 성장과 비용률을 따로 잡아야 이익의 원인이 보인다.",
+        "사업부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다.",
+        "비용만 되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다.",
+        "사업부별 가치를 따로 구하되 본사비용과 현금을 중복 반영하지 않아야 한다.",
+        "기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+      ],
+      "evidence": "EQV-22 · EQV-22:verbal_relation:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 사업부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다. 용어: 사업부 믹스·연결"
+        },
+        {
+          "labelled": false,
+          "text": "EBIT."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 사업부 믹스 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 모든 사업부 매출이 늘어도 저마진 사업의 비중이 더 빨리 커지면 연결마진은 하락할 수 있다. 사업부 이익 합계에서 본사"
+        },
+        {
+          "labelled": false,
+          "text": "비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: M=Σw_i m_i; 연결 EBIT=Σ SegmentEBIT-CorporateCost-Elimination"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 마진과 영업이익: 매출 성장과 비용률을 따로 잡아야 이익의 원인이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 사업부 믹스·연결 EBIT: 사업부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): R&D 자산화·순설비투자: 비용만 되돌리면 안 되고 과거 R&D 자산과 상각도 함께 만들어야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): SOTP: 사업부별 가치를 따로 구하되 본사비용과 현금을 중복 반영하지 않아야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 매출 브리지: 기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-22 · EQV-22:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q13",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: ARR·NRR·GRR\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "대출·증권의 이자수익, 예금·차입의 이자비용, 평균이자수익자산과 예금금리 전가속도를 연결해 은행의 핵심 영업수익성을 본다.",
+        "이 개념은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다.",
+        "이 개념은 구독사업의 반복매출 기반이 신규, 확장, 축소, 이탈로 어떻게 변하는지 측정하는 지표다.",
+        "확보한 주문잔고의 변화를 추적하고 신규수주가 현재 매출을 얼마나 대체하는지 보여 주는 선행지표다.",
+        "이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다."
+      ],
+      "evidence": "EQV-23 · EQV-23:definition:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 구독사업의 반복매출 기반이 신규, 확장, 축소, 이탈로 어떻게 변하는지 측정하는 지표다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "ARR·NRR·GRR."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: ARR·NRR·GRR은 구독사업의 반복매출 기반이 신규, 확장, 축소, 이탈로 어떻게 변하는지 측정하는 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 고객 수가 줄어도 남은 고객의 사용량과 가격이 크게 늘면 NRR은 100%를 넘을 수 있다. GRR은 확장을 빼고 기존 매출을"
+        },
+        {
+          "labelled": false,
+          "text": "얼마나 지켰는지 보므로 고객 유지력에 더 엄격하다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ARR_end=ARR_begin+New+Expansion-Contraction-Churn; NRR=(Begin+Expansion-Contraction-Churn)/Begin;"
+        },
+        {
+          "labelled": false,
+          "text": "GRR=(Begin-Contraction-Churn)/Begin"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 은행 수익성·NIM: 대출·증권의 이자수익, 예금·차입의 이자비용, 평균이자수익자산과 예금금리 전가속도를 연결해 은행의 핵"
+        },
+        {
+          "labelled": false,
+          "text": "심 영업수익성을 본다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): CAC·LTV·회수기간: 이 개념은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지"
+        },
+        {
+          "labelled": false,
+          "text": "표다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): ARR·NRR·GRR: 이 개념은 구독사업의 반복매출 기반이 신규, 확장, 축소, 이탈로 어떻게 변하는지 측정하는 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): Backlog·Book-to-Bill: 확보한 주문잔고의 변화를 추적하고 신규수주가 현재 매출을 얼마나 대체하는지 보여 주는 선행지표"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): ROIC·투하자본: 이 개념은 영업에 투입한 평균자본으로 얼마의 세후 영업이익을 냈는지 측정하는 자본효율 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-23 · EQV-23:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q14",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: ARR·NRR·GRR\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "고객 수가 줄어도 남은 고객의 사용량과 가격이 크게 늘면 기존 반복매출이 순증할 수 있다. 확장을 제외한 보존율은 기존 매출을 얼마나\n지켰는지 더 엄격하게 보여 준다.",
+        "시장금리가 올라도 대출금리는 늦게 오르고 예금금리는 빠르게 오르면 이 개념은 줄 수 있다. 자산과 부채의 재가격 시점, 예금구성, 고객\n이탈 압력을 함께 봐야 한다.",
+        "수주가 매출보다 많으면 잔고가 쌓이지만, 모든 잔고가 같은 확률과 마진으로 매출이 되는 것은 아니다. 취소, 환율, 고정가 계약의 원가상\n승까지 봐야 미래 매출의 질을 판단할 수 있다.",
+        "매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을 자본비용과 비교하면 투입한 1\n원이 가치를 만들었는지 알 수 있다.",
+        "고객 한 명의 장기 공헌액이 유치비보다 커도 이 개념이 지나치게 길면 빠른 성장 중 현금이 고갈될 수 있다. 가입시기별 유지율과 마진을\n함께 봐야 한다."
+      ],
+      "evidence": "EQV-23 · EQV-23:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 고객 수가 줄어도 남은 고객의 사용량과 가격이 크게 늘면 기존 반복매출이 순증할 수 있다. 확장을 제외한 보존"
+        },
+        {
+          "labelled": false,
+          "text": "율은 기존 매출을 얼마나 지켰는지 더 엄격하게 보여 준다. 용어: ARR·NRR·GRR."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: ARR·NRR·GRR은 구독사업의 반복매출 기반이 신규, 확장, 축소, 이탈로 어떻게 변하는지 측정하는 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 고객 수가 줄어도 남은 고객의 사용량과 가격이 크게 늘면 NRR은 100%를 넘을 수 있다. GRR은 확장을 빼고 기존 매출을"
+        },
+        {
+          "labelled": false,
+          "text": "얼마나 지켰는지 보므로 고객 유지력에 더 엄격하다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ARR_end=ARR_begin+New+Expansion-Contraction-Churn; NRR=(Begin+Expansion-Contraction-Churn)/Begin;"
+        },
+        {
+          "labelled": false,
+          "text": "GRR=(Begin-Contraction-Churn)/Begin"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): ARR·NRR·GRR: 고객 수가 줄어도 남은 고객의 사용량과 가격이 크게 늘면 기존 반복매출이 순증할 수 있다. 확장을 제외한"
+        },
+        {
+          "labelled": false,
+          "text": "보존율은 기존 매출을 얼마나 지켰는지 더 엄격하게 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 은행 수익성·NIM: 시장금리가 올라도 대출금리는 늦게 오르고 예금금리는 빠르게 오르면 이 개념은 줄 수 있다. 자산과 부채"
+        },
+        {
+          "labelled": false,
+          "text": "의 재가격 시점, 예금구성, 고객 이탈 압력을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): Backlog·Book-to-Bill: 수주가 매출보다 많으면 잔고가 쌓이지만, 모든 잔고가 같은 확률과 마진으로 매출이 되는 것은 아니"
+        },
+        {
+          "labelled": false,
+          "text": "다. 취소, 환율, 고정가 계약의 원가상승까지 봐야 미래 매출의 질을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): ROIC·투하자본: 매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을"
+        },
+        {
+          "labelled": false,
+          "text": "자본비용과 비교하면 투입한 1원이 가치를 만들었는지 알 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): CAC·LTV·회수기간: 고객 한 명의 장기 공헌액이 유치비보다 커도 이 개념이 지나치게 길면 빠른 성장 중 현금이 고갈될 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다. 가입시기별 유지율과 마진을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-23 · EQV-23:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q15",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: ARR·NRR·GRR\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "기존 고객의 축소와 이탈이 클수록 유지되는 반복 매출 비중은 낮아지고, 확장이 크면 순유지 성과는 높아진다.",
+        "취소, 환율, 고정가 계약의 원가상승까지 봐야 미래 매출의 질을 판단할 수 있다.",
+        "세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다.",
+        "평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다.",
+        "대출 등 자산금리가 예금 등 조달금리보다 더 빠르게 오르면 이자마진이 개선되고 반대면 축소된다."
+      ],
+      "evidence": "EQV-23 · EQV-23:verbal_relation:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 기존 고객의 축소와 이탈이 클수록 유지되는 반복 매출 비중은 낮아지고, 확장이 크면 순유지 성과는 높아진다."
+        },
+        {
+          "labelled": false,
+          "text": "용어: ARR·NRR·GRR."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: ARR·NRR·GRR은 구독사업의 반복매출 기반이 신규, 확장, 축소, 이탈로 어떻게 변하는지 측정하는 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 고객 수가 줄어도 남은 고객의 사용량과 가격이 크게 늘면 NRR은 100%를 넘을 수 있다. GRR은 확장을 빼고 기존 매출을"
+        },
+        {
+          "labelled": false,
+          "text": "얼마나 지켰는지 보므로 고객 유지력에 더 엄격하다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: ARR_end=ARR_begin+New+Expansion-Contraction-Churn; NRR=(Begin+Expansion-Contraction-Churn)/Begin;"
+        },
+        {
+          "labelled": false,
+          "text": "GRR=(Begin-Contraction-Churn)/Begin"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): ARR·NRR·GRR: 기존 고객의 축소와 이탈이 클수록 유지되는 반복 매출 비중은 낮아지고, 확장이 크면 순유지 성과는 높아진"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): Backlog·Book-to-Bill: 취소, 환율, 고정가 계약의 원가상승까지 봐야 미래 매출의 질을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): ROIC·투하자본: 세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): CAC·LTV·회수기간: 평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 은행 수익성·NIM: 대출 등 자산금리가 예금 등 조달금리보다 더 빠르게 오르면 이자마진이 개선되고 반대면 축소된다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-23 · EQV-23:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q16",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: CAC·LTV·회수기간\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "이 개념은 구독사업의 반복매출 기반이 신규, 확장, 축소, 이탈로 어떻게 변하는지 측정하는 지표다.",
+        "이 개념은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다.",
+        "이 개념은 담보 부동산가치 중 대출이 차지하는 비율로, 가격하락을 흡수할 자기자본 완충을 보여 준다.",
+        "이 개념은 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한다.",
+        "회계이익 중 실제 영업현금으로 뒷받침되는 정도를 비현금 조정과 현금 유입의 관점에서 측정한다."
+      ],
+      "evidence": "EQV-24 · EQV-24:definition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다. 용"
+        },
+        {
+          "labelled": false,
+          "text": "어: CAC·LTV·회수기간."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: CAC·LTV·회수기간은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: LTV가 CAC보다 커도 돈을 회수하는 데 너무 오래 걸리면 빠른 성장 중 현금이 고갈될 수 있다. 평균고객만 보면 나쁜"
+        },
+        {
+          "labelled": false,
+          "text": "cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: CAC=AcquisitionS&M/NewCustomers; 단순 LTV 약 ARPU×GrossMargin/Churn;"
+        },
+        {
+          "labelled": false,
+          "text": "Payback=CAC/MonthlyCustomerGrossProfit"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): ARR·NRR·GRR: 이 개념은 구독사업의 반복매출 기반이 신규, 확장, 축소, 이탈로 어떻게 변하는지 측정하는 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): CAC·LTV·회수기간: 이 개념은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지"
+        },
+        {
+          "labelled": false,
+          "text": "표다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): LTV: 이 개념은 담보 부동산가치 중 대출이 차지하는 비율로, 가격하락을 흡수할 자기자본 완충을 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 기대손실·유동성 런웨이: 이 개념은 사건확률과 충격을 결합한 하방과 현금·미사용한도로 버틸 수 있는 기간을 함께 측정한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 발생액비율·현금전환: 회계이익 중 실제 영업현금으로 뒷받침되는 정도를 비현금 조정과 현금 유입의 관점에서 측정한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-24 · EQV-24:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q17",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: CAC·LTV·회수기간\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "순이익은 늘지만 매출채권과 재고가 더 빠르게 늘면 현금은 따라오지 않을 수 있다. 한 분기의 운전자본 변동은 일시적일 수 있으므로 절대\n값보다 여러 기간의 지속성을 봐야 한다.",
+        "고객 수가 줄어도 남은 고객의 사용량과 가격이 크게 늘면 기존 반복매출이 순증할 수 있다. 확장을 제외한 보존율은 기존 매출을 얼마나\n지켰는지 더 엄격하게 보여 준다.",
+        "매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을 자본비용과 비교하면 투입한 1\n원이 가치를 만들었는지 알 수 있다.",
+        "낮은 확률의 큰 손실은 평균 이 개념만 보면 작아 보일 수 있지만 실제 발생 때 회사를 무너뜨릴 수 있다. 현금소진, 만기부채, covenant, 차\n환 가능성을 함께 봐야 생존여력이 보인다.",
+        "고객 한 명의 장기 공헌액이 유치비보다 커도 이 개념이 지나치게 길면 빠른 성장 중 현금이 고갈될 수 있다. 가입시기별 유지율과 마진을\n함께 봐야 한다."
+      ],
+      "evidence": "EQV-24 · EQV-24:intuition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 고객 한 명의 장기 공헌액이 유치비보다 커도 이 개념이 지나치게 길면 빠른 성장 중 현금이 고갈될 수 있다. 가"
+        },
+        {
+          "labelled": false,
+          "text": "입시기별 유지율과 마진을 함께 봐야 한다. 용어: CAC·LTV·회수기간."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: CAC·LTV·회수기간은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: LTV가 CAC보다 커도 돈을 회수하는 데 너무 오래 걸리면 빠른 성장 중 현금이 고갈될 수 있다. 평균고객만 보면 나쁜"
+        },
+        {
+          "labelled": false,
+          "text": "cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: CAC=AcquisitionS&M/NewCustomers; 단순 LTV 약 ARPU×GrossMargin/Churn;"
+        },
+        {
+          "labelled": false,
+          "text": "Payback=CAC/MonthlyCustomerGrossProfit"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 발생액비율·현금전환: 순이익은 늘지만 매출채권과 재고가 더 빠르게 늘면 현금은 따라오지 않을 수 있다. 한 분기의 운전자"
+        },
+        {
+          "labelled": false,
+          "text": "본 변동은 일시적일 수 있으므로 절대값보다 여러 기간의 지속성을 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): ARR·NRR·GRR: 고객 수가 줄어도 남은 고객의 사용량과 가격이 크게 늘면 기존 반복매출이 순증할 수 있다. 확장을 제외한"
+        },
+        {
+          "labelled": false,
+          "text": "보존율은 기존 매출을 얼마나 지켰는지 더 엄격하게 보여 준다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): ROIC·투하자본: 매출과 이익이 커도 그보다 더 많은 공장·재고·인수자본을 써야 했다면 좋은 성장이 아닐 수 있다. 이 개념을"
+        },
+        {
+          "labelled": false,
+          "text": "자본비용과 비교하면 투입한 1원이 가치를 만들었는지 알 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 기대손실·유동성 런웨이: 낮은 확률의 큰 손실은 평균 이 개념만 보면 작아 보일 수 있지만 실제 발생 때 회사를 무너뜨릴 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다. 현금소진, 만기부채, covenant, 차환 가능성을 함께 봐야 생존여력이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): CAC·LTV·회수기간: 고객 한 명의 장기 공헌액이 유치비보다 커도 이 개념이 지나치게 길면 빠른 성장 중 현금이 고갈될 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다. 가입시기별 유지율과 마진을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-24 · EQV-24:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q18",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: CAC·LTV·회수기간\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "기존 고객의 축소와 이탈이 클수록 유지되는 반복 매출 비중은 낮아지고, 확장이 크면 순유지 성과는 높아진다.",
+        "회계이익에 비해 영업현금이 약할수록 비현금 조정 비중은 커지고 이익이 현금으로 이어지는 정도는 나빠진다.",
+        "세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다.",
+        "평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다.",
+        "사용 가능한 현금과 미사용 한도가 많고 단기 의무나 현금소진이 작을수록 버틸 수 있는 기간이 길어진다."
+      ],
+      "evidence": "EQV-24 · EQV-24:verbal_relation:01",
+      "answerIndex": 3,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다. 용어: CAC·LTV·"
+        },
+        {
+          "labelled": false,
+          "text": "회수기간."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: CAC·LTV·회수기간은 고객 한 명을 얻는 비용과 그 고객이 남길 이익, 투자금 회수 속도를 연결하는 단위경제성 지표다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: LTV가 CAC보다 커도 돈을 회수하는 데 너무 오래 걸리면 빠른 성장 중 현금이 고갈될 수 있다. 평균고객만 보면 나쁜"
+        },
+        {
+          "labelled": false,
+          "text": "cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: CAC=AcquisitionS&M/NewCustomers; 단순 LTV 약 ARPU×GrossMargin/Churn;"
+        },
+        {
+          "labelled": false,
+          "text": "Payback=CAC/MonthlyCustomerGrossProfit"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): ARR·NRR·GRR: 기존 고객의 축소와 이탈이 클수록 유지되는 반복 매출 비중은 낮아지고, 확장이 크면 순유지 성과는 높아진"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 발생액비율·현금전환: 회계이익에 비해 영업현금이 약할수록 비현금 조정 비중은 커지고 이익이 현금으로 이어지는 정도는"
+        },
+        {
+          "labelled": false,
+          "text": "나빠진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): ROIC·투하자본: 세후 영업성과가 영업에 투입한 평균 자본보다 빠르게 커질수록 자본 한 단위의 수익창출력은 높아진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(정답): CAC·LTV·회수기간: 평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 기대손실·유동성 런웨이: 사용 가능한 현금과 미사용 한도가 많고 단기 의무나 현금소진이 작을수록 버틸 수 있는 기간이 길"
+        },
+        {
+          "labelled": false,
+          "text": "어진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-24 · EQV-24:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q19",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 점포 매출·단위경제성\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "점포 이 개념은 전체 매출을 점포 수와 점포당 매출로, 점포당 매출을 트래픽·전환율·객단가로 분해한다.",
+        "이 개념 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한다.",
+        "이 개념은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다.",
+        "이 개념은 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분석이다.",
+        "플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비를 차감한 뒤 남는 이익을 연결하는 분석이다."
+      ],
+      "evidence": "EQV-25 · EQV-25:definition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 점포 이 개념은 전체 매출을 점포 수와 점포당 매출로, 점포당 매출을 트래픽·전환율·객단가로 분해한다. 용어: 점"
+        },
+        {
+          "labelled": false,
+          "text": "포 매출·단위경제성."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 점포 단위경제성은 전체 매출을 점포 수와 점포당 매출로, 점포당 매출을 트래픽·전환율·객단가로 분해한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 전체 매출이 늘어도 새 점포 수만 늘고 기존점 매출이 약해졌다면 사업의 건강도는 다르다. 방문객, 구매전환, 객단가를 나"
+        },
+        {
+          "labelled": false,
+          "text": "누면 어떤 운영 레버가 실제 성장을 만들었는지 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Sales=Stores×SalesPerStore; SalesPerStore=Traffic×Conversion×AverageTicket"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 점포 매출·단위경제성: 점포 이 개념은 전체 매출을 점포 수와 점포당 매출로, 점포당 매출을 트래픽·전환율·객단가로 분해한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 사업부 믹스·연결 EBIT: 이 개념 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): P×Q 매출 추정: 이 개념은 매출을 판매단가와 판매량이라는 두 사업 드라이버로 분해하는 가장 기본적인 예측 방법이다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 매출 브리지: 이 개념은 보고 매출증가를 유기적 성장, 환율, 인수, 매각, 연결범위 변화로 나눠 사업 자체의 성장을 찾는 분"
+        },
+        {
+          "labelled": false,
+          "text": "석이다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): GMV·Take Rate·공헌이익: 플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비를 차감한 뒤 남는 이익을 연결하는 분석"
+        },
+        {
+          "labelled": false,
+          "text": "이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-25 · EQV-25:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q20",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 점포 매출·단위경제성\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "전체 매출이 늘어도 새 점포 수만 늘고 기존점 매출이 약해졌다면 사업의 건강도는 다르다. 방문객, 구매전환, 객단가를 나누면 어떤 운영\n레버가 실제 성장을 만들었는지 보인다.",
+        "매출이 10% 늘었다는 결과보다 가격을 올렸는지, 더 많이 팔았는지가 중요하다. 수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우\n의 비용·지속가능성은 다르다.",
+        "원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성\n장의 질과 지속성을 판단할 수 있다.",
+        "플랫폼에서 큰 금액이 거래돼도 회사 매출은 그중 수수료 몫뿐이다. 수수료율을 무리하게 올리면 판매자와 이용자가 떠나 전체 거래규모가\n줄 수 있다.",
+        "고객 한 명의 장기 공헌액이 유치비보다 커도 이 개념이 지나치게 길면 빠른 성장 중 현금이 고갈될 수 있다. 가입시기별 유지율과 마진을\n함께 봐야 한다."
+      ],
+      "evidence": "EQV-25 · EQV-25:intuition:01",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 전체 매출이 늘어도 새 점포 수만 늘고 기존점 매출이 약해졌다면 사업의 건강도는 다르다. 방문객, 구매전환, 객"
+        },
+        {
+          "labelled": false,
+          "text": "단가를 나누면 어떤 운영 레버가 실제 성장을 만들었는지 보인다. 용어: 점포 매출·단위경제성."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 점포 단위경제성은 전체 매출을 점포 수와 점포당 매출로, 점포당 매출을 트래픽·전환율·객단가로 분해한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 전체 매출이 늘어도 새 점포 수만 늘고 기존점 매출이 약해졌다면 사업의 건강도는 다르다. 방문객, 구매전환, 객단가를 나"
+        },
+        {
+          "labelled": false,
+          "text": "누면 어떤 운영 레버가 실제 성장을 만들었는지 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Sales=Stores×SalesPerStore; SalesPerStore=Traffic×Conversion×AverageTicket"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(정답): 점포 매출·단위경제성: 전체 매출이 늘어도 새 점포 수만 늘고 기존점 매출이 약해졌다면 사업의 건강도는 다르다. 방문객,"
+        },
+        {
+          "labelled": false,
+          "text": "구매전환, 객단가를 나누면 어떤 운영 레버가 실제 성장을 만들었는지 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): P×Q 매출 추정: 매출이 10% 늘었다는 결과보다 가격을 올렸는지, 더 많이 팔았는지가 중요하다. 수량이 줄어도 가격 인상으"
+        },
+        {
+          "labelled": false,
+          "text": "로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 매출 브리지: 원화 매출이 10% 늘어도 환율 덕분이거나 새 회사를 인수한 결과일 수 있다. 기존 사업이 같은 기준에서 얼마"
+        },
+        {
+          "labelled": false,
+          "text": "나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): GMV·Take Rate·공헌이익: 플랫폼에서 큰 금액이 거래돼도 회사 매출은 그중 수수료 몫뿐이다. 수수료율을 무리하게 올리면"
+        },
+        {
+          "labelled": false,
+          "text": "판매자와 이용자가 떠나 전체 거래규모가 줄 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): CAC·LTV·회수기간: 고객 한 명의 장기 공헌액이 유치비보다 커도 이 개념이 지나치게 길면 빠른 성장 중 현금이 고갈될 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다. 가입시기별 유지율과 마진을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-25 · EQV-25:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q21",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 점포 매출·단위경제성\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다.",
+        "평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다.",
+        "사업부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다.",
+        "수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다.",
+        "방문객, 구매전환, 객단가를 나누면 어떤 운영 레버가 실제 성장을 만들었는지 보인다."
+      ],
+      "evidence": "EQV-25 · EQV-25:verbal_relation:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 방문객, 구매전환, 객단가를 나누면 어떤 운영 레버가 실제 성장을 만들었는지 보인다. 용어: 점포 매출·단위경제"
+        },
+        {
+          "labelled": false,
+          "text": "성."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 점포 단위경제성은 전체 매출을 점포 수와 점포당 매출로, 점포당 매출을 트래픽·전환율·객단가로 분해한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 전체 매출이 늘어도 새 점포 수만 늘고 기존점 매출이 약해졌다면 사업의 건강도는 다르다. 방문객, 구매전환, 객단가를 나"
+        },
+        {
+          "labelled": false,
+          "text": "누면 어떤 운영 레버가 실제 성장을 만들었는지 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Sales=Stores×SalesPerStore; SalesPerStore=Traffic×Conversion×AverageTicket"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 매출 브리지: 기존 사업이 같은 기준에서 얼마나 성장했는지를 분리해야 성장의 질과 지속성을 판단할 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): CAC·LTV·회수기간: 평균고객만 보면 나쁜 cohort가 숨을 수 있으므로 가입시기별 유지율과 마진을 함께 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 사업부 믹스·연결 EBIT: 사업부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): P×Q 매출 추정: 수량이 줄어도 가격 인상으로 매출이 늘 수 있고, 두 경우의 비용·지속가능성은 다르다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 점포 매출·단위경제성: 방문객, 구매전환, 객단가를 나누면 어떤 운영 레버가 실제 성장을 만들었는지 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-25 · EQV-25:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q22",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: GMV·Take Rate·공헌이익\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "안정기 이 개념 분석은 장기 성장률, ROIC, 재투자율, 마진이 서로 양립하도록 맞춘 뒤 terminal value를 계산한다.",
+        "이 개념 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한다.",
+        "이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다.",
+        "이 개념 분석은 회계상 세금비용, 실제 현금세금, 이월결손금이 미래 세후이익과 현금흐름에 미치는 차이를 추적한다.",
+        "플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비를 차감한 뒤 남는 이익을 연결하는 분석이다."
+      ],
+      "evidence": "EQV-26 · EQV-26:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비를 차감한 뒤 남는 이익을 연결하는 분석이다. 용어:"
+        },
+        {
+          "labelled": false,
+          "text": "GMV·Take Rate·공헌이익."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: GMV·Take Rate 분석은 플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비 차감 후 공헌이익을 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 플랫폼에서 1,000원이 거래돼도 회사 매출이 1,000원인 것은 아니다. 중개자라면 수수료만 매출이며, take rate을 무리하게"
+        },
+        {
+          "labelled": false,
+          "text": "올리면 판매자와 이용자가 떠나 GMV가 줄 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: NetRevenue=GMV×TakeRate; ContributionProfit=NetRevenue-VariableCosts"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 계속가치·안정기 재투자: 안정기 이 개념 분석은 장기 성장률, ROIC, 재투자율, 마진이 서로 양립하도록 맞춘 뒤 terminal"
+        },
+        {
+          "labelled": false,
+          "text": "value를 계산한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 사업부 믹스·연결 EBIT: 이 개념 분석은 각 사업부의 매출비중과 마진, 공통비를 연결해 연결 영업이익과 마진 변화를 설명한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 생명보험 CSM·지급여력: 이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께"
+        },
+        {
+          "labelled": false,
+          "text": "본다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 실효세율·NOL: 이 개념 분석은 회계상 세금비용, 실제 현금세금, 이월결손금이 미래 세후이익과 현금흐름에 미치는 차이를"
+        },
+        {
+          "labelled": false,
+          "text": "추적한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): GMV·Take Rate·공헌이익: 플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비를 차감한 뒤 남는 이익을 연결하는 분석"
+        },
+        {
+          "labelled": false,
+          "text": "이다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-26 · EQV-26:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q23",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: GMV·Take Rate·공헌이익\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "돈을 많이 다시 넣는다고 좋은 확장은 아니다. 신규투자 수익률이 자본비용보다 낮으면 규모와 이익은 커져도 가치가 파괴되며, 높은 수익\n률의 투자기회가 있을 때 재투입이 가치가 된다.",
+        "플랫폼에서 큰 금액이 거래돼도 회사 매출은 그중 수수료 몫뿐이다. 수수료율을 무리하게 올리면 판매자와 이용자가 떠나 전체 거래규모가\n줄 수 있다.",
+        "회사가 영원히 성장하려면 그 성장을 지탱할 재투자가 필요하다. 성장률만 높이고 재투자를 그대로 두면 공짜 성장을 가정한 셈이며, 이 개\n념이 과도하게 커진다.",
+        "모든 사업부 매출이 늘어도 저마진 사업의 비중이 더 빨리 커지면 연결마진은 하락할 수 있다. 사업부 이익 합계에서 본사비용과 내부거래\n제거까지 반영해야 연결 수치와 맞는다.",
+        "회사가 흑자여도 투자자가 요구한 최소수익을 못 벌면 경제적으로 가치를 만든 것이 아니다. ROIC와 WACC의 차이인 가치스프레드가 양\n수여야 투하자본이 주주가치를 늘린다."
+      ],
+      "evidence": "EQV-26 · EQV-26:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 플랫폼에서 큰 금액이 거래돼도 회사 매출은 그중 수수료 몫뿐이다. 수수료율을 무리하게 올리면 판매자와 이용"
+        },
+        {
+          "labelled": false,
+          "text": "자가 떠나 전체 거래규모가 줄 수 있다. 용어: GMV·Take Rate·공헌이익."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: GMV·Take Rate 분석은 플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비 차감 후 공헌이익을 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 플랫폼에서 1,000원이 거래돼도 회사 매출이 1,000원인 것은 아니다. 중개자라면 수수료만 매출이며, take rate을 무리하게"
+        },
+        {
+          "labelled": false,
+          "text": "올리면 판매자와 이용자가 떠나 GMV가 줄 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: NetRevenue=GMV×TakeRate; ContributionProfit=NetRevenue-VariableCosts"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 성장·재투자: 돈을 많이 다시 넣는다고 좋은 확장은 아니다. 신규투자 수익률이 자본비용보다 낮으면 규모와 이익은 커져도"
+        },
+        {
+          "labelled": false,
+          "text": "가치가 파괴되며, 높은 수익률의 투자기회가 있을 때 재투입이 가치가 된다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): GMV·Take Rate·공헌이익: 플랫폼에서 큰 금액이 거래돼도 회사 매출은 그중 수수료 몫뿐이다. 수수료율을 무리하게 올리면"
+        },
+        {
+          "labelled": false,
+          "text": "판매자와 이용자가 떠나 전체 거래규모가 줄 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 계속가치·안정기 재투자: 회사가 영원히 성장하려면 그 성장을 지탱할 재투자가 필요하다. 성장률만 높이고 재투자를 그대로"
+        },
+        {
+          "labelled": false,
+          "text": "두면 공짜 성장을 가정한 셈이며, 이 개념이 과도하게 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 사업부 믹스·연결 EBIT: 모든 사업부 매출이 늘어도 저마진 사업의 비중이 더 빨리 커지면 연결마진은 하락할 수 있다. 사업"
+        },
+        {
+          "labelled": false,
+          "text": "부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): EVA·가치 스프레드: 회사가 흑자여도 투자자가 요구한 최소수익을 못 벌면 경제적으로 가치를 만든 것이 아니다. ROIC와"
+        },
+        {
+          "labelled": false,
+          "text": "WACC의 차이인 가치스프레드가 양수여야 투하자본이 주주가치를 늘린다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-26 · EQV-26:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q24",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: GMV·Take Rate·공헌이익\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "판매량이 고정비를 회수하는 경계를 넘은 뒤에는 추가 단위의 공헌액이 이익으로 더 빠르게 쌓인다.",
+        "사업부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다.",
+        "거래총액에 적용하는 수수료율이 높을수록 순매출은 늘지만 과도한 인상은 이용자 이탈로 거래총액을 줄일 수 있다.",
+        "장기 성장속도를 높게 잡을수록 이를 뒷받침하는 자본 투입도 늘어야 하며 그렇지 않으면 먼 미래 가치가 과대해진다.",
+        "이익을 사업에 다시 투입하는 비중과 신규자본의 수익성이 높을수록 지속 가능한 확장 속도는 빨라진다."
+      ],
+      "evidence": "EQV-26 · EQV-26:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 거래총액에 적용하는 수수료율이 높을수록 순매출은 늘지만 과도한 인상은 이용자 이탈로 거래총액을 줄일 수"
+        },
+        {
+          "labelled": false,
+          "text": "있다. 용어: GMV·Take Rate·공헌이익."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: GMV·Take Rate 분석은 플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비 차감 후 공헌이익을 연결한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 플랫폼에서 1,000원이 거래돼도 회사 매출이 1,000원인 것은 아니다. 중개자라면 수수료만 매출이며, take rate을 무리하게"
+        },
+        {
+          "labelled": false,
+          "text": "올리면 판매자와 이용자가 떠나 GMV가 줄 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: NetRevenue=GMV×TakeRate; ContributionProfit=NetRevenue-VariableCosts"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 가동률·손익분기점: 판매량이 고정비를 회수하는 경계를 넘은 뒤에는 추가 단위의 공헌액이 이익으로 더 빠르게 쌓인다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 사업부 믹스·연결 EBIT: 사업부 이익 합계에서 본사비용과 내부거래 제거까지 반영해야 연결 수치와 맞는다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): GMV·Take Rate·공헌이익: 거래총액에 적용하는 수수료율이 높을수록 순매출은 늘지만 과도한 인상은 이용자 이탈로 거래총"
+        },
+        {
+          "labelled": false,
+          "text": "액을 줄일 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 계속가치·안정기 재투자: 장기 성장속도를 높게 잡을수록 이를 뒷받침하는 자본 투입도 늘어야 하며 그렇지 않으면 먼 미래"
+        },
+        {
+          "labelled": false,
+          "text": "가치가 과대해진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 성장·재투자: 이익을 사업에 다시 투입하는 비중과 신규자본의 수익성이 높을수록 지속 가능한 확장 속도는 빨라진다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-26 · EQV-26:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q25",
+      "difficulty": 1,
+      "kind": "검증 문항은행",
+      "stem": "용어: 가동률·손익분기점\n다음 중 이 용어의 정의로 가장 정확한 것은?",
+      "choices": [
+        "플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비를 차감한 뒤 남는 이익을 연결하는 분석이다.",
+        "이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께 본다.",
+        "이 개념은 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한다.",
+        "안정기 이 개념 분석은 장기 성장률, ROIC, 재투자율, 마진이 서로 양립하도록 맞춘 뒤 terminal value를 계산한다.",
+        "이 개념 분석은 생산능력 사용 정도와 단위당 공헌이익을 통해 고정비를 회수하는 물량을 계산한다."
+      ],
+      "evidence": "EQV-27 · EQV-27:definition:01",
+      "answerIndex": 4,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 이 개념 분석은 생산능력 사용 정도와 단위당 공헌이익을 통해 고정비를 회수하는 물량을 계산한다. 용어: 가동"
+        },
+        {
+          "labelled": false,
+          "text": "률·손익분기점."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 가동률·손익분기점 분석은 생산능력 사용 정도와 단위당 공헌이익을 통해 고정비를 회수하는 물량을 계산한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 공장과 호텔은 비어 있어도 상당한 고정비가 든다. 손익분기점을 넘기 전에는 추가 판매가 손실을 줄이고, 넘은 뒤에는 단위"
+        },
+        {
+          "labelled": false,
+          "text": "공헌이익이 이익으로 빠르게 쌓여 영업레버리지가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Revenue=Capacity×Utilization×Yield; UnitContribution=Price-VariableCost; BreakEvenUnits=FixedCost/UnitContribution"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): GMV·Take Rate·공헌이익: 플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비를 차감한 뒤 남는 이익을 연결하는 분석"
+        },
+        {
+          "labelled": false,
+          "text": "이다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 생명보험 CSM·지급여력: 이 개념 분석은 미래 서비스에서 인식할 미실현이익의 롤포워드와 손실을 견딜 가용자본을 함께"
+        },
+        {
+          "labelled": false,
+          "text": "본다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): 경기민감·원자재 정상화: 이 개념은 현재 규모에 중간주기 가격·마진을 적용해 경기정점·저점의 왜곡을 줄인 이익을 추정한"
+        },
+        {
+          "labelled": false,
+          "text": "다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 계속가치·안정기 재투자: 안정기 이 개념 분석은 장기 성장률, ROIC, 재투자율, 마진이 서로 양립하도록 맞춘 뒤 terminal"
+        },
+        {
+          "labelled": false,
+          "text": "value를 계산한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(정답): 가동률·손익분기점: 이 개념 분석은 생산능력 사용 정도와 단위당 공헌이익을 통해 고정비를 회수하는 물량을 계산한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-27 · EQV-27:definition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q26",
+      "difficulty": 2,
+      "kind": "검증 문항은행",
+      "stem": "용어: 가동률·손익분기점\n다음 중 이 용어를 실무적으로 가장 적절하게 해석한 것은?",
+      "choices": [
+        "콜이 만기에 행사될 만큼 올라도 처음 낸 프리미엄을 회수하지 못하면 전체 거래는 손실일 수 있다. 그래서 이 개념은 행사가가 아니라 프\n리미엄만큼 이동하고, 복합전략은 각 leg의 프리미엄까지 모두 합쳐야 한다.",
+        "공장과 호텔은 비어 있어도 상당한 고정비가 든다. 이 개념을 넘기 전에는 추가 판매가 손실을 줄이고, 넘은 뒤에는 단위 공헌이익이 이익\n으로 빠르게 쌓여 영업레버리지가 커진다.",
+        "플랫폼에서 큰 금액이 거래돼도 회사 매출은 그중 수수료 몫뿐이다. 수수료율을 무리하게 올리면 판매자와 이용자가 떠나 전체 거래규모가\n줄 수 있다.",
+        "회사가 영원히 성장하려면 그 성장을 지탱할 재투자가 필요하다. 성장률만 높이고 재투자를 그대로 두면 공짜 성장을 가정한 셈이며, 이 개\n념이 과도하게 커진다.",
+        "이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정\n변경, 환율, 해제 속도를 따로 봐야 한다."
+      ],
+      "evidence": "EQV-27 · EQV-27:intuition:01",
+      "answerIndex": 1,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 공장과 호텔은 비어 있어도 상당한 고정비가 든다. 이 개념을 넘기 전에는 추가 판매가 손실을 줄이고, 넘은 뒤에"
+        },
+        {
+          "labelled": false,
+          "text": "는 단위 공헌이익이 이익으로 빠르게 쌓여 영업레버리지가 커진다. 용어: 가동률·손익분기점."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 가동률·손익분기점 분석은 생산능력 사용 정도와 단위당 공헌이익을 통해 고정비를 회수하는 물량을 계산한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 공장과 호텔은 비어 있어도 상당한 고정비가 든다. 손익분기점을 넘기 전에는 추가 판매가 손실을 줄이고, 넘은 뒤에는 단위"
+        },
+        {
+          "labelled": false,
+          "text": "공헌이익이 이익으로 빠르게 쌓여 영업레버리지가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Revenue=Capacity×Utilization×Yield; UnitContribution=Price-VariableCost; BreakEvenUnits=FixedCost/UnitContribution"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): 옵션 Profit·손익분기점·전략손익: 콜이 만기에 행사될 만큼 올라도 처음 낸 프리미엄을 회수하지 못하면 전체 거래는 손실일"
+        },
+        {
+          "labelled": false,
+          "text": "수 있다. 그래서 이 개념은 행사가가 아니라 프리미엄만큼 이동하고, 복합전략은 각 leg의 프리미엄까지 모두 합쳐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(정답): 가동률·손익분기점: 공장과 호텔은 비어 있어도 상당한 고정비가 든다. 이 개념을 넘기 전에는 추가 판매가 손실을 줄이고,"
+        },
+        {
+          "labelled": false,
+          "text": "넘은 뒤에는 단위 공헌이익이 이익으로 빠르게 쌓여 영업레버리지가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(오답): GMV·Take Rate·공헌이익: 플랫폼에서 큰 금액이 거래돼도 회사 매출은 그중 수수료 몫뿐이다. 수수료율을 무리하게 올리면"
+        },
+        {
+          "labelled": false,
+          "text": "판매자와 이용자가 떠나 전체 거래규모가 줄 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 계속가치·안정기 재투자: 회사가 영원히 성장하려면 그 성장을 지탱할 재투자가 필요하다. 성장률만 높이고 재투자를 그대로"
+        },
+        {
+          "labelled": false,
+          "text": "두면 공짜 성장을 가정한 셈이며, 이 개념이 과도하게 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 생명보험 CSM·지급여력: 이 개념이 크다고 같은 금액의 현금이나 장부자본이 있는 것은 아니다. 앞으로 서비스를 제공하며"
+        },
+        {
+          "labelled": false,
+          "text": "이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-27 · EQV-27:intuition:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q27",
+      "difficulty": 3,
+      "kind": "검증 문항은행",
+      "stem": "용어: 가동률·손익분기점\n다음 중 이 용어의 핵심 관계를 수식 없이 가장 정확하게 설명한 것은?",
+      "choices": [
+        "거래총액에 적용하는 수수료율이 높을수록 순매출은 늘지만 과도한 인상은 이용자 이탈로 거래총액을 줄일 수 있다.",
+        "매출 성장과 비용률을 따로 잡아야 이익의 원인이 보인다.",
+        "판매량이 고정비를 회수하는 경계를 넘은 뒤에는 추가 단위의 공헌액이 이익으로 더 빠르게 쌓인다.",
+        "앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐야 한다.",
+        "과거 평균이익만 쓰기보다 현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다."
+      ],
+      "evidence": "EQV-27 · EQV-27:verbal_relation:01",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": true,
+          "text": "정답 근거: 정답 설명: 판매량이 고정비를 회수하는 경계를 넘은 뒤에는 추가 단위의 공헌액이 이익으로 더 빠르게 쌓인다. 용어: 가동"
+        },
+        {
+          "labelled": false,
+          "text": "률·손익분기점."
+        },
+        {
+          "labelled": true,
+          "text": "핵심 조건: 가동률·손익분기점 분석은 생산능력 사용 정도와 단위당 공헌이익을 통해 고정비를 회수하는 물량을 계산한다."
+        },
+        {
+          "labelled": true,
+          "text": "논리 연결: 공장과 호텔은 비어 있어도 상당한 고정비가 든다. 손익분기점을 넘기 전에는 추가 판매가 손실을 줄이고, 넘은 뒤에는 단위"
+        },
+        {
+          "labelled": false,
+          "text": "공헌이익이 이익으로 빠르게 쌓여 영업레버리지가 커진다."
+        },
+        {
+          "labelled": true,
+          "text": "관계·공식: Revenue=Capacity×Utilization×Yield; UnitContribution=Price-VariableCost; BreakEvenUnits=FixedCost/UnitContribution"
+        },
+        {
+          "labelled": true,
+          "text": "보기 점검:"
+        },
+        {
+          "labelled": true,
+          "text": "1번(오답): GMV·Take Rate·공헌이익: 거래총액에 적용하는 수수료율이 높을수록 순매출은 늘지만 과도한 인상은 이용자 이탈로 거래총"
+        },
+        {
+          "labelled": false,
+          "text": "액을 줄일 수 있다."
+        },
+        {
+          "labelled": true,
+          "text": "2번(오답): 마진과 영업이익: 매출 성장과 비용률을 따로 잡아야 이익의 원인이 보인다."
+        },
+        {
+          "labelled": true,
+          "text": "3번(정답): 가동률·손익분기점: 판매량이 고정비를 회수하는 경계를 넘은 뒤에는 추가 단위의 공헌액이 이익으로 더 빠르게 쌓인다."
+        },
+        {
+          "labelled": true,
+          "text": "4번(오답): 생명보험 CSM·지급여력: 앞으로 서비스를 제공하며 이익으로 풀릴 금액이므로 신계약, 가정변경, 환율, 해제 속도를 따로 봐"
+        },
+        {
+          "labelled": false,
+          "text": "야 한다."
+        },
+        {
+          "labelled": true,
+          "text": "5번(오답): 경기민감·원자재 정상화: 과거 평균이익만 쓰기보다 현재 생산량과 정상 가격·원가를 결합해야 구조변화를 반영한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-27 · EQV-27:verbal_relation:01"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q28",
+      "difficulty": 2,
+      "kind": "신규 계산·응용",
+      "stem": "제품 가격이 개당 8만원에서 9만원으로, 판매량이 10,000개에서 12,000개로 변했다. 가격효과를 기초 판매량으로 먼저 계산\n하고 물량효과를 새 가격으로 계산할 때 가격효과, 물량효과, 총매출 변화는?",
+      "choices": [
+        "+1.0억원, +1.8억원, +2.8억원",
+        "+1.2억원, +1.6억원, +2.8억원",
+        "+1.0억원, +1.6억원, +2.6억원",
+        "+0.8억원, +1.8억원, +2.6억원",
+        "+1.2억원, +1.8억원, +3.0억원"
+      ],
+      "evidence": "EQV-21",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "1) 가격효과는 (9만원-8만원)×10,000개=10,000만원=1.0억원이다. 2) 물량효과는 9만원×(12,000개-10,000개)=18,000만원=1.8억원이"
+        },
+        {
+          "labelled": false,
+          "text": "다. 3) 합계는 2.8억원이다. 10,000만원=1억원으로 단위를 변환했으며 반올림하지 않는다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "EQV-21 가격·물량 매출 브리지: 가격·물량 브리지는 매출변화를 판매가격 변화와 판매수량 변화로 나누고 두 변화가 겹치는 효과의 귀"
+        },
+        {
+          "labelled": false,
+          "text": "속 기준을 정한다. 핵심 관계는 제품별 R=ΣP_iQ_i; 순차 P/Q 브리지 ΔR=(P1-P0)Q0 + P1(Q1-Q0) 적용 가정은 - 지표의 분자·분모·기간"
+        },
+        {
+          "labelled": false,
+          "text": "을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-21"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q29",
+      "difficulty": 2,
+      "kind": "신규 계산·응용",
+      "stem": "기초 ARR 100억원인 SaaS 기업이 신규 ARR 25억원, 기존 고객 확장 20억원, 축소 5억원, 이탈 10억원을 기록했다. 기말\nARR, NRR, GRR의 올바른 조합은?",
+      "choices": [
+        "130억원, 105%, 85%",
+        "130억원, 130%, 85%",
+        "105억원, 105%, 85%",
+        "130억원, 105%, 110%",
+        "135억원, 110%, 85%"
+      ],
+      "evidence": "EQV-23",
+      "answerIndex": 0,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "1) 기말 ARR은 100억원+25억원+20억원-5억원-10억원=130억원이다. 2) NRR은 신규 ARR을 제외해 (100+20-5-10)억원÷100억원"
+        },
+        {
+          "labelled": false,
+          "text": "=105%다. 3) GRR은 확장과 신규를 제외해 (100-5-10)억원÷100억원=85%다. 모두 정수로 떨어져 반올림이 없다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "EQV-23 ARR·NRR·GRR: ARR·NRR·GRR은 구독사업의 반복매출 기반이 신규, 확장, 축소, 이탈로 어떻게 변하는지 측정하는 지표다. 핵심"
+        },
+        {
+          "labelled": false,
+          "text": "관계는 ARR_end=ARR_begin+New+Expansion-Contraction-Churn; NRR=(Begin+Expansion-Contraction-Churn)/Begin;"
+        },
+        {
+          "labelled": false,
+          "text": "GRR=(Begin-Contraction-Churn)/Begin 적용 가정은 - 지표의 분자·분모·기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-23"
+        }
+      ]
+    },
+    {
+      "id": "EQV-3-Q30",
+      "difficulty": 2,
+      "kind": "신규 계산·응용",
+      "stem": "한 플랫폼의 거래 1건당 GMV는 10만원, take rate는 8%, 거래당 변동비는 0.3만원이다. 고정비가 1,500만원일 때 영업손익\n분기 거래건수는?",
+      "choices": [
+        "1,875건",
+        "2,143건",
+        "3,000건",
+        "5,000건",
+        "18,750건"
+      ],
+      "evidence": "EQV-26 · EQV-27",
+      "answerIndex": 2,
+      "solution": [
+        {
+          "labelled": false,
+          "text": "1) 거래당 순매출은 10만원×8%=0.8만원이다. 2) 거래당 공헌이익은 0.8만원-0.3만원=0.5만원이다. 3) 손익분기 거래건수는 1,500만원"
+        },
+        {
+          "labelled": false,
+          "text": "÷0.5만원/건=3,000건이다. 분자와 분모의 만원 단위가 소거되며 반올림이 필요 없다."
+        },
+        {
+          "labelled": true,
+          "text": "개념 연결:"
+        },
+        {
+          "labelled": false,
+          "text": "EQV-26 GMV·Take Rate·공헌이익: GMV·Take Rate 분석은 플랫폼 총거래액 중 회사가 매출로 가져가는 몫과 변동비 차감 후 공헌이익"
+        },
+        {
+          "labelled": false,
+          "text": "을 연결한다. 핵심 관계는 NetRevenue=GMV×TakeRate; ContributionProfit=NetRevenue-VariableCosts 적용 가정은 - 지표의 분자·분"
+        },
+        {
+          "labelled": false,
+          "text": "모·기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": false,
+          "text": "EQV-27 가동률·손익분기점: 가동률·손익분기점 분석은 생산능력 사용 정도와 단위당 공헌이익을 통해 고정비를 회수하는 물량을 계산"
+        },
+        {
+          "labelled": false,
+          "text": "한다. 핵심 관계는 Revenue=Capacity×Utilization×Yield; UnitContribution=Price-VariableCost;"
+        },
+        {
+          "labelled": false,
+          "text": "BreakEvenUnits=FixedCost/UnitContribution 적용 가정은 - 지표의 분자·분모·기간을 일치시킨다."
+        },
+        {
+          "labelled": false,
+          "text": "• 회계 수치에서 반복 가능한 영업 동인을 분리한다."
+        },
+        {
+          "labelled": true,
+          "text": "근거 ID: EQV-26 · EQV-27"
+        }
+      ]
+    }
+  ]
+}

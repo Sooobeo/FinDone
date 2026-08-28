@@ -1,0 +1,359 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "fileName": "findone_theory_workbook_ross_integrated_30q.html",
+    "sha256": "edf526c295d299916bf873cb74900ff31765990280f362f42994c8ded873be52",
+    "title": "FinDone 통합 문제집 · Ross 재무관리 6판 확장"
+  },
+  "stats": {
+    "subjectCount": 12,
+    "unitCount": 45,
+    "questionCount": 1350,
+    "conceptElementCount": 135,
+    "glossaryTermCount": 1649
+  },
+  "subjects": [
+    {
+      "id": "subject-01",
+      "title": "01. 회계·재무제표",
+      "units": [
+        {
+          "id": "A01",
+          "anchor": "unit-A01",
+          "title": "A01 · 회계 기본개념",
+          "questionCount": 30
+        },
+        {
+          "id": "A02",
+          "anchor": "unit-A02",
+          "title": "A02 · 회계 흐름",
+          "questionCount": 30
+        },
+        {
+          "id": "A03",
+          "anchor": "unit-A03",
+          "title": "A03 · 유동자산",
+          "questionCount": 30
+        },
+        {
+          "id": "A04",
+          "anchor": "unit-A04",
+          "title": "A04 · 비유동자산",
+          "questionCount": 30
+        },
+        {
+          "id": "A05",
+          "anchor": "unit-A05",
+          "title": "A05 · 부채",
+          "questionCount": 30
+        },
+        {
+          "id": "A06",
+          "anchor": "unit-A06",
+          "title": "A06 · 자본",
+          "questionCount": 30
+        },
+        {
+          "id": "A07",
+          "anchor": "unit-A07",
+          "title": "A07 · 수익과 비용",
+          "questionCount": 30
+        },
+        {
+          "id": "A08",
+          "anchor": "unit-A08",
+          "title": "A08 · 결산",
+          "questionCount": 30
+        },
+        {
+          "id": "A09",
+          "anchor": "unit-A09",
+          "title": "A09 · 회계변경·오류수정",
+          "questionCount": 30
+        },
+        {
+          "id": "A10",
+          "anchor": "unit-A10",
+          "title": "A10 · 재무제표 보는 법",
+          "questionCount": 30
+        }
+      ]
+    },
+    {
+      "id": "subject-02",
+      "title": "02. 기업재무",
+      "units": [
+        {
+          "id": "CF-A",
+          "anchor": "unit-CF-A",
+          "title": "CF-A · 시간가치·투자안·요구수익률",
+          "questionCount": 30
+        },
+        {
+          "id": "CF-B",
+          "anchor": "unit-CF-B",
+          "title": "CF-B · 자본비용·현금흐름·기업가치",
+          "questionCount": 30
+        }
+      ]
+    },
+    {
+      "id": "subject-03",
+      "title": "03. 주식 리서치·기업가치평가",
+      "units": [
+        {
+          "id": "EQV-1",
+          "anchor": "unit-EQV-1",
+          "title": "EQV-1 · 재무모델의 출발점",
+          "questionCount": 30
+        },
+        {
+          "id": "EQV-2",
+          "anchor": "unit-EQV-2",
+          "title": "EQV-2 · 배수·DCF·목표주가",
+          "questionCount": 30
+        },
+        {
+          "id": "EQV-3",
+          "anchor": "unit-EQV-3",
+          "title": "EQV-3 · 매출 동인·사업모델 단위경제성",
+          "questionCount": 30
+        },
+        {
+          "id": "EQV-4",
+          "anchor": "unit-EQV-4",
+          "title": "EQV-4 · 영업 품질·운전자본·조정항목",
+          "questionCount": 30
+        },
+        {
+          "id": "EQV-5",
+          "anchor": "unit-EQV-5",
+          "title": "EQV-5 · 투하자본·가치창출·지분가치 브리지",
+          "questionCount": 30
+        },
+        {
+          "id": "EQV-6",
+          "anchor": "unit-EQV-6",
+          "title": "EQV-6 · 고급 가치평가·시나리오",
+          "questionCount": 30
+        },
+        {
+          "id": "EQV-7",
+          "anchor": "unit-EQV-7",
+          "title": "EQV-7 · 금융·보험·경기민감 산업과 리서치 판단",
+          "questionCount": 30
+        }
+      ]
+    },
+    {
+      "id": "subject-04",
+      "title": "04. 채권·금리",
+      "units": [
+        {
+          "id": "FI",
+          "anchor": "unit-FI",
+          "title": "FI · 채권·금리 전 범위",
+          "questionCount": 30
+        }
+      ]
+    },
+    {
+      "id": "subject-05",
+      "title": "05. 파생상품",
+      "units": [
+        {
+          "id": "DER",
+          "anchor": "unit-DER",
+          "title": "DER · 파생상품 전 범위",
+          "questionCount": 30
+        }
+      ]
+    },
+    {
+      "id": "subject-06",
+      "title": "06. 투자·포트폴리오",
+      "units": [
+        {
+          "id": "INV",
+          "anchor": "unit-INV",
+          "title": "INV · 투자·포트폴리오 전 범위",
+          "questionCount": 30
+        }
+      ]
+    },
+    {
+      "id": "subject-07",
+      "title": "07. IB·시장·대체투자 실무",
+      "units": [
+        {
+          "id": "IBT-A",
+          "anchor": "unit-IBT-A",
+          "title": "IBT-A · 시장 변수·M&A·IPO 구조",
+          "questionCount": 30
+        },
+        {
+          "id": "IBT-B",
+          "anchor": "unit-IBT-B",
+          "title": "IBT-B · IPO·부동산·리서치 실무",
+          "questionCount": 30
+        }
+      ]
+    },
+    {
+      "id": "subject-08",
+      "title": "R1. Ross 개관",
+      "units": [
+        {
+          "id": "ROSS-01",
+          "anchor": "unit-ROSS-01",
+          "title": "제1장 · 재무관리 입문",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-02",
+          "anchor": "unit-ROSS-02",
+          "title": "제2장 · 재무제표와 현금흐름",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-03",
+          "anchor": "unit-ROSS-03",
+          "title": "제3장 · 재무제표 분석과 재무모형",
+          "questionCount": 30
+        }
+      ]
+    },
+    {
+      "id": "subject-09",
+      "title": "R2. Ross 가치평가와 자본예산",
+      "units": [
+        {
+          "id": "ROSS-04",
+          "anchor": "unit-ROSS-04",
+          "title": "제4장 · 현금흐름 할인법",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-05",
+          "anchor": "unit-ROSS-05",
+          "title": "제5장 · 이자율과 채권의 가치평가",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-06",
+          "anchor": "unit-ROSS-06",
+          "title": "제6장 · 주식의 가치평가",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-07",
+          "anchor": "unit-ROSS-07",
+          "title": "제7장 · 순현가법과 기타 투자평가방법",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-08",
+          "anchor": "unit-ROSS-08",
+          "title": "제8장 · 자본투자의 의사결정",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-09",
+          "anchor": "unit-ROSS-09",
+          "title": "제9장 · 리스크 분석 실물옵션 및 자본예산",
+          "questionCount": 30
+        }
+      ]
+    },
+    {
+      "id": "subject-10",
+      "title": "R3. Ross 위험과 수익",
+      "units": [
+        {
+          "id": "ROSS-10",
+          "anchor": "unit-ROSS-10",
+          "title": "제10장 · 위험과 수익률: 자본시장 역사로부터의 교훈",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-11",
+          "anchor": "unit-ROSS-11",
+          "title": "제11장 · 위험과 수익률: 자본자산가격결정모형(CAPM)",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-12",
+          "anchor": "unit-ROSS-12",
+          "title": "제12장 · 위험, 자본비용, 가치평가",
+          "questionCount": 30
+        }
+      ]
+    },
+    {
+      "id": "subject-11",
+      "title": "R4. Ross 자본구조와 배당정책",
+      "units": [
+        {
+          "id": "ROSS-13",
+          "anchor": "unit-ROSS-13",
+          "title": "제13장 · 효율적 자본시장과 행동학적 도전",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-14",
+          "anchor": "unit-ROSS-14",
+          "title": "제14장 · 자본구조: 기초 개념",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-15",
+          "anchor": "unit-ROSS-15",
+          "title": "제15장 · 자본구조: 부채사용의 제한",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-16",
+          "anchor": "unit-ROSS-16",
+          "title": "제16장 · 배당금과 기타 지급금",
+          "questionCount": 30
+        }
+      ]
+    },
+    {
+      "id": "subject-12",
+      "title": "R5. Ross 특별 주제",
+      "units": [
+        {
+          "id": "ROSS-17",
+          "anchor": "unit-ROSS-17",
+          "title": "제17장 · 옵션과 기업재무",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-18",
+          "anchor": "unit-ROSS-18",
+          "title": "제18장 · 단기재무관리와 재무계획",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-19",
+          "anchor": "unit-ROSS-19",
+          "title": "제19장 · 자본조달",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-20",
+          "anchor": "unit-ROSS-20",
+          "title": "제20장 · 국제기업재무",
+          "questionCount": 30
+        },
+        {
+          "id": "ROSS-21",
+          "anchor": "unit-ROSS-21",
+          "title": "제21장 · 합병과 인수",
+          "questionCount": 30
+        }
+      ]
+    }
+  ]
+}
