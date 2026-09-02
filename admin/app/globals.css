@@ -1308,14 +1308,14 @@ p {
 .intro-page-links a { display: inline-flex; align-items: center; gap: 7px; color: var(--teal-700); font-size: 11px; font-weight: 750; }
 .intro-visual-panel { min-height: 700px; padding: clamp(28px, 4vw, 54px); display: grid; place-items: center; overflow: hidden; background: radial-gradient(circle at 72% 18%, rgb(255 255 255 / 0.8), transparent 29%), linear-gradient(145deg, #e1efeb, #c8dfd9); }
 .intro-visual-admin { place-items: start center; }
-.intro-phone-image { width: min(320px, 100%); height: auto; display: block; filter: drop-shadow(0 24px 28px rgb(18 63 60 / 0.22)); }
+.intro-phone-image { width: min(320px, 100%); height: auto; display: block; border-radius: 11.667% / 5.833%; filter: drop-shadow(0 24px 28px rgb(18 63 60 / 0.22)); }
 .intro-admin-image { position: sticky; top: 108px; width: min(520px, 100%); height: auto; display: block; filter: drop-shadow(0 24px 28px rgb(18 63 60 / 0.2)); }
 .intro-screen-collage { width: min(500px, 100%); min-height: 590px; position: relative; }
-.intro-screen-collage img { position: absolute; width: 47%; height: auto; filter: drop-shadow(0 18px 22px rgb(18 63 60 / 0.2)); }
+.intro-screen-collage img { position: absolute; width: 47%; height: auto; border-radius: 11.667% / 5.833%; filter: drop-shadow(0 18px 22px rgb(18 63 60 / 0.2)); }
 .intro-screen-collage img:nth-child(1) { top: 0; left: 0; transform: rotate(-4deg); }
 .intro-screen-collage img:nth-child(2) { top: 16px; right: 0; transform: rotate(4deg); }
-.intro-screen-collage img:nth-child(3) { bottom: 0; left: 3%; transform: rotate(3deg); }
-.intro-screen-collage img:nth-child(4) { right: 3%; bottom: 5px; transform: rotate(-3deg); }
+.intro-screen-collage img:nth-child(3) { bottom: 0; left: 0; transform: rotate(2deg); }
+.intro-screen-collage img:nth-child(4) { right: 0; bottom: 5px; transform: rotate(-2deg); }
 
 /* Live validation, review, and release workflows */
 .workflow-header-actions {
@@ -2978,6 +2978,20 @@ p {
 .workbook-theory-bullet { padding-left: 12px; position: relative; }
 .workbook-theory-bullet::before { content: ""; position: absolute; top: 8px; left: 1px; width: 4px; height: 4px; background: #6c9f96; }
 .workbook-source-note { margin: 18px 0 0; padding: 12px 14px; color: var(--muted); background: var(--surface-soft); border: 1px solid var(--line); font-size: 11px; line-height: 1.6; }
+.workbook-math-copy { min-width: 0; max-width: 100%; }
+.workbook-math {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  color: inherit;
+  scrollbar-width: thin;
+  overscroll-behavior-inline: contain;
+}
+.workbook-math-inline { display: inline-block; vertical-align: -0.18em; }
+.workbook-math-display { width: 100%; margin: 6px 0; display: block; }
+.workbook-math .katex { font-size: 1.04em; white-space: nowrap; }
+.workbook-math .katex-display { margin: 0; padding: 2px 0; text-align: left; }
+.workbook-math .katex-display > .katex { text-align: left; }
 
 .workbook-quiz-actions { display: flex; align-items: center; gap: 8px; }
 .workbook-progress-summary { margin-bottom: 17px; padding: 13px 15px; display: grid; grid-template-columns: minmax(180px, 1fr) auto; gap: 15px; align-items: center; background: var(--teal-50); border: 1px solid #c7dfda; }

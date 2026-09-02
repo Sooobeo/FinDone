@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { PageHeader } from "@/components/page-header";
+import { WorkbookMathText } from "@/components/workbook-math-text";
 import {
   createWorkbookProgressState,
   decodeWorkbookProgress,
@@ -134,7 +135,7 @@ function QuestionCard({
 
       <h3 id={`${question.id}-prompt`}>
         {question.stem.split("\n").map((line, lineIndex) => (
-          <span key={`${question.id}-stem-${lineIndex}`}>{line}</span>
+          <span key={`${question.id}-stem-${lineIndex}`}><WorkbookMathText source={line} /></span>
         ))}
       </h3>
 
@@ -161,7 +162,7 @@ function QuestionCard({
                 onChange={() => onSelect(choiceIndex)}
               />
               <span className="workbook-choice-index" aria-hidden="true">{ANSWER_LABELS[choiceIndex]}</span>
-              <span>{choice}</span>
+              <WorkbookMathText source={choice} />
               {choiceCorrect ? <Check className="workbook-choice-check" size={18} aria-label="정답" /> : null}
             </label>
           );
@@ -211,7 +212,7 @@ function QuestionCard({
           <div>
             {question.solution.map((segment, segmentIndex) => (
               <p className={segment.labelled ? "labelled" : undefined} key={`${question.id}-solution-${segmentIndex}`}>
-                {segment.text}
+                <WorkbookMathText source={segment.text} />
               </p>
             ))}
             <small>근거 · {question.evidence}</small>
@@ -507,14 +508,14 @@ export function WorkbookStudy({ index, unit }: WorkbookStudyProps) {
             {unit.meta.length ? <div className="workbook-meta-list">{unit.meta.map((item) => <span key={item}>{item}</span>)}</div> : null}
             <div className="workbook-theory-grid">
               {theoryCards.map((card, cardIndex) => card.kind === "divider" ? (
-                <h3 className="workbook-theory-divider" key={`theory-${cardIndex}`}>{card.blocks[0].text}</h3>
+                <h3 className="workbook-theory-divider" key={`theory-${cardIndex}`}><WorkbookMathText source={card.blocks[0].text} /></h3>
               ) : (
                 <article className="workbook-theory-card" key={`theory-${cardIndex}`}>
                   {card.blocks.map((block, blockIndex) => {
                     const key = `theory-${cardIndex}-${blockIndex}`;
-                    if (block.kind === "concept" || block.kind === "element") return <h4 key={key}>{block.text}</h4>;
-                    if (block.kind === "label") return <strong className="workbook-theory-label" key={key}>{block.text}</strong>;
-                    return <p className={block.kind === "bullet" ? "workbook-theory-bullet" : undefined} key={key}>{block.text}</p>;
+                    if (block.kind === "concept" || block.kind === "element") return <h4 key={key}><WorkbookMathText source={block.text} /></h4>;
+                    if (block.kind === "label") return <strong className="workbook-theory-label" key={key}><WorkbookMathText source={block.text} /></strong>;
+                    return <p className={block.kind === "bullet" ? "workbook-theory-bullet" : undefined} key={key}><WorkbookMathText source={block.text} /></p>;
                   })}
                 </article>
               ))}
