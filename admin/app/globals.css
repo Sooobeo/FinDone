@@ -2979,6 +2979,7 @@ p {
 .workbook-theory-bullet::before { content: ""; position: absolute; top: 8px; left: 1px; width: 4px; height: 4px; background: #6c9f96; }
 .workbook-source-note { margin: 18px 0 0; padding: 12px 14px; color: var(--muted); background: var(--surface-soft); border: 1px solid var(--line); font-size: 11px; line-height: 1.6; }
 .workbook-math-copy { min-width: 0; max-width: 100%; }
+.workbook-question-stem { display: block; white-space: pre-line; }
 .workbook-math {
   max-width: 100%;
   overflow-x: auto;
@@ -3046,7 +3047,7 @@ p {
 .workbook-question-bookmark { margin-left: auto; flex: 0 0 auto; color: #74827e; }
 .workbook-question-bookmark.active { color: #a66d22; background: #fff5e7; border-color: #e4c18e; }
 .workbook-question > h3 { margin: 0 0 15px; color: #253a35; font-size: 16px; line-height: 1.65; letter-spacing: -0.012em; }
-.workbook-question > h3 span { display: block; }
+.workbook-question > h3 > span { display: block; }
 .workbook-choices { margin: 0; padding: 0; display: grid; gap: 7px; border: 0; }
 .workbook-choice { min-height: 48px; padding: 10px 39px 10px 11px; display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 8px; align-items: center; position: relative; color: #52615d; background: #fbfcfc; border: 1px solid var(--line); font-size: 13px; line-height: 1.55; cursor: pointer; transition: background 120ms ease, border-color 120ms ease, transform 120ms ease; }
 .workbook-choice:hover { color: #2e4c46; background: #f3f8f6; border-color: #b7cdc8; transform: translateX(1px); }

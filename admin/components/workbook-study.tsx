@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { PageHeader } from "@/components/page-header";
 import { WorkbookMathText } from "@/components/workbook-math-text";
+import { mergeWorkbookMathSeams } from "@/lib/workbook-math-seams";
 import {
   createWorkbookProgressState,
   decodeWorkbookProgress,
@@ -98,6 +99,10 @@ function QuestionCard({
   onNext?: () => void;
   nextLabel: string;
 }) {
+  const solutionSegments = useMemo(
+    () => mergeWorkbookMathSeams(question.solution, (_left, right) => !right.labelled),
+    [question.solution],
+  );
   const checked = record?.checked === true;
   const correct = checked && record.selected === question.answerIndex;
   const canResolveReview = correct && record.needsReview && record.correctStreak >= 2;
@@ -134,9 +139,7 @@ function QuestionCard({
       </header>
 
       <h3 id={`${question.id}-prompt`}>
-        {question.stem.split("\n").map((line, lineIndex) => (
-          <span key={`${question.id}-stem-${lineIndex}`}><WorkbookMathText source={line} /></span>
-        ))}
+        <WorkbookMathText source={question.stem} className="workbook-question-stem" />
       </h3>
 
       <fieldset className="workbook-choices" aria-labelledby={`${question.id}-prompt`}>
@@ -210,7 +213,7 @@ function QuestionCard({
         <details className="workbook-solution" open>
           <summary>상세 해설</summary>
           <div>
-            {question.solution.map((segment, segmentIndex) => (
+            {solutionSegments.map((segment, segmentIndex) => (
               <p className={segment.labelled ? "labelled" : undefined} key={`${question.id}-solution-${segmentIndex}`}>
                 <WorkbookMathText source={segment.text} />
               </p>
@@ -238,7 +241,13 @@ export function WorkbookStudy({ index, unit }: WorkbookStudyProps) {
   const unitPosition = flatUnits.findIndex((item) => item.id === unit.id);
   const previousUnit = unitPosition > 0 ? flatUnits[unitPosition - 1] : null;
   const nextUnit = unitPosition >= 0 && unitPosition < flatUnits.length - 1 ? flatUnits[unitPosition + 1] : null;
-  const theoryCards = useMemo(() => buildTheoryCards(unit.theory), [unit.theory]);
+  const theoryCards = useMemo(
+    () => buildTheoryCards(mergeWorkbookMathSeams(
+      unit.theory,
+      (left, right) => left.kind === "body" && right.kind === "body",
+    )),
+    [unit.theory],
+  );
   const progressQuestions = useMemo(
     () => unit.questions.map(({ id, answerIndex }) => ({ id, answerIndex })),
     [unit.questions],
