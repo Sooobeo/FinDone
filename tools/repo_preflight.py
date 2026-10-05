@@ -29,7 +29,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 VALID_RELEASE_STATUSES = {"bootstrap_not_reviewed", "candidate", "release_ready"}
-NON_RELEASE_SCOPES = ("admin", "model", "android")
+NON_RELEASE_SCOPES = ("admin", "model", "android", "telegram")
 
 ADMIN_PATTERNS = (
     "admin/**",
@@ -87,6 +87,12 @@ GUARD_PATTERNS = (
     ".githooks/pre-commit",
     ".github/workflows/repository-preflight.yml",
 )
+TELEGRAM_PATTERNS = (
+    "hermes_telegram/**",
+    ".github/workflows/hermes-telegram-ci.yml",
+    "app/src/main/assets/content.sqlite3",
+    "app/src/main/assets/content-manifest.json",
+)
 
 
 class PreflightError(RuntimeError):
@@ -128,6 +134,8 @@ def scopes_for_path(path: str | Path) -> set[str]:
         scopes.add("model")
     if _matches(normalized, ANDROID_PATTERNS):
         scopes.add("android")
+    if _matches(normalized, TELEGRAM_PATTERNS):
+        scopes.add("telegram")
     return scopes
 
 
@@ -184,7 +192,7 @@ def resolve_scopes(requested: Sequence[str], paths: Iterable[str]) -> tuple[set[
     values: set[str] = set()
     for item in requested:
         values.update(part.strip() for part in item.split(",") if part.strip())
-    unknown = values - {"auto", "all", "admin", "model", "android", "release"}
+    unknown = values - {"auto", "all", *NON_RELEASE_SCOPES, "release"}
     if unknown:
         raise PreflightError(f"Unknown preflight scope(s): {', '.join(sorted(unknown))}")
 
@@ -241,6 +249,10 @@ def _assert_guardrail_wiring() -> None:
         ROOT / ".github" / "workflows" / "local-content-model-evaluation.yml": (
             "repo_preflight.py",
             "--scope model",
+        ),
+        ROOT / ".github" / "workflows" / "hermes-telegram-ci.yml": (
+            "repo_preflight.py",
+            "--scope telegram",
         ),
     }
     for path, tokens in contracts.items():
@@ -583,6 +595,23 @@ def verification_commands(scopes: set[str], *, release_requested: bool) -> list[
                 ),
             )
         )
+    if "telegram" in scopes:
+        telegram_environment = {
+            "PYTHONPATH": str(ROOT / "hermes_telegram" / "src"),
+            "PYTHONUTF8": "1",
+        }
+        commands.extend((
+            Command(
+                "Telegram service regression tests",
+                (python, "-m", "unittest", "discover", "-s", "hermes_telegram/tests", "-v"),
+                env=telegram_environment,
+            ),
+            Command(
+                "Telegram read-only content validation",
+                (python, "-m", "findone_hermes.jobs", "validate-content"),
+                env=telegram_environment,
+            ),
+        ))
     if release_requested:
         gradle = _gradle_executable()
         commands.append(
@@ -601,7 +630,7 @@ def _parser() -> argparse.ArgumentParser:
         "--scope",
         action="append",
         default=None,
-        help="auto, all, admin, model, android, or release; repeat or comma-separate",
+        help="auto, all, admin, model, android, telegram, or release; repeat or comma-separate",
     )
     parser.add_argument(
         "--changes",

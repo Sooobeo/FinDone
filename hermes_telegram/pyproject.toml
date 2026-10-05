@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "findone-hermes"
+version = "0.1.0"
+description = "FinDone learning quizzes and official news for Hermes Telegram"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+findone-hermes = "findone_hermes.jobs:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

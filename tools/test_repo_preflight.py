@@ -24,7 +24,7 @@ class RepositoryPreflightTest(unittest.TestCase):
             repo_preflight.scopes_for_path("tools/validate_concept_question_reset.py"),
         )
         self.assertEqual(
-            {"admin", "model", "android"},
+            {"admin", "model", "android", "telegram"},
             repo_preflight.scopes_for_path("app/src/main/assets/content-manifest.json"),
         )
         self.assertEqual(
@@ -47,6 +47,15 @@ class RepositoryPreflightTest(unittest.TestCase):
 
         self.assertEqual(set(repo_preflight.NON_RELEASE_SCOPES), scopes)
         self.assertFalse(release_requested)
+
+    def test_telegram_scope_uses_same_test_and_readonly_validation_in_ci(self) -> None:
+        self.assertEqual({"telegram"}, repo_preflight.scopes_for_path("hermes_telegram/src/findone_hermes/jobs.py"))
+        self.assertEqual({"telegram"}, repo_preflight.scopes_for_path(".github/workflows/hermes-telegram-ci.yml"))
+        commands = repo_preflight.verification_commands({"telegram"}, release_requested=False)
+        self.assertEqual(2, len(commands))
+        self.assertIn("hermes_telegram/tests", commands[0].argv)
+        self.assertEqual("validate-content", commands[1].argv[-1])
+        self.assertIn("PYTHONPATH", commands[1].env)
 
     def test_current_release_status_is_explicit_and_valid(self) -> None:
         self.assertIn(

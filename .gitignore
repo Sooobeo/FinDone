@@ -25,3 +25,9 @@ secrets.properties
 .venv-concept/
 .cache-concept-model/
 .ruff_cache/
+hermes_telegram/.venv/
+*.egg-info/
+hermes_telegram/**/*.sqlite3
+hermes_telegram/**/*.sqlite3-*
+hermes_telegram/**/*.db
+hermes_telegram/**/*.db-*

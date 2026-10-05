@@ -10,7 +10,7 @@ artifacts, run a build, commit, push, or change external state:
 
 1. Preserve the user's existing work. Read `git status --short` and identify
    which files are already modified or untracked.
-2. Select the intended scope: `admin`, `model`, `android`, or `release`. Use
+2. Select the intended scope: `admin`, `model`, `android`, `telegram`, or `release`. Use
    more than one `--scope` when needed; use `all` when uncertain.
 3. Run the read-only repository inspection:
 

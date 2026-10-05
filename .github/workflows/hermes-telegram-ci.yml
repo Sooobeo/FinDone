@@ -1,0 +1,39 @@
+name: Hermes Telegram CI
+
+on:
+  pull_request:
+    paths:
+      - "hermes_telegram/**"
+      - "app/src/main/assets/content.sqlite3"
+      - "app/src/main/assets/content-manifest.json"
+      - "tools/repo_preflight.py"
+      - "tools/test_repo_preflight.py"
+      - "AGENTS.md"
+      - ".githooks/pre-commit"
+      - ".github/workflows/hermes-telegram-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "hermes_telegram/**"
+      - "app/src/main/assets/content.sqlite3"
+      - "app/src/main/assets/content-manifest.json"
+      - "tools/repo_preflight.py"
+      - "tools/test_repo_preflight.py"
+      - "AGENTS.md"
+      - ".githooks/pre-commit"
+      - ".github/workflows/hermes-telegram-ci.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Verify Telegram with repository contract
+        run: python tools/repo_preflight.py verify --scope telegram --changes head --ci

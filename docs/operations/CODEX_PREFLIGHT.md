@@ -35,7 +35,7 @@ python tools/repo_preflight.py inspect --scope all --changes working
 - 이동된 문서를 포함한 모든 추적·신규 Markdown의 로컬 링크 유효성
 
 Admin 재생성 결과는 OS 임시 폴더에서만 비교하고 추적 파일은 수정하지 않는다.
-`all`은 개발 검증인 Admin·모델·Android를 뜻하며 release를 실행하지 않는다.
+`all`은 개발 검증인 Admin·모델·Android·Telegram을 뜻하며 release를 실행하지 않는다.
 
 ### 2. 완료 전: verify
 
@@ -48,8 +48,9 @@ python tools/repo_preflight.py verify --scope auto --changes working
 | `admin` | Admin Python 테스트, Supabase SQL 파싱, canonical fixture 비교, `npm ci`, Vitest, Next production build |
 | `model` | 로컬 모델 회귀 테스트, GitHub와 동일한 상대경로 ranker baseline, 결정론적 앱 DB compile check |
 | `android` | `testDebugUnitTest`, `lintDebug`, debug APK assembly; 범용 `test`와 release task는 제외 |
+| `telegram` | Hermes Telegram Python 회귀 테스트와 실제 콘텐츠 DB 읽기 전용 검증; 네트워크·비밀값 불필요 |
 | `release` | 먼저 `release_ready`를 요구한 뒤 Gradle 개념문항 release gate 실행 |
-| `all` | `admin` + `model` + `android`; release 제외 |
+| `all` | `admin` + `model` + `android` + `telegram`; release 제외 |
 
 모델 검증은 외부 LLM API를 호출하지 않는다. `build/` 결과만 만들며 Git에서
 제외된다. Admin fixture 비교도 production Supabase나 secret을 사용하지 않는다.
@@ -76,6 +77,7 @@ git config --local core.hooksPath .githooks
 
 - `admin-ci.yml`은 `verify --scope admin --changes head --ci`
 - `local-content-model-evaluation.yml`은 `verify --scope model --changes head --ci`
+- `hermes-telegram-ci.yml`은 `verify --scope telegram --changes head --ci`
 - `repository-preflight.yml`은 guardrail 단위 테스트와 read-only 전체 inspect
 
 로컬과 CI가 동일한 Python entrypoint를 사용하므로 검증 명령을 두 군데에서
