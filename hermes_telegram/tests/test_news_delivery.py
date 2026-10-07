@@ -101,6 +101,12 @@ class NewsDeliveryTests(unittest.TestCase):
             request = call.args[0]
             self.assertTrue(request.full_url.startswith("https://api.telegram.org/bot"))
             self.assertNotIn("parse_mode", json.loads(request.data))
+            payload = json.loads(request.data)
+            self.assertTrue(payload["entities"])
+            encoded = payload["text"].encode("utf-16-le")
+            first = payload["entities"][0]
+            self.assertEqual(encoded[first["offset"] * 2:(first["offset"] + first["length"]) * 2].decode("utf-16-le"),
+                             "📰 FinDone | 금융 영어 뉴스")
             self.assertLessEqual(len(json.loads(request.data)["text"].encode("utf-16-le")) // 2, 3000)
         with NewsArchive(archive_path(self.environment)) as archive:
             first = archive.lookup_delivery(OWNER, str(OWNER), "101")

@@ -158,9 +158,11 @@ async def pre_gateway_dispatch(event=None, gateway=None, session_store=None, **k
                 batch_id=batch_id,
             )
         for reply in replies:
+            from findone_hermes.presentation import hermes_markdown
+
             result = await adapter.send(
                 chat_id,
-                reply,
+                hermes_markdown(reply),
                 reply_to=str(submission_id) if submission_id is not None else None,
             )
             if not getattr(result, "success", False):

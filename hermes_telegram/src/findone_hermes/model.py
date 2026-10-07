@@ -108,7 +108,11 @@ class ModelClient:
         if self.presence_penalty is not None:
             request_payload["presence_penalty"] = self.presence_penalty
         request_body = json.dumps(request_payload, ensure_ascii=False).encode("utf-8")
-        headers = {"Content-Type": "application/json", "Accept": "application/json"}
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "User-Agent": "FinDone-Hermes/0.1",
+        }
         if self.api_key:
             headers["Authorization"] = "Bearer " + self.api_key
         request = Request(self.base_url.rstrip("/") + "/chat/completions", request_body, headers)

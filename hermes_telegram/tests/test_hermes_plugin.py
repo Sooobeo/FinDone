@@ -126,6 +126,17 @@ class HermesPluginTests(unittest.IsolatedAsyncioTestCase):
         )
         self.gateway._delivery_adapter_for.assert_called_once()
 
+    async def test_news_emphasis_keeps_exact_prepared_body_for_article_receipt(self):
+        body = "📰 FinDone | 금융 영어 뉴스\n\nBanks & markets\n\n🔎 원문\nhttps://example.com/news"
+        self.news_handler.return_value = [body]
+        with patch.dict(os.environ, {"FINDONE_TELEGRAM_MODE": "news"}):
+            result = await plugin.pre_gateway_dispatch(make_event(text="/now"), self.gateway)
+        self.assertEqual(result["reason"], "findone-handled")
+        self.assertIn("**Banks & markets**", self.adapter.sent[0][1])
+        self.news_receipt.assert_called_once_with(
+            self.news_environment, chat_id="123456", message_id="7001", text=body,
+        )
+
     async def test_unauthorized_and_group_events_are_silent_before_service_import(self):
         for values in (
             {"user_id": "999999"},

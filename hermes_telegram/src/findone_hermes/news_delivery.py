@@ -21,6 +21,7 @@ from .model import model_from_env
 from .news import NewsResult, NewsService, render_news_messages
 from .news_archive import NewsArchive, archive_path
 from .news_now import reserve_news_result
+from .presentation import telegram_entities
 from .state import StateStore, utc_time
 from .word_levels import WordLevels
 
@@ -79,7 +80,8 @@ def _messages(messages: Sequence[str]) -> list[str]:
 def _send_message(token: str, owner: int, body: str) -> tuple[str, str]:
     request = Request(
         "https://api.telegram.org/bot" + token + "/sendMessage",
-        json.dumps({"chat_id": owner, "text": body, "disable_web_page_preview": True}, ensure_ascii=False).encode("utf-8"),
+        json.dumps({"chat_id": owner, "text": body, "entities": telegram_entities(body),
+                    "disable_web_page_preview": True}, ensure_ascii=False).encode("utf-8"),
         {"Content-Type": "application/json", "Accept": "application/json"},
         method="POST",
     )

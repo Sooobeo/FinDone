@@ -10,6 +10,7 @@ from .config import Settings, content_paths
 from .content import ContentRepository
 from .messages import format_notice, format_quiz, split_message
 from .quiz import QuizService
+from .presentation import hermes_markdown
 from .state import StateStore
 from .stats import StatisticsService
 
@@ -127,7 +128,7 @@ def main(argv: list[str] | None = None) -> int:
                 content.close()
             return 0
         for message in run_job(args.command, args.slot, Settings.from_env()):
-            print(message)
+            print(hermes_markdown(message))
         return 0
     except Exception:
         # Exception strings may include URLs, local paths, secrets or identifiers.

@@ -266,6 +266,17 @@ class NewsTests(unittest.TestCase):
 
 
 class ModelTests(unittest.TestCase):
+    def test_remote_model_request_identifies_application(self):
+        client = ModelClient("https://model.example/v1", "remote")
+        envelope = json.dumps({"choices": [{"message": {"content": '{"connected":true}'}}]}).encode("utf-8")
+        with patch("findone_hermes.model.build_opener") as opener:
+            opener.return_value.open.return_value.__enter__.return_value.read.return_value = envelope
+            self.assertEqual(client.complete_json("system", {"connected": True}), {"connected": True})
+        request = opener.return_value.open.call_args.args[0]
+        # Reverse proxies may reject urllib's generic default User-Agent.
+        self.assertEqual(request.get_header("User-agent"), "FinDone-Hermes/0.1")
+        self.assertEqual(request.full_url, "https://model.example/v1/chat/completions")
+
     def test_reasoning_effort_is_optional_scoped_and_only_emitted_when_explicit(self):
         scoped = {"FINDONE_MODEL_BASE_URL": "http://127.0.0.1:11434/v1", "FINDONE_MODEL_NAME": "local"}
         envelope = json.dumps({"choices": [{"message": {"content": '{"result":"valid"}'}}]}).encode("utf-8")

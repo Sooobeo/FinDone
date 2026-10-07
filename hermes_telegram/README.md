@@ -10,6 +10,8 @@ Asia/Seoul 기준 기본 `learning` 봇은 매일 **12:30·20:30 퀴즈**를 보
 
 ## 실행 경계
 
+두 봇의 메시지는 제목·소제목과 뉴스 어휘·구문을 **굵게** 표시하고, 기존 이모지와 문단 간격을 유지합니다. 학습 예약 발송과 두 봇의 답장은 Hermes의 Markdown 변환을 사용합니다. 뉴스 정기 발송은 원래 본문과 링크를 바꾸지 않는 Telegram `entities`를 사용하며, 기사·단어 문항의 발송 연결에는 기존 서식 없는 본문을 그대로 기록합니다. 퀴즈 답변은 기존 숫자 답장 방식입니다.
+
 - `src/findone_hermes/`: 읽기 전용 콘텐츠 검증, 회차 스냅샷, 채점·통계·뉴스 처리.
 - `hermes/plugin/`: Hermes의 Telegram 메시지를 받아 직접 처리하는 `findone-telegram` 플러그인.
 - `hermes/scripts/`: 실제 Hermes 데이터 홈의 `scripts/`에 복사할 cron 래퍼.
