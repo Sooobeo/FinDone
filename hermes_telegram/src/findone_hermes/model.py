@@ -15,6 +15,9 @@ from typing import Any, Mapping
 from urllib.parse import urlsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
+MAX_MODEL_TIMEOUT_SECONDS = 600
+_TIMEOUT_ERROR = f"Model timeout must be a finite value from 1 to {MAX_MODEL_TIMEOUT_SECONDS} seconds"
+
 
 class ModelError(RuntimeError):
     """A model response could not be used safely."""
@@ -36,8 +39,8 @@ class ModelClient:
     presence_penalty: float | None = None
 
     def __post_init__(self) -> None:
-        if not math.isfinite(self.timeout) or not 1 <= self.timeout <= 180:
-            raise ModelError("Model timeout must be a finite value from 1 to 180 seconds")
+        if not math.isfinite(self.timeout) or not 1 <= self.timeout <= MAX_MODEL_TIMEOUT_SECONDS:
+            raise ModelError(_TIMEOUT_ERROR)
         if self.reasoning_effort is not None and self.reasoning_effort not in {"none", "low", "medium", "high"}:
             raise ModelError("Model reasoning effort must be none, low, medium or high")
         if self.presence_penalty is not None and (
@@ -77,7 +80,7 @@ class ModelClient:
         try:
             timeout = float(env.get("FINDONE_MODEL_TIMEOUT_SECONDS", "30"))
         except (ValueError, TypeError) as exc:
-            raise ModelError("Model timeout must be a finite value from 1 to 180 seconds") from exc
+            raise ModelError(_TIMEOUT_ERROR) from exc
         effort = env.get("FINDONE_MODEL_REASONING_EFFORT", "").strip() or None
         penalty_raw = env.get("FINDONE_MODEL_PRESENCE_PENALTY", "")
         penalty = None
@@ -91,7 +94,8 @@ class ModelClient:
         return cls(base, name, env.get("FINDONE_MODEL_API_KEY", ""), timeout=timeout,
                    reasoning_effort=effort, presence_penalty=penalty)
 
-    def complete_json(self, system: str, payload: Mapping[str, Any]) -> dict[str, Any]:
+    def complete_json(self, system: str, payload: Mapping[str, Any],
+                      *, response_schema: Mapping[str, Any] | None = None) -> dict[str, Any]:
         request_payload = {
             "model": self.model_name,
             "messages": [
@@ -102,6 +106,12 @@ class ModelClient:
             "max_tokens": 1600,
             "response_format": {"type": "json_object"},
         }
+        if response_schema is not None:
+            request_payload["response_format"] = {
+                "type": "json_schema",
+                "json_schema": {"name": "findone_response", "strict": True,
+                                "schema": dict(response_schema)},
+            }
         # Provider defaults are preserved unless this profile explicitly opts in.
         if self.reasoning_effort is not None:
             request_payload["reasoning_effort"] = self.reasoning_effort

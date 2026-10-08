@@ -47,7 +47,7 @@ class FakeModel:
         self.payloads = []
         self.barrier, self.invalid = barrier, invalid
 
-    def complete_json(self, system, payload):
+    def complete_json(self, system, payload, *, response_schema=None):
         self.payloads.append(payload)
         if self.barrier is not None:
             self.barrier.wait(timeout=10)

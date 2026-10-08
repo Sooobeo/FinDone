@@ -65,7 +65,7 @@ class FakeModel:
         self.result = {"meaning_ko": "채권", "explanation_ko": "이 문장에서 거래 대상인 채권을 뜻합니다."}
         self.failure = None
 
-    def complete_json(self, prompt, payload):
+    def complete_json(self, prompt, payload, *, response_schema=None):
         self.calls.append((prompt, payload))
         if self.failure:
             raise self.failure

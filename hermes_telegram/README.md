@@ -212,7 +212,11 @@ FINDONE_MODEL_NAME=<설치한 모델 이름>
 # FINDONE_MODEL_PRESENCE_PENALTY=0
 ```
 
-모델 요청별 대기 시간은 기본 30초입니다. 느린 로컬 모델은 같은 프로필 `.env`의 `FINDONE_MODEL_TIMEOUT_SECONDS`로 1~180초 범위에서 조정할 수 있습니다. 이 값은 뉴스 전체 처리 시간 제한이 아니며, 여러 기사에서 모델을 호출하면 전체 대기 시간은 더 길어질 수 있습니다. cron 래퍼도 해당 프로필의 값을 읽습니다.
+모델 요청별 대기 시간은 기본 30초입니다. 느린 로컬 모델은 같은 프로필 `.env`의 `FINDONE_MODEL_TIMEOUT_SECONDS`로 1~600초 범위에서 조정할 수 있습니다. 이 값은 뉴스 전체 처리 시간 제한이 아니며, 여러 기사에서 모델을 호출하면 전체 대기 시간은 더 길어질 수 있습니다. cron 래퍼도 해당 프로필의 값을 읽습니다.
+
+봇과 Ollama가 같은 서버에서 실행된다면 뉴스 프로필의 `FINDONE_MODEL_BASE_URL=http://127.0.0.1:11434/v1`로 직접 연결합니다. 공개 도메인과 역방향 프록시를 거치면 프록시의 제한 시간이 봇의 대기 시간보다 먼저 만료될 수 있습니다. CPU로 실행하는 모델은 실제 기사 요청의 처리 시간을 측정해 대기 시간을 설정합니다. 모델 이름은 Ollama에 설치된 이름을 그대로 사용합니다.
+
+`general` 뉴스는 필수 항목 누락을 막기 위해 `response_format=json_schema`를 사용합니다. 모델 서버가 JSON Schema 구조화 출력을 지원해야 합니다. 영어 요약과 단어 선택은 검증된 원문 후보로 제한하며, 응답 후에도 번역의 숫자·기관명과 원문 근거를 검증합니다. [Ollama 구조화 출력](https://docs.ollama.com/capabilities/structured-outputs)
 
 `FINDONE_MODEL_REASONING_EFFORT`는 `none`·`low`·`medium`·`high`를 허용하며, 지정한 경우에만 API 요청에 `reasoning_effort`를 추가합니다. 생략하거나 비워 두면 공급자의 기본 동작을 유지합니다. Ollama의 thinking 켜기·끄기를 지원하는 모델은 `none`으로 thinking을 끌 수 있으며, 모델별 지원 수준은 `/api/show`로 확인합니다. [Ollama OpenAI 호환 설정](https://docs.ollama.com/api/openai-compatibility)
 
